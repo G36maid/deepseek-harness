@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-compaction-capability-seam.md) | [简体中文](2026-06-18-compaction-capability-seam.zh.md) | 繁體中文
+[English](2026-06-18-compaction-capability-seam.md) | 繁體中文
 
 ## 問題
 
@@ -33,7 +33,7 @@ Status: implemented
 
 將完整演算法（保留遍歷、token 求和、文字提取）作為介面上的具體方法，會將約定重新耦合到一種策略：想要不同保留策略或事件排序的後端必須與繼承來的具體程式碼對抗。將三個操作都設為抽象，把所有*怎麼做*的決策放在後端，並讓介面保持為*做什麼*的聲明。token 測量根本不是壓縮掛鉤；單例服務使多個消費端能夠共享逐工作階段的重播摺疊。
 
-`compactIfNeeded(agent, trigger, signal)` 接受顯式的 `'pressure' | 'context-overflow'` 觸發原因與取消訊號。它只讀取最新的持久化已路由請求；沒有 header 就不執行工作，任何已路由的提供方/模型目標都使用單例估算器。`compactNow(agent, signal)` 要求 agent 處於 idle，即使未達到壓力也進行一次有效的平衡縮減；不存在這種範圍時返回 `null`，且不寫入任何內容。`compactRegion(start, end, agent, signal?)` 將 `agent.session` 作為唯一工作階段身份，並為顯式呼叫方保留選填 signal。默認摘要器依次從顯式設定、最新記錄的已路由目標和 agent 選項解析目標，並在任何 `llm/stream` 路由後記錄提供方/模型對。它重播已路由請求的前綴，並將壓縮指令追加為尾部 user 訊息，從而複用提供方的熱 KV Cache；見[摘要前綴快取 Agent Note](../bug-fix/2026-07-21-compaction-summary-prefix-cache-reuse.md)。該結果攜帶 `llmStreamCall: true`，因為生成它時恰好透過此上下文的 LLM 服務發起了一次呼叫；只有滿足相同條件時，子類才設定該標記，因為單有保留的 `rawOutput` 並不能判定呼叫路徑。該呼叫將提供方無關的 `GenerateOptions.purpose` 設為 `compaction`；配接器可以將此用途對映為對模型隱藏的傳輸元資料，DeepSeek 配接器會發送 `x-deepseek-harness-compact: 1`。
+`compactIfNeeded(agent, trigger, signal)` 接受顯式的 `'pressure' | 'context-overflow'` 觸發原因與取消訊號。它只讀取最新的持久化已路由請求；沒有 header 就不執行工作，任何已路由的提供方/模型目標都使用單例估算器。`compactNow(agent, signal)` 要求 agent 處於 idle，即使未達到壓力也進行一次有效的平衡縮減；不存在這種範圍時返回 `null`，且不寫入任何內容。`compactRegion(start, end, agent, signal?)` 將 `agent.session` 作為唯一工作階段身份，並為顯式呼叫方保留選填 signal。預設摘要器依次從顯式設定、最新記錄的已路由目標和 agent 選項解析目標，並在任何 `llm/stream` 路由後記錄提供方/模型對。它重播已路由請求的前綴，並將壓縮指令追加為尾部 user 訊息，從而複用提供方的熱 KV Cache；見[摘要前綴快取 Agent Note](../bug-fix/2026-07-21-compaction-summary-prefix-cache-reuse.md)。該結果攜帶 `llmStreamCall: true`，因為生成它時恰好透過此上下文的 LLM 服務發起了一次呼叫；只有滿足相同條件時，子類才設定該標記，因為單有保留的 `rawOutput` 並不能判定呼叫路徑。該呼叫將提供方無關的 `GenerateOptions.purpose` 設為 `compaction`；配接器可以將此用途對映為對模型隱藏的傳輸元資料，DeepSeek 配接器會發送 `x-deepseek-harness-compact: 1`。
 
 ### 成功的持久步驟工作完成後執行自動壓力檢查
 

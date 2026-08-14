@@ -1,6 +1,6 @@
 # dsh-agent-loop
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 agent（代理）的唯一具體實作外掛程式和迴圈驅動器。其包內部實作滿足 `Agent` 介面，並驅動工作階段、輪次和步驟的生命週期。
 
@@ -10,11 +10,11 @@ agent（代理）的唯一具體實作外掛程式和迴圈驅動器。其包內
 
 ### 公開 API
 
-建立與復原屬於同一個受回滾保護的交易：構造私有工作階段、具體 agent 和帶作用域的上下文；等待選填 setup；進入兩個登錄檔；依次宣告 `session/created` 和 `agent/created`；寄出 `agent/session-start`；此後才啟動驅動器。Setup 作為受信任的同進程組合程式碼，接收完整的帶作用域 `Context`，並且不得驅動尚未發布的 agent。普通的類型化身份與選項輸入按只讀約定借用；seed 事件和工作階段元資料會跨越持久工作階段邊界，因此係統會對其進行驗證並建立快照。選填的 `AbortSignal` 只取消載入／setup／發布，並在返回的 handle 可見前分離。
+建立與復原屬於同一個受回滾保護的交易：構造私有工作階段、具體 agent 和帶作用域的上下文；等待選填 setup；進入兩個登錄檔；依次宣告 `session/created` 和 `agent/created`；寄出 `agent/session-start`；此後才啟動驅動器。Setup 作為受信任的同行程組合程式碼，接收完整的帶作用域 `Context`，並且不得驅動尚未發布的 agent。普通的類型化身份與選項輸入按只讀約定借用；seed 事件和工作階段元資料會跨越持久工作階段邊界，因此係統會對其進行驗證並建立快照。選填的 `AbortSignal` 只取消載入／setup／發布，並在返回的 handle 可見前分離。
 
 呼叫方 fiber 與 AgentLoop 提供方共同擁有 agent。`AgentFactory.createAgent(ownerCtx, options)` 與 `resume(ownerCtx, options)` 顯式接收呼叫方所有權，而工廠為 `sessions`/`llm`/`tools`/`systemPrompt` 保留自身的相依性上下文；這樣，呼叫方可以只注入 `agents`，而不會縮減新 agent 的服務介面。呼叫方解除安裝、handle dispose（資源釋放）或提供方解除安裝都會匯合到同一個記憶化的完全靜止邊界。提供方關閉會同時等待資源 teardown，以及已經觀測到停用的公開 create/resume 包裝層，因此相依性消失後，任何 continuation 都無法繼續發布。
 
-每個 agent 與其工作階段共享一個由呼叫方選擇的 `SessionId`，並假設它在全域性唯一；意外的 UUID 衝突不屬於受支持模型。兩個使用同一 id 的並行操作都可以進行準備，但最終的 `enter()` 呼叫會裁決發布，所有失敗方都會回滾各自的私有資源。每次 detach 都綁定到確切進入的對象，因此過時 disposer 無法移除之後出現的同 id 替代項。在同步建立通知期間請求的 detach 會等待該次分發退棧，從而保留 created/disposed 配對。Teardown 按以下順序執行：停止並排空 → 撤銷作用域 → detach agent → detach 工作階段。私有作用域清理完成後，該 id 即可複用。不具否決能力的普通 `agent/*` 通知透過 `agentEvents(ctx, agent)` 寄出；逐步驟組裝透過 `assembleContextFor(agent)` 完成。
+每個 agent 與其工作階段共享一個由呼叫方選擇的 `SessionId`，並假設它在全域性唯一；意外的 UUID 衝突不屬於受支援模型。兩個使用同一 id 的並行操作都可以進行準備，但最終的 `enter()` 呼叫會裁決發布，所有失敗方都會回滾各自的私有資源。每次 detach 都綁定到確切進入的對象，因此過時 disposer 無法移除之後出現的同 id 替代項。在同步建立通知期間請求的 detach 會等待該次分發退棧，從而保留 created/disposed 配對。Teardown 按以下順序執行：停止並排空 → 撤銷作用域 → detach agent → detach 工作階段。私有作用域清理完成後，該 id 即可複用。不具否決能力的普通 `agent/*` 通知透過 `agentEvents(ctx, agent)` 寄出；逐步驟組裝透過 `assembleContextFor(agent)` 完成。
 
 - `ctx.agentLoop.create(id: SessionId, options?: AgentOptions, meta?: { cwd?: string }): Agent`：在確切共享的 agent／工作階段 id 下同步建立，不執行 setup，並隨呼叫方 fiber 一同 dispose。聲明式設定把 `agents[].id` 視為穩定 label，通常會先生成 `${label}-session-<uuid>`，再呼叫此邊界。應用也可以提供穩定且確切的 `sessionId`：首次使用時建立；重新掛載且持久化內容已存在時，則復原已經實體化的歷史。`resumeSessionId` 要求並載入現有的持久化 id，且與 `sessionId` 互斥。這樣，預設情況下每次重新啟動都會建立新工作階段，從而避免衝突，也無需保留第二個即時路由身份。
 
@@ -61,7 +61,7 @@ interface Config {
 
 ### 迴圈生命週期（`agent.ts`）
 
-驅動器在其整個生命週期內擁有一個 agent，並在 `ctx.agents.withInitiator(agent, ...)` 內執行。包私有的編排入口點會復原確切的 Agent，一次性派生 `agent.session`，並讓操作區域性的輔助函式捕獲它，而不是透過淺層介面繼續傳遞具體驅動器或每次操作的 `Session`。如果顯式 `Session` 正是輔助函式的實際介面，該輔助函式會保留它；建立、持久化載入、未發布 setup、服務、worker、行程、持久化和 wire 協議則繼續保留各自的顯式身份。[agent 服務](../agent/README.md#initiating-agent-scope)規定傳播、teardown 和分離工作規則。
+驅動器在其整個生命週期內擁有一個 agent，並在 `ctx.agents.withInitiator(agent, ...)` 內執行。包私有的編排入口點會復原確切的 Agent，一次性派生 `agent.session`，並讓操作區域性的輔助函式捕獲它，而不是透過淺層介面繼續傳遞具體驅動器或每次操作的 `Session`。如果顯式 `Session` 正是輔助函式的實際介面，該輔助函式會保留它；建立、持久化載入、未發布 setup、服務、worker、行程、持久化和 wire 協定則繼續保留各自的顯式身份。[agent 服務](../agent/README.md#initiating-agent-scope)規定傳播、teardown 和分離工作規則。
 
 每次提供方呼叫成功結束時，都會恰好追加一個 `assistant/message` 完成錨點，包括無內容呼叫和以 `max-tokens` 結束的呼叫。該錨點原樣記錄組裝後的內容，在 `sourceEventSeqs` 中列出確切的區塊 seq（流沒有區塊時為 `[]`），並在用量可用時包含用量；空內容不會進入派生訊息歷史。
 
@@ -92,7 +92,7 @@ interface Config {
 
 #### Token 影響
 
-每個步驟都會再次計入系統文字與 schema。逐 agent 作用域決定貢獻，而權威組裝 waterfall 可以改變最終請求，並使其監聽器負責保持協議連貫。
+每個步驟都會再次計入系統文字與 schema。逐 agent 作用域決定貢獻，而權威組裝 waterfall 可以改變最終請求，並使其監聽器負責保持協定連貫。
 
 #### KV Cache 影響
 
@@ -129,6 +129,6 @@ interface Config {
 ## 已知限制與暫緩事項
 
 - **分類是一元的**：安全性取決於比較同級呼叫或資源的呼叫必須保持獨佔（參見[設計原理](../../../.agents/notes/implemented/feature/2026-07-10-parallel-tool-call-execution.md)）。
-- **設定 label 默認對應新工作階段**：省略 `sessionId` 時，每次啟動都會建立新的 `${id}-session-<uuid>`；如需確切的復原或建立行為，必須顯式提供穩定的 `sessionId`，而 `resumeSessionId` 要求已有持久化歷史。
-- **設定 agent 沒有逐 agent persona 欄位或 setup 掛鉤**：它們使用部署 persona；只有程式設計式 `ctx.agents.create()` / `resume()` 工廠選項支持帶作用域的 persona／工具組合。
+- **設定 label 預設對應新工作階段**：省略 `sessionId` 時，每次啟動都會建立新的 `${id}-session-<uuid>`；如需確切的復原或建立行為，必須顯式提供穩定的 `sessionId`，而 `resumeSessionId` 要求已有持久化歷史。
+- **設定 agent 沒有逐 agent persona 欄位或 setup 掛鉤**：它們使用部署 persona；只有程式設計式 `ctx.agents.create()` / `resume()` 工廠選項支援帶作用域的 persona／工具組合。
 - **沒有內建輪次預算**：工具呼叫或 steering 會讓當前輪次繼續；限制失控輪次的策略必須從既有生命週期擴充點（如 `agent/turn-stopping`）執行取消。

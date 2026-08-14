@@ -1,6 +1,6 @@
 # 儲存
 
-[English](storage.md) | [简体中文](storage.zh.md) | 繁體中文
+[English](storage.md) | 繁體中文
 
 儲存子系統持久保存一切不屬於工作階段事件日誌的資料（工作階段日誌有自己的 seam——見 [persistence.md](persistence.md)）。它是一項選填能力，不屬於 agent loop（代理循環）主幹，並按[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md) 拆分：樞紐（hub）與 Service Definition（[dsh-storage](../../packages/storage/storage)，`ctx.storage`）、Service Provider（註冊為 `json` 的 [dsh-storage-json](../../packages/storage/storage-json) 與註冊為 `sqlite` 的 [dsh-storage-sqlite](../../packages/storage/storage-sqlite)），以及 Consumer 資料形式（[dsh-storage-domain](../../packages/storage/storage-domain)，`ctx.storageDomain`，也可經 `ctx.storage.domain` 訪問）——它是後端約定的唯一 Consumer，也是其他一切所使用的類型化 API。樞紐自身不做任何 IO：後端擁有介質，資料形式擁有語義，產品包絕不直接觸碰後端。設計記錄：[領域 KV 儲存 Agent Note](../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md)。
 
@@ -48,7 +48,7 @@ interface StorageBackend {
 
 ## 聲明領域
 
-領域由其擁有包聲明一次，形式是一個 spec 對象——它是該領域的身份、版面配置和記錄 schema 的單一來源（schema 用 zod 編寫，因此 `z.infer` 讓消費端類型無需重複聲明）：
+領域由其擁有包聲明一次，形式是一個 spec 對象——它是該領域的身份、版面設定和記錄 schema 的單一來源（schema 用 zod 編寫，因此 `z.infer` 讓消費端類型無需重複聲明）：
 
 ```ts type-equiv
 /** Static declaration of one domain: identity, version, and record layout. */
@@ -99,7 +99,7 @@ interface Domain<S extends DomainSpec> {
 
 ## 領域 facility：`ctx.storageDomain`
 
-`DomainFacility`（[簽名](#ctxstoragedomain--domainfacility)）在經過路由的後端之上打開已聲明的領域。路由是領域外掛程式的設定，絕不屬於樞紐：`backend` 指定必填的默認路由，`routes` 按領域名逐個覆蓋。`open(spec)` 按嚴格順序執行，每一步失敗都使整個呼叫失敗：拒絕已打開或仍在關閉中的名稱（`already-open`），解析路由（`backend-not-found`），要求後端具備 `kv` facet（`facet-unsupported`），打開 unit（後端的 `version-mismatch`/`malformed-medium` 原樣透傳），並按 spec 的 zod schema 校驗每條已儲存記錄和 global（`invalid-record`，附帶出錯的表與鍵）。呼叫方擁有返回的控制代碼，並用 `Domain.close()` 釋放它；外掛程式解除安裝時仍處於打開狀態的領域由 facility 負責關閉，已關閉領域的名稱只有在拆除完全結束後才釋放出來供重新打開。`get(name)` 是無類型的診斷尋找，命中的是每個類型化控制代碼背後包內私有的 `DomainImpl` 執行時期；`closeAll()` 是解除安裝路徑。
+`DomainFacility`（[簽名](#ctxstoragedomain--domainfacility)）在經過路由的後端之上打開已聲明的領域。路由是領域外掛程式的設定，絕不屬於樞紐：`backend` 指定必填的預設路由，`routes` 按領域名逐個覆蓋。`open(spec)` 按嚴格順序執行，每一步失敗都使整個呼叫失敗：拒絕已打開或仍在關閉中的名稱（`already-open`），解析路由（`backend-not-found`），要求後端具備 `kv` facet（`facet-unsupported`），打開 unit（後端的 `version-mismatch`/`malformed-medium` 原樣透傳），並按 spec 的 zod schema 校驗每條已儲存記錄和 global（`invalid-record`，附帶出錯的表與鍵）。呼叫方擁有返回的控制代碼，並用 `Domain.close()` 釋放它；外掛程式解除安裝時仍處於打開狀態的領域由 facility 負責關閉，已關閉領域的名稱只有在拆除完全結束後才釋放出來供重新打開。`get(name)` 是無類型的診斷尋找，命中的是每個類型化控制代碼背後包內私有的 `DomainImpl` 執行時期；`closeAll()` 是解除安裝路徑。
 
 ## 變更事件：`domain/changed`
 

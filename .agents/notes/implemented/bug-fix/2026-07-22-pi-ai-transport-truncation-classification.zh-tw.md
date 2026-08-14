@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-pi-ai-transport-truncation-classification.md) | [简体中文](2026-07-22-pi-ai-transport-truncation-classification.zh.md) | 繁體中文
+[English](2026-07-22-pi-ai-transport-truncation-classification.md) | 繁體中文
 
 ## 問題
 
@@ -30,6 +30,6 @@ Status: implemented
 
 ## 後果
 
-- 流式輸出中途的傳輸層中斷連線和終止前的流截斷現在都攜帶 `TRANSPORT`，因此組合出的 `llm-retry` 策略會默認重試它們，而不是讓該輪次失敗。
+- 流式輸出中途的傳輸層中斷連線和終止前的流截斷現在都攜帶 `TRANSPORT`，因此組合出的 `llm-retry` 策略會預設重試它們，而不是讓該輪次失敗。
 - 通知文字不變（`terminated` / `Anthropic stream ended before message_stop`）：cause 細節在配接器看到之前就已丟失，因此 `errorChain` 沒有更多內容可渲染。只有被路由的 `code` 得到了改善。
 - 分類仍然相依性字串匹配且相依性提供方的措辭：未來某個 pi-ai 版本若改寫這些錯誤的措辭，就會靜默回退到 `PI_AI_ERROR`，直到模式被更新。`XXX` 注記指向那個持久的修復方式（基於轉發的 `code`/`cause` 路由）。

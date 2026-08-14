@@ -1,12 +1,12 @@
 # 僅限 Session 內的 Schedule
 
-[English](schedule.md) | [简体中文](schedule.zh.md) | 繁體中文
+[English](schedule.md) | 繁體中文
 
 Schedule 擁有持久提醒；這些提醒會作為普通的後續對話輪次返回原 live Session。[持久 Schedule Agent Note](../../.agents/notes/implemented/feature/2026-08-05-durable-web-schedule.md) 負責持久化與生命週期決策，[對話式交付](../../.agents/notes/implemented/simplification/2026-08-09-conversational-schedule-delivery.md) 負責無回執邊界，[顯式時區邊界](../../.agents/notes/implemented/simplification/2026-08-09-explicit-schedule-time-zone.md) 負責瀏覽器本機解釋，[有界固定速率 Schedule](../../.agents/notes/implemented/simplification/2026-08-09-bounded-fixed-rate-schedule.md) 負責重複調度。本頁記錄 [`packages/schedule/schedule/src/types.ts`](../../packages/schedule/schedule/src/types.ts) 中的持久資料形狀和麵向模型的資料形狀；[包 README](../../packages/schedule/schedule/README.md) 負責組合、工具行為與確切的提醒 framing。
 
 ## 持久記錄
 
-`ScheduleId` 是[品牌化 id](core.md#branded-ids)，在單個 Session 內唯一且絕不複用。版本 1 支持正的安全整數 `after_seconds` 延時、顯式的絕對 `at` 目標，或至少五分鐘的安全整數 `every_seconds` 間隔。建立操作會將每個初始目標規範化為使用四位年份的 RFC 3339 UTC `scheduledAt`；`after` 記錄會保留提交的延時，`at` 記錄只儲存結果時點，`every` 記錄則保留固定間隔和下一個目標。
+`ScheduleId` 是[品牌化 id](core.md#branded-ids)，在單個 Session 內唯一且絕不複用。版本 1 支援正的安全整數 `after_seconds` 延時、顯式的絕對 `at` 目標，或至少五分鐘的安全整數 `every_seconds` 間隔。建立操作會將每個初始目標規範化為使用四位年份的 RFC 3339 UTC `scheduledAt`；`after` 記錄會保留提交的延時，`at` 記錄只儲存結果時點，`every` 記錄則保留固定間隔和下一個目標。
 
 ```ts type-equiv
 /** Durable one-shot reminder created from a positive delay. */
@@ -91,7 +91,7 @@ Schedule 會拒絕無效偏移量與時區、不帶偏移量的字串、非未�
 
 ## 固定速率輸入與補償
 
-`every_seconds` 是每條記錄單獨擁有且至少為 300 秒的間隔，以建立時間為錨點。它只提供固定速率重複調度：協議不包含日曆規則或 Cron 表達式、重複調度時區、共享冷卻時間或跨記錄准入閘門。
+`every_seconds` 是每條記錄單獨擁有且至少為 300 秒的間隔，以建立時間為錨點。它只提供固定速率重複調度：協定不包含日曆規則或 Cron 表達式、重複調度時區、共享冷卻時間或跨記錄准入閘門。
 
 如果一個 Session 在多個目標到期期間處於 cold 或 busy 狀態，一條 Every 記錄只會貢獻其中最新的一次到期觸發。dispatch 會直接將記錄推進到 dispatch 判斷時刻之後第一個與建立錨點對齊的目標，而不會枚舉、持久化或重播錯過的間隔。如果下一個目標無法落在四位數年份的 UTC 範圍內，最後一次 dispatch 將終結該記錄。
 

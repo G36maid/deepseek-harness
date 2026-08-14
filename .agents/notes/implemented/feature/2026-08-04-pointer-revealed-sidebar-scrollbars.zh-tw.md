@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-pointer-revealed-sidebar-scrollbars.md) | [简体中文](2026-08-04-pointer-revealed-sidebar-scrollbars.zh.md) | 繁體中文
+[English](2026-08-04-pointer-revealed-sidebar-scrollbars.md) | 繁體中文
 
 ## 問題
 
@@ -18,7 +18,7 @@ Status: implemented
 
 承載指針的是整列，而不是清單。奔向捲軸的指針會先經過 logo 行、New Session 膠囊和搜尋框，所以只在清單上顯示，會讓捲軸等到指針已經落在行中間時纔出現。
 
-`transparent` 正是讓這次顯示不觸發任何版面配置的原因。清單上的 `scrollbar-gutter: stable` 存在的意義就是讓行永不移動（見[空槽 Agent Note](../bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.md)）；重新綁定的只是顏色，那份預留始終有效，所以滑桿出現在清單本就為它留出的空間裡。
+`transparent` 正是讓這次顯示不觸發任何版面設定的原因。清單上的 `scrollbar-gutter: stable` 存在的意義就是讓行永不移動（見[空槽 Agent Note](../bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.md)）；重新綁定的只是顏色，那份預留始終有效，所以滑桿出現在清單本就為它留出的空間裡。
 
 選擇這組間接變數而不是給清單加規則，是因為這組變數正是 ui-theme 寫明的重新綁定約定：一次聲明同時作用於兩條渲染路徑（WebKit 偽元素與 Firefox 的 `scrollbar-color`），而自訂屬性會繼承——這正是讓整列、而不是列內每個滾動區域，成為該狀態所有者的原因。
 
@@ -30,7 +30,7 @@ Status: implemented
 
 **只用列上的 CSS `:hover`，不引入 JavaScript 狀態。** 整套機制只需一條規則，但它表達不出拖尾：指針越過邊界的那一幀滑桿就會消失，而那恰好是指針正奔向對話區或繞行 portal 選單的時刻。訴求本身點名了拖尾，只有 hover 的版本讀起來就是閃爍。
 
-**留在 CSS 裡、用過渡拿到這段延遲**，即透過 `@property` 註冊 `--dsh-scrollbar-thumb` 讓該自訂屬性可動畫，再用 `transition-delay` 把顏色按住。因代價與作用範圍被否決：這項註冊對每個讀取這組變數的表面都是全域性的，卻只為一列的時序服務；而且這套調色板實際渲染所走的 WebKit 捲軸偽元素並不可靠地支持過渡——延遲會被聲明在觀察不到它的地方。
+**留在 CSS 裡、用過渡拿到這段延遲**，即透過 `@property` 註冊 `--dsh-scrollbar-thumb` 讓該自訂屬性可動畫，再用 `transition-delay` 把顏色按住。因代價與作用範圍被否決：這項註冊對每個讀取這組變數的表面都是全域性的，卻只為一列的時序服務；而且這套調色板實際渲染所走的 WebKit 捲軸偽元素並不可靠地支援過渡——延遲會被聲明在觀察不到它的地方。
 
 **直接把捲軸藏掉**——`scrollbar-width: none`，或對 `::-webkit-scrollbar` 用 `display: none`。被否決，因為這會連帶取消那段預留：捲軸重新出現時會重新佔走 8px，使每一行都在觸發其顯示的指針下方橫向移動，而這正是當初加入空槽預留所修掉的回歸。
 
@@ -46,7 +46,7 @@ Status: implemented
 - 拖動滑桿本身移出列不會在拖動中途把它隱藏：捲軸會接管指針捕獲，按住按鍵期間頁面收不到 `pointermove`。已在 Chromium 實測——指針拖到列右側 900px 處、超過拖尾視窗後，捲軸依然繪製並繼續滾動。
 - 冷啟動時該列處於靜默狀態，直到指針第一次移到它上面為止。頁面載入時就停在那裡的指針在移動之前不會觸發任何事件，這是瀏覽器的規則，而非這個外殼的。
 - 巢狀在列內、為自身抬升層級把這組變數重新綁定到 l2 的抬升表面，會覆蓋靜默狀態並繼續繪製自己的捲軸。今天側邊欄內沒有這樣的表面。
-- 外殼的 DOM 現在帶有一個狀態類，因此 ui-sidebar 的外殼快照會釘住 `quietBars`，默認狀態出現回歸時表現為快照 diff，而不是需要有人從截圖裡看出來的東西。
+- 外殼的 DOM 現在帶有一個狀態類，因此 ui-sidebar 的外殼快照會釘住 `quietBars`，預設狀態出現回歸時表現為快照 diff，而不是需要有人從截圖裡看出來的東西。
 
 ## 測試
 
@@ -60,4 +60,4 @@ Status: implemented
 
 拓寬後的閘門也有自己的對照，每個都是對真實樣式表的一處聲明改動：把 `transparent` 與 l2 的 hover 混用，以及把 l2 token 包進 `color-mix(…)`，都會讓這條成對斷言變紅。
 
-演示這一行為的錄制必須用有頭瀏覽器。無頭 Chromium 會預留那條帶（`offsetWidth - clientWidth` 為 8），卻不會把滑桿畫進捕獲幀——透過統計帶內滑桿色畫素在顯示前後的變化實測：無頭一直停在噪聲水準，有頭則從 46 跳到 1466。
+示範這一行為的錄制必須用有頭瀏覽器。無頭 Chromium 會預留那條帶（`offsetWidth - clientWidth` 為 8），卻不會把滑桿畫進捕獲幀——透過統計帶內滑桿色畫素在顯示前後的變化實測：無頭一直停在噪音水準，有頭則從 46 跳到 1466。

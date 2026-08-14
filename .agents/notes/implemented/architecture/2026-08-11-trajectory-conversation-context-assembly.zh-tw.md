@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-trajectory-conversation-context-assembly.md) | [简体中文](2026-08-11-trajectory-conversation-context-assembly.zh.md) | 繁體中文
+[English](2026-08-11-trajectory-conversation-context-assembly.md) | 繁體中文
 
 ## 問題
 
@@ -32,7 +32,7 @@ Trajectory 針對共享的 [`ConversationNodeAssembler`](2026-08-09-client-conve
 | Request header | header Event seq | 讀取前一個 header，保留生效提示詞及真實變化 | Prompt 與 Tool-schema 來源 |
 | Session 與 Turn 邊界 | boundary Event seq | 保留關閉時間和錯誤事實 | 被中斷的 Compaction 或失敗的普通 Request |
 
-每個關聯 Event 都必須直接提供相同的業務 ID。Code Dispatch 使用 `rootCallId`，Compaction 使用 compaction ID；即使某個 Definition 按 `turn:step` 關聯，普通 Tool 與 retry Event 仍保留各自的協議標識。缺少必要關聯 ID 的舊記錄由該 Definition 忽略，不會合入 `undefined` Context，也不會導致 Session 崩潰。
+每個關聯 Event 都必須直接提供相同的業務 ID。Code Dispatch 使用 `rootCallId`，Compaction 使用 compaction ID；即使某個 Definition 按 `turn:step` 關聯，普通 Tool 與 retry Event 仍保留各自的協定標識。缺少必要關聯 ID 的舊記錄由該 Definition 忽略，不會合入 `undefined` Context，也不會導致 Session 崩潰。
 
 Assistant chunk 只更新對應的 `turn:step` Context。帶內容的 chunk 請求 animation-frame 發布；usage 與 finish chunk 更新 State，但不單獨強制刷新一幀。最終訊息、retry 或邊界立即發布。已完成 Assistant State 只保留組裝後的 block、計時、usage 與 retry 事實，不會把原始 chunk ledger 複製進 target snapshot。
 
@@ -40,7 +40,7 @@ Assistant chunk 只更新對應的 `turn:step` Context。帶內容的 chunk 請�
 
 Trajectory 從持久 inbox 歷史復原 steering，使用與 [Chat steering 決策](../feature/2026-08-04-web-context-source-and-steer-marks.md)相同的標識規則，但不共享 Chat 的最終 Node。
 
-每條目標為 `next-step` 的 `agent/inbox/spliced` Event 都會啟動一個以 Event seq 標識的不可見 Context。它的 `start()` 讀取最近的前序 inbox Context，應用 splice，並存儲待處理標識以及累計的已領取 message ID 集合。後續使用者來源的 `user/message` 讀取最近的前序 inbox Context：已領取的 ID 生成 Steering Node，其餘使用者來源訊息生成普通 User Node。
+每條目標為 `next-step` 的 `agent/inbox/spliced` Event 都會啟動一個以 Event seq 標識的不可見 Context。它的 `start()` 讀取最近的前序 inbox Context，應用 splice，並儲存待處理標識以及累計的已領取 message ID 集合。後續使用者來源的 `user/message` 讀取最近的前序 inbox Context：已領取的 ID 生成 Steering Node，其餘使用者來源訊息生成普通 User Node。
 
 仍有更早歷史時，Reader miss 會記錄 window-gap 相依性。prepend 補齊缺失的前驅後，Assembler 按 Event 正序重放受影響的 inbox chain 與 message Context。因此，歷史分頁方向不會永久錯誤分類訊息。
 
@@ -100,6 +100,6 @@ Trajectory 業務組裝的成本隨變化頁面或 keyed Context 成長，不再
 
 保留的 stage-oriented Builder 仍會執行與已物化 Trajectory contribution 數量成正比的工作，並可能在發布時排序。輸入 layout 變化時，搜尋索引仍會執行一次輕量線性簽名檢查。這些成本是顯式的 target view 工作，不是隱藏的完整 Event refold。
 
-Definition 作者必須提供穩定的協議標識。缺少必要 ID 的舊 Event 可能不會出現在受影響的 Trajectory 業務檢視表中；與合併無關記錄或讓歷史載入失敗相比，這是更安全的退化方式。要求完整展示的生產方必須記錄該標識。
+Definition 作者必須提供穩定的協定標識。缺少必要 ID 的舊 Event 可能不會出現在受影響的 Trajectory 業務檢視表中；與合併無關記錄或讓歷史載入失敗相比，這是更安全的退化方式。要求完整展示的生產方必須記錄該標識。
 
 [Conversation assembly 決策](2026-08-09-client-conversation-node-assembly.md)繼續作為通用 Context、Reader、Location 與發布約定的真源。[Trajectory ledger 決策](../feature/2026-07-27-trajectory-inspection-ledger.md)繼續負責表格層級、虛擬化、檢查器和互動行為。本 Note 負責說明 Trajectory 如何適配這兩項決策，以及為何該適配不與 Chat 共享最終 Node。

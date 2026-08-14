@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-16-explicit-turn-cancellation.md) | [简体中文](2026-07-16-explicit-turn-cancellation.zh.md) | 繁體中文
+[English](2026-07-16-explicit-turn-cancellation.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 ## 決策
 
-Agent 擁有僅用於執行時期的 `AgentCancelCause` 聯合類型 `{ kind: 'user' } | { kind: 'parent' }`；`agent.cancel()` 默認使用 `user`。TypeScript 在這個類型化的同進程邊界中強制執行該詞彙，不提供執行時期校驗器、後備行為，也不為無類型呼叫方提供特殊相容性約定。活躍的 `TurnCancellation` 會把類型化判別欄位複製為一個全新且已凍結的 signal 原因；空閒狀態下沒有可修改的持有者，也不會讓後續工作預先進入取消狀態。
+Agent 擁有僅用於執行時期的 `AgentCancelCause` 聯合類型 `{ kind: 'user' } | { kind: 'parent' }`；`agent.cancel()` 預設使用 `user`。TypeScript 在這個類型化的同行程邊界中強制執行該詞彙，不提供執行時期校驗器、後備行為，也不為無類型呼叫方提供特殊相容性約定。活躍的 `TurnCancellation` 會把類型化判別欄位複製為一個全新且已凍結的 signal 原因；空閒狀態下沒有可修改的持有者，也不會讓後續工作預先進入取消狀態。
 
 正在執行的輪次被中斷後，以粗粒度的持久化結果 `{ kind: 'aborted' }` 結束。終態事件記錄輪次發生了什麼，執行時期 signal 標識誰請求了取消；重播不會重複保存 `user` 或 `parent`。工作階段 seed/load 會拒絕攜帶取消原因或任何其他額外欄位的舊式中止記錄，因此重播無法重新引入由呼叫方持有的取消細節。僅限行程內的 `agent/cancel-requested` 通知不會持久化；未來若有審計需求，應使用獨立的持久化控制請求事件，讓請求與最終結果保持為兩項事實。持久化事件不包含呼叫棧、signal、錯誤對象、自由文字取消原因或後端私有細節。
 
@@ -24,13 +24,13 @@ AgentLoop 為每個待啟動輪次私有地持有一個 `TurnCancellation`。它
 
 `ctx.agents` 仍只攜帶發起 Agent。環境中的 Agent 並不代表存活、當前輪次或取消權限。cause 讀取器是 loop 私有的，它直接陳述機器私有的 slot 不變數（只有 `cancel()` 會中止輪次控制器，且總是攜帶規範的凍結 cause），而不是對 reason 做結構化再校驗；不存在從任意 signal 讀取 cause 的公開輔助函式。並行 Agent 會同時隔離各自的發起方身份和輪次 signal；子驅動會遮蔽父發起方，而父請求 signal 仍透過 subagent seam 傳遞。
 
-Agent dispose（資源釋放）會在活躍持有者上請求僅用於執行時期的 `{ kind: 'disposed' }` 中斷。若取消已經先佔用控制器的中斷原因，該原因便無法改寫，因此終態分類會先檢查生命週期狀態：資源釋放結果優先，之後受支持的 `user` 或 `parent` 取消原因形成粗粒度的中止結果，其他例外保留現有錯誤路徑。ACP（Agent Client Protocol）取消對映為 `user`；行程內 spawn 和 fork 的傳播對映為 `parent`。遠端 ACP subagent 保持現有協議。
+Agent dispose（資源釋放）會在活躍持有者上請求僅用於執行時期的 `{ kind: 'disposed' }` 中斷。若取消已經先佔用控制器的中斷原因，該原因便無法改寫，因此終態分類會先檢查生命週期狀態：資源釋放結果優先，之後受支援的 `user` 或 `parent` 取消原因形成粗粒度的中止結果，其他例外保留現有錯誤路徑。ACP（Agent Client Protocol）取消對映為 `user`；行程內 spawn 和 fork 的傳播對映為 `parent`。遠端 ACP subagent 保持現有協定。
 
 取消仍然是協作式的。AgentLoop 會在非同步等待邊界前後檢查中斷，但不會用 `Promise.race` 放棄行程內監聽器、配接器或工具 Promise。忽略 signal 的工作必須真正結帳，`whenIdle()`、控制代碼 dispose 和作用域清理才會報告完全靜止。
 
 ## 驗證
 
-約定測試驗證類型化呼叫方聯合類型、凍結且與呼叫方分離、默認行為與首次請求優先行為、粗粒度的工作階段 JSON 往返與舊式記錄拒絕、ACP `user`、行程內 subagent `parent` 以及 dispose 優先級。AgentLoop 測試讓協作式監聽器在 pre-step、系統提示詞組裝、請求、模型流、請求錯誤復原、工具執行和輪次停止處等待 signal；並斷言同一輪次使用一個 signal，不同輪次使用全新的 signal，終態發布期間和持久化刷新受阻期間不存在取消權限。真實掛鉤橋接器測試會在報告空閒狀態前取消並回收受阻的提示詞掛鉤。
+約定測試驗證類型化呼叫方聯合類型、凍結且與呼叫方分離、預設行為與首次請求優先行為、粗粒度的工作階段 JSON 往返與舊式記錄拒絕、ACP `user`、行程內 subagent `parent` 以及 dispose 優先級。AgentLoop 測試讓協作式監聽器在 pre-step、系統提示詞組裝、請求、模型流、請求錯誤復原、工具執行和輪次停止處等待 signal；並斷言同一輪次使用一個 signal，不同輪次使用全新的 signal，終態發布期間和持久化刷新受阻期間不存在取消權限。真實掛鉤橋接器測試會在報告空閒狀態前取消並回收受阻的提示詞掛鉤。
 
 發起方作用域測試斷言所有掛鉤仍觀察到同一個 Agent 且沒有環境中的輪次 signal，並行 Agent 保持獨立的身份與 signal，巢狀子驅動只遮蔽身份。競態測試覆蓋空閒狀態取消、執行前取消、從 `running` 監聽器提交替代提示詞、重複取消以及取消與 dispose 競爭下的完全靜止。
 
@@ -46,7 +46,7 @@ Agent dispose（資源釋放）會在活躍持有者上請求僅用於執行時�
 
 **公開輪次或步驟上下文包裝類型。** 現有 seam 已經標識 Agent、輪次和步驟。包裝類型會加寬所有 API、重複歸屬，並誘導呼叫方把捕獲的對象當成持久權限。
 
-**在寬限期後放棄不協作的工作。** 同進程工作仍在執行時期就報告空閒狀態，會破壞資源清理與資源歸屬保證。硬終止需要 worker 或行程隔離邊界，不屬於該控制邊界。
+**在寬限期後放棄不協作的工作。** 同行程工作仍在執行時期就報告空閒狀態，會破壞資源清理與資源歸屬保證。硬終止需要 worker 或行程隔離邊界，不屬於該控制邊界。
 
 ## 後果
 

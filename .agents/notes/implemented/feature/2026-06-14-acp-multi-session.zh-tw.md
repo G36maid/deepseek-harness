@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-06-14-acp-multi-session.md) | [简体中文](2026-06-14-acp-multi-session.zh.md) | 繁體中文
+[English](2026-06-14-acp-multi-session.md) | 繁體中文
 
-> 本 Agent Note 寫於 ACP 還是編輯器橋接層的時期，動機來自 Zed 的多工作階段用戶端模型。[ACP 作為僅面向自動化的協議](../simplification/2026-07-23-acp-automation-only-protocol.md)移除了編輯器介面；多路複用決策本身不變，本 Agent Note 現依照自動化約定陳述它。
+> 本 Agent Note 寫於 ACP 還是編輯器橋接層的時期，動機來自 Zed 的多工作階段用戶端模型。[ACP 作為僅面向自動化的協定](../simplification/2026-07-23-acp-automation-only-protocol.md)移除了編輯器介面；多路複用決策本身不變，本 Agent Note 現依照自動化約定陳述它。
 
 ## 問題
 
-一個 ACP（Agent Client Protocol）自動化用戶端可以在同一個 agent（代理）子行程上保持多個對話。如果橋接層只支持單活躍工作階段，就不得不啟動額外行程，也會阻止一個父控制器透過一條連線驅動多個獨立子任務。多路複用引入了隔離風險：已提交的回答、提示詞完成、取消、權限請求以及可預測的後臺 job id 絕不能跨越工作階段邊界。
+一個 ACP（Agent Client Protocol）自動化用戶端可以在同一個 agent（代理）子行程上保持多個對話。如果橋接層只支援單活躍工作階段，就不得不啟動額外行程，也會阻止一個父控制器透過一條連線驅動多個獨立子任務。多路複用引入了隔離風險：已提交的回答、提示詞完成、取消、權限請求以及可預測的後臺 job id 絕不能跨越工作階段邊界。
 
 ## 決策
 
@@ -22,13 +22,13 @@ ACP 橋接層將活躍工作階段儲存在 `Map<SessionId, SessionRecord>` 中�
 
 連線拆除時清空活躍 map，將每個待處理的提示詞以取消狀態結帳，並平行 dispose（資源釋放）所有 `AgentHandle`。每個控制代碼停止並等待其迴圈完成、在仍然附著時刷新工作階段、註銷 agent 並移除工作階段。拆除操作被 memoize 化，由用戶端斷連和外掛程式 dispose 共享。
 
-## 協議與工作區作用域
+## 協定與工作區作用域
 
 [ACP v1 明確允許一個連線上存在多個並行工作階段](https://github.com/agentclientprotocol/agent-client-protocol/blob/01beb5fb5eec60e9f516a80d85eb03594bac61e3/docs/get-started/architecture.mdx#L16-L24)，每個新工作階段都攜帶自己的主 `cwd`。本橋實作該工作階段級多路複用，其中包括[按工作階段 cwd 決策](../architecture/2026-07-02-fs-per-session-cwd.md)所記錄的不同主工作區；它不會為每個工作階段建立一個 agent 子行程。
 
 一個工作階段內部的多根項目是另一項選填能力：ACP 把[有效根目錄定義為主 `cwd` 加 `additionalDirectories`](https://github.com/agentclientprotocol/agent-client-protocol/blob/01beb5fb5eec60e9f516a80d85eb03594bac61e3/docs/protocol/v1/session-setup.mdx#L313-L367)。自動化橋接層不公佈任何多根能力，並拒絕非空的 `additionalDirectories`；如[包約定](../../../../packages/acp/acp/README.md#protocol-contract)所記錄，每個全新工作階段恰好有一個工作區。
 
-[標準傳輸是每個 stdio 連線一個 agent 子行程](https://github.com/agentclientprotocol/agent-client-protocol/blob/01beb5fb5eec60e9f516a80d85eb03594bac61e3/docs/protocol/v1/transports.mdx#L17-L42)；多個連線因此需要多個子行程或自訂傳輸，而本決策保證的是一個連線內部存在多個工作階段。在該連線內，`ctx.sandboxPolicy` 把每個工作階段的 `cwd` 解析為其自己的 `workspace-write` 根目錄，因此共享的 bash 和檔案系統服務可以服務並行項目而不授予跨項目寫入。這不會新增 ACP `additionalDirectories`；它只是從已經支持的「每工作階段一個主根目錄」路徑中移除了行程級根目錄限制。
+[標準傳輸是每個 stdio 連線一個 agent 子行程](https://github.com/agentclientprotocol/agent-client-protocol/blob/01beb5fb5eec60e9f516a80d85eb03594bac61e3/docs/protocol/v1/transports.mdx#L17-L42)；多個連線因此需要多個子行程或自訂傳輸，而本決策保證的是一個連線內部存在多個工作階段。在該連線內，`ctx.sandboxPolicy` 把每個工作階段的 `cwd` 解析為其自己的 `workspace-write` 根目錄，因此共享的 bash 和檔案系統服務可以服務並行項目而不授予跨項目寫入。這不會新增 ACP `additionalDirectories`；它只是從已經支援的「每工作階段一個主根目錄」路徑中移除了行程級根目錄限制。
 
 ## 曾考慮的替代方案
 
@@ -42,7 +42,7 @@ ACP 橋接層將活躍工作階段儲存在 `Map<SessionId, SessionRecord>` 中�
 
 N 個工作階段可以並行地返回已提交的回答、提交提示詞、請求權限和執行背景工作，而不會交錯或跨工作階段結帳。一個工作階段中的取消不影響相鄰工作階段。橋接層為此付出了顯式 map 和隔離測試的代價，但它不會為每個工作階段新增一組監聽器，從而避免了長連線期間的監聽器扇出。
 
-橋接層不暴露獨立關閉單個活躍工作階段的協議方法。所有記錄會在連線拆除時一並移除；工作階段導覽與復原屬於 host API，而非這個自動化協議。
+橋接層不暴露獨立關閉單個活躍工作階段的協定方法。所有記錄會在連線拆除時一並移除；工作階段導覽與復原屬於 host API，而非這個自動化協定。
 
 ## 驗證
 

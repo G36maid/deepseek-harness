@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-dependabot-version-updates.md) | [简体中文](2026-07-27-dependabot-version-updates.zh.md) | 繁體中文
+[English](2026-07-27-dependabot-version-updates.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-默認分支包含 [`.github/dependabot.yml`](../../../../.github/dependabot.yml)，其中為包含 `native/landlock-run` 的根 pnpm 工作區、`python/sdk` uv 項目和 GitHub Actions 設定了每週一次的版本更新檢查。每個更新項都將 `cooldown.default-days` 設為 `30`，因此某個版本只有在發布至少 30 天后才符合更新條件，並會在下一次每週檢查時生成更新提案。[倉庫內 Landlock 發布決策](2026-08-06-in-repository-landlock-release.md)負責共享工作區邊界。
+預設分支包含 [`.github/dependabot.yml`](../../../../.github/dependabot.yml)，其中為包含 `native/landlock-run` 的根 pnpm 工作區、`python/sdk` uv 項目和 GitHub Actions 設定了每週一次的版本更新檢查。每個更新項都將 `cooldown.default-days` 設為 `30`，因此某個版本只有在發布至少 30 天后才符合更新條件，並會在下一次每週檢查時生成更新提案。[倉庫內 Landlock 發布決策](2026-08-06-in-repository-landlock-release.md)負責共享工作區邊界。
 
 根 pnpm 工作區的版本更新掃描排除 `vendor/**`，其中的原始碼和 manifest（中繼資料清單）只能透過 [vendoring 流程](../../../../vendor/README.md)變更。GitHub 僅將 `exclude-paths` 用於版本更新；如果安全更新 PR（Pull Request）涉及隨原始碼納入倉庫的 manifest，則改由 vendoring 流程處理，以替代自動生成的 PR，而不會將其原樣合併。Dependabot PR 會獲得倉庫的 `kind/dependency` 類型標籤和 `area/infra` 區域標籤，執行常規 PR 檢查，並且仍須由維護者評審；該自動化不會合並這些 PR。
 

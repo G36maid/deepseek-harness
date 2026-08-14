@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-10-agent-session-identity-and-log-location.md) | [简体中文](2026-07-10-agent-session-identity-and-log-location.zh.md) | 繁體中文
+[English](2026-07-10-agent-session-identity-and-log-location.md) | 繁體中文
 
 ## 問題
 
-agent（代理）可以透過 `session.header.cwd` 識別其工作區，但使用 bash 的模型無法可靠識別當前呼叫所屬的工作階段，也無法找到記錄該呼叫的持久 transcript（文字記錄）。搜尋 `./.sessions` 等同於猜測部署設定和 JSONL 版面配置；自訂根目錄、替代持久化後端、復原、fork，以及並行執行的父子 agent，都會讓這種猜測失效。掛鉤同樣需要 transcript 位置，而未來的外掛程式也可能需要向 shell 命令公開其他由 harness 所有的環境事實。
+agent（代理）可以透過 `session.header.cwd` 識別其工作區，但使用 bash 的模型無法可靠識別當前呼叫所屬的工作階段，也無法找到記錄該呼叫的持久 transcript（文字記錄）。搜尋 `./.sessions` 等同於猜測部署設定和 JSONL 版面設定；自訂根目錄、替代持久化後端、復原、fork，以及並行執行的父子 agent，都會讓這種猜測失效。掛鉤同樣需要 transcript 位置，而未來的外掛程式也可能需要向 shell 命令公開其他由 harness 所有的環境事實。
 
 這項邊界必須維持兩個屬性：事實的所有者決定如何解析該事實；每個子行程接收每次執行的快照，而不是行程級可變全域性狀態。尤其是巢狀 harness 不能把環境中的 `DSH_*` 值洩漏給當前 agent、持久化後端或設定均可能不同的子行程。
 
@@ -66,7 +66,7 @@ bash 工具說明只講解持久約定：當前 harness 環境事實透過受管
 
 ## 考慮過的替代方案
 
-**只提供 id，再用 `find`。** 搜尋無法得知自訂根目錄或後端版面配置，並且在多工作階段環境下存在競態。
+**只提供 id，再用 `find`。** 搜尋無法得知自訂根目錄或後端版面設定，並且在多工作階段環境下存在競態。
 
 **只提供絕對路徑。** 路徑可能不可用、延遲建立或取決於表示形式，不能作為穩定的工作階段標識。
 

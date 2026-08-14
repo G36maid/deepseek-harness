@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-web-input-machine-and-slash-pipeline.md) | [简体中文](2026-07-25-web-input-machine-and-slash-pipeline.zh.md) | 繁體中文
+[English](2026-07-25-web-input-machine-and-slash-pipeline.md) | 繁體中文
 
 > 範圍：輸入狀態機（occurrence 表 + claim 看護 + 提交交易）、hub/facade 與傳送編排、跨外掛程式輸入改寫的三個 scoped bail 事件、`/` 與 `@` 觸發偵測與選單管線（ui-input-trigger）、composer 周邊 slot 體系。相依性[工作階段作用域 note](2026-07-25-web-client-session-scope-and-provide-channel.md)的 sctx / provide / session-maybe 與 blank 實體模型；命令知識（三型、目錄、popup）零涉——那是[命令業務面 note](2026-07-25-web-command-surfaces-and-assembly.md)的領地。
 
@@ -62,7 +62,7 @@ occurrence 表與 chip 三投影：
 
 對「命令」零知識的觸發/選單/pick 管線：
 
-- 服務只有 source 登錄檔（`InputTriggerSource{trigger: '/'|'@', name, order?, candidates, onPick, matchSpace?, matchEnter?}`；(trigger,name) 唯一；選填 `order` 對 roster 排序——越小越靠前、默認 0、同值保持註冊序——排序後的 roster 同時是組序與輪詢序）與 `sessionOf(sctx)`。實作 match 掛鉤即參與空格/回車裁決的聲明；管線按 roster 序輪詢，首個非 undefined 應答勝出，無人認領落 default sink。matchSpace 同步（空格在擊鍵中觸發，只許熱快取）；matchEnter 非同步（可 await 源自身預熱，預熱失敗即 reject）。
+- 服務只有 source 登錄檔（`InputTriggerSource{trigger: '/'|'@', name, order?, candidates, onPick, matchSpace?, matchEnter?}`；(trigger,name) 唯一；選填 `order` 對 roster 排序——越小越靠前、預設 0、同值保持註冊序——排序後的 roster 同時是組序與輪詢序）與 `sessionOf(sctx)`。實作 match 掛鉤即參與空格/回車裁決的聲明；管線按 roster 序輪詢，首個非 undefined 應答勝出，無人認領落 default sink。matchSpace 同步（空格在擊鍵中觸發，只許熱快取）；matchEnter 非同步（可 await 源自身預熱，預熱失敗即 reject）。
 - controller 持有唯一權威 hit（含 span；選單關閉後為 Space 保留）、每工作階段 menu store、候選 fetch generation、鍵盤仲裁（combobox 模式：焦點始終在 textarea，↑↓/Enter/Escape 攔截且全程過 IME composition 守衛，唯一例外 Shift+Enter 無條件先行），以及 pick 編排（outcome → 自派 bail 事件）。`toggleSource(name, syntheticHit)` 是 chrome launcher 路徑：它基於呼叫方的 textarea selection，只 seed 對應的已註冊 source，並行布 `launcher = name` 直至關閉；普通的鍵入式 tracking 會清除 launcher 並復原完整的 trigger roster。兩條路徑渲染同一個 MenuView，並執行同一條 `onPick` 鏈。`dismiss()` 動詞支撐 MenuView 注入的 `onDismiss`（指針落在選單與所在 composer 卡片之外即關閉選單；MenuView 還經 `slash.menu` locale 命名空間本機化組標題，並經 ui-primitives 的 `useAnchoredMaxHeight` 把高度收斂到 composer 上方的視口空間）；每個工作階段作用域出生時對 source roster 做一次 `warm(projection)`，projection 在該 scope 內只有穩定的 sessionId，無 published/能力躍遷；scope disposer 拆除 controller。
 - 觸發偵測詞邊界（`user@host`、URL `/` 永不觸發）、守衛分檔（plain：`/` 到處 + `@` 行內 / claimed：`/` 抑制、`@` 活 / frozen：全無）為凍結純核。
 
@@ -70,7 +70,7 @@ occurrence 表與 chip 三投影：
 
 - hub（trigger/decoration 登錄檔 + 傳送編排）對 slash/command 服務是選填 `ctx.get()` 相依性：無 ui-input-trigger/命令面時輸入正常收發，優雅降級。
 - 每個實體工作階段只有一個 `SessionInputShell`（facade），隨工作階段作用域建立和拆除；無工作階段時不造 input machine。`ConversationRoot` 自身是 `session-maybe` 常駐外殼，持有 HeroShell、Workspace picker、composer stack 與 chain fallback 外框。它始終擁有同一個 scrollport 與 composer seat；工作階段出現後，彼此獨立的嚴格工作階段 header 和 body outlet 只填入這些固定區域。
-- composer bar 是一個無條件渲染的 `session-maybe` slot entry：無工作階段時同一個 InputBar 以惰性態渲染（machine face 缺席、`disabled` owner prop），`connectWorkspace` 返回 blank 工作階段後同一實例轉為 live——textarea DOM 在無工作階段 → blank 切換及其後每次 phase 翻轉中都不重建；`ConversationRoot`、Hero 與版面配置骨架全程保持。
+- composer bar 是一個無條件渲染的 `session-maybe` slot entry：無工作階段時同一個 InputBar 以惰性態渲染（machine face 缺席、`disabled` owner prop），`connectWorkspace` 返回 blank 工作階段後同一實例轉為 live——textarea DOM 在無工作階段 → blank 切換及其後每次 phase 翻轉中都不重建；`ConversationRoot`、Hero 與版面設定骨架全程保持。
 - ConversationRoot 的 Hero 判據是 `sessionId === undefined || (composerPhase === 'blank' && (openState === 'open' || summaryBlank === true))`：summary 已證實為空的工作階段在任何 open state 下都保持 Hero，未經證實的工作階段則在 loading 期間進入 settling。首次 submit 同步進入 engaging，失敗也保留 composer 與錯誤上下文，不退回 blank Hero；sidebar 的 blank 位只在提示詞成功受理後翻 false。
 - 傳送統一在 hub defaultSink：樂觀清稿後只走 `session.prompt` 且固定 `mode:'queue'`（Web UI 無 steer 入口；host 線纜上的 `mode:'steer'` 不經此 machine）；失敗且 live draft 仍為空纔回填，使用者已經繼續輸入則不覆蓋。不存在 Draft materialize 或 attach 交易。
 - blank Hero 改選 Workspace 時，外殼呼叫 `connectWorkspace`；目標工作階段不同時把非空 draft 從當前 shell 搬到目標 shell，再 open 新 id，舊 blank 工作階段留存但不再 current。
@@ -130,6 +130,6 @@ skill/@subagent 引用不走佔位符 + occurrence 身份鏈——純文字引�
 ## 後果
 
 - 一個常駐 conversation 外殼承接無工作階段/blank/active：無工作階段 → blank 保持 ConversationRoot、Hero、root scope Workspace picker、scrollport、composer seat、InputBar 與 textarea；只有嚴格工作階段 header 和 body outlet 開始承載內容。同一 blank 工作階段 → engaging/active 也保持 InputBar 與 textarea。EmptyState 與受控 intent 鏈（`sessions.updateIntent`/`updatePendingPrompt`/`workspaces.sendSession`）隨最後消費端一並刪除。
-- 輸入面對命令零知識 + 選填相依性：無命令包時純輸入可用；`@` 引用與 skill 引用免費複用同一選單/pick 管線。代價是空格/回車裁決是逐 source 輪詢協議，其應答語義（同步/非同步、undefined 含義）為凍結約定。
+- 輸入面對命令零知識 + 選填相依性：無命令包時純輸入可用；`@` 引用與 skill 引用免費複用同一選單/pick 管線。代價是空格/回車裁決是逐 source 輪詢協定，其應答語義（同步/非同步、undefined 含義）為凍結約定。
 - 提交交易化（attempt seq + 漂移守衛）使晚到結果回灌、工作階段切換、concurrent 重放三類缺陷結構性不可能，由矩陣測試釘住。
 - 已知欠帳：chip 跨刷新保真（可複用貼上匹配）未立項；subagent 引用的模型表示待業務立項。

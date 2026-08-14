@@ -1,6 +1,6 @@
 # 實作手冊：新增一個 vendored 包
 
-[English](adding-a-vendored-package.md) | [简体中文](adding-a-vendored-package.zh.md) | 繁體中文
+[English](adding-a-vendored-package.md) | 繁體中文
 
 當 harness 需要引入另一個上游 Cordis 包（如 `@cordisjs/plugin-http`）時，應將其作為固定版本的原始碼 **vendor** 到 `vendor/` 下，而非作為 NPM 相依性新增——原因見[vendoring 決策](../../.agents/notes/implemented/process/2026-06-11-vendor-cordis-as-source.md)。[vendor/README.md](../../vendor/README.md) 介紹如何*更新*已有的 vendored 包；本指南是新增**新** vendored 包的逐文件清單。（已對照現有 vendored 集合驗證；如有偏差，請在此修正。）
 
@@ -56,4 +56,4 @@ pnpm run typecheck
 pnpm run build && pnpm run constraints
 ```
 
-請執行[測試政策](../testing.md)所選擇的行為檢查。原始碼 `paths` 對映只在 `tsconfig.base.json` 存在一份，服務所有圖。重要的隔離邊界是 project-reference 圖：vendored 原始碼必須透過其自身的 `vendor/<dir>/tsconfig.json` 被引用，而非被拉入某個聚合項目啟用嚴格檢查的 TypeScript 程序中（[版面配置](../development.md#typescript-project-layout)）。
+請執行[測試政策](../testing.md)所選擇的行為檢查。原始碼 `paths` 對映只在 `tsconfig.base.json` 存在一份，服務所有圖。重要的隔離邊界是 project-reference 圖：vendored 原始碼必須透過其自身的 `vendor/<dir>/tsconfig.json` 被引用，而非被拉入某個聚合項目啟用嚴格檢查的 TypeScript 程序中（[版面設定](../development.md#typescript-project-layout)）。

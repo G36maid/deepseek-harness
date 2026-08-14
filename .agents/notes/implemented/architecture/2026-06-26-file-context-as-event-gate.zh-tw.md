@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-26-file-context-as-event-gate.md) | [简体中文](2026-06-26-file-context-as-event-gate.zh.md) | 繁體中文
+[English](2026-06-26-file-context-as-event-gate.md) | 繁體中文
 
 ## 問題
 
@@ -64,7 +64,7 @@ editText(target: FsTarget, edit: FsEditRequest, expected?: { version: FsVersion 
 //   { version }  → edit only at that version, else FS_STALE_VERSION (the current behavior)
 ```
 
-`FsWriteIntent` 聯合類型本身不變——第三種「無條件」狀態透過*省略* `expected` 來表達，因此兩個 mutation 共享同一種對稱形狀（`expected?`：省略 = 無守衛，傳入 = 有守衛）。這對 `dsh-fs-observation-policy` 使用的有守衛路徑保持完全向後相容；只有之前不可能出現的「無守衛」情況是新增的，且它是裸提供方的默認行為。無論哪種情況，mutation 仍在後端的 per-target 鎖內執行，因此無條件寫入/編輯仍是原子的（不會產生撕裂文件）；「無條件」去掉的是*版本*前置條件，而非原子性。`editText` 在有守衛和無守衛路徑上都將缺失目標報告為 `FS_STALE_VERSION`，保持一個統一的編輯失敗碼表示「此刻無法編輯該目標」。
+`FsWriteIntent` 聯合類型本身不變——第三種「無條件」狀態透過*省略* `expected` 來表達，因此兩個 mutation 共享同一種對稱形狀（`expected?`：省略 = 無守衛，傳入 = 有守衛）。這對 `dsh-fs-observation-policy` 使用的有守衛路徑保持完全向後相容；只有之前不可能出現的「無守衛」情況是新增的，且它是裸提供方的預設行為。無論哪種情況，mutation 仍在後端的 per-target 鎖內執行，因此無條件寫入/編輯仍是原子的（不會產生撕裂文件）；「無條件」去掉的是*版本*前置條件，而非原子性。`editText` 在有守衛和無守衛路徑上都將缺失目標報告為 `FS_STALE_VERSION`，保持一個統一的編輯失敗碼表示「此刻無法編輯該目標」。
 
 ## 事件詞彙（由 `dsh-fs` 擁有）
 
@@ -72,7 +72,7 @@ editText(target: FsTarget, edit: FsEditRequest, expected?: { version: FsVersion 
 
 這些事件攜帶既有的 `dsh-fs` 詞彙（`FsTarget`、`FsVersion`、`FsObservation`、`FsWriteIntent`）加一個不透明的 actor——不攜帶面向模型的概念（行視窗、行號或渲染後的頁腳不會洩漏到此層）。
 
-**兩個 `fs/*` 決策事件是單槽、先到先得的 waterfall。** `dsh-fs-observation-policy` 不呼叫 `next()` 直接返回，因此在默認部署中它佔據該槽位；更早註冊或使用 `prepend` 的監聽器會替代該策略。權限、審計和沙盒關注點仍留在可組合的 `tools/execute` waterfall 上。
+**兩個 `fs/*` 決策事件是單槽、先到先得的 waterfall。** `dsh-fs-observation-policy` 不呼叫 `next()` 直接返回，因此在預設部署中它佔據該槽位；更早註冊或使用 `prepend` 的監聽器會替代該策略。權限、審計和沙盒關注點仍留在可組合的 `tools/execute` waterfall 上。
 
 actor 在 `dsh-fs` 中類型為 `object`——一個純粹的不透明載體，提供方約定從不讀取或收窄它。owner 的推導（`actor.agent?.session`）和 `{ agent?: { session? } }` 結構形狀完全留在 `dsh-fs-observation-policy` 內部，由其在監聽器中將 `object` actor 收窄為該形狀。`dsh-fs` 擁有事件名和 fs 詞彙；它不擁有策略層的執行時期 owner 結構。
 
@@ -118,13 +118,13 @@ interface Events {
 
 `dsh-tool-fs` 是一個註冊全部三個工具（`read`/`write`/`edit`）的單一根外掛程式，與 `dsh-tool-bash` 相同。它注入 `fs`（加 `tools`/`systemPrompt`），從不注入 `fileContext`。（最初的提案還將每個工具作為 `/read`/`/write`/`/edit` 子路徑外掛程式暴露，供聚焦部署使用；實作時被放棄——沒有消費端需要單工具部署，且子路徑發布迫使引入兄弟工具包都不需要的訂製 `tsdown`/`tsconfig`/`files`/workspace-constraint 處理。每工具的註冊輔助函式（`applyReadTool`/`applyWriteTool`/`applyEditTool`）仍作為根外掛程式組合的內部模組保留。）
 
-透過讓 waterfall 惰性產出期望值來最小化 `stat` 預算——裸默認返回 `undefined`（無守衛），從不 stat：
+透過讓 waterfall 惰性產出期望值來最小化 `stat` 預算——裸預設返回 `undefined`（無守衛），從不 stat：
 
 - **read**——一次 `stat`；元資料未命中時，在返回 `FS_NOT_FOUND` 前 emit `{ kind: 'absent' }`；目標為文件時，則依次執行 `readText`/`streamText`、`buildWindow`，再 emit `{ kind: 'present', version: info.version }`。舊 `fileContext.read` 中讀後確認的 `stat` 仍保持移除；在路由 stat 和讀取之間競爭的寫入者最多隻能使後續帶防護的編輯誤報過時。
 - **write**——`expectation = await ctx.waterfall('fs/write-intent', target, exec, () => undefined)`，然後 `ctx.fs.writeText(target, content, expectation)`，再 emit 表示存在的結果版本。無論是否有 `dsh-fs-observation-policy`，**工具內零 stat**。
 - **edit**——`expectation = await ctx.waterfall('fs/edit-intent', target, exec, () => undefined)`，然後 `ctx.fs.editText(target, edit, expectation)`，再 emit 表示存在的結果版本。兩種情況下**工具內零 stat**：裸預設為 `undefined`（無條件編輯），因此工具從不 stat 來製造基準。如果裸路徑上的目標不存在，提供方報告 `FS_STALE_VERSION`；策略已持有缺失觀測時，則直接返回 `FS_NOT_FOUND`。
 
-工具在每次分發時將 `exec`（工具執行上下文）作為 `actor` 參數傳入，以便 `dsh-fs-observation-policy` 推導其觀測狀態的 owner。工具不知道策略外掛程式是否存在：它始終在 `next` thunk 中提供裸默認行為，而 `dsh-fs-observation-policy` 在默認部署中會在 thunk 執行前短路它。
+工具在每次分發時將 `exec`（工具執行上下文）作為 `actor` 參數傳入，以便 `dsh-fs-observation-policy` 推導其觀測狀態的 owner。工具不知道策略外掛程式是否存在：它始終在 `next` thunk 中提供裸預設行為，而 `dsh-fs-observation-policy` 在預設部署中會在 thunk 執行前短路它。
 
 **`fs/observed` 在操作成功後，以及元資料探測確認缺失後觸發。** 其監聽器必須是同步、不拋例外的記錄器；工具不對 plain emit 做保護，因此拋例外的監聽器可能取代待返回的讀取錯誤，或在 mutation 已成功後報告失敗。非同步或可失敗的觀測需要另一份事件約定。
 
@@ -166,7 +166,7 @@ interface Events {
 
 ## 後果
 
-- **事件間接層取代方法呼叫。** 一次 waterfall + emit 不如 `await ctx.fileContext.edit(...)` 直接。收益是移除了工具到策略的方法相依性，同時保留默認策略外掛程式；代價是多一套事件詞彙需要學習。透過保持三個事件的窄小範圍並在每個事件上記錄 default-thunk 語義來緩解。
+- **事件間接層取代方法呼叫。** 一次 waterfall + emit 不如 `await ctx.fileContext.edit(...)` 直接。收益是移除了工具到策略的方法相依性，同時保留預設策略外掛程式；代價是多一套事件詞彙需要學習。透過保持三個事件的窄小範圍並在每個事件上記錄 default-thunk 語義來緩解。
 - **策略事件位於儲存 seam 中。** `dsh-fs` 增加了兩個版本決策事件和一個記錄事件，儘管它「只是儲存」。這是解耦的代價（發射方不能相依性策略外掛程式）。這些事件只攜帶 `dsh-fs` 詞彙加一個不透明的 `object` actor，不攜帶面向模型的概念，因此 seam 不沾染行視窗/觀測策略類型，也不沾染 agent/工作階段所有者結構。
 - **單一策略佔位者，按慣例先到先得。** `fs/write-intent`/`fs/edit-intent` 槽位恰好容納一個決策者；先註冊（或 `prepend`）的監聽器獲勝，其餘被短路。`dsh-fs-observation-policy` 佔據該槽位是部署慣例，而非事件系統強制的不變式——一個先註冊的第二決策者會繞過它。這是可接受的，因為第二個 fs 版本策略決策者是設定錯誤，而非功能。如果未來出現*分層* fs 版本策略的需求，那是一個新 Agent Note（可組合的值傳遞 waterfall），而非在這些事件上靜默新增第二個監聽器。分層的權限/審計/沙盒攔截已有其歸屬：`tools/execute`。
 - **移除讀後確認 stat** 使後續*有守衛*的編輯在 read/write 競爭下偶爾為安全起見拒絕寫入（`FS_STALE_VERSION` → 重新讀取）。這是丟失的 UX 便利，絕非正確性漏洞；提供方鎖仍阻止基於錯誤版本的寫入。

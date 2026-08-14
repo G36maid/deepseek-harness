@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-configuration-source-ownership.md) | [简体中文](2026-08-04-configuration-source-ownership.zh.md) | 繁體中文
+[English](2026-08-04-configuration-source-ownership.md) | 繁體中文
 
 ## Problem
 
@@ -41,7 +41,7 @@ inherited process environment      (read-only, wins)
 
 繼承環境優先，因為 `DEEPSEEK_API_KEY=… dsh`、CI 機密與容器 `-e` 是運維必須能按次施加、且無需改動機器狀態的那一種覆蓋；而它無法從行程內部修改，就必須*可見地*只讀。設定本應只攜帶*引用*——解析哪個名字——該名字本身遵循上面的非機密順序。
 
-**harness 被啟動於其中的項目默認可信，且不做詢問。** 一個 checkout 可以攜帶自己的 endpoint、自己的普通變數和自己的金鑰；金鑰排在受管儲存之下，因此透過 Models 頁存下的金鑰絕不會被 checkout 中恰好帶有的那一個頂掉。`LaunchEnvironmentSnapshot.getFrom(name, sources)` 仍然只搜尋呼叫方點名的層，省略某層仍是拒絕而不是降級——該機制是為「某一層必須不可達」的那些決策準備的，而項目層今天不在其列。
+**harness 被啟動於其中的項目預設可信，且不做詢問。** 一個 checkout 可以攜帶自己的 endpoint、自己的普通變數和自己的金鑰；金鑰排在受管儲存之下，因此透過 Models 頁存下的金鑰絕不會被 checkout 中恰好帶有的那一個頂掉。`LaunchEnvironmentSnapshot.getFrom(name, sources)` 仍然只搜尋呼叫方點名的層，省略某層仍是拒絕而不是降級——該機制是為「某一層必須不可達」的那些決策準備的，而項目層今天不在其列。
 
 **信任不延伸到改變 harness 本身。** `loadLayeredEnv` 會在載入時、且在物化任何內容之前，拒絕任何設定了下列變數的 `.env`：決定行程如何啟動的（`PATH`、`SHELL`、`NODE_OPTIONS`、`LD_PRELOAD`）、決定執行時期在執行被要求執行的程序之前先執行哪些程式碼的（`BASH_ENV`、`PERL5OPT`、`PYTHONSTARTUP`、`RUBYOPT`、`JAVA_TOOL_OPTIONS`、Git 的掛鉤命令）、決定模型可見指令從哪裡載入的（整個 `DSH_*` 命名空間、`HOME`、`XDG_*`），以及決定網路如何訪問以及如何建立信任的（proxy 與 CA 變數）。匹配不區分大小寫，因此 `https_proxy` 不是繞過手段。
 
@@ -63,7 +63,7 @@ inherited process environment      (read-only, wins)
 
 **按「來源由誰書寫」把憑據並入非機密順序。** 嘗試過並放棄：它讀起來很順，但 settings seam 已經把 composition 固定在使用者 section *之下*，因此「由部署方寫入」根本不是該 seam 能表達的一層；而把 `.credentials.yaml` 抬到啟動環境之上，會奪走 CI、容器和一次性 `DEEPSEEK_API_KEY=…` 所相依性的那唯一一種覆蓋。兩條各自說明優先順序的規則，好過一條兩邊都描述不準的規則。
 
-**在項目被顯式信任之前，不給它路由與憑據能力。** 作為產品立場被否決：checkout 默認可信，不詢問，也不儲存信任記錄。殘留風險是真實的、值得寫明——克隆一個攜帶 `.env`、其中指定了另一個 endpoint 或金鑰的倉庫，會讓該工作階段經由它——處理它的地方是日後的 project trust 閘門，而不是一條讓常見情形都要走儀式的規則。
+**在項目被顯式信任之前，不給它路由與憑據能力。** 作為產品立場被否決：checkout 預設可信，不詢問，也不儲存信任記錄。殘留風險是真實的、值得寫明——克隆一個攜帶 `.env`、其中指定了另一個 endpoint 或金鑰的倉庫，會讓該工作階段經由它——處理它的地方是日後的 project trust 閘門，而不是一條讓常見情形都要走儀式的規則。
 
 **審查出一份 `.env` 可設定的 `DSH_*` 白名單。** 否決：每新增一個開關都要重新審查，而遺漏的失敗模式是靜默的。拒絕整個命名空間是 fail safe。
 

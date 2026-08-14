@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-07-22-plan-specific-collaboration-state.md) | [简体中文](2026-07-22-plan-specific-collaboration-state.zh.md) | 繁體中文
+[English](2026-07-22-plan-specific-collaboration-state.md) | 繁體中文
 
 ## 問題
 
-產品只交付了 `plan`，首個 plan mode 實作卻引入了通用的具名模式登錄檔。`ModeConfig.modes`、定義名稱校驗、`ctx.modes.list()`、已退役定義的回退邏輯，以及測試中合成的 `review` 模式，都只為支持假想中的未來協作模式而存在。plan 引導、`/plan` 和 `exit_plan_mode` 這些生產專用行為仍位於同一個包內，因此通用 API 並未將可複用機制與 plan 策略隔離開來。
+產品只交付了 `plan`，首個 plan mode 實作卻引入了通用的具名模式登錄檔。`ModeConfig.modes`、定義名稱校驗、`ctx.modes.list()`、已退役定義的回退邏輯，以及測試中合成的 `review` 模式，都只為支援假想中的未來協作模式而存在。plan 引導、`/plan` 和 `exit_plan_mode` 這些生產專用行為仍位於同一個包內，因此通用 API 並未將可複用機制與 plan 策略隔離開來。
 
-「mode」一詞還橫跨互不相關的領域。沙盒模式是由 `ctx.sandboxPolicy` 擁有、以 `sandbox/mode` 記錄日誌的強制執行策略；plan mode 則是一種協作方式，會貢獻引導內容和經評審的退出路徑。若把兩者都視為同一個具名模式抽象的實例，就會掩蓋二者各自獨立的歸屬關係。傳輸協議的通用詞彙並不能證明 harness 需要通用模式領域。
+「mode」一詞還橫跨互不相關的領域。沙盒模式是由 `ctx.sandboxPolicy` 擁有、以 `sandbox/mode` 記錄日誌的強制執行策略；plan mode 則是一種協作方式，會貢獻引導內容和經評審的退出路徑。若把兩者都視為同一個具名模式抽象的實例，就會掩蓋二者各自獨立的歸屬關係。傳輸協定的通用詞彙並不能證明 harness 需要通用模式領域。
 
 Plan mode 還需要持久協作狀態、可評審的計畫產物、顯式人工決策邊界，以及跨復原與 fork 的請求重建。即使移除通用登錄檔和 ACP（Agent Client Protocol）互動投影，這些要求仍歸 plan 功能所有。
 
@@ -18,7 +18,7 @@ Plan mode 擁有一個 plan 專用產品包：位於 `packages/plan/plan-mode/` 
 
 設定嚴格為 `{ section: string }`。該包自行註冊固定的 `plan:policy` 段、`/plan [message]`、精確匹配的 `/plan off` 主動退出形式，以及 `exit_plan_mode`。不帶參數的 `/plan` 選擇啟用；其他非空參數則先選擇啟用，再透過 `agent.steer()` 傳送去除首尾空白後的文字，使該文字在受影響的步驟中成為一條記錄到日誌的普通使用者訊息。`/plan off` 選擇未啟用，不產生模型輸入，並可取消仍待在邊界生效的進入選擇。即使 plan mode 未啟用，退出工具仍保持註冊，以確保請求工具目錄穩定。
 
-面向人類的組合擁有 plan 選擇與評審。本筆記最初把 ACP 協議級的 `default`/`plan` 選擇器保留為布林服務之上的配接器；[ACP 作為僅面向自動化的協議](2026-07-23-acp-automation-only-protocol.md) 取代了那個協議投影，因此 ACP 組合現在既不掛載 plan mode，也不提供模式選擇協議。
+面向人類的組合擁有 plan 選擇與評審。本筆記最初把 ACP 協定級的 `default`/`plan` 選擇器保留為布林服務之上的配接器；[ACP 作為僅面向自動化的協定](2026-07-23-acp-automation-only-protocol.md) 取代了那個協定投影，因此 ACP 組合現在既不掛載 plan mode，也不提供模式選擇協定。
 
 沙盒模式與審批策略仍是彼此獨立的強制約束軸。Plan mode 既不讀取也不寫入二者；此次簡化也沒有為這些概念引入共享基類型、登錄檔或預設抽象。
 

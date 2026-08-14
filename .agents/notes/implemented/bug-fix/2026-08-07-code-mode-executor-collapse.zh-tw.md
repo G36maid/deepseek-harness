@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-07-code-mode-executor-collapse.md) | [简体中文](2026-08-07-code-mode-executor-collapse.zh.md) | 繁體中文
+[English](2026-08-07-code-mode-executor-collapse.md) | 繁體中文
 
 ## 問題
 
@@ -41,6 +41,6 @@ guard 是選填的外掛程式擴充；安全不變數不能相依性部署恰�
 - `mode: 'code'` 現在兌現其通告：模型直呼原生工具變為 `UNKNOWN_TOOL`，模型可以透過改走 `run_code` 自行糾正（已中止的呼叫仍按取消契約解析為 `ABORTED_BEFORE_DISPATCH`）。
 - `both` 與 `native` 行為不變；SDK 子呼叫不變（判別訊號是 `parent` token）。
 - 被塌縮的呼叫在 `prepare` 階段即被拒絕——在可擴充策略管線之前：pre-execute 監聽器、approval `ask` 與 guard 永遠不會觀察到它。`executionMode` 同樣 fail-closed（`exclusive`），調度無可觀察差異。
-- 原生工具指引段（`tool:read`、`tool:write`、`tool:bash` 等）保留在系統提示詞中，因為它們同時描述了透過生成 SDK 及原生函式呼叫可用的能力，其中若干段還承載著任何單個工具描述都裝不下的跨工具路由策略（`read` 優先於 `bash cat`、默認 fs-observation-policy 要求先 `read` 再 `write`、一兩個委派用 `subagent` 而非 `workflow`）。防止模型直呼原生工具的是執行器塌縮，而非提示詞過濾。
+- 原生工具指引段（`tool:read`、`tool:write`、`tool:bash` 等）保留在系統提示詞中，因為它們同時描述了透過生成 SDK 及原生函式呼叫可用的能力，其中若干段還承載著任何單個工具描述都裝不下的跨工具路由策略（`read` 優先於 `bash cat`、預設 fs-observation-policy 要求先 `read` 再 `write`、一兩個委派用 `subagent` 而非 `workflow`）。防止模型直呼原生工具的是執行器塌縮，而非提示詞過濾。
 - 提示詞會**聲明**這條塌縮，位於排在 100–199 指導段之前的 `tools:code-only` 段。那些段只寫出工具名而不限定其可達方式，因此只讀到它們的模型會發出原生呼叫，為一個同一份提示詞剛剛聲明過的工具收到 `UNKNOWN_TOOL`，進而判定部署不一致，而不是自行糾正。拒絕資訊給出正確路徑也是同一原因。`both` 下該規則渲染為空：它的原生呼叫確實會執行，在那裡聲明就是假話——這也是 `both-mode-turn` 不再與 `code-mode-turn` 共用期望提示詞的原因。
 - 未來任何設定 `parent` token 的組合傳輸，其子呼叫自動走全表，與該 token 已有的巢狀呼叫語義一致。

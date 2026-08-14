@@ -1,6 +1,6 @@
 # Subagent
 
-[English](subagent.md) | [简体中文](subagent.zh.md) | 繁體中文
+[English](subagent.md) | 繁體中文
 
 subagent seam 讓一個 agent（代理）將工作委派給子 agent。與 [bash](shell.md) 一樣，它是**一項選填能力**，不屬於 agent loop（代理循環），因此其類型定義在此而非 [core.md](core.md) 中。它不同於其他能力 seam，因為**同一上下文中可共存多個提供方實作**，並按名稱註冊（`ctx.subagents`），而 bash 只允許一個執行器。該登錄檔遵循 [LLM（大型語言模型）配接器登錄檔](llm-streaming.md)，而非單服務的 bash 執行器。
 
@@ -34,7 +34,7 @@ interface SubagentCapabilities {
 
 ## 單次啟動請求
 
-工具層根據模型輸入和自身設定建置此請求；服務在 `start` 之前針對指定提供方進行校驗。必填的 `parent` 提供工作階段 cwd、譜系與委派深度。選填的 output schema、depth、工具過濾器和 persona 需要對應的能力 flag 匹配。不支持的 schema 在啟動時即失敗；行程內後端將 filter 和 persona 的作用域限定在子 agent 建立階段，並透過強制 capture 工具實作所支持的 object-rooted schema。
+工具層根據模型輸入和自身設定建置此請求；服務在 `start` 之前針對指定提供方進行校驗。必填的 `parent` 提供工作階段 cwd、譜系與委派深度。選填的 output schema、depth、工具過濾器和 persona 需要對應的能力 flag 匹配。不支援的 schema 在啟動時即失敗；行程內後端將 filter 和 persona 的作用域限定在子 agent 建立階段，並透過強制 capture 工具實作所支援的 object-rooted schema。
 
 ```ts type-equiv
 /**
@@ -282,7 +282,7 @@ interface ContinuableCreateSpec {
 
 描述符（[descriptor.ts](../../packages/subagent/subagent/src/descriptor.ts) 中的 `SubagentDescriptorData`）是每個由工作階段支撐的 subagent 所使用、按模式判別的持久化身份。兩種模式都攜帶提供方名稱。`one-shot` 描述符可以攜帶呼叫方擁有的選填顯示 `label`；`continuable` 描述符要求以委派 `description` 作為持久化建立標籤，並另外對已解析的子 agent `agentOptions.provider`／`model` 與選填的 `persona`／`toolFilter` 建立快照，用於冷復原。它絕不會對可合併擴充的 `AgentOptions` 對象建立快照，因此無關的擴充值不會破壞繼續執行，後續新增組合設定輸入則是一次有意的版本更改。描述符省略 `subagentDepth`（冷復原以持久化 header 中的 `delegationDepth` 作為單調下界）和 `outputSchema`（單次執行或 Activation 的結果約定，而非持久化身份）。
 
-本機一次性提供方會在子 agent 的初始輪次內、首次請求前追加描述符。繼續執行管理器會在任何提供方提供的譜系之後、初始提示詞獲準之前追加描述符；`header.seedLength` 仍是 fork 譜系邊界：復原時的描述符權威讀取子 agent 自身的後綴，而供清單使用的身份投影以 last-wins 摺疊 `subagent/descriptor`，子 agent 自己的描述符會覆蓋 fork seed 中祖先的描述符。該事件只進入日誌：不含 `surfaceOp`，絕不進入模型歷史，並由僅附加日誌跨壓縮保留。格式錯誤的當前版本描述符屬於損壞；本執行時期無法對不受支持的版本進行分類。
+本機一次性提供方會在子 agent 的初始輪次內、首次請求前追加描述符。繼續執行管理器會在任何提供方提供的譜系之後、初始提示詞獲準之前追加描述符；`header.seedLength` 仍是 fork 譜系邊界：復原時的描述符權威讀取子 agent 自身的後綴，而供清單使用的身份投影以 last-wins 摺疊 `subagent/descriptor`，子 agent 自己的描述符會覆蓋 fork seed 中祖先的描述符。該事件只進入日誌：不含 `surfaceOp`，絕不進入模型歷史，並由僅附加日誌跨壓縮保留。格式錯誤的當前版本描述符屬於損壞；本執行時期無法對不受支援的版本進行分類。
 
 ## 持久化枚舉：`listChildren()`、`listDescendants()` 與其條目
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-web
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 面向模型的 web 工具套件 `web_search` 與 `web_fetch`，建置於 [web 能力 seam](../web/README.md)（`ctx.web`）之上。它只負責面向模型的事項：工具名稱、JSON Schema、snake_case 參數名稱、提示詞區段、結果數量上限、結果格式、HTML→markdown 呈現，以及 UI 呈現投影——`presentCall`、`presentResult`（以 `kind: 'search' | 'fetch'` 區分的 `card: 'web'` 結果卡片），以及承載有損渲染文字無法攜帶的結構化搜尋來源或抓取摘要的 `output.presentationMeta`（見 [web-result-card Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-web-result-card.md)）。所有 web 訪問都透過 `ctx.web`；該包絕不匯入具體提供方。兩個工具都不公開面向模型的逾時：每個工具的協作式工具呼叫逾時預算透過設定在此聲明（`fetchTimeoutMs`／`searchTimeoutMs`，附加為 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.md)（`tools/execute` 包裝層）強制執行；每個工具只把 `exec.signal` 轉發給 seam。
 
@@ -10,7 +10,7 @@
 
 | 工具 | 參數 | 行為 |
 |---|---|---|
-| `web_search` | `query`（string） | 用於發現資訊。返回選填答案與來源 URL。`max_results` **不**面向模型：工具設定上限（`searchMaxResults` 設定，默認 8）並傳給 seam。 |
+| `web_search` | `query`（string） | 用於發現資訊。返回選填答案與來源 URL。`max_results` **不**面向模型：工具設定上限（`searchMaxResults` 設定，預設 8）並傳給 seam。 |
 | `web_fetch` | `url`（string） | 取得特定 URL。HTML 主體渲染為 markdown（turndown，帶 GFM 表格／刪除線）；文字主體原樣透過。非 2xx 狀態會報告，而非報錯。工具呼叫逾時是部署策略（`dsh-tool-call-timeout-policy`），不是模型參數。 |
 
 兩個工具都選擇並行調度，因為提供方讀取會返回內容，不會修改父 agent（代理）的狀態。

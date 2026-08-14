@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-full-session-turn-step-counts.md) | [简体中文](2026-08-12-full-session-turn-step-counts.zh.md) | 繁體中文
+[English](2026-08-12-full-session-turn-step-counts.md) | 繁體中文
 
 ## 問題
 
@@ -25,7 +25,7 @@ Web 聊天統計條的每個非 token 數字都折算自 `StatsLine` 已載入�
 
 **統計 `step/start` 事件。** 覆蓋等價（它先於每條 `step/end`），但計數會在步開始而非結帳時推進——一個沒有收益的可見直播期行為變化；`step/end` 的 `finally` 位置給出同等完整性。
 
-**把單元註冊進 `core/agent-loop`（事件生產方）。** 迴圈是產品主幹；把 UI 讀模型放進去會給每個裝配加上 session-projection 相依性，違反「用外掛程式而非改迴圈」與「默認組合不帶選填項」。
+**把單元註冊進 `core/agent-loop`（事件生產方）。** 迴圈是產品主幹；把 UI 讀模型放進去會給每個裝配加上 session-projection 相依性，違反「用外掛程式而非改迴圈」與「預設組合不帶選填項」。
 
 **把單元註冊進 `token-meter`（摺疊同批事件的現有單元）。** 輪/步計數不是 token 度量；每個投影鍵都住在擁有其領域的包裡。
 

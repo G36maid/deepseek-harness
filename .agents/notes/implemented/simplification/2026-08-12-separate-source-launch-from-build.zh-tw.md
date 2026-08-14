@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-separate-source-launch-from-build.md) | [简体中文](2026-08-12-separate-source-launch-from-build.zh.md) | 繁體中文
+[English](2026-08-12-separate-source-launch-from-build.md) | 繁體中文
 
 ## 問題
 
@@ -16,11 +16,11 @@ TypeScript 原始碼啟動器無需在每次呼叫前完成整個倉庫的建置
 
 Typert Host 產物缺失時，profile 啟動會因不含建置指引的模組解析錯誤而失敗。這些 Host 產物存在後，如果前端或 Client plugin 產物缺失，啟動會失敗，診斷資訊會指示使用者執行 `pnpm run build`。啟動器不會驗證產物是否為最新：已有的過時前端或 Client plugin 組合包仍會被接受，並可能繼續執行舊版瀏覽器程式碼，直至下次建置。各包的 Node 半側至少建置過一次後，`pnpm run dev:web` 只重建聲明瞭 `dsh.client` 的包；它會保持 Client plugin 組合包為最新狀態並啟用其熱重新載入路徑，但不會重建前端 shell。
 
-本決策僅規定建置調度。[tsx ESM 原始碼啟動決策](../architecture/2026-07-29-dsh-source-launch-tsx-esm.md)規定 TypeScript 轉換與 workspace 解析，[原始碼執行決策](2026-08-10-source-run-without-managed-installer.md)規定以倉庫指令碼作為受支持的檢出入口，[個人設定決策](../feature/2026-07-20-dsh-cli-personal-config.md)規定機器級設定層。
+本決策僅規定建置調度。[tsx ESM 原始碼啟動決策](../architecture/2026-07-29-dsh-source-launch-tsx-esm.md)規定 TypeScript 轉換與 workspace 解析，[原始碼執行決策](2026-08-10-source-run-without-managed-installer.md)規定以倉庫指令碼作為受支援的檢出入口，[個人設定決策](../feature/2026-07-20-dsh-cli-personal-config.md)規定機器級設定層。
 
 ## 考慮過的備選方案
 
-**每次原始碼啟動前都執行建置。**這樣可提供最強的默認新鮮度保證，但即使相關產物已經是最新狀態，每次呼叫仍要承擔全倉庫產物生成的開銷。
+**每次原始碼啟動前都執行建置。**這樣可提供最強的預設新鮮度保證，但即使相關產物已經是最新狀態，每次呼叫仍要承擔全倉庫產物生成的開銷。
 
 **僅在產物缺失時執行建置。**這樣可避免部分啟動開銷，但無法發現過期產物，還會讓建置行為變成由當前檔案系統內容決定的隱式策略。
 

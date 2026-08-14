@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-single-harness-home-resolver.md) | [简体中文](2026-07-24-single-harness-home-resolver.zh.md) | 繁體中文
+[English](2026-07-24-single-harness-home-resolver.md) | 繁體中文
 
 ## 問題
 
@@ -21,7 +21,7 @@ Status: implemented
 explicit configured path  >  $DSH_HOME  >  ~/.dsh
 ```
 
-空或僅含空白的 `$DSH_HOME` 被當作未設定處理；否則，`resolve('')` 會悄悄把 home 落在當前工作目錄。harness 把所有使用者資料都放在同一個根目錄下；不存在 XDG 的 config/data/cache 拆分。`dshHomePath(...segments)` 將部署負責的子路徑拼接到該根目錄下，`dsh-app-boot` 在掛載條目前向 Loader `!!js` 設定表達式暴露它，因此出廠組合無需複製解析器即可派生 `sessions` 和 `storages`。`dshHomeDisplay()` 為面向使用者的路徑以符號形式命名已解析的根目錄——默認 home 顯示為 `~/.dsh`，任何已設定的 home 顯示為 `$DSH_HOME`——這樣使用者全域性的 `AGENTS.md` 標籤就絕不會洩露機器上的絕對路徑。它取代了 agent-instructions 中自訂的「預設值 vs `$DSH_HOME`」判斷。
+空或僅含空白的 `$DSH_HOME` 被當作未設定處理；否則，`resolve('')` 會悄悄把 home 落在當前工作目錄。harness 把所有使用者資料都放在同一個根目錄下；不存在 XDG 的 config/data/cache 拆分。`dshHomePath(...segments)` 將部署負責的子路徑拼接到該根目錄下，`dsh-app-boot` 在掛載條目前向 Loader `!!js` 設定表達式暴露它，因此出廠組合無需複製解析器即可派生 `sessions` 和 `storages`。`dshHomeDisplay()` 為面向使用者的路徑以符號形式命名已解析的根目錄——預設 home 顯示為 `~/.dsh`，任何已設定的 home 顯示為 `$DSH_HOME`——這樣使用者全域性的 `AGENTS.md` 標籤就絕不會洩露機器上的絕對路徑。它取代了 agent-instructions 中自訂的「預設值 vs `$DSH_HOME`」判斷。
 
 `@deepseek-ai/dsh-home` 被刪除。它的三個引用方（`dsh-tool-bash`、`dsh-skill-filesystem`、`dsh-agent-spine-demo`）從 `dsh-home-paths` 匯入 `resolveDshHome`。
 

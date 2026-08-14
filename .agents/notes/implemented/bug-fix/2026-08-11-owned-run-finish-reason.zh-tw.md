@@ -2,17 +2,17 @@
 
 Status: implemented
 
-[English](2026-08-11-owned-run-finish-reason.md) | [简体中文](2026-08-11-owned-run-finish-reason.zh.md) | 繁體中文
+[English](2026-08-11-owned-run-finish-reason.md) | 繁體中文
 
 ## 問題
 
-Python SDK 消費端需要簡潔地判斷自有活動區間如何進入 idle。要求每個消費端掃描原始 `turn/end` 事件會重複協議知識，而通用的成功狀態會丟失 token 上限與模型錯誤之間的區別。
+Python SDK 消費端需要簡潔地判斷自有活動區間如何進入 idle。要求每個消費端掃描原始 `turn/end` 事件會重複協定知識，而通用的成功狀態會丟失 token 上限與模型錯誤之間的區別。
 
 ## 決策
 
 `RunResult.finish_reason` 是從已提交訊息進入持久 inbox 的回執開始、到整個 agent 下一次進入 idle 為止所收集的根工作階段最後一個 `turn/end` 的字串 `kind`。如果該區間沒有 `turn/end`，欄位為 `None`。缺少字串 `data.reason.kind` 的 `turn/end` 會拋出 `SdkProtocolError`，而不會報告為區間內沒有輪次結束。該欄位描述自有執行區間；它不會把這個結束原因歸屬於已提交的提示詞。[自有執行邊界決策](../architecture/2026-07-30-followup-enqueue-and-owned-runs.md)仍禁止提示詞級結果歸因。
 
-該欄位只公開 kind，因為呼叫方需要穩定的分類，完整的結構化原因仍可從 `RunResult.events` 取得。傳輸丟失、逾時和協議故障仍會拋出例外，而不會生成結束原因。
+該欄位只公開 kind，因為呼叫方需要穩定的分類，完整的結構化原因仍可從 `RunResult.events` 取得。傳輸丟失、逾時和協定故障仍會拋出例外，而不會生成結束原因。
 
 ## 考慮過的替代方案
 

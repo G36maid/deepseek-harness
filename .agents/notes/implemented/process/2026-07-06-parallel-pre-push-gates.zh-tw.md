@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-parallel-pre-push-gates.md) | [简体中文](2026-07-06-parallel-pre-push-gates.zh.md) | 繁體中文
+[English](2026-07-06-parallel-pre-push-gates.md) | 繁體中文
 
 本記錄中的本機掛鉤部分已由[快速本機 Git 掛鉤](2026-07-22-fast-local-git-hooks.md) 取代。有界閘門調度器和包級 `publint` 平行機制仍用於 CI、`doc-sync` 和顯式本機命令。
 
@@ -14,7 +14,7 @@ Status: implemented
 
 [scripts/run-gates.ts](../../../../scripts/run-gates.ts) 擁有 CI、`doc-sync` 和按需啟用的 `check:all` 命令所使用的有界調度器。它將具名模式展開為葉子閘門，在啟動子行程前拒絕空的或有歧義的相依性圖，遵守產物相依性，緩衝可歸因的輸出，分別報告行程退出與訊號終止結果，並在呼叫方需要不同 worker 上限時接受 `DSH_GATE_CONCURRENCY`。
 
-Node 24 消費端任務採用單個包含七道閘門的模式，而非由 shell 管理的行程池。其默認 worker 數等於閘門數，但閘門是否就緒由相依性關係控制：`publint` 先於已建置包不變式驗證執行，快照重播、NodeNext 型別檢查、built-bin 冒煙測試和 lint 則等待該驗證完成。lint 之所以等待，是因為不變式驗證器會臨時暫存包檢視表，而 linter 不得遍歷這些檢視表；原始碼相容性檢查可以與這條驗證鏈重疊執行。
+Node 24 消費端任務採用單個包含七道閘門的模式，而非由 shell 管理的行程池。其預設 worker 數等於閘門數，但閘門是否就緒由相依性關係控制：`publint` 先於已建置包不變式驗證執行，快照重播、NodeNext 型別檢查、built-bin 冒煙測試和 lint 則等待該驗證完成。lint 之所以等待，是因為不變式驗證器會臨時暫存包檢視表，而 linter 不得遍歷這些檢視表；原始碼相容性檢查可以與這條驗證鏈重疊執行。
 
 [scripts/publint-all.ts](../../../../scripts/publint-all.ts) 從 `packages/<group>/<pkg>` 發現包，並以根據 `availableParallelism()` 確定大小的 worker 池執行 `publint`。`DSH_PUBLINT_CONCURRENCY` 可以針對資源設定不同的本機機器和 CI runner 限制或提高 worker 數量。結果按包緩衝，並按確定性的包順序列印，因此平行執行不會打亂各包的日誌塊。
 
@@ -34,7 +34,7 @@ Node 24 消費端任務採用單個包含七道閘門的模式，而非由 shell
 
 ## 後果
 
-由調度器支持的命令耗時取決於最慢的相依性鏈，而非各獨立閘門耗時之和，並會報告決定總耗時的閘門。無效圖會直接失敗，不會先執行其中一部分。代價是維護一個具有顯式模式清單的訂製調度器。
+由調度器支援的命令耗時取決於最慢的相依性鏈，而非各獨立閘門耗時之和，並會報告決定總耗時的閘門。無效圖會直接失敗，不會先執行其中一部分。代價是維護一個具有顯式模式清單的訂製調度器。
 
 這條驗證鏈會讓使用已復原產物的下游消費端和 lint 延後啟動，直至共享產物檢視表經確認有效且臨時暫存已清除；這些下游閘門仍可彼此重疊執行。
 

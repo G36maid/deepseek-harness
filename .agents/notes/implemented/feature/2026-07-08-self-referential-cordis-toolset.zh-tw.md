@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-08-self-referential-cordis-toolset.md) | [简体中文](2026-07-08-self-referential-cordis-toolset.zh.md) | 繁體中文
+[English](2026-07-08-self-referential-cordis-toolset.md) | 繁體中文
 
 ## 問題
 
@@ -12,9 +12,9 @@ Status: implemented
 
 ## 決策
 
-該工具集以 [`@deepseek-ai/dsh-tool-cordis`](../../../../packages/extensions/tool-cordis/README.md) 發布，並由 `examples/web-cordis` 演示。它為模型提供三個工具，用於操作當前 DSH 行程中的活躍 Cordis 執行時期：檢查該執行時期、掛載一個僅存於記憶體的臨時外掛程式，再將該外掛程式解除安裝至完全靜止。
+該工具集以 [`@deepseek-ai/dsh-tool-cordis`](../../../../packages/extensions/tool-cordis/README.md) 發布，並由 `examples/web-cordis` 示範。它為模型提供三個工具，用於操作當前 DSH 行程中的活躍 Cordis 執行時期：檢查該執行時期、掛載一個僅存於記憶體的臨時外掛程式，再將該外掛程式解除安裝至完全靜止。
 
-vm 隔離了意外的全域性汙染，上下文門面隱藏了框架內部細節。但二者都不限制已暴露服務的權限：臨時外掛程式可以呼叫 `ctx.shell` 以宿主執行器的權限執行命令，也能訪問真實的檔案系統和網路服務。它執行在共享 DSH 執行時期中，可能影響同一行程的其他工作階段。這是一個需要顯式啟用的開發工具，信任等級與 bash 相當，不是安全邊界，也不是產品預設配置。
+vm 隔離了意外的全域性汙染，上下文門面隱藏了框架內部細節。但二者都不限制已暴露服務的權限：臨時外掛程式可以呼叫 `ctx.shell` 以宿主執行器的權限執行命令，也能訪問真實的檔案系統和網路服務。它執行在共享 DSH 執行時期中，可能影響同一行程的其他工作階段。這是一個需要顯式啟用的開發工具，信任等級與 bash 相當，不是安全邊界，也不是產品預設設定。
 
 ### 三個工具
 
@@ -54,7 +54,7 @@ vm 隔離了意外的全域性汙染，上下文門面隱藏了框架內部細�
 
 ### 設定、渲染與可觀測性
 
-該外掛程式暴露一個設定欄位，由 schemastery 校驗並記錄在[設定目錄](../../../../docs/config-catalog.md)中：`vmTimeoutMs`（默認 5000），程式碼同步求值部分的毫秒上限。當前面向模型的名稱是 `cordis_inspect`、`cordis_mount` 和 `cordis_unmount`；內部 `cordis-dynamic` 分組名和 `dyn-` id 前綴仍是結構性詞彙。三個工具均按[工具實作手冊](../../../../docs/cookbook/adding-a-tool.md)渲染為 `generic` 卡片：inspect 為 `read`，mount 為攜帶程式碼 `rawInput` 的 `execute`，unmount 為 `delete`。Web 對話行保留這些通用機制，同時為各工具設定操作標題 `Inspect`、`Mount temporary Plugin` 和 `Unmount temporary Plugin` 以及統一的 Cordis 強調色；mount 行仍使用共用的 JavaScript 展開檢視表和文法高亮。
+該外掛程式暴露一個設定欄位，由 schemastery 校驗並記錄在[設定目錄](../../../../docs/config-catalog.md)中：`vmTimeoutMs`（預設 5000），程式碼同步求值部分的毫秒上限。當前面向模型的名稱是 `cordis_inspect`、`cordis_mount` 和 `cordis_unmount`；內部 `cordis-dynamic` 分組名和 `dyn-` id 前綴仍是結構性詞彙。三個工具均按[工具實作手冊](../../../../docs/cookbook/adding-a-tool.md)渲染為 `generic` 卡片：inspect 為 `read`，mount 為攜帶程式碼 `rawInput` 的 `execute`，unmount 為 `delete`。Web 對話行保留這些通用機制，同時為各工具設定操作標題 `Inspect`、`Mount temporary Plugin` 和 `Unmount temporary Plugin` 以及統一的 Cordis 強調色；mount 行仍使用共用的 JavaScript 展開檢視表和文法高亮。
 
 「模型可見 ⟺ 已記錄」成立，且無需新的工作階段事件類型：mount 與 unmount 透過已記錄的 `tool/call`／`tool/result` 對可見，當步驟之間的 schema 發生變化時，系統寄出的完整 request header 會記錄工具集的任何變化。臨時外掛程式屬於行程記憶體，而非工作階段狀態：復原持久化工作階段只會重建對話歷史，絕不會重新建立它們。
 

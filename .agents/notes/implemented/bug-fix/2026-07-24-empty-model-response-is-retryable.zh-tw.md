@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-empty-model-response-is-retryable.md) | [简体中文](2026-07-24-empty-model-response-is-retryable.zh.md) | 繁體中文
+[English](2026-07-24-empty-model-response-is-retryable.md) | 繁體中文
 
 ## 問題
 
@@ -23,7 +23,7 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**在主迴圈或 `BlockAssembler` 中偵測。** 只需一份共享實作，但這會把對提供方回應的判斷挪進主迴圈，違背「外掛程式優先，而非改動主迴圈」，且 assembler 是純粹的組裝演算法。配接器纔是把協議層面的事實轉化為 harness 歸類的地方，而溢位重歸類正是精確的先例。
+**在主迴圈或 `BlockAssembler` 中偵測。** 只需一份共享實作，但這會把對提供方回應的判斷挪進主迴圈，違背「外掛程式優先，而非改動主迴圈」，且 assembler 是純粹的組裝演算法。配接器纔是把協定層面的事實轉化為 harness 歸類的地方，而溢位重歸類正是精確的先例。
 
 **在 `llm/stream` waterfall（瀑布式事件）上做一個流轉換外掛程式。** 這種做法提供方無關且只需一份實作，但它為「每個配接器幾行就能聲明的邊界事實」額外增加了一個包和相應接線，而且預設開啟的行為仍需改動每一個 bundle。
 

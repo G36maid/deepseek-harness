@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-08-03-web-search-source-scroll.md) | [简体中文](2026-08-03-web-search-source-scroll.zh.md) | 繁體中文
+[English](2026-08-03-web-search-source-scroll.md) | 繁體中文
 
 ## 問題
 
 `web_search` 結果卡片（`WebBlock`，`packages/client/ui-primitives/src/WebBlock.tsx`）此前用首尾摺疊渲染它的來源清單：超過 `maxSources` 數量（詳情面板為 16，聊天行經由 `CHAT_WEB_MAX_SOURCES` 為 8）時，它畫出前 `ceil(max/2)` 條來源、一個 `… 其余 N 条来源` 展開按鈕，再畫出末尾 `max - ceil(max/2)` 條，仿照 `TerminalBlock` 的輸出上限機制。使用者閱讀該卡片時看到 `来源列表已截断`，會以為前端丟棄了它正持有的來源。
 
-其實並沒有。seam（`capSources`，`packages/web/web/src/index.ts`）把 provider 的來源裁剪到工具的 `searchMaxResults` 上限（默認 8）並置位 `truncated`，而這一份被裁剪過一次的清單同時喂給面向模型的 render 文字與卡片的 `presentationMeta`。卡片持有的來源絕不會多於這一次裁剪的產物。因此這個摺疊隱藏的正是使用者本有權完整查看的來源——並且在默認上限為 8、面板上限為 16 時，它幾乎從不觸發，只留下 `truncated` 提示，卻無從展開任何內容。
+其實並沒有。seam（`capSources`，`packages/web/web/src/index.ts`）把 provider 的來源裁剪到工具的 `searchMaxResults` 上限（預設 8）並置位 `truncated`，而這一份被裁剪過一次的清單同時喂給面向模型的 render 文字與卡片的 `presentationMeta`。卡片持有的來源絕不會多於這一次裁剪的產物。因此這個摺疊隱藏的正是使用者本有權完整查看的來源——並且在預設上限為 8、面板上限為 16 時，它幾乎從不觸發，只留下 `truncated` 提示，卻無從展開任何內容。
 
 ## 決策
 
@@ -32,13 +32,13 @@ Status: implemented
 
 ## 後果
 
-工具返回的每一條來源始終存在於 DOM 中，因此 view 攜帶的來源沒有一條被藏在互動之後。無論來源數量多少，卡片高度都受限；高於容器的清單在原地滾動。代價是滾動提示相依性平臺的捲軸渲染：overlay 捲軸系統（macOS 默認）在指針離開時不顯示常駐捲軸，因此受高度限制的清單依靠 `来源列表已截断` 提示加上被裁切的最後一行來表明還有更多內容。`WebSearchBlockProps`/`WebFetchBlockProps` 失去 `maxSources` prop，primitive 失去 `DEFAULT_WEB_MAX_SOURCES`，因此未來任何呼叫方都從構造上渲染完整清單，而不是靠傳入一個很大的上限值。
+工具返回的每一條來源始終存在於 DOM 中，因此 view 攜帶的來源沒有一條被藏在互動之後。無論來源數量多少，卡片高度都受限；高於容器的清單在原地滾動。代價是滾動提示相依性平臺的捲軸渲染：overlay 捲軸系統（macOS 預設）在指針離開時不顯示常駐捲軸，因此受高度限制的清單依靠 `来源列表已截断` 提示加上被裁切的最後一行來表明還有更多內容。`WebSearchBlockProps`/`WebFetchBlockProps` 失去 `maxSources` prop，primitive 失去 `DEFAULT_WEB_MAX_SOURCES`，因此未來任何呼叫方都從構造上渲染完整清單，而不是靠傳入一個很大的上限值。
 
 ## 測試
 
-`packages/client/ui-primitives/tests/web-block.client.spec.tsx` 刪去摺疊相關用例（首尾切片、點擊展開、摺疊尾部編號、展開器不計入編號、僅首部、默認上限），並新增：一張含 30 條來源的卡片渲染出全部 30 個 `<li>`，無 `[aria-expanded]`、無 `<button>`，每個 `<ol>` 子元素都是一條來源 `<li>`，且 `<li value>` 從 1 到 N 連續編號。`packages/client/ui-tool/tests/web-card.client.spec.tsx` 刪去 `CHAT_WEB_MAX_SOURCES` 上限斷言；WebRow 展開測試仍斷言卡片展示每一個來源欄位。`packages/web/tool-web` 的測試不變——模型側沒有改動。
+`packages/client/ui-primitives/tests/web-block.client.spec.tsx` 刪去摺疊相關用例（首尾切片、點擊展開、摺疊尾部編號、展開器不計入編號、僅首部、預設上限），並新增：一張含 30 條來源的卡片渲染出全部 30 個 `<li>`，無 `[aria-expanded]`、無 `<button>`，每個 `<ol>` 子元素都是一條來源 `<li>`，且 `<li value>` 從 1 到 N 連續編號。`packages/client/ui-tool/tests/web-card.client.spec.tsx` 刪去 `CHAT_WEB_MAX_SOURCES` 上限斷言；WebRow 展開測試仍斷言卡片展示每一個來源欄位。`packages/web/tool-web` 的測試不變——模型側沒有改動。
 
-jsdom 不解析 CSS Modules 版面配置，對任何元素都報 `scrollHeight === clientHeight`，因此它根本無從見證這次滾動。幾何改由組裝態瀏覽器釘住，位於 `apps/web/tests/web-search-round.e2e.ts`：其確定性 search double 返回 12 條提供方結果，每條帶標題、引用摘錄與日期。這首先在真實組合裡端到端釘住 seam 的裁剪——出廠 `searchMaxResults` 保留 8 條，面向模型的 render 文字含這 8 條標題、不含被丟棄的 4 條 URL，並含 `(Showing the first 8 sources. Refine the query for more.)`，`meta.truncated` 為 true。隨後位於 aria golden 之後的一個用例展開 `web_search` 行，對卡片的 `<ol>` 斷言：8 個 `<li>`、卡片內任何位置都沒有 `<button>`、`来源列表已截断` 指示可見，以及計算樣式 `max-height: 320px` 與 `overflow-y: auto`，`scrollHeight` 為 574、`clientHeight` 為 320。再後一個用例在清單自身繼承的字體下量出 `999. ` 序號的寬度，要求計算後的 `padding-left` 不小於該寬度，從而把滾動容器無從滾回的那段序號空間釘在最寬序號上，而非釘在某一份 fixture（測試前置資料）的來源條數上。錄制的模型流與 aria golden 都未變動：重播是對 fixture 中 `assistant/chunk` 條目的位置遊標，而 search double 是提供方經 `fetch` 抵達的另一個本機端點；捕獲時卡片處於摺疊狀態，其 `<ol>` 不在 DOM 中，摘要行也不攜帶來源數量。
+jsdom 不解析 CSS Modules 版面設定，對任何元素都報 `scrollHeight === clientHeight`，因此它根本無從見證這次滾動。幾何改由組裝態瀏覽器釘住，位於 `apps/web/tests/web-search-round.e2e.ts`：其確定性 search double 返回 12 條提供方結果，每條帶標題、引用摘錄與日期。這首先在真實組合裡端到端釘住 seam 的裁剪——出廠 `searchMaxResults` 保留 8 條，面向模型的 render 文字含這 8 條標題、不含被丟棄的 4 條 URL，並含 `(Showing the first 8 sources. Refine the query for more.)`，`meta.truncated` 為 true。隨後位於 aria golden 之後的一個用例展開 `web_search` 行，對卡片的 `<ol>` 斷言：8 個 `<li>`、卡片內任何位置都沒有 `<button>`、`来源列表已截断` 指示可見，以及計算樣式 `max-height: 320px` 與 `overflow-y: auto`，`scrollHeight` 為 574、`clientHeight` 為 320。再後一個用例在清單自身繼承的字體下量出 `999. ` 序號的寬度，要求計算後的 `padding-left` 不小於該寬度，從而把滾動容器無從滾回的那段序號空間釘在最寬序號上，而非釘在某一份 fixture（測試前置資料）的來源條數上。錄制的模型流與 aria golden 都未變動：重播是對 fixture 中 `assistant/chunk` 條目的位置遊標，而 search double 是提供方經 `fetch` 抵達的另一個本機端點；捕獲時卡片處於摺疊狀態，其 `<ol>` 不在 DOM 中，摘要行也不攜帶來源數量。
 
 ## 相關文件
 

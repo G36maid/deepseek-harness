@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-load-pre-react-loop-sessions.md) | [简体中文](2026-08-04-load-pre-react-loop-sessions.zh.md) | 繁體中文
+[English](2026-08-04-load-pre-react-loop-sessions.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ react-loop 簡化在保持 `SESSION_FORMAT_VERSION` 為 0 的同時更改了持�
 
 ## 考慮過的替代方案
 
-**將同版本記錄視為不受支持。** 這符合預發布階段的默認立場，但會使 PR（Pull Request）基線產生的工作階段無法復原，儘管已移除的 steering 內容和終止事實都有完整對映。
+**將同版本記錄視為不受支援。** 這符合預發布階段的預設立場，但會使 PR（Pull Request）基線產生的工作階段無法復原，儘管已移除的 steering 內容和終止事實都有完整對映。
 
 **將舊 inbox 通知重播為持久 splice。** 這些通知不是工作階段事件，也無法提供可信的待處理狀態快照。如果無法獲知每一次領取和丟棄，就推斷插入操作，會讓已消費的工作再次執行。
 
@@ -32,7 +32,7 @@ react-loop 簡化在保持 `SESSION_FORMAT_VERSION` 為 0 的同時更改了持�
 
 以重構基線格式寫入的工作階段可以透過當前 AgentLoop 復原，並完整保留 steering 內容、輪次邊界、錯誤事實和停止分類。共享協調器約定覆蓋記憶體、JSONL 和 SQLite 的 `load`／`inspect`／`readFrom`，包括 SQLite 後綴回退；組裝後的 JSONL agent 復原用例會驗證歷史 transcript（文字記錄）可見，同時兩個新 inbox 清單都從空狀態開始。
 
-此例外支持基線格式，不支持重構開發期間產生的中間格式。具體而言，它沒有為更早的實驗性 `agent/inbox/spliced` 載荷定義遷移。透過確切形狀識別，當前格式外觀相似但結構錯誤的記錄仍會走拒絕路徑，不會被猜測性地轉換為有效記錄。
+此例外支援基線格式，不支援重構開發期間產生的中間格式。具體而言，它沒有為更早的實驗性 `agent/inbox/spliced` 載荷定義遷移。透過確切形狀識別，當前格式外觀相似但結構錯誤的記錄仍會走拒絕路徑，不會被猜測性地轉換為有效記錄。
 
 ## 相關資料
 

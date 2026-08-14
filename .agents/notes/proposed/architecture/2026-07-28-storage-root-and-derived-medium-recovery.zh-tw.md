@@ -2,13 +2,13 @@
 
 Status: proposed
 
-[English](2026-07-28-storage-root-and-derived-medium-recovery.md) | [简体中文](2026-07-28-storage-root-and-derived-medium-recovery.zh.md) | 繁體中文
+[English](2026-07-28-storage-root-and-derived-medium-recovery.md) | 繁體中文
 
 ## 問題
 
 持久投影快取（[決策記錄](2026-07-27-session-projection-and-command-log.md)，已作為 `dsh-session-projection-cache` 落地）暴露了它所依託的儲存基座的兩個缺口。二者都是 domain-KV 棧（[設計](2026-07-24-domain-kv-storage-and-workspace.md)）的屬性而非快取自身的問題，且都首先咬到快取——因為它是這條棧上第一個*派生*介質。
 
-**文件到底存在哪（根錯位已收口，resolve-once 殘餘仍開放）。** 共享 base 將工作階段儲存預設為全域性 harness home（`$DSH_HOME/sessions`，默認 `~/.dsh/sessions`），而出廠 Web overlay 曾給 json 後端相對根 `./.storages`：`workspace.json` 和 `session_projcache.json` 落在 `<启动目录>/.storages/` 下——從兩個不同目錄啟動，工作階段相同，工作區登錄檔和投影快取卻各是一份，而快取存在的意義恰恰是跨工作階段冷清單，凡上次在別的啟動目錄下快取過的工作階段全部 miss。這一錯位已消除：overlay 現以與工作階段根同一段 `!!js` 表達式把 `storage-json.root` 錨定到 `$DSH_HOME/storages`（`apps/cli/config/web.cordis.yml`）。殘餘隱患：`JsonStorageBackend` 仍從不 resolve 根——每次打開 unit 都把路徑 join 到當時的 `process.cwd()` 上（packages/storage/storage-json/src/index.ts）；出廠 overlay 的根已是絕對路徑不受影響，但任何相對根（裸 Loader 啟動、測試）仍會被後續 cwd 變化劈開，JSONL 工作階段後端用「構造時 resolve 一次」防住的正是它（"later process.cwd() changes cannot split one backend across roots"，packages/session/session-persistence-jsonl/src/index.ts）。
+**文件到底存在哪（根錯位已收口，resolve-once 殘餘仍開放）。** 共享 base 將工作階段儲存預設為全域性 harness home（`$DSH_HOME/sessions`，預設 `~/.dsh/sessions`），而出廠 Web overlay 曾給 json 後端相對根 `./.storages`：`workspace.json` 和 `session_projcache.json` 落在 `<启动目錄>/.storages/` 下——從兩個不同目錄啟動，工作階段相同，工作區登錄檔和投影快取卻各是一份，而快取存在的意義恰恰是跨工作階段冷清單，凡上次在別的啟動目錄下快取過的工作階段全部 miss。這一錯位已消除：overlay 現以與工作階段根同一段 `!!js` 表達式把 `storage-json.root` 錨定到 `$DSH_HOME/storages`（`apps/cli/config/web.cordis.yml`）。殘餘隱患：`JsonStorageBackend` 仍從不 resolve 根——每次打開 unit 都把路徑 join 到當時的 `process.cwd()` 上（packages/storage/storage-json/src/index.ts）；出廠 overlay 的根已是絕對路徑不受影響，但任何相對根（裸 Loader 啟動、測試）仍會被後續 cwd 變化劈開，JSONL 工作階段後端用「構造時 resolve 一次」防住的正是它（"later process.cwd() changes cannot split one backend across roots"，packages/session/session-persistence-jsonl/src/index.ts）。
 
 **現在是怎麼復原的。** 在健康介質內部，快取按設計完全自愈：`stateVersion` 不匹配的行被丟棄重摺，日誌縮短到行水位以下由帶錨的 restore floor 檢出並以一次全量重讀回答，每次後臺寫都是 fail-soft。但在*介質*層面完全沒有復原：被截斷、被手改或版本被 bump 的 `session_projcache.json` 會讓 `openJsonUnit` 以 `malformed-medium`/`version-mismatch` 失敗（packages/storage/storage-json/src/format.ts），schema 漂移的記錄讓域 open 以 `invalid-record` 失敗（packages/storage/storage-domain/src/index.ts），拒絕一路穿過 `SessionProjectionCache[Service.init]`，在 CLI 的 fail-loud 啟動下整個組裝拒絕啟動。一個內容完全可從工作階段日誌重建的文件能把啟動搞死。這與快取包自己聲明的立場（"a stale or unreadable cache costs a longer tail replay, never a wrong value"）和快取域 spec 的 JSDoc（"version bumps discard the whole medium"）相矛盾——後者今天描述的是願望而非實作。同一條 fail-loud 路徑對 `workspace.json` 卻是*正確*的——工作區記錄是權威資料，不可派生——所以缺的概念是按域聲明權威性，而不是全域性改行為。
 
@@ -18,13 +18,13 @@ Status: proposed
 
 ### 全域性唯一儲存根（已落地，形態修正）；構造時 resolve 一次（仍開放）
 
-- **已落地**：出廠 Web overlay 透過 app-boot 提供的 `dshHomePath('storages')`，直接在 `storage-json` 行內把 `root` 錨定到 `$DSH_HOME/storages`（默認 `~/.dsh/storages`，與 `~/.dsh/sessions` 並肩；目錄名不帶點——home 本身已是隱藏樹）。該輔助函式委託給規範的 `dsh-home-paths` 解析器，工作階段根也使用同一個函式，無需重複其回退和波浪號規則。最終選用按行形態（使用者決定）而非「launcher patch + `storageRoot` profile 鍵」（見 Alternatives）；按行覆蓋仍走個人 `~/.dsh/config.yaml` patch 層。web e2e scaffold 本就把該行 patch 到臨時絕對根，測試不觸使用者 home。
+- **已落地**：出廠 Web overlay 透過 app-boot 提供的 `dshHomePath('storages')`，直接在 `storage-json` 行內把 `root` 錨定到 `$DSH_HOME/storages`（預設 `~/.dsh/storages`，與 `~/.dsh/sessions` 並肩；目錄名不帶點——home 本身已是隱藏樹）。該輔助函式委託給規範的 `dsh-home-paths` 解析器，工作階段根也使用同一個函式，無需重複其回退和波浪號規則。最終選用按行形態（使用者決定）而非「launcher patch + `storageRoot` profile 鍵」（見 Alternatives）；按行覆蓋仍走個人 `~/.dsh/config.yaml` patch 層。web e2e scaffold 本就把該行 patch 到臨時絕對根，測試不觸使用者 home。
 - **仍開放**：`JsonStorageBackend` 在構造時對設定根 `resolve` 一次，原樣採納 JSONL 後端已記錄的理由：後續 `process.cwd()` 變化不得把一個後端劈到多個根下。SQLite 儲存後端已經 resolve 其路徑。
 - 適用 pre-release 立場（已按此執行）：不做遷移墊片。曾在 `<cwd>/.storages` 下快取過的部署要麼全部重新派生（工作區從 header 索引重新 bootstrap；投影快取惰性重摺），要麼手動把兩個 json 文件挪一次。
 
 ### 聲明派生介質：損壞時重設而非拒絕
 
-- `DomainSpec` 增加 `recovery?: 'reject' | 'reset'`（默認 `'reject'`）。spec 對象已經是一個域的身份與版面配置的真源；其介質是權威還是派生屬於同類事實，落在同一處。`session_projcache` 聲明 `'reset'`；`workspace` 保持默認。
+- `DomainSpec` 增加 `recovery?: 'reject' | 'reset'`（預設 `'reject'`）。spec 對象已經是一個域的身份與版面設定的真源；其介質是權威還是派生屬於同類事實，落在同一處。`session_projcache` 聲明 `'reset'`；`workspace` 保持預設。
 - `KvFacet` 增加一個原語：`destroy(descriptor): Promise<void>`——整體移除該 unit 的介質（json：刪文件；sqlite：drop 該 unit 的表）。與 `open` 一樣，它是後端儲存原語，不是策略。
 - `DomainFacility.open` 在 spec 聲明 `'reset'` 且 open 恰以損壞類錯誤失敗時——`StorageError('version-mismatch' | 'malformed-medium')` 或 `DomainError('invalid-record')`——記一條命名該域和被丟棄介質的警告，呼叫 `destroy`，再空開一次。其餘一切失敗（`backend-not-found`、`facet-unsupported`、`already-open`、I/O 錯誤）無論聲明與否都保持大聲：設定錯誤和環境故障不是介質損壞。重試單發——第二次失敗原樣傳播，持續失敗的介質不會成環。
 - 有了這個，快取域 spec 的 version 欄位才獲得其本意：bump `version`（或讓 zod 拒絕漂移行）真正丟棄整個介質，快取經正常寫點和冷讀重建——復原階梯的最外一檔，與已落地的行級各檔對齊。
@@ -47,7 +47,7 @@ Status: proposed
 
 ## 驗收標準
 
-- 從任意目錄啟動 `dsh` 都讀寫同一份 `$DSH_HOME/storages/*.json`（默認 `~/.dsh/storages`）——已由 overlay 表達式滿足，按行覆蓋走個人 config.yaml patch 層；後端對相對根在構造時 resolve 一次（待做）。
+- 從任意目錄啟動 `dsh` 都讀寫同一份 `$DSH_HOME/storages/*.json`（預設 `~/.dsh/storages`）——已由 overlay 表達式滿足，按行覆蓋走個人 config.yaml patch 層；後端對相對根在構造時 resolve 一次（待做）。
 - `session_projcache.json` 被截斷、版本 bump 或 schema 漂移時，組裝乾淨啟動：一條警告命名被丟棄的介質，文件消失，快取經正常運轉重建，冷清單列隨工作階段重新 checkpoint 逐步回歸。
 - 同樣的損壞發生在 `workspace.json` 上仍大聲拒絕啟動。
 - facility 測試覆蓋：每個損壞類恰好重設一次 `'reset'` 域；非損壞失敗在 `'reset'` 域上保持大聲；`'reject'` 域傳播一切失敗；`destroy` 在兩個出廠後端上都移除介質。

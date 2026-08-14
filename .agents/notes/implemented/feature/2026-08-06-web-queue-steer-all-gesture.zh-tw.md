@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-web-queue-steer-all-gesture.md) | [简体中文](2026-08-06-web-queue-steer-all-gesture.zh.md) | 繁體中文
+[English](2026-08-06-web-queue-steer-all-gesture.md) | 繁體中文
 
 ## 問題
 
@@ -29,5 +29,5 @@ Status: implemented
 - **在輸入機內攔截。** 已拒絕：輸入機按設計不感知佇列（佇列投影由 wiring 層疊加），且無法區分加速 Enter 與必須保持空操作的普通 Enter。
 - **逐條用 `session.prompt(mode: 'steer')` 插話。** 已拒絕：那會鑄造新訊息而不是轉移 pending 行，破壞 dock 的不可變訊息契約；`updateQueue({ kind: 'steer' })` 已經原子地轉移了確切的那條。
 - **並行觸發所有行。** 已拒絕：host 到達順序無法保證，而插話順序對模型可見；順序 await 保證 FIFO。
-- **為 steer-all 新增 host RPC。** 已拒絕：現有逐條操作已足夠冪等——每行一次嚴格 steer，中途關閉靜默收斂——協議改動沒有收益。
+- **為 steer-all 新增 host RPC。** 已拒絕：現有逐條操作已足夠冪等——每行一次嚴格 steer，中途關閉靜默收斂——協定改動沒有收益。
 - **傳送按鈕 tooltip。** 已拒絕：普通工作階段執行時期，主按鈕是 Stop，這也是整佇列手勢唯一可用的視窗。空草稿時的 placeholder 恰好在該視窗顯示，可以直接說明這項鍵盤操作。

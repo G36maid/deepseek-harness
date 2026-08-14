@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-message-feedback-sidecar.md) | [简体中文](2026-08-10-message-feedback-sidecar.zh.md) | 繁體中文
+[English](2026-08-10-message-feedback-sidecar.md) | 繁體中文
 
 ## 問題
 
@@ -34,10 +34,10 @@ Status: implemented
 
 **按全域性 `MessageId` 建索引、在 fork 時複製，或使用一個 Session revision。** 不予採納，因為訊息 id 僅在某個 Session 生命週期內有意義，fork 後的對話需要獨立的人類判斷，而且無關訊息的變更不應製造虛假衝突。
 
-**在本次變更中為 `KvTable` 擴充跨行程 compare-and-swap。** 不予採納，因為現有 storage-domain 後端沒有共同的條件寫原語。行程內佇列符合受支持的單 Host 拓撲；真實的多行程保證需要後端級原子約定，屬於獨立工作。
+**在本次變更中為 `KvTable` 擴充跨行程 compare-and-swap。** 不予採納，因為現有 storage-domain 後端沒有共同的條件寫原語。行程內佇列符合受支援的單 Host 拓撲；真實的多行程保證需要後端級原子約定，屬於獨立工作。
 
 **在 Session disposal 時刪除回饋。** 不予採納，因為 disposal 包含普通 detach 與 rollback 路徑。把它當成持久刪除會在 Session 日誌仍存在時丟失回饋；清理必須等待真正的 Session 刪除權威。
 
 ## 後果
 
-訊息回饋在本機持久化並可獨立編輯，且不改變模型可見歷史或遙測行為。同一 Host 中的並行呼叫方獲得逐訊息衝突偵測與可安全重試的結果；多個寫入者共享同一儲存根目錄的部署仍不受支持。不同的 header 身份會讓過時記錄被視為不存在，但不會將其回收；本約定無法區分保留相同 `{createdAt, cwd}` 的克隆日誌。Host Remote 約定現在可用；用戶端組裝與 UI 可以保持為薄消費者，而不接管持久化或並行語義。
+訊息回饋在本機持久化並可獨立編輯，且不改變模型可見歷史或遙測行為。同一 Host 中的並行呼叫方獲得逐訊息衝突偵測與可安全重試的結果；多個寫入者共享同一儲存根目錄的部署仍不受支援。不同的 header 身份會讓過時記錄被視為不存在，但不會將其回收；本約定無法區分保留相同 `{createdAt, cwd}` 的克隆日誌。Host Remote 約定現在可用；用戶端組裝與 UI 可以保持為薄消費者，而不接管持久化或並行語義。

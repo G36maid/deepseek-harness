@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-05-prompt-variables-and-tool-guidance-ownership.md) | [简体中文](2026-07-05-prompt-variables-and-tool-guidance-ownership.zh.md) | 繁體中文
+[English](2026-07-05-prompt-variables-and-tool-guidance-ownership.md) | 繁體中文
 
 ## 問題
 
@@ -28,7 +28,7 @@ Status: implemented
 
 外掛程式透過 `ctx.systemPrompt.variable(name, provider)` 註冊 `{{name}}` 值。組裝過程將它們解析到 waterfall 可見的變數對映中。渲染階段拒絕以下情況：引用未知的自有屬性、已註冊的提供方返回 `undefined`、格式錯誤的完整引用、以及仍包含閉合 `}}` 的不平衡引用；孤立的未匹配 `{{` 保留為行文，替換後的值不會被重新掃描。註冊階段拒絕無效或重複的變數名，section 名稱也必須唯一。
 
-`dsh-agent-loop` 註冊兩個內建變數，均為上下文 agent 的純投影：`model`（= `options.model`）和 `cwd`（= `session.header.cwd`）。示例 persona 寫 `powered by the {{model}} model`——模型名稱只在 `model:` 設定鍵中聲明一次。`{{cwd}}` 僅在 ACP 示例中演示：每個 ACP 工作階段攜帶用戶端的 cwd，而設定預建立的 stdio agent 沒有 cwd（在那裡聲稱 `{{cwd}}` 的 persona 會導致該輪次失敗——這是有意為之）。變數留在 loop 外掛程式上（不同於下面的 section）：它們是本迴圈驅動的 agent 的執行時期事實，替換迴圈自行提供自己的變數。
+`dsh-agent-loop` 註冊兩個內建變數，均為上下文 agent 的純投影：`model`（= `options.model`）和 `cwd`（= `session.header.cwd`）。示例 persona 寫 `powered by the {{model}} model`——模型名稱只在 `model:` 設定鍵中聲明一次。`{{cwd}}` 僅在 ACP 示例中示範：每個 ACP 工作階段攜帶用戶端的 cwd，而設定預建立的 stdio agent 沒有 cwd（在那裡聲稱 `{{cwd}}` 的 persona 會導致該輪次失敗——這是有意為之）。變數留在 loop 外掛程式上（不同於下面的 section）：它們是本迴圈驅動的 agent 的執行時期事實，替換迴圈自行提供自己的變數。
 
 ### Persona 作為 order-0 section
 

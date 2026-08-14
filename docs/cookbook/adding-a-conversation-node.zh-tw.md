@@ -1,6 +1,6 @@
 # 新增 Web Client Conversation Node
 
-[English](adding-a-conversation-node.md) | [简体中文](adding-a-conversation-node.zh.md) | 繁體中文
+[English](adding-a-conversation-node.md) | 繁體中文
 
 本教程為 Web Client Chat 檢視表新增一行由業務自行擁有的內容。完成後的外掛程式會把一個持久 Session 事件族關聯成一個 Context，增量構造業務 State，發布類型化 Step 資料，再渲染 keyed Chat Node；整個過程不掃描 Session 視窗或其他已渲染節點。本教程假設 Host 已經記錄這些事件，且該 Client 外掛程式已組裝進 Web bundle；Host 側外部 UI 和 Trajectory 等額外檢視表目標不在本文範圍內。
 
@@ -20,7 +20,7 @@
 
 跨行程邊界使用生產方擁有的 branded id 類型。把 `SessionEventMap` 合併和 payload 類型放在生產方的純類型匯出中，再由 Client 包透過僅類型副作用匯入該匯出。每個 `(kind, id)` 最多隻能有一條 start 事件。單事件業務可以把事件自身的穩定身份（例如 `event.seq`）作為 Definition 內部 id。
 
-系統支持增量事件。如果生產方能以較低成本寄出 whole-value checkpoint，應優先採用，因為 start 位於已載入視窗之外時它仍可直接使用。每條 delta 都必須攜帶穩定 id，並且按照日誌 `seq` 升序重播時能夠確定性地產生 State；它不能相依性只存在於即時記憶體中的狀態。如果當前歷史視窗只有 update，Assembler 會保留一個 pending Context，並在更早分頁補齊 start 前不構造 State。如果產品必須在 start 尚未載入時渲染，terminal 或 checkpoint 事件就必須攜帶足夠的完整 fallback 狀態，讓 Definition 能直接構造結果；不要透過掃描無關事件復原它。
+系統支援增量事件。如果生產方能以較低成本寄出 whole-value checkpoint，應優先採用，因為 start 位於已載入視窗之外時它仍可直接使用。每條 delta 都必須攜帶穩定 id，並且按照日誌 `seq` 升序重播時能夠確定性地產生 State；它不能相依性只存在於即時記憶體中的狀態。如果當前歷史視窗只有 update，Assembler 會保留一個 pending Context，並在更早分頁補齊 start 前不構造 State。如果產品必須在 start 尚未載入時渲染，terminal 或 checkpoint 事件就必須攜帶足夠的完整 fallback 狀態，讓 Definition 能直接構造結果；不要透過掃描無關事件復原它。
 
 ## 2. 實作 Definition 與類型化 Chat payload
 

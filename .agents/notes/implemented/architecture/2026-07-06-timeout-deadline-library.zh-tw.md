@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-timeout-deadline-library.md) | [简体中文](2026-07-06-timeout-deadline-library.zh.md) | 繁體中文
+[English](2026-07-06-timeout-deadline-library.md) | 繁體中文
 
 ## 問題
 
@@ -103,7 +103,7 @@ export function timeoutOf(x: AbortSignal | { reason?: unknown }, code?: string):
 - `AbortSignal.any` 和 `using`/`Symbol.dispose` 在此首次進入本倉庫（Node ≥ 24 基線，已滿足）。
 - 模型流現在共享一個可重新啟動的定時器約定，不會把滑動的空閒間隔變成總呼叫截止時間，也不會計入消費端思考時間。能夠觀察到帶外傳輸活動的配接器可以對尚未結帳的 demand 呼叫 `pulse()`；被封鎖的活動對 watchdog 仍不可見。該原語仍然只做通知；配接器測試證明其傳輸觀察到穩定訊號並終止。
 
-以下內容不在本次範圍內，列出以標明邊界：`web_search` 可以在其工具 schema 和快照覆蓋規劃完成後獲得選填的面向模型的 `timeout_ms`；基於 ripgrep 的檔案系統發現工具（[打包的 ripgrep 搜尋](2026-08-01-packaged-ripgrep-search.md)）透過 `dsh-tool-call-timeout-policy` 和 `exec.signal` 消費同樣的提供方自有 deadline 形狀；`tools/execute` waterfall（瀑布式事件）中介軟體可以透過驅動 `exec.signal` 為每次工具呼叫設定默認 deadline——那將是一個*消費*本庫的外掛程式，仍然只做通知，硬終止仍是各能力自己的事。
+以下內容不在本次範圍內，列出以標明邊界：`web_search` 可以在其工具 schema 和快照覆蓋規劃完成後獲得選填的面向模型的 `timeout_ms`；基於 ripgrep 的檔案系統發現工具（[打包的 ripgrep 搜尋](2026-08-01-packaged-ripgrep-search.md)）透過 `dsh-tool-call-timeout-policy` 和 `exec.signal` 消費同樣的提供方自有 deadline 形狀；`tools/execute` waterfall（瀑布式事件）中介軟體可以透過驅動 `exec.signal` 為每次工具呼叫設定預設 deadline——那將是一個*消費*本庫的外掛程式，仍然只做通知，硬終止仍是各能力自己的事。
 
 ## 曾考慮的替代方案
 

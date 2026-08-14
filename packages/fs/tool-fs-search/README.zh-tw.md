@@ -1,8 +1,8 @@
 # @deepseek-ai/dsh-tool-fs-search
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
-**面向模型的檔案系統發現工具**（`glob`、`grep`）由 **打包的 ripgrep 二進位**（`@vscode/ripgrep`）支持，而不是由 `ctx.fs` 提供方方法或系統 `rg` 安裝支持。註冊是無條件的：二進位隨 NPM 相依性一起交付，因此沒有載入期可用性探針。每次呼叫都透過 `ctx.subprocess` seam 以固定 argv 向量 spawn 該二進位（前綴 `--no-config`，使宿主的 `RIPGREP_CONFIG_PATH` 無法向不受約束的 spawn 注入 `--pre` 預處理器；模型控制的值是普通 argv 元素——不存在 shell 層，因此不涉及 shell 引號處理），解析原始 `rg` 輸出，並返回相對於工作目錄的規範值。本包注入 `tools`、`systemPrompt` 和 `subprocess`，有意**不**注入 `fs`；格式化結果 spill 為選填功能，因此機會性讀取 `ctx.spillStore`，呼叫方式為 `ctx.get()`。
+**面向模型的檔案系統發現工具**（`glob`、`grep`）由 **打包的 ripgrep 二進位**（`@vscode/ripgrep`）支援，而不是由 `ctx.fs` 提供方方法或系統 `rg` 安裝支援。註冊是無條件的：二進位隨 NPM 相依性一起交付，因此沒有載入期可用性探針。每次呼叫都透過 `ctx.subprocess` seam 以固定 argv 向量 spawn 該二進位（前綴 `--no-config`，使宿主的 `RIPGREP_CONFIG_PATH` 無法向不受約束的 spawn 注入 `--pre` 預處理器；模型控制的值是普通 argv 元素——不存在 shell 層，因此不涉及 shell 引號處理），解析原始 `rg` 輸出，並返回相對於工作目錄的規範值。本包注入 `tools`、`systemPrompt` 和 `subprocess`，有意**不**注入 `fs`；格式化結果 spill 為選填功能，因此機會性讀取 `ctx.spillStore`，呼叫方式為 `ctx.get()`。
 
 ```ts ignore-check
 // A deployment chooses how over-cap glob pages are selected.
@@ -12,11 +12,11 @@ await ctx.plugin(ToolFsSearch, { sampleOverCapGlobResults: false })
 await ctx.plugin(LocalSpillStore)                           // @deepseek-ai/dsh-spill-local
 ```
 
-採用 spawn 支持的原因：本機工作區發現天然是由行程支持的 `rg` 工作流程；如果把搜尋放到 `ctx.fs` 上，就會迫使每個檔案系統後端擴充搜尋 API。subprocess seam 負責 spawn 執行、行程樹終止、環境清理和有界輸出捕獲；本包負責 schema、參數校驗、argv 構造、解析、保留、格式化結果 spill 和逾時聲明。工具絕不暴露背景工作——只有在 `rg` 退出、被協作式逾時終止、被中止或失敗後，呼叫才會返回。
+採用 spawn 支援的原因：本機工作區發現天然是由行程支援的 `rg` 工作流程；如果把搜尋放到 `ctx.fs` 上，就會迫使每個檔案系統後端擴充搜尋 API。subprocess seam 負責 spawn 執行、行程樹終止、環境清理和有界輸出捕獲；本包負責 schema、參數校驗、argv 構造、解析、保留、格式化結果 spill 和逾時聲明。工具絕不暴露背景工作——只有在 `rg` 退出、被協作式逾時終止、被中止或失敗後，呼叫才會返回。
 
 ## 部署要求：無需宿主 rg，但工作目錄與檔案系統需共置
 
-二進位隨包交付，覆蓋所有受支持平臺（macOS/Linux/Windows，x64/arm64），因此無需宿主 `rg` 安裝，工具在每個部署上都註冊。返迴路徑會相對於解析後的工作目錄顯示（呼叫方 agent（代理）有工作階段 cwd 時使用該 cwd，否則使用 `process.cwd()`）；只有該工作目錄與檔案系統根目錄是同一工作區時，才能用 `read` 繼續讀取。這項共置要求不附帶執行時期跨服務校驗；遠端或虛擬檔案系統搜尋需等待共享工作區約定或特定提供方的搜尋後端。
+二進位隨包交付，覆蓋所有受支援平臺（macOS/Linux/Windows，x64/arm64），因此無需宿主 `rg` 安裝，工具在每個部署上都註冊。返迴路徑會相對於解析後的工作目錄顯示（呼叫方 agent（代理）有工作階段 cwd 時使用該 cwd，否則使用 `process.cwd()`）；只有該工作目錄與檔案系統根目錄是同一工作區時，才能用 `read` 繼續讀取。這項共置要求不附帶執行時期跨服務校驗；遠端或虛擬檔案系統搜尋需等待共享工作區約定或特定提供方的搜尋後端。
 
 ## 設定
 
@@ -129,6 +129,6 @@ glob 描述聲明瞭設定的超過上限排序方式。生成的 [`glob` 和 `g
 ## 已知限制與暫緩事項
 
 - **搜尋與文件訪問沒有共享工作區證明**——只有當工作目錄與檔案系統根目錄指向同一工作區時，返迴路徑纔可繼續讀取；本包不執行執行時期跨服務校驗。
-- **打包二進位固定在相依性版本上**——`@vscode/ripgrep` 覆蓋其隨附的平臺（macOS/Linux/Windows，x64/arm64）；不支持的平臺或損壞的安裝會以 `SEARCH_FAILED` 使呼叫失敗。遠端或虛擬檔案系統需要共置的工作區或另一個搜尋消費端。
+- **打包二進位固定在相依性版本上**——`@vscode/ripgrep` 覆蓋其隨附的平臺（macOS/Linux/Windows，x64/arm64）；不支援的平臺或損壞的安裝會以 `SEARCH_FAILED` 使呼叫失敗。遠端或虛擬檔案系統需要共置的工作區或另一個搜尋消費端。
 - **schema 只暴露一個有界頁面**——偏移分頁、大小寫開關、替代輸出模式與提供方支撐的發現仍不在本包範圍內；達到上限的完整輸出需要 spill 後端。
 - **啟用取樣時僅按搜尋根正下方的第一段路徑分組**——超過上限的 `glob` 頁面在這些頂層條目之間平衡，因此集中在更深處的結果（一棵均勻樹裡某個繁忙目錄）在該層級之下仍會呈現不均；遞迴平衡被延期。

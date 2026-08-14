@@ -1,6 +1,6 @@
 # 實作手冊：擴充外掛程式形態
 
-[English](extension-cookbook.md) | [简体中文](extension-cookbook.zh.md) | 繁體中文
+[English](extension-cookbook.md) | 繁體中文
 
 harness 擴充的參考模式。程式碼片段省略了 import 和輔助實作，無法直接複製執行。具體編寫路徑見[包檢查清單](adding-a-package.md)、[第一個工具教程](../user/develop/basic/tool.md)、[工具參考](adding-a-tool.md)和 [LLM（大型語言模型）配接器指南](adding-an-llm-adapter.md)；系統與擴充點對映由[架構文件](../architecture.md)負責。
 
@@ -12,7 +12,7 @@ harness 擴充的參考模式。程式碼片段省略了 import 和輔助實作�
 
 ## 掛鉤外掛程式（以權限閘門為例）
 
-這個權限閘門是掛鉤外掛程式的一個示例。它從 `tools/pre-execute` 閘門返回一個類型化的決策，用於允許或拒絕一次呼叫；沙盒、權限和 plan-mode 外掛程式都可以使用該擴充點。掛鉤外掛程式也可以攔截其他擴充點，本身並不等同於權限閘門。「原生掛鉤」是在攔截點上執行的普通 Cordis 外掛程式，不需要外部協議。
+這個權限閘門是掛鉤外掛程式的一個示例。它從 `tools/pre-execute` 閘門返回一個類型化的決策，用於允許或拒絕一次呼叫；沙盒、權限和 plan-mode 外掛程式都可以使用該擴充點。掛鉤外掛程式也可以攔截其他擴充點，本身並不等同於權限閘門。「原生掛鉤」是在攔截點上執行的普通 Cordis 外掛程式，不需要外部協定。
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
@@ -62,9 +62,9 @@ export function apply(ctx: Context) {
 }
 ```
 
-## 外部協議驅動
+## 外部協定驅動
 
-*協議驅動*將協議對端接入 `ctx.agents`；它可以服務於 UI 或自動化用戶端。stdio 驅動擁有 stdout，透過工廠建立或復原 agent（代理），並將協議請求對映為 `followup()` 或 `cancel()`。底層提示詞請求返回其持久入隊回執；它不會透過關聯 `MessageId` 與 `turn/end` 獲得結果。整個 agent 的狀態應單獨發布。自動化方法可以從回執等待到下一次 idle，並概括這一顯式擁有的區間；UI 通常則會持續觀察開放式事件串流。透過 `AgentHandle.dispose()` 拆除 agent，以使 dispose（資源釋放）達到完全靜止。
+*協定驅動*將協定對端接入 `ctx.agents`；它可以服務於 UI 或自動化用戶端。stdio 驅動擁有 stdout，透過工廠建立或復原 agent（代理），並將協定請求對映為 `followup()` 或 `cancel()`。底層提示詞請求返回其持久入隊回執；它不會透過關聯 `MessageId` 與 `turn/end` 獲得結果。整個 agent 的狀態應單獨發布。自動化方法可以從回執等待到下一次 idle，並概括這一顯式擁有的區間；UI 通常則會持續觀察開放式事件串流。透過 `AgentHandle.dispose()` 拆除 agent，以使 dispose（資源釋放）達到完全靜止。
 
 [`packages/acp/acp`](../../packages/acp/acp) 是僅面向自動化的完整示例：它透過 ACP（Agent Client Protocol）JSON-RPC stdio 提供全新文字工作階段，寄出已提交的助手文字，並為其擁有的 agent 註冊一次性機器權限應答器。其 [README](../../packages/acp/acp/README.md) 定義確切的方法、事件順序和生命週期約定。
 
@@ -98,7 +98,7 @@ export function apply(ctx: Context) {
 
 每個產品功能都對映到一個文件化擴充點上的監聽器——微核心聲明由此可驗證（[微核心 Agent Note](../../.agents/notes/implemented/architecture/2026-06-11-microkernel-event-taxonomy.md)）。沒有任何一行修改迴圈本身。
 
-`system-prompt/assemble` 是一個專家協作式的整體裝配變換：其返回的裝配結果具有權威性，因此監聽器作者有責任保留活躍的 Code Mode 和結構化輸出協議的貢獻。對於需要在展示、尋找和執行之間保持對齊的工具過濾，優先使用 `ctx.tools.restrict()`。
+`system-prompt/assemble` 是一個專家協作式的整體裝配變換：其返回的裝配結果具有權威性，因此監聽器作者有責任保留活躍的 Code Mode 和結構化輸出協定的貢獻。對於需要在展示、尋找和執行之間保持對齊的工具過濾，優先使用 `ctx.tools.restrict()`。
 
 | 產品功能 | 外掛程式機制 |
 |---|---|
@@ -108,7 +108,7 @@ export function apply(ctx: Context) {
 | 動態工作流程 | `ctx.workflowEngine` + worker-thread 引擎 + `workflow` 工具；結構化的行程內子任務透過作用域化的提示詞/工具註冊、單調工具守衛、最終 `tools/result` 提交（包括外層 `run_code`）和結構化輸出執行的單調 `concludeTurn()` 標記來強制輸出 |
 | 排隊訊息 + steering | 核心 `Agent.followup()` / `Agent.steer()` |
 | 上下文壓縮（context compaction）（自動 + 手動） | `ctx.compaction` seam + `dsh-compaction-basic`；自動壓力檢查執行在序列 `agent/pre-step`，標準的溢位復原機制執行在 `agent/request-error`，手動呼叫方使用同一個壓縮服務（[壓縮 Agent Note](../../.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md)） |
-| 系統提示詞可設定性 | `ctx.systemPrompt.section()`，支持排序與作用域區域性覆蓋 |
+| 系統提示詞可設定性 | `ctx.systemPrompt.section()`，支援排序與作用域區域性覆蓋 |
 | AGENTS.md（根目錄） | 一個讀取該文件的 section 提供方 |
 | AGENTS.md（子目錄，按需觸發）+ 文件變更通知 | 從 watcher / 工具結果監聽器呼叫 `agent.inject()` |
 | 內建工具 | `ctx.tools.register()`；schema 自動流入裝配——`dsh-tool-*` 系列（bash、fs、web、subagent、todo）是已交付的示例 |

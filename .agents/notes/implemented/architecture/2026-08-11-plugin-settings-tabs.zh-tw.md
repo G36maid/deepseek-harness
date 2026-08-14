@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-plugin-settings-tabs.md) | [简体中文](2026-08-11-plugin-settings-tabs.zh.md) | 繁體中文
+[English](2026-08-11-plugin-settings-tabs.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 分區擁有方貢獻 `configurable` 分頁標籤，由它聲明既有的巢狀 `settings.plugin.item` 清單。設定卡片原有的命名空間綁定、草稿狀態、校驗與寫入均保持不變。`@deepseek-ai/dsh-client-ui-settings-plugin-inventory` 向 `settings.plugins.tab` 貢獻 `all` 分頁標籤；它的 Host Loader 觀察器、生成的 Remote 命名空間、DTO 與搜尋語義保持不變。已停用的清單條目會在摘要和詳情中省略重複的“未掛載”執行狀態，已啟用條目仍顯示其 Cordis 階段。
 
-默認選擇順序中的第一個分頁標籤。某個分頁標籤只有首次被選擇時才掛載，之後在“外掛程式”分區保持掛載期間只隱藏而不解除安裝。這樣會把清單 RPC 延遲到使用者打開**外掛程式清單**時，並在切換分頁標籤時保留草稿、搜尋文字、摺疊狀態和已讀取的快照。關閉 Settings 會解除安裝該分區，因此再次打開後，重新選擇該分頁標籤時會取得新的清單快照。
+預設選擇順序中的第一個分頁標籤。某個分頁標籤只有首次被選擇時才掛載，之後在“外掛程式”分區保持掛載期間只隱藏而不解除安裝。這樣會把清單 RPC 延遲到使用者打開**外掛程式清單**時，並在切換分頁標籤時保留草稿、搜尋文字、摺疊狀態和已讀取的快照。關閉 Settings 會解除安裝該分區，因此再次打開後，重新選擇該分頁標籤時會取得新的清單快照。
 
 兩項註冊都使用 `ctx.slots.inject()`。分區聲明方解除安裝時，標籤 slot 及其全部貢獻隨之摺疊；重新聲明後，每項功能都能重新註冊，無需靜態 import，也不相依性啟用順序。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-package-invariant-runtime-contracts.md) | [简体中文](2026-07-19-package-invariant-runtime-contracts.zh.md) | 繁體中文
+[English](2026-07-19-package-invariant-runtime-contracts.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 有用的執行時期不變數會關聯時間上的多個觀測，或關聯可變資料結構中的多個部分。例如：終止事件沒有對應的開始事件、LLM（大型語言模型）delta 指向未打開的塊，或持久化結果的身份與請求不同。僅確認聲明的方法存在、外掛程式名稱符合預期，或常數示例仍返回已知值，都不屬於這種關係。
 
-有些包確實沒有可持續觀測的關係。純工具、僅負責組合的包、薄配接器、可執行入口和測試支持包可能仍有重要約定，但型別檢查、載入檢查、聚焦單元測試或整合測試更適合執行這些約定。強迫這些包新增合成執行時期斷言，只會讓實作圍繞透過閘門最佳化，而不是偵測損壞。
+有些包確實沒有可持續觀測的關係。純工具、僅負責組合的包、薄配接器、可執行入口和測試支援包可能仍有重要約定，但型別檢查、載入檢查、聚焦單元測試或整合測試更適合執行這些約定。強迫這些包新增合成執行時期斷言，只會讓實作圍繞透過閘門最佳化，而不是偵測損壞。
 
 ## 決策
 
@@ -21,7 +21,7 @@ Status: implemented
 - 安裝檔自有的事件串流或相關可變資料結構檢查，並透過綁定的 `fail(message)` 報告器報告違規；或
 - 使用空安裝器，並在其聲明前寫一條該包專屬的 `No runtime invariant:` 註釋，說明為什麼該包沒有合理的執行時期關係可供觀測。
 
-空形式是明確的架構結論，不是生成佔位符。如果後續包變更引入可變狀態或事件協議，就必須用相應檢查替換該說明。
+空形式是明確的架構結論，不是生成佔位符。如果後續包變更引入可變狀態或事件協定，就必須用相應檢查替換該說明。
 
 中央 `dsh-invariants` 服務只負責設定、註冊唯一性、子 fiber 生命週期、回滾、dispose（資源釋放）和歸屬到包的失敗。它不暴露通用外掛程式形狀、服務形狀或啟動斷言 helper，也不匯入產品包。
 
@@ -57,7 +57,7 @@ Status: implemented
 
 ### 倉庫閘門與測試
 
-`verify-package-invariants` 發現每個 workspace 包，並強制 companion 原始檔、完整名稱註冊、僅含具名 export 的 Loader 形狀、`./invariant` export、發布文件、相依性、TypeScript reference 和 bundle entry 完整。其 AST 規則拒絕生成標記、默認匯出和沒有解釋的空安裝器。非空安裝器必須接收並使用失敗報告器，註冊時還必須傳入該經檢查的本機 `install` 函式。閘門不會透過方法名或 helper 呼叫推斷語義質量。
+`verify-package-invariants` 發現每個 workspace 包，並強制 companion 原始檔、完整名稱註冊、僅含具名 export 的 Loader 形狀、`./invariant` export、發布文件、相依性、TypeScript reference 和 bundle entry 完整。其 AST 規則拒絕生成標記、預設匯出和沒有解釋的空安裝器。非空安裝器必須接收並使用失敗報告器，註冊時還必須傳入該經檢查的本機 `install` 函式。閘門不會透過方法名或 helper 呼叫推斷語義質量。
 
 Vitest 為每個包測試拓撲使用 `{ enabled: true }` 掛載 `InvariantRegistry`，並載入所有者 companion。不變數 subpath 的 path mapping 會解析源 companion，而不是過時的建置輸出。聚焦 suite 覆蓋每個可執行 companion 的有效和無效觀測；窮舉拓撲透過真實 Loader 命名空間歸一化執行每個源 companion。結構閘門驗證每個包的發布對映後，產物閘門會暫存其 manifest（中繼資料清單）聲明的 `lib/` 文件，在 plain Node 下匯入已編譯的 `./invariant` 自引用，並重複執行該 Loader 形狀檢查；這樣，若 companion 匯入未聲明的執行時期區塊，閘門就會在發布前失敗。合成事件串流的測試必須構造有效的外圍生命週期，除非測試本身就是在斷言違規。
 

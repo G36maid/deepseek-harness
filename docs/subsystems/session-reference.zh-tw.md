@@ -1,6 +1,6 @@
 # 工作階段引用
 
-[English](session-reference.md) | [简体中文](session-reference.zh.md) | 繁體中文
+[English](session-reference.md) | 繁體中文
 
 結構化的跨工作階段引用請求與準備後的訊息上下文。[包約定](../../packages/context/session-reference) 定義規範 URI、當前表層投影、標籤安全的 JSON 與位元組保留、穩定錯誤和不可信的模型提示詞。宿主配接器使用這些類型，而不會把各自 UI 的提及文法傳入 agent（代理）核心。
 
@@ -52,7 +52,7 @@ interface PreparedReferencedMessage {
 
 ## 錯誤
 
-`SessionReferenceError.code` 區分無效設定或輸入、自引用、數量限制、源讀取失敗、預算失敗和取消。宿主協議會把這些 code 對映到各自的錯誤封裝，無需檢查提示詞位元組。
+`SessionReferenceError.code` 區分無效設定或輸入、自引用、數量限制、源讀取失敗、預算失敗和取消。宿主協定會把這些 code 對映到各自的錯誤封裝，無需檢查提示詞位元組。
 
 ```ts type-equiv
 /** Stable failure codes exposed to host adapters. */

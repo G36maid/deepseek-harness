@@ -1,8 +1,8 @@
 # DeepSeek Harness 執行時期 wheel 套件
 
-[English](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.md) | [简体中文](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.zh.md) | 繁體中文
+[English](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.md) | 繁體中文
 
-Python SDK 的執行時期載體包（分發名 `deepseek-harness-runtime-bin`，模組名 `deepseek_harness_runtime`）：它定位 `deepseek-harness-sdk` 用戶端要 spawn 的內建執行時期二進位，並附帶支撐零設定執行的預設配置。
+Python SDK 的執行時期載體包（分發名 `deepseek-harness-runtime-bin`，模組名 `deepseek_harness_runtime`）：它定位 `deepseek-harness-sdk` 用戶端要 spawn 的內建執行時期二進位，並附帶支撐零設定執行的預設設定。
 
 ## 執行時期載體
 
@@ -15,13 +15,13 @@ Python SDK 的執行時期載體包（分發名 `deepseek-harness-runtime-bin`�
 
 exe 缺失時拋出 `FileNotFoundError`，並寫明兩種取得途徑：在 deepseek-harness 檢出中經 `scripts/build-exe-for-python-sdk.ts` 建置，或安裝 `build-exe-for-python-sdk` CI 工作流程生成的對應平臺執行時期 wheel 套件。僅限開發的 node 載體缺失時只提示建置指令碼這一條途徑。該工作流程只保留 wheel 套件，不保留獨立 exe 歸檔。取得策略與尋找介面刻意分離，之後可以換成按需下載而不改動任何呼叫方。
 
-每個 wheel 套件只包含一個執行時期可執行文件。macOS wheel 套件還包含與其匹配的原生 spawn helper；缺少伴隨檔案意味著該安裝不完整，並會在啟動時硬失敗，即使所選 Cordis 組合不使用 PTY 工具也是如此。Linux wheel 套件不包含 spawn helper，因為 `node-pty` 直接使用暫存的 `pty.node` 原生外掛程式。固定標籤為 `py3-none-manylinux_2_28_x86_64`、`py3-none-manylinux_2_28_aarch64` 與 `py3-none-macosx_14_0_arm64`；macOS 標籤保守匹配內建 Node 24 可執行文件的 macOS 13.5 部署目標。本包的 `platforms.json` 統一定義倉庫發行建置器與隔離建置掛鉤使用的固定標籤和可執行檔名。建置掛鉤會拒絕 `py3-none-any`、不存在執行時期文件、存在多個執行時期文件、文件不可執行以及不支持的平臺標籤。倉庫根目錄的 `package.json` 為本包和 SDK 提供共同版本，`python-v<repository-version>` 發布標籤必須與其匹配。
+每個 wheel 套件只包含一個執行時期可執行文件。macOS wheel 套件還包含與其匹配的原生 spawn helper；缺少伴隨檔案意味著該安裝不完整，並會在啟動時硬失敗，即使所選 Cordis 組合不使用 PTY 工具也是如此。Linux wheel 套件不包含 spawn helper，因為 `node-pty` 直接使用暫存的 `pty.node` 原生外掛程式。固定標籤為 `py3-none-manylinux_2_28_x86_64`、`py3-none-manylinux_2_28_aarch64` 與 `py3-none-macosx_14_0_arm64`；macOS 標籤保守匹配內建 Node 24 可執行文件的 macOS 13.5 部署目標。本包的 `platforms.json` 統一定義倉庫發行建置器與隔離建置掛鉤使用的固定標籤和可執行檔名。建置掛鉤會拒絕 `py3-none-any`、不存在執行時期文件、存在多個執行時期文件、文件不可執行以及不支援的平臺標籤。倉庫根目錄的 `package.json` 為本包和 SDK 提供共同版本，`python-v<repository-version>` 發布標籤必須與其匹配。
 
 ## 解析 API
 
 - `resolve_bundled_launch_args(mode=None) -> tuple[str, ...]`——啟動內建執行時期的 argv 元組：exe 模式下為 `(exe_path,)`，node 模式下為 `(node_path, bin_js_path)`。模式選擇：顯式參數 > `DSH_RUNTIME_MODE` 環境變數（`exe` | `node`）> 自動。自動解析只找生產 exe——僅限開發的 node 載體必須顯式選用，從而生產部署絕不會悄悄跑在原始碼建置上。
 - `bundled_runtime_path() -> Path`——平臺 exe 路徑（僅 exe 載體，並會在 macOS 上校驗必要的 `-spawn-helper` 伴隨檔案也已安裝）。node 載體沒有單一路徑的等價物，經由上面的 argv 元組啟動。
-- `bundled_default_config_path() -> Path`——檢入的預設配置（見下文）。
+- `bundled_default_config_path() -> Path`——檢入的預設設定（見下文）。
 - `bundled_package_dir() -> Path`——已安裝檔的資料根目錄。
 
 ## 零設定設計

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-in-process-driver
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 本包是兩個行程內提供方共用的執行驅動器。spawn 不傳入工作階段初始內容；fork 傳入父 agent（代理）已完成輪次的前綴。其餘機制，包括深度、子 agent 建立、選填的子 agent 訂製、結果讀取、取消和 dispose（資源釋放），都在此共用同一套實作。
 
@@ -40,7 +40,7 @@
 
 - 使用請求 schema 註冊的 `structured_output` 工具會校驗並暫存模型值。
 - 一個順序為 190 的系統提示詞段會告訴子 agent，該工具呼叫就是終態答案。
-- 兩項貢獻都是普通的子 agent 作用域註冊。專家級 `system-prompt/assemble` 監聽器可以替換它們，因此負責為該子 agent 保留結構化輸出協議。
+- 兩項貢獻都是普通的子 agent 作用域註冊。專家級 `system-prompt/assemble` 監聽器可以替換它們，因此負責為該子 agent 保留結構化輸出協定。
 - `tools/result` 觀察器只會在該次執行的權威最終工具結果成功後提交暫存值；Code Mode 子分派外層的 `run_code` 結果也包括在內。
 - 單調工具防護會在捕獲值後阻止後續呼叫，結構化輸出執行的 `concludeTurn()` 標記則在結果提交後結束輪次。
 
@@ -113,4 +113,4 @@ When you have your final answer, you MUST report it by calling the `structured_o
 ## 已知限制與暫緩事項
 
 - **執行不公開 `sendMessage`/`resume`**：行程內執行不具備這些選填執行時期能力。
-- **結構化捕獲只接受 `defineTool` schema 子集**：不支持的 JSON Schema 構造會在子 agent 建立前失敗；需要更廣 schema 詞彙的提供方必須採用不同的執行時期。
+- **結構化捕獲只接受 `defineTool` schema 子集**：不支援的 JSON Schema 構造會在子 agent 建立前失敗；需要更廣 schema 詞彙的提供方必須採用不同的執行時期。

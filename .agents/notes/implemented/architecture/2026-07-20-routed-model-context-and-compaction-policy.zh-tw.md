@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-routed-model-context-and-compaction-policy.md) | [简体中文](2026-07-20-routed-model-context-and-compaction-policy.zh.md) | 繁體中文
+[English](2026-07-20-routed-model-context-and-compaction-policy.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Status: implemented
 
 `LlmAdapter.resolveModel(provider, model, signal?)` 返回一條精確路由的聚合元資料，其中選填的 `LlmModelContext` 位於 `context` 欄位下。`LlmRuntime.resolveModelInfo()` 選擇已註冊的路由所屬方，驗證 `contextWindow` 為正整數，並返回與配接器內部狀態分離的元資料。該查詢獨立於 `listModels()`：不在目錄中的動態模型也可以擁有容量元資料，而缺少 `context` 只表示配接器無法描述容量。
 
-手寫 DeepSeek 配接器允許每個已設定模型提供選填 `contextWindow`，並支持配接器級 `defaultContextWindow`。精確模型容量優先；未提供容量的模型項與未列出的透傳 id 會繼承配接器預設值，若預設值也不存在則省略 `context`。兩個內建模型項都公開精確的 256,000 token 容量。pi-ai 配接器從同一個目錄描述符解析容量，該描述符也用於權威解析請求模型。
+手寫 DeepSeek 配接器允許每個已設定模型提供選填 `contextWindow`，並支援配接器級 `defaultContextWindow`。精確模型容量優先；未提供容量的模型項與未列出的透傳 id 會繼承配接器預設值，若預設值也不存在則省略 `context`。兩個內建模型項都公開精確的 256,000 token 容量。pi-ai 配接器從同一個目錄描述符解析容量，該描述符也用於權威解析請求模型。
 
 ### Token 計量保持模型無關
 
@@ -36,7 +36,7 @@ Compact-basic 擁有消費端策略。頂層欄位定義預設值；`modelPolici
 
 ## 測試
 
-服務測試覆蓋與配接器內部狀態分離的上下文元資料、無效配接器輸出、目錄獨立性與默認缺失行為。配接器測試覆蓋 DeepSeek 的精確容量、默認容量、未列出模型解析及無效容量，以及 pi-ai 的精確描述符解析。壓縮測試覆蓋比例縮放、精確提供方/模型覆蓋、載入期拒絕無效合併比例、執行時期校驗絕對預算、相同模型 id 的提供方切換、目標專用警告抑制與不相依性容量的溢位復原。Loader fixture（測試前置資料）會拒絕已經移除的 token-meter 容量設定，示例則在配接器上設定容量。
+服務測試覆蓋與配接器內部狀態分離的上下文元資料、無效配接器輸出、目錄獨立性與預設缺失行為。配接器測試覆蓋 DeepSeek 的精確容量、預設容量、未列出模型解析及無效容量，以及 pi-ai 的精確描述符解析。壓縮測試覆蓋比例縮放、精確提供方/模型覆蓋、載入期拒絕無效合併比例、執行時期校驗絕對預算、相同模型 id 的提供方切換、目標專用警告抑制與不相依性容量的溢位復原。Loader fixture（測試前置資料）會拒絕已經移除的 token-meter 容量設定，示例則在配接器上設定容量。
 
 ## 考慮過的替代方案
 

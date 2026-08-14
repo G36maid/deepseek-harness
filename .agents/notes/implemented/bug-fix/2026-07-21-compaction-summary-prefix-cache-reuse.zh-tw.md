@@ -2,17 +2,17 @@
 
 Status: implemented
 
-[English](2026-07-21-compaction-summary-prefix-cache-reuse.md) | [简体中文](2026-07-21-compaction-summary-prefix-cache-reuse.zh.md) | 繁體中文
+[English](2026-07-21-compaction-summary-prefix-cache-reuse.md) | 繁體中文
 
 ## 問題
 
-自動壓縮（compaction）在對話中途觸發，恰好在迴圈用最後一個已路由請求（`system` + `tools` + 派生歷史）預熱了提供方的 KV Cache 之後。隨後默認摘要器寄出一個*獨立的*輔助請求，其前綴與那個已預熱請求沒有任何共享部分：一個專門的摘要器 `system` 提示詞，後接被拍平成單個渲染後 transcript（文字記錄）字串的較早歷史。提供方基於請求起始的 token 序列做快取，因此第一個 token 只要不同（即一個不同的系統提示詞），整個已快取前綴就會失效。於是每次壓縮都要為整段重播的歷史付出兩次完整的提示詞處理成本：一次用於觸發壓力的對話請求，另一次用於摘要呼叫，恰好在對話最大時讓快取失去作用。
+自動壓縮（compaction）在對話中途觸發，恰好在迴圈用最後一個已路由請求（`system` + `tools` + 派生歷史）預熱了提供方的 KV Cache 之後。隨後預設摘要器寄出一個*獨立的*輔助請求，其前綴與那個已預熱請求沒有任何共享部分：一個專門的摘要器 `system` 提示詞，後接被拍平成單個渲染後 transcript（文字記錄）字串的較早歷史。提供方基於請求起始的 token 序列做快取，因此第一個 token 只要不同（即一個不同的系統提示詞），整個已快取前綴就會失效。於是每次壓縮都要為整段重播的歷史付出兩次完整的提示詞處理成本：一次用於觸發壓力的對話請求，另一次用於摘要呼叫，恰好在對話最大時讓快取失去作用。
 
 ## 決策
 
 摘要指令從請求的**前端**（一個全新的 `system` 提示詞）移到對話的**末尾**（最後一條 `user` 訊息）。輔助呼叫現在逐字復現最後一個已路由請求的前綴，並追加一條尾部指令，因此它是已預熱請求的真正前綴擴充，提供方會複用已快取的 token。
 
-### `SummarizationInput` 攜帶回放的前綴，而非渲染後的字串
+### `SummarizationInput` 攜帶重播的前綴，而非渲染後的字串
 
 `summarize()`（以及內部的 `summarizeWithLlm`）接受一個 `SummarizationInput`（`{ system?, tools?, messages }`）而不是一個扁平的 transcript 字串。`region.ts` 用 `session.requestHeader()`（持久的 `system` 和 `tools`）加上經 `session.deriveEventMessage` 對映的被遮蔽區域來建置它，後者產出與 `deriveMessages()` 摺疊進已路由請求的內容位元組級一致的 `Message` 對象。`summarizeWithLlm` 把 `system` 和 `tools` 轉發到 `GenerateOptions`，並行送 `[...input.messages, { role: 'user', content: COMPACTION_INSTRUCTION }]`。`tools` 會一同帶上，即便摘要器從不呼叫任何工具：丟棄它們會縮短 token 序列，破壞與已快取請求的對齊。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-background-job-completion-wakes-an-idle-owner.md) | [简体中文](2026-08-11-background-job-completion-wakes-an-idle-owner.zh.md) | 繁體中文
+[English](2026-08-11-background-job-completion-wakes-an-idle-owner.md) | 繁體中文
 
 ## 問題
 
@@ -28,7 +28,7 @@ Status: implemented
 
 ### 喚醒有界，且該界不是時間
 
-`maxConsecutiveWakes`（默認 3）限制一個所有者由此開啟的輪數；超出後通知降級為注入，等待下一輪。領取任何使用者撰寫的訊息都會復原預算——是領取而非抵達，因為那纔是人類輸入真正進入某一步的時刻。本外掛程式自己排隊的通知永遠不會補充它。
+`maxConsecutiveWakes`（預設 3）限制一個所有者由此開啟的輪數；超出後通知降級為注入，等待下一輪。領取任何使用者撰寫的訊息都會復原預算——是領取而非抵達，因為那纔是人類輸入真正進入某一步的時刻。本外掛程式自己排隊的通知永遠不會補充它。
 
 設界是因為這條鏈會自激，而 subagent 結帳不會。結帳受限於模型派生了多少子 agent；被喚醒的一輪卻可能啟動某個背景工作，而它的完成又會喚醒同一個所有者，且無人旁觀。`dsh run` 不需要單獨策略：它唯一的使用者訊息在第一輪就被領取且不會重複，因此預算單調消耗，行程必然終止。
 
@@ -58,7 +58,7 @@ Status: implemented
 
 ## 影響
 
-- 默認行為改變：空閒所有者現在每次完成會花掉一次模型請求，按所有者、在兩次使用者訊息之間由 `maxConsecutiveWakes` 封頂。想要舊行為的部署設定 `completionDelivery: quiet`。
+- 預設行為改變：空閒所有者現在每次完成會花掉一次模型請求，按所有者、在兩次使用者訊息之間由 `maxConsecutiveWakes` 封頂。想要舊行為的部署設定 `completionDelivery: quiet`。
 - `tool-jobs` 的提示詞段落無需改動；「任務完成時你會在工作階段內收到通知」從願景變成了事實。
 - `JobSnapshot.reported` 新增 teardown 作為第四個置位方，記錄在 Service Definition 與[子系統參考](../../../../docs/subsystems/jobs.md)中。
 - `settle()` 在提交記錄並行布可見集變更之後才宣佈完成。任何相依性「在釋放等待方之前或在 `onJobsChanged` 之前執行」的監聽器現在都排在兩者之後。

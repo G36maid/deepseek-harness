@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-06-30-interception-extension-points.md) | [简体中文](2026-06-30-interception-extension-points.zh.md) | 繁體中文
+[English](2026-06-30-interception-extension-points.md) | 繁體中文
 
 ## 問題
 
-harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 那樣在生命週期節點擴充或管控 agent（代理）。驅動本設計的關鍵視角轉換是：**「原生掛鉤」不是一個包**——原生掛鉤只是一個普通的 Cordis 外掛程式，訂閱規範的生命週期事件。因此真正的產品是一個*強大、類型完備的規範事件介面*；CC/Codex 橋接（`dsh-hooks-claude-code` / `dsh-hooks-codex` 包）只是將外部 shell 掛鉤協議對映到同一介面的翻譯層。橋接能做的事，普通外掛程式可以直接做——而且更強大（無序列化邊界、完整 `ctx`、類型化回傳值）。
+harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 那樣在生命週期節點擴充或管控 agent（代理）。驅動本設計的關鍵視角轉換是：**「原生掛鉤」不是一個包**——原生掛鉤只是一個普通的 Cordis 外掛程式，訂閱規範的生命週期事件。因此真正的產品是一個*強大、類型完備的規範事件介面*；CC/Codex 橋接（`dsh-hooks-claude-code` / `dsh-hooks-codex` 包）只是將外部 shell 掛鉤協定對映到同一介面的翻譯層。橋接能做的事，普通外掛程式可以直接做——而且更強大（無序列化邊界、完整 `ctx`、類型化回傳值）。
 
 該介面需要為以下場景提供各自獨立的約定：逐提示詞策略（CC 的 `UserPromptSubmit`）、工作階段啟動觀測（CC 的 `SessionStart`）、工具執行前策略、環繞調度控制、工具執行後變換、最終結果觀測，以及攜帶面向模型的原因的繼續執行。如果把這些階段混為一談，外掛程式就會獲得不需要的 mutation 通道，而終結性將相依性監聽器的註冊順序。[事件域語義 Agent Note](../architecture/2026-06-30-event-domain-semantics.md) 提供了三域規則與類型化 Decision 慣用法；本 Agent Note 將其應用於生命週期擴充點。
 
@@ -16,7 +16,7 @@ harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 
 
 **Agent 事件**（`dsh-agent`）：
 - `agent/session-start({ agent, source })` ——emit，在第 1 輪次之前觸發一次，攜帶 `SessionStartSource`（`startup` 表示全新/fork 建立，`resume` 表示重新載入的持久化工作階段；`clear`/`compact` 保留）。純通知，不能阻塞啟動（這是有意的空白：橋接可以記錄/注入，但不管控啟動）。監聽器透過 `agent.inject()` 注入上下文。
-- `agent/pre-step({ agent, messages, turn, step, signal }, next) → PreStepDecision` ——waterfall，在每個擬議步驟之前、迴圈原子移除其獨佔 inbox 批次後觸發。payload 攜帶該請求的 `turn`、`step` 與取消 `signal`（已退役的 `PreStepContext` 字段位於 payload 中；參見 [payload-object 事件決策](../architecture/2026-08-06-agent-event-payload-objects.md)）；沒有中途輸入的工具續步會收到空批次。`enter` 返回完整訊息批次，其中包括監聽器為當前請求貢獻的上下文；`reject` 不打開步驟，並讓已領取消息保持已刪除。
+- `agent/pre-step({ agent, messages, turn, step, signal }, next) → PreStepDecision` ——waterfall，在每個擬議步驟之前、迴圈原子移除其獨佔 inbox 批次後觸發。payload 攜帶該請求的 `turn`、`step` 與取消 `signal`（已退役的 `PreStepContext` 字段位於 payload 中；參見 [payload-object 事件決策](../architecture/2026-08-06-agent-event-payload-objects.md)）；沒有中途輸入的工具續步會收到空批次。`enter` 返回完整訊息批次，其中包括監聽器為當前請求貢獻的上下文；`reject` 不打開步驟，並讓已領取訊息保持已刪除。
 
 **`agent/turn-stopping`** 是自然停止邊界上的一次 awaited 通知。需要再執行一步的監聽器呼叫 `agent.steer()`，傳入來源顯式的 steering（中途引導）內容供模型使用；迴圈隨後重新讀取 outbox，繼續執行或關閉輪次。
 
@@ -27,7 +27,7 @@ harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 
 - **`tools/pre-execute`** 是可擴充的 waterfall 閘門。其 `PreToolDecision` 允許、拒絕或詢問。拒絕跳過 `tools/execute` 與核心調度。詢問透過選填的審批 seam 解析：只有 `allowed-once` 繼續透過 guards 和調度；拒絕、取消、通道不可用、審批服務缺失或無 agent 呼叫均規範化為拒絕。每個已解析的 decision 仍會到達後置策略；監聽器拋出的例外會成為最終的規範化失敗。
 - **`ctx.tools.guard()`** 在整個 pre-execute waterfall 之後安裝同步的、作用域感知的策略。guard 可以拒絕或棄權，永遠不能強制允許，因此監聽器順序無法復活一個被最終不變式禁止的操作。
 - **`tools/execute`** 是用於逾時、重試和指標外掛程式的環繞調度 waterfall。包裝層透過 `next()` 委託給核心調度，在此之前可以替換並復原必需的 `exec.signal`，但不能移除它；包裝層接收拋出例外或未知工具產生的、已完成規範化的規範成功／失敗結果。包裝層自行產生的成功結果會短路調度，並透過已解析的輸出聲明重新規範化。
-- **`tools/post-execute`** 是檢查／變換 waterfall。其 `PostToolDecision` 接受、以回饋阻止、替換呈現內容或規範值，或附加 `additionalContexts`。替換值會重新校驗並重新計算呈現；替換內容會保留程序化值，且不構成保密邊界。返回的 decision 是受支持的變換通道。
+- **`tools/post-execute`** 是檢查／變換 waterfall。其 `PostToolDecision` 接受、以回饋阻止、替換呈現內容或規範值，或附加 `additionalContexts`。替換值會重新校驗並重新計算呈現；替換內容會保留程序化值，且不構成保密邊界。返回的 decision 是受支援的變換通道。
 - **`ToolDefinition.finalizeContent`** 是一個選填、同步、對所有輸入都有定義且僅能處理內容的邊界，在呼叫建立時隨可見定義一起被快照。登錄檔將候選結果規範化並建立無損快照後，它恰好執行一次；候選結果包括繞過後續 waterfall 的 pre、around 或 post 監聽器失敗，以及為另一個結果欄位建立快照時發現的錯誤。它可以替換 `content`，也可返回 `undefined` 保留原內容，但不能重寫 `isError`、結構化錯誤身份、上下文或呈現元資料。工具在此執行自身最後一道內容不變式，而無需將策略失敗轉換為更弱的阻止 decision。
 - **`tools/result`** 是在所有變換、無損 JSON 實體化和外層錯誤邊界之後的同步且故障受控的通知。它接收相同的凍結執行身份和權威結果的不可變快照；觀測者的失敗按監聽器隔離，無法改變或拒絕 `ToolRuntime.execute()` 返回的結果。
 
@@ -47,12 +47,12 @@ harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 
 
 ### 邊界
 
-Service Definition 包**不**聲明 `hook/*` 工作階段事件（持久的掛鉤呼叫日誌）；那些屬於 `dsh-hook-protocol`，因為原生外掛程式使用類型化 decision 而無需外部掛鉤日誌。原生外掛程式整合測試（`packages/core/agent-loop/tests/interception.spec.ts`）透過真實迴圈組合這些擴充點，不涉及 `hook/*` 協議。壓縮（compaction）（`PreCompact`/`PostCompact`）、Notification 和 Codex `PermissionRequest` 不在本決策範圍內。[審批 seam](2026-07-06-approval-seam.md) 透過 `ctx.approval` 解析 `ask` decision；終結性的單調停止由工具結果資料表達，而 `agent/turn-stopping` 是引導再執行一步的最後機會。
+Service Definition 包**不**聲明 `hook/*` 工作階段事件（持久的掛鉤呼叫日誌）；那些屬於 `dsh-hook-protocol`，因為原生外掛程式使用類型化 decision 而無需外部掛鉤日誌。原生外掛程式整合測試（`packages/core/agent-loop/tests/interception.spec.ts`）透過真實迴圈組合這些擴充點，不涉及 `hook/*` 協定。壓縮（compaction）（`PreCompact`/`PostCompact`）、Notification 和 Codex `PermissionRequest` 不在本決策範圍內。[審批 seam](2026-07-06-approval-seam.md) 透過 `ctx.approval` 解析 `ask` decision；終結性的單調停止由工具結果資料表達，而 `agent/turn-stopping` 是引導再執行一步的最後機會。
 
 ## 曾考慮的替代方案
 
 - **將工具執行前輸入重寫作為本擴充點集合的一部分發布**：推遲，視為越界訊號；上文已闡述一致性問題（審計、歷史和展示都讀取執行前記錄的 `tool/call.arguments`），[工具執行前輸入重寫提案](../../proposed/feature/2026-06-30-pre-tool-input-rewrite.md)負責該設計。
-- **將持久的 `hook/*` SessionEvents 與擴充點一起聲明**：否決。原生外掛程式使用類型化 Decision 而完全不需要掛鉤日誌（實際示例已證明），因此持久日誌屬於[掛鉤協議庫](2026-06-30-hook-protocol-lib.md)，而非擴充介面。
+- **將持久的 `hook/*` SessionEvents 與擴充點一起聲明**：否決。原生外掛程式使用類型化 Decision 而完全不需要掛鉤日誌（實際示例已證明），因此持久日誌屬於[掛鉤協定庫](2026-06-30-hook-protocol-lib.md)，而非擴充介面。
 
 ## 後果
 

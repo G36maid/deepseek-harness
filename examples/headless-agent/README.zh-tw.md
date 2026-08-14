@@ -1,6 +1,6 @@
 # headless-agent
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 本目錄負責 headless coding agent（代理）的重播和真實模型測試組裝：DeepSeek V4 + 本機 bash 與檔案系統工具 + subagent 委託 + 工作流程與全新 agent Ralph 迭代 + `todo_write` + JSONL 持久化。本目錄顯式掛載共享 agent 主幹、一個根 agent、持久化和檢查點策略；它不是第二個產品入口。
 
@@ -15,7 +15,7 @@ pnpm dsh --profile headless "fix the failing test in this workspace"
 
 產品命令是 [`dsh --profile headless`](../../apps/cli/README.md)：它接受一項非空任務，建立並持久化新工作階段，列印最終 assistant 文字，然後退出。
 
-快照套件透過 [`tests/fixtures/headless-driver.ts`](tests/fixtures/headless-driver.ts) 執行本目錄的設定。這個未匯出且僅供測試使用的行程會在結果記錄之前，以 JSONL 寄出規範工作階段事件。該事件串流屬於測試基礎設施，不是受支持的 CLI（命令列介面）輸出格式。子工作階段只透過父工作階段的工具事件和結果對外顯示。
+快照套件透過 [`tests/fixtures/headless-driver.ts`](tests/fixtures/headless-driver.ts) 執行本目錄的設定。這個未匯出且僅供測試使用的行程會在結果記錄之前，以 JSONL 寄出規範工作階段事件。該事件串流屬於測試基礎設施，不是受支援的 CLI（命令列介面）輸出格式。子工作階段只透過父工作階段的工具事件和結果對外顯示。
 
 ## E2B POC overlay
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-web-client-session-scope-and-provide-channel.md) | [简体中文](2026-07-25-web-client-session-scope-and-provide-channel.zh.md) | 繁體中文
+[English](2026-07-25-web-client-session-scope-and-provide-channel.md) | 繁體中文
 
 > 範圍：client Agent scope（actx）與定向事件、client/host 實體化對等模型、空工作階段 blank 位與複用（`connectWorkspace`）、逐工作階段供數通道（`sessions.provide`），以及承載這些能力的 host wire 小件（summary `blank` 列、`host/session-added` 幀欄位、`host/commands-changed` 幀）。輸入狀態機與 slash 管線見[輸入狀態機 note](2026-07-25-web-input-machine-and-slash-pipeline.md)；命令業務面見[命令業務面 note](2026-07-25-web-command-surfaces-and-assembly.md)。
 
@@ -79,7 +79,7 @@ Session 實例與 scope 同生命週期，存活資格 = host listed（一個判
 - 未知 workspaceId fail loud（不靜默建立到別處）。
 - 解析保證（兩臂同約定）：promise resolve 時返回的 id 已在 list store 且 `sessions.binding(id)` 同步可解析——`SessionRuntime.create` 在 RPC 成功後同步投影清單再 resolve，使 draft 搬運方可以在 open 之前往新 scope 的 machine 寫文字，不等 notifier flush。
 - 呼叫方拿 id 自行 `sessions.open`；首條提示詞傳送就是普通 `session.prompt`——工作階段本來就在，失敗即普通提示詞失敗，draft 文字還在 machine 裡，重試即再次傳送。
-- 全域性 New Session 按鈕默認取 `recentWorkspaceId`：先比較各 Workspace 內 Session 的最新 `updatedAt`，無 Session 時回退 Workspace `createdAt`，同值保持 Host 順序；只有完全沒有 Workspace 時才 `sessions.clear()` 進入無工作階段檢視表。Workspace 分組內的建立動作仍顯式命中該 Workspace。
+- 全域性 New Session 按鈕預設取 `recentWorkspaceId`：先比較各 Workspace 內 Session 的最新 `updatedAt`，無 Session 時回退 Workspace `createdAt`，同值保持 Host 順序；只有完全沒有 Workspace 時才 `sessions.clear()` 進入無工作階段檢視表。Workspace 分組內的建立動作仍顯式命中該 Workspace。
 - 執行時期啟動時訂閱首次完整基線：若已有復原成功的 current 工作階段則保持不動，否則自動 `connectWorkspace(recentWorkspaceId)` 並 open 返回的 blank 工作階段。該策略只結帳一次；之後使用者主動 clear 不會再次被自動選擇覆蓋，連線失敗則等下一次基線投影重試。
 - blank Hero 中改選 Workspace 也走 `connectWorkspace`；若目標 id 與當前 id 不同，先把當前 input machine 的非空 draft 搬到目標 scope，再 `sessions.open(nextId)`。舊 blank 實體不刪除，只因不再 current 而從清單隱藏。
 

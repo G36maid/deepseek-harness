@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-session-archive-global-set.md) | [简体中文](2026-07-31-session-archive-global-set.zh.md) | 繁體中文
+[English](2026-07-31-session-archive-global-set.md) | 繁體中文
 
 ## 問題
 
@@ -30,4 +30,4 @@ Sidebar workspace 瀏覽區的工作階段行選單裡，「Delete session」一
 
 ## 後果
 
-歸檔後 UI 無查看/取消歸檔入口（本期口徑，記錄在 README 的 Known Limitation 中）；資料與 slot 完好，後續加復原面只是 UI + 一個逆向 RPC。`workspace.list` 回應形狀變化是 pre-release 直改（無相容層）。e2e（workspace-management）釘住了「歸檔→行消失→reload 後仍隱藏、日誌仍在」的全鏈路；domain 層測試釘住冪等、未知 id 拒絕、跨重新啟動復原與舊介質默認升級。
+歸檔後 UI 無查看/取消歸檔入口（本期口徑，記錄在 README 的 Known Limitation 中）；資料與 slot 完好，後續加復原面只是 UI + 一個逆向 RPC。`workspace.list` 回應形狀變化是 pre-release 直改（無相容層）。e2e（workspace-management）釘住了「歸檔→行消失→reload 後仍隱藏、日誌仍在」的全鏈路；domain 層測試釘住冪等、未知 id 拒絕、跨重新啟動復原與舊介質預設升級。

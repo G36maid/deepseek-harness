@@ -2,11 +2,11 @@
 
 Status: rejected — 高保真區塊重播、失敗流的部分輸出與快照重播目前相依性持久化的 `assistant/chunk` 事件。只有具備無資訊損失的重播或產物替代方案後，才能刪除區塊。
 
-[English](2026-06-20-assembled-assistant-messages-only.md) | [简体中文](2026-06-20-assembled-assistant-messages-only.zh.md) | 繁體中文
+[English](2026-06-20-assembled-assistant-messages-only.md) | 繁體中文
 
 ## 問題
 
-當前的規範工作階段日誌會持久化模型流式輸出的每一個 `assistant/chunk`。[工作階段持久化 Agent Note](../../implemented/architecture/2026-06-14-session-persistence.md)選擇這一方案是為了 token 級重播保真度和連續的 `seq`，但其代價日益成長：JSONL fixture（測試前置資料）被大量微小的增量記錄佔據，快照場景透過對區塊事件分組來回放模型，ACP（Agent Client Protocol）載入時從區塊重建先前的 assistant 輸出，而任何未來的日誌讀取方都必須區分持久的訊息歷史與 token 級追蹤。
+當前的規範工作階段日誌會持久化模型流式輸出的每一個 `assistant/chunk`。[工作階段持久化 Agent Note](../../implemented/architecture/2026-06-14-session-persistence.md)選擇這一方案是為了 token 級重播保真度和連續的 `seq`，但其代價日益成長：JSONL fixture（測試前置資料）被大量微小的增量記錄佔據，快照場景透過對區塊事件分組來重播模型，ACP（Agent Client Protocol）載入時從區塊重建先前的 assistant 輸出，而任何未來的日誌讀取方都必須區分持久的訊息歷史與 token 級追蹤。
 
 對於成功組裝出完整內容的步驟，agent loop（代理循環）已經追加了一條 `assistant/message`。這正是 `deriveMessages()` 用來構造下一次模型請求的事件。換言之，正常的可復原工作階段狀態無需區塊即已具備；區塊是即時渲染和確定性測試的產物，不是必需的工作階段歷史。失敗或中止的流則不同：部分 assistant 輸出可能僅以區塊形式存在，而空的 max-token 步驟可能根本不產生 `assistant/message`。
 

@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-06-24-workspace-context.md) | [简体中文](2026-06-24-workspace-context.zh.md) | 繁體中文
+[English](2026-06-24-workspace-context.md) | 繁體中文
 
 ## 問題
 
 `AGENTS.md` 等倉庫指引應當進入編碼工作階段的有效上下文，使項目約定、建置命令和評審規則無需由使用者反覆貼上即可生效。stdio 與 ACP（Agent Client Protocol）產品需要具備相同行為，並按工作階段 cwd 隔離：全域性系統提示詞章節會把一個工作區的文件洩漏到另一個仍在執行的 ACP 工作階段中。
 
-相鄰產品形成了值得借鑑的約定，但具體做法各不相同。Codex 原生使用 `AGENTS.md`；Claude Code 使用 `CLAUDE.md`，並採用熟悉的 system-reminder 風格使用者上下文；opencode 同時支持這兩個名稱，每個目錄只選一個勝出者，並延遲發現巢狀文件。harness 需要跨工具相容，同時避免從同一作用域載入重複或互相矛盾的文件。
+相鄰產品形成了值得借鑑的約定，但具體做法各不相同。Codex 原生使用 `AGENTS.md`；Claude Code 使用 `CLAUDE.md`，並採用熟悉的 system-reminder 風格使用者上下文；opencode 同時支援這兩個名稱，每個目錄只選一個勝出者，並延遲發現巢狀文件。harness 需要跨工具相容，同時避免從同一作用域載入重複或互相矛盾的文件。
 
 生命週期中有兩類截然不同的內容。初始適用文件鏈在第一次請求前一次性注入。巢狀文件、編輯、候選項切換和移除發生在其後，進入同一份持久的僅附加歷史。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 ### 檔名與優先級
 
-默認的逐目錄候選清單是 `['AGENTS.md', 'CLAUDE.md']`。該清單可透過 `instructionFileCandidates` 設定；`AGENTS.md` 是普通的第一候選項，而不是隱藏優先級。一個目錄中只載入第一個存在的普通文件候選項。使用預設值時，`AGENTS.md` 是原生文件，`CLAUDE.md` 是相容性回退。第二個清單 `localInstructionFileCandidates`（預設為 `['AGENTS.local.md', 'CLAUDE.local.md']`）會在同一目錄的基礎文件後加載疊加式本機覆蓋層；[默認本機覆蓋層記錄](2026-07-21-local-instruction-overlay.md)負責說明該決策。
+預設的逐目錄候選清單是 `['AGENTS.md', 'CLAUDE.md']`。該清單可透過 `instructionFileCandidates` 設定；`AGENTS.md` 是普通的第一候選項，而不是隱藏優先級。一個目錄中只載入第一個存在的普通文件候選項。使用預設值時，`AGENTS.md` 是原生文件，`CLAUDE.md` 是相容性回退。第二個清單 `localInstructionFileCandidates`（預設為 `['AGENTS.local.md', 'CLAUDE.local.md']`）會在同一目錄的基礎文件後加載疊加式本機覆蓋層；[預設本機覆蓋層記錄](2026-07-21-local-instruction-overlay.md)負責說明該決策。
 
 候選條目必須是同一目錄中的檔名。空條目、`.`／`..`，以及包含 `/` 或 `\` 的條目會被忽略。其他同目錄名稱可以顯式選擇加入；規則目錄和匯入語義不屬於本約定。
 
@@ -34,7 +34,7 @@ Status: implemented
 
 復原 agent 會基於持久化歷史建立新的 loop 實例。在第一個 `agent/pre-step`，具有當前標識的可見基線仍是權威狀態；外掛程式會將其保留的 scope 與當前完整渲染進行比較。未變化和被預算省略的文件不追加任何內容；agent 離線期間新增、編輯、移除或不再屬於預算保留集的文件，會在進入步驟的批次中追加 `set`、`replace` 或 `remove` 轉換，既不改寫也不重複原始基線。不相容的可見基線會被一條按當前優先級排列的完整基線取代，並以明確措辭說明替換關係；如果當前不存在任何候選文件，一條顯式空基線會清除先前的 scope。外掛程式熱重掛遵循相同規則。如果壓縮（compaction）已遮蔽帶類型的基線，下一次進入步驟的 pre-step 會組合一條完整的當前基線，並在同一請求中攜帶它。
 
-基線是一條 user 角色的 `<system-reminder>`，包含 `Instructions from: <path>` 章節，以及明確的權威性與優先級說明。這種熟悉的模型可見框架避免引入 harness 專用的 XML 詞彙。項目路徑相對於根目錄；使用默認 home 時，使用者全域性路徑為 `~/.dsh/AGENTS.md`，使用已設定 home 時則為 `$DSH_HOME/AGENTS.md`。最終渲染邊界會在完成位元組覈算前，轉義指令內容或模型可見的路徑、scope 與預算元資料中出現的字面量 `</system-reminder>`。包 README 負責規定當前準確的[提示詞形態](../../../../packages/context/agent-instructions/README.md#prompt-shape)。
+基線是一條 user 角色的 `<system-reminder>`，包含 `Instructions from: <path>` 章節，以及明確的權威性與優先級說明。這種熟悉的模型可見框架避免引入 harness 專用的 XML 詞彙。項目路徑相對於根目錄；使用預設 home 時，使用者全域性路徑為 `~/.dsh/AGENTS.md`，使用已設定 home 時則為 `$DSH_HOME/AGENTS.md`。最終渲染邊界會在完成位元組覈算前，轉義指令內容或模型可見的路徑、scope 與預算元資料中出現的字面量 `</system-reminder>`。包 README 負責規定當前準確的[提示詞形態](../../../../packages/context/agent-instructions/README.md#prompt-shape)。
 
 ### 動態發現與刷新
 
@@ -86,4 +86,4 @@ shell 命令不會觸發發現。本機 bash 呼叫會啟動全新的 shell，�
 
 ## 延後事項
 
-從 bash 派生路徑報告、遞迴啟動掃描、文件監視器、小寫默認名稱、`.claude/CLAUDE.md`、`.claude/rules/*.md`、匯入指令、ACP `additionalDirectories`、信任確認和模型生成摘要均延後處理。項目目錄中的 `.local.` 覆蓋層現已默認載入（[默認本機覆蓋層記錄](2026-07-21-local-instruction-overlay.md)負責說明該決策）；使用者全域性覆蓋層、目錄規則系統和匯入仍需要各自的優先級與信任設計。
+從 bash 派生路徑報告、遞迴啟動掃描、文件監視器、小寫預設名稱、`.claude/CLAUDE.md`、`.claude/rules/*.md`、匯入指令、ACP `additionalDirectories`、信任確認和模型生成摘要均延後處理。項目目錄中的 `.local.` 覆蓋層現已預設載入（[預設本機覆蓋層記錄](2026-07-21-local-instruction-overlay.md)負責說明該決策）；使用者全域性覆蓋層、目錄規則系統和匯入仍需要各自的優先級與信任設計。

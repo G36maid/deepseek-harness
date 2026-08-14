@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-npm-release-sequences.md) | [简体中文](2026-08-10-npm-release-sequences.zh.md) | 繁體中文
+[English](2026-08-10-npm-release-sequences.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 `packages/*/*` 與 `apps/*` 組成 `@deepseek-ai/dsh` 的執行面；`vendor/*` 是九個 rescope 過的 Cordis 框架包，各自帶著上游的版本號；`native/landlock-run/packages/*` 是 Linux 平臺包，有自己的 workflow。三組的版本基線、變更節奏和建置要求都不同：dsh 隨產品迭代，vendor 只在同步上游或改動本機修改時才動，native 需要 musl 工具鏈和逐架構建置。把它們塞進一條發布管線，等於每次產品發版都要重發框架和原生二進位。
 
-擋路的還有兩處硬門。全部 217 個 workspace manifest 都是 `private: true`，`npm publish` 直接拒絕。更隱蔽的是 933 條 dsh 兄弟包之間硬寫的 `peerDependencies: "^0.0.1"`：`pnpm pack` 只替換 `workspace:` 協議，不動語義範圍，而 `^0.0.1` 等於 `>=0.0.1 <0.0.2`——發 `0.0.2` 落不進去，發 `0.0.1-rc.1` 也落不進去（semver 規定不帶預發布段的範圍排除預發布版本）。這些條目至今沒出事，只因為版本一直停在 `0.0.1`。
+擋路的還有兩處硬門。全部 217 個 workspace manifest 都是 `private: true`，`npm publish` 直接拒絕。更隱蔽的是 933 條 dsh 兄弟包之間硬寫的 `peerDependencies: "^0.0.1"`：`pnpm pack` 只替換 `workspace:` 協定，不動語義範圍，而 `^0.0.1` 等於 `>=0.0.1 <0.0.2`——發 `0.0.2` 落不進去，發 `0.0.1-rc.1` 也落不進去（semver 規定不帶預發布段的範圍排除預發布版本）。這些條目至今沒出事，只因為版本一直停在 `0.0.1`。
 
 `scripts/publish-npm-baseline.ts` 是本機發布指令碼：它把 pack 與 publish 放進同一個行程，需要人工在本機完成認證與重試，且把 vendor 排除在發布集之外。它不能作為 CI 發布的基礎，但其中的 tarball payload 校驗與已安裝產物探針是驗證過的零件。
 
@@ -74,11 +74,11 @@ tag 只是 commit 指針，不是發布成功的證明。bump 會向 registry �
 
 registry 的兩個行為決定了「怎麼嘗試一次發布」。寫入之間至少間隔兩秒並帶退避重試，因為連續背靠背發多個包會超出 registry 自身的處理速度，換來 `E409 Failed to save packument`。而每次重試都先重查 registry：報出來的失敗可能對應一次其實已經落地的寫入，所以「該版本現在存在且 integrity 與本 tarball 相同」算作已發布，而不是又一個待放置的版本。
 
-### workspace 內部引用走 `workspace:` 協議
+### workspace 內部引用走 `workspace:` 協定
 
 所有指向 workspace 成員的引用都用 `workspace:^`，由 `pnpm pack` 替換成匹配目標版本的範圍：兄弟包的 `peerDependencies` 跟隨族版本，指向 vendored 包的引用跟隨那個包自己的版本線。Landlock 平臺包保留 `workspace:*`（發布成精確版本），因為平臺包與它的入口必須版本完全一致。
 
-`scripts/check-workspace-constraints.ts` 要求這個協議，所以新包無法再引入硬寫的範圍；同理，invariant companion 規則要求 `@deepseek-ai/dsh-invariants` 用 `workspace:^`。
+`scripts/check-workspace-constraints.ts` 要求這個協定，所以新包無法再引入硬寫的範圍；同理，invariant companion 規則要求 `@deepseek-ai/dsh-invariants` 用 `workspace:^`。
 
 ### 發布族對象
 
@@ -113,7 +113,7 @@ dsh 的驗證會一並安裝 vendored 族的 pack 產物。harness 的包把 ven
 |---|---|
 | 發布集 manifest | 去掉 `private: true`；按序列補 `publishConfig.access` 與帶各自 `directory` 的 `repository` |
 | 發布集邊界 | `packages/*/*`、`apps/*`、`vendor/*` 的全部成員 |
-| 相依性協議 | workspace 內部引用為 `workspace:^`，由 `check-workspace-constraints.ts` 與 invariant companion 規則強制 |
+| 相依性協定 | workspace 內部引用為 `workspace:^`，由 `check-workspace-constraints.ts` 與 invariant companion 規則強制 |
 | 根 `AGENTS.md` | 「vendored 包是 `private: true`」這條約定不再成立 |
 | `vendor/README.md` | 記錄「`src` 加入 `cordis` 的 `files`」這條本機修改 |
 | native 三包 | `publishConfig.access: public`，且其 workflow 不傳 `--access` |
@@ -144,7 +144,7 @@ dsh 的驗證會一並安裝 vendored 族的 pack 產物。harness 的包把 ven
 
 **一個 workflow 用 `family` 輸入選擇序列。** 兩套版本模型塞進一個文件，會讓 concurrency 組、tag 前綴、排練觸發條件全部分叉成條件表達式。一族一個文件更短也更好讀。
 
-**在發布期改寫相依性範圍。** 與協議相比，改寫邏輯只在 CI 執行過，本機 `pnpm install` 看不出它是否正確，而且每次發布都要重來一遍。
+**在發布期改寫相依性範圍。** 與協定相比，改寫邏輯只在 CI 執行過，本機 `pnpm install` 看不出它是否正確，而且每次發布都要重來一遍。
 
 **在 CI 裡執行 bump 並把版本推回倉庫。** 需要給 workflow 倉庫寫權限，且發布分支上的版本 commit 會與人的 commit 競爭。bump 與 commit 留在本機，CI 只核對與上傳。
 
@@ -158,7 +158,7 @@ dsh 的驗證會一並安裝 vendored 族的 pack 產物。harness 的包把 ven
 
 - **tag 可能與 registry 漂移。** 為失敗發布而推的 tag 由 bump 的 registry 核對攔下，但只在有憑據的地方；未鑒權的機器只報告這道核對被跳過。
 - **變更判據相依性 tag 可見。** shallow clone 或未拉 tag 會把 vendored 族的判據退化成「全部首發」。`fetch-depth: 0` 是前提，不是最佳化。
-- **協議改寫觸及 1504 處相依性聲明。** 它不改變本機解析（pnpm 本來就從 workspace 解析），但改變了發布出去的範圍寫法。
+- **協定改寫觸及 1504 處相依性聲明。** 它不改變本機解析（pnpm 本來就從 workspace 解析），但改變了發布出去的範圍寫法。
 - **私有包需要憑據才能安裝。** 任何消費端——CI、沙盒 e2e、外部使用者——都要持有 scope 憑據，Landlock 三包也在其中；它們從未發布過，所以沒有切斷既有的匿名安裝路徑。
 - **`repository` 指向的組織與執行 workflow 的組織不同。** 用 token 發布不受影響；npm provenance（OIDC）要求二者一致，屆時要麼把 `repository` 改指過去，要麼從它指向的組織發布。
 - **位元組可復現性是假定的，沒有實測。** 「integrity 相同則跳過」這一態建立在「同一 commit 兩次 pack 得到相同位元組」之上。目前沒有任何東西測量過它：若建置嵌入了絕對路徑或時間，重跑會誤報失敗。在第一次可能被重跑的發布之前實測，若不成立就退到比對 tarball 內逐文件內容雜湊。

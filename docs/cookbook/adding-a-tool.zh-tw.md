@@ -1,6 +1,6 @@
 # 工具編寫參考
 
-[English](adding-a-tool.md) | [简体中文](adding-a-tool.zh.md) | 繁體中文
+[English](adding-a-tool.md) | 繁體中文
 
 面向模型的工具必須滿足哪些約定，均以本文為準。如需按步驟建置第一個工具，請閱讀[建置工具](../user/develop/basic/tool.md)。`packages/shell/tool-bash` 是生產級的三包示例。
 
@@ -40,7 +40,7 @@ export function apply(ctx: Context) {
 ## execute() 約定的規則
 
 - **參數已為你校驗。** `defineTool` 在 `execute` 執行前，會根據統一的 `ParameterSchemaSpec` 校驗模型生成的 `arguments`（類型、必填鍵、字面量約束、恰好匹配一個分支的聯合以及巢狀值——見[執行時期參數校驗](../../.agents/notes/implemented/architecture/2026-06-11-runtime-arg-validation.md)），因此 `execute` 內的 args 會匹配 `InferArgs`。顯式對象節點必須聲明 `additionalProperties: true | false`；隱式參數根對象保持開放。你仍需手動檢查 schema DSL 無法表達的約束，例如非空字串、正數或跨欄位規則。直接註冊的原始 JSON Schema 工具自行負責輸入校驗。
-- **註冊借用你的只讀定義。** 類型化的同進程貢獻不是序列化邊界；註冊後不要修改其 schema 或替換回調。`schemas()` 只物化顯式的模型可見投影。如需熱替換工具，請 dispose 其所屬副作用並註冊替代品；回呼閉包內的可變狀態仍是普通的外掛程式狀態。
+- **註冊借用你的只讀定義。** 類型化的同行程貢獻不是序列化邊界；註冊後不要修改其 schema 或替換回調。`schemas()` 只物化顯式的模型可見投影。如需熱替換工具，請 dispose 其所屬副作用並註冊替代品；回呼閉包內的可變狀態仍是普通的外掛程式狀態。
 - **執行身份受保護。** 登錄檔在一次遞迴遍歷中將 `arguments` 物化為分離的無損 JSON，在策略開始前凍結該值，並分配一個不透明的 `exec.token`；`callId`、`name`、`arguments`、`agent`、`token`、必填且由呼叫方持有的 `signal`，以及選填的外層傳輸 `parent` token 在整個分發過程中保持不可變。`parent` 僅用於身份標識，不暴露活躍的外層執行。請將 `args` 視為只讀輸入。只有 around-dispatch 包裝器會收到可變檢視表；它可以替換並復原必填的 `exec.signal` 以施加截止時間，但不能移除該訊號。
 - **聲明並返回一個規範 JSON 值。** `output.schema` 使用 `ValueSchemaSpec`，根可以是對象、陣列、標量或 null。`execute` 只返回推匯出的值；登錄檔將其快照為無損 JSON，完成校驗和凍結後，再傳給 `output.render(args, value)`。工具主體不要返回內容區塊，也不要迫使呼叫方從自然語言中解析 id 和欄位。
 - **拋出例外或返回無效值意味著 `isError`。** 登錄檔會捕獲例外，並在觀察者執行前收斂 schema、渲染器、元資料投影器和無損 JSON 失敗。基礎設施故障請拋例外。成功的領域結果即使表示不理想的狀態，也應寫入規範值；其 Native 渲染器可以解釋該狀態，例如行程以非零狀態退出。
@@ -73,7 +73,7 @@ producer 提供同步的 `cancel`、在資源清理後 settle 且不 reject 的 
 兩個方法都返回一個 **`card` 標籤的渲染意圖**——選擇與你的工具行為匹配的卡片類型：
 
 - `presentCall(args)` → 一個 `ToolCallView`（PENDING 卡片）：
-  - `{ card: 'generic', title, kind?, rawInput?, content?, locations? }`——默認。設定 `kind` 取得圖示（`read`／`search`／…）；設定 `locations: [{ path, line? }]` 標注工具涉及的文件，使有能力的編輯器跟隨／跳轉。
+  - `{ card: 'generic', title, kind?, rawInput?, content?, locations? }`——預設。設定 `kind` 取得圖示（`read`／`search`／…）；設定 `locations: [{ path, line? }]` 標注工具涉及的文件，使有能力的編輯器跟隨／跳轉。
   - `{ card: 'terminal', title, description?, cwd? }`——你的呼叫本身就是 shell 命令。`title` 是命令，`description` 渲染在終端機卡片上方。（tool-bash。）
   - `{ card: 'diff', title, diffs, locations? }`——你的呼叫建立或修改文件。`diffs: [{ path, oldText, newText }]`（新文件時 `oldText: null`）渲染為內聯 diff 卡片。（tool-fs `write`／`edit`。）
 - `presentResult(args, { content, isError, meta? })` 返回完成後的卡片：

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-fail-loud-releases-the-terminal.md) | [简体中文](2026-07-31-fail-loud-releases-the-terminal.zh.md) | 繁體中文
+[English](2026-07-31-fail-loud-releases-the-terminal.md) | 繁體中文
 
 ## 問題
 
@@ -15,9 +15,9 @@ $ 1;2;4cecho hello
 zsh: command not found: 4cecho
 ```
 
-Loader 並行掛載各個條目，因此條目失敗的順序並不等於啟動順序。`ui-tui` 會先啟用並呼叫 pi-tui 的 `ProcessTerminal.start()`，它把 stdin 置為 raw 模式、啟用 bracketed paste，並寫出 Kitty 鍵盤協議探測序列——該序列以一個 Device Attributes 查詢（`ESC [ c`）結尾。隨後某個同級條目（這裡是 `llm-pi-ai`）因自身設定而 rejection。
+Loader 並行掛載各個條目，因此條目失敗的順序並不等於啟動順序。`ui-tui` 會先啟用並呼叫 pi-tui 的 `ProcessTerminal.start()`，它把 stdin 置為 raw 模式、啟用 bracketed paste，並寫出 Kitty 鍵盤協定探測序列——該序列以一個 Device Attributes 查詢（`ESC [ c`）結尾。隨後某個同級條目（這裡是 `llm-pi-ai`）因自身設定而 rejection。
 
-在當時，該 rejection 以未處理 rejection 的形式浮現，而 `installFailLoud` 只寫一行 stderr 就立即呼叫 `process.exit(1)`。（交易化 Loader 現在讓設定樹失敗經 `boot()` 結帳，由它自行 dispose（資源釋放）部分建置的上下文；release 掛鉤仍然守護 `boot()` 看不到的 rejection——外掛程式遊離的非同步工作在掛載期間或掛載之後失敗。）沒有任何環節 dispose 這棵樹，因此 `ProcessTerminal.stop()` 從未執行：raw 模式、bracketed paste 和鍵盤協議都殘留在比行程活得更久的 shell 上。終端機對 Device Attributes 查詢的回應（`1;2;4c`）在行程退出之後纔到達，被 shell 當作使用者輸入讀入——也就是上面那段字面文字。
+在當時，該 rejection 以未處理 rejection 的形式浮現，而 `installFailLoud` 只寫一行 stderr 就立即呼叫 `process.exit(1)`。（交易化 Loader 現在讓設定樹失敗經 `boot()` 結帳，由它自行 dispose（資源釋放）部分建置的上下文；release 掛鉤仍然守護 `boot()` 看不到的 rejection——外掛程式遊離的非同步工作在掛載期間或掛載之後失敗。）沒有任何環節 dispose 這棵樹，因此 `ProcessTerminal.stop()` 從未執行：raw 模式、bracketed paste 和鍵盤協定都殘留在比行程活得更久的 shell 上。終端機對 Device Attributes 查詢的回應（`1;2;4c`）在行程退出之後纔到達，被 shell 當作使用者輸入讀入——也就是上面那段字面文字。
 
 `/exit` 路徑從不受影響，因為它會 dispose 整棵樹，從而進入 TUI 自身的 `shutdown()`：先 `drainInput()`（吸收尚未返回的回應），再 `ui.stop()`。缺陷在於**啟動失敗**沒有通往這同一套拆卸流程的路徑。
 
@@ -27,7 +27,7 @@ Loader 並行掛載各個條目，因此條目失敗的順序並不等於啟動�
 
 - 診斷資訊在 release **之前**寫出，因此卡住或失敗的 disposer 無法吞掉失敗原因。
 - 使用閂鎖（latch）而非解除安裝監聽器，來保證被報告的始終是第一個 rejection。若在拆卸期間移除監聽器，第二個並行 rejection 就會變成未捕獲錯誤，Node 會在拆卸中途殺死行程——恰好殘留下本次要復原的終端機狀態。後續 rejection（包括 release 自身的）都會落入已掛起的退出流程。
-- release 以 `FAIL_LOUD_RELEASE_TIMEOUT_MS`（2 秒）為上限，且其 rejection 被吞掉。卡住或失敗的 disposer 只會延遲致命退出，絕不會取消它。該定時器保持 **referenced**：一旦 `unref()`，Node 就會在事件迴圈清空後、恰恰在報告這次失敗時以 0 退出，因為 `unhandledRejection` 監聽器抑制了默認的致命退出。
+- release 以 `FAIL_LOUD_RELEASE_TIMEOUT_MS`（2 秒）為上限，且其 rejection 被吞掉。卡住或失敗的 disposer 只會延遲致命退出，絕不會取消它。該定時器保持 **referenced**：一旦 `unref()`，Node 就會在事件迴圈清空後、恰恰在報告這次失敗時以 0 退出，因為 `unhandledRejection` 監聽器抑制了預設的致命退出。
 - 不傳 `release` 時行為與此前完全一致，因此 ACP（Agent Client Protocol）、JSON-RPC 和各 demo bin 均無變化。
 
 `dsh` 的 TUI 啟動器傳入的 release 會釋放根上下文，從而執行 TUI 已有的 `shutdown()` 並把終端機交還。
@@ -36,7 +36,7 @@ Loader 並行掛載各個條目，因此條目失敗的順序並不等於啟動�
 
 ## 考慮過的替代方案
 
-**在響亮失敗處理函式裡直接重設終端機**（寫 `ESC [ ? 2004 l`、彈出鍵盤協議、清除 raw 模式）。這會在一個並不擁有終端機的包裡重複 pi-tui 的拆卸邏輯，並隨 pi-tui 啟動序列的變化而漂移。它同樣無法吸收尚未返回的 Device Attributes 回應——而這正是弄亂下一個提示符的原因，只有在 stdin 仍處於 raw 模式時排空它才能解決。
+**在響亮失敗處理函式裡直接重設終端機**（寫 `ESC [ ? 2004 l`、彈出鍵盤協定、清除 raw 模式）。這會在一個並不擁有終端機的包裡重複 pi-tui 的拆卸邏輯，並隨 pi-tui 啟動序列的變化而漂移。它同樣無法吸收尚未返回的 Device Attributes 回應——而這正是弄亂下一個提示符的原因，只有在 stdin 仍處於 raw 模式時排空它才能解決。
 
 **在 TUI 中註冊 `process.on('exit')` 終端機重設。** exit 處理函式是同步的，無法等待 `drainInput()`，殘留回應依舊會落到 shell；而且這把拆卸掛到全域性掛鉤上，而非已經存在的釋放路徑。
 

@@ -1,8 +1,8 @@
-# Agent Note: 默認模型跟隨選擇器
+# Agent Note: 預設模型跟隨選擇器
 
 Status: implemented
 
-[English](2026-08-07-default-model-follows-the-picker.md) | [简体中文](2026-08-07-default-model-follows-the-picker.zh.md) | 繁體中文
+[English](2026-08-07-default-model-follows-the-picker.md) | 繁體中文
 
 ## 問題
 
@@ -44,4 +44,4 @@ Status: implemented
 | 根據目錄成員關係校驗已存選擇 | 目錄僅供參考，可能省略仍可請求的模型。 |
 | 使用合併 patch 保存 | 省略的 `reasoningEffort` 無法清除已存欄位。 |
 | 只保存空白工作階段中的選擇 | 對話期間知情作出的選擇不會成為部署預設值。 |
-| 增加單獨的「設為默認」手勢 | 工作階段選擇器與未來工作階段偏好雖然代表同一使用者選擇，卻仍可能分歧。 |
+| 增加單獨的「設為預設」手勢 | 工作階段選擇器與未來工作階段偏好雖然代表同一使用者選擇，卻仍可能分歧。 |

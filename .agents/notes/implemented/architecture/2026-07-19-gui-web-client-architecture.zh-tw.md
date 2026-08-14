@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-07-19-gui-web-client-architecture.md) | [简体中文](2026-07-19-gui-web-client-architecture.zh.md) | 繁體中文
+[English](2026-07-19-gui-web-client-architecture.md) | 繁體中文
 
-> 分工線：通道無關的分層模型與 RPC 協議（訊息模型/類型體系/約定面/用戶端基類）見 [分層與 RPC 協議筆記](2026-07-19-gui-layering-and-rpc-protocol.md)；本篇 = 瀏覽器側：client cordis 樹如何裝載、UI 外掛程式如何經 slot 與服務組合、React-free 對象層如何以不可變快照供給 React。
+> 分工線：通道無關的分層模型與 RPC 協定（訊息模型/類型體系/約定面/用戶端基類）見 [分層與 RPC 協定筆記](2026-07-19-gui-layering-and-rpc-protocol.md)；本篇 = 瀏覽器側：client cordis 樹如何裝載、UI 外掛程式如何經 slot 與服務組合、React-free 對象層如何以不可變快照供給 React。
 
 ## Problem
 
-瀏覽器用戶端受兩股力塑形。其一是流式：事件驅動的對話 UI 裡，若業務狀態（事件視窗、流式累積、待答互動、連線狀態機）散落在 React 元件與全域性 store 中，每個 token 區塊都會震盪渲染樹，且換 UI 庫等於重寫業務邏輯。其二是模組化：UI 功能（版面配置、側欄、對話、主題、語言包）必須是可獨立裝載的外掛程式——按 host 下發的 manifest（中繼資料清單）在執行時期組合，而非編譯進單一 bundle——同時不放棄跨外掛程式邊界的編譯期類型安全。
+瀏覽器用戶端受兩股力塑形。其一是流式：事件驅動的對話 UI 裡，若業務狀態（事件視窗、流式累積、待答互動、連線狀態機）散落在 React 元件與全域性 store 中，每個 token 區塊都會震盪渲染樹，且換 UI 庫等於重寫業務邏輯。其二是模組化：UI 功能（版面設定、側欄、對話、主題、語言包）必須是可獨立裝載的外掛程式——按 host 下發的 manifest（中繼資料清單）在執行時期組合，而非編譯進單一 bundle——同時不放棄跨外掛程式邊界的編譯期類型安全。
 
 ## Decision
 
@@ -23,7 +23,7 @@ Status: implemented
 │  └ GET / 注入 __DSH_BOOT__ 图  │   │  ├ lazy entries: layout/sidebar/                   │
 │                                │   │  │   conversation/trajectory（fetch bundle，按需） │
 └────────────────────────────────┘   │  ├ app-shell 伪行（壳内静态注册，同一治理）        │
-                                     │  └ session scope ×N（观看驱动，惰性建）            │
+                                     │  └ session scope ×N（观看驅動，惰性建）            │
                                      │ React: loading 页 → settled → 整 UI 一次成型       │
                                      └────────────────────────────────────────────────────┘
 ```
@@ -32,7 +32,7 @@ Status: implemented
 
 裝載鏈——兩類包（普通包 vs dsh.client 外掛程式）、模組系統/外掛程式治理器之分、host 獨家撰寫的帶修訂號 entry 圖之上的雙階段 boot、熱重新載入——歸 [client 外掛程式裝載筆記](2026-07-23-client-plugin-loading-model.md) 所有。本篇賴以立足的事實：瀏覽器啟動與 host 相同的 vendored `@cordisjs/plugin-loader`，由 client 模組系統（`ctx.modules`，`packages/client/modules`）填上其 `internal` 約定；凡帶產品行為的單元都是 host 獨家撰寫的 `__DSH_BOOT__` 圖裡的 entry——每個生產外掛程式包（含基礎設施）都攜帶 `dsh.client` 聲明、以 fetch 到達的 `./client` tsdown 閉包 bundle 供給，`immediately` 行的差別僅在 boot 第一階段預取，而普通包（react 家族、cordis、尚未升格的庫）保持打進殼、已播種、對圖不可見；bundle 執行 `window.__ModuleLoader__.load({ id, factory })`，其 `require` 由 lazy CJS 模組表應答（種子詞條 + 已登記工廠，首次 require 時物化並記憶化——跨外掛程式值 import 是建置錯誤，協作走 cordis 服務）；外掛程式 CSS 內聯在 bundle 裡、物化時注入為 `<style data-plugin="<id>">`（CSS Modules 雜湊 + 歸屬標記 = 隔離，重載時移除）；熱重新載入已在 dev 圖落地——webserver 對自己供給的 bundle 做 stat 輪詢並廣播 `rebuilt` SSE 幀，`client-hmr` 外掛程式每幀換掉一個 fiber。settled 翻轉（`loader.await()` + 一次全 ACTIVE 掃描）依舊讓殼從 loading 頁一次切換到真 UI——settled 意味著每個 entry 已建立、每個 fiber 都到達 ACTIVE，FAILED/PENDING 的 fiber 被大聲列出；不存在部分可用模式（漸進渲染為後置工作）。
 
-類型宇宙在聚合層拆分——`tsconfig.host.json` 是 host program、`tsconfig.client.json` 是 client program，二者由 solution 根 `tsconfig.json` 引用，因為兩側都在相同鍵（`sessions`、`loader`）上對 cordis `Context` 做聲明合併且服務不同；client 包經純類型子路徑（`@deepseek-ai/dsh-session/types` 等）消費協議詞彙，host 側的聲明合併不會搭車進入 client program。
+類型宇宙在聚合層拆分——`tsconfig.host.json` 是 host program、`tsconfig.client.json` 是 client program，二者由 solution 根 `tsconfig.json` 引用，因為兩側都在相同鍵（`sessions`、`loader`）上對 cordis `Context` 做聲明合併且服務不同；client 包經純類型子路徑（`@deepseek-ai/dsh-session/types` 等）消費協定詞彙，host 側的聲明合併不會搭車進入 client program。
 
 ## slot 體系：頁面怎麼拼
 
@@ -71,7 +71,7 @@ Notifier 微任务合批 ──► ConversationSnapshot 缓存 ──uSES──�
 - **Session**（session.ts）：懶建、常駐——建成後在後臺持續喫幀，切走切回秒顯。操作面：`prompt`/`cancel`（RPC 透傳；失敗落進快照的 `promptError`）、`open`（拉尾頁 history，冪等）、`loadOlder`（向上翻頁，防重入）、`resync`（重連 = 清視窗重跑 open）。訂閱面：`subscribe`/`getSnapshot`（恆返快取引用）——`implements ObservableSnapshot<ConversationSnapshot>`，構造時掛 `useSelector = bindSnapshotSelector(this)`，Session 本身就是 uSES 源。幀分發是一個 switch：`session/event` 幀按 seq 去重（唯一去重鍵），open 運送中時緩衝，否則追加 + 增量投影；open/縫合按 seq 合併 live 緩衝並去重，`subscribed.lastSeq` 超出視窗尾則回補一次。
 - **ConversationSnapshot**（conversation.ts）：頂層不可變快照約定。`chat` 包含結構化 `order`、identity 穩定的 keyed Node reader、Turn/Step index 和 timeline；`nodes`、`partial`、`runningCalls`、`turnTimings`、`turnEnds` 是未遷移 Trajectory 消費端使用的相容 slice。pending interaction、queue、running、removed、open state、paging 和 prompt error 仍是 Session 資訊。**引用紀律**（memo 與 uSES 的前提）：未變化的子結構和 Node value 保持引用；單個業務更新只替換對應 key 的 value，除非它的順序或 Location 發生變化。React 仍只訂閱 Session 這一處 observable source，並由框架提供的 `useSession(selector)` 隔離 Node 與 Location 聚合更新。
 - **SessionManager**（manager.ts）：實例簇 + 幀總入口 + 工作階段清單。帶 sessionId 的幀只投已存在實例（mux 廣播不得把每個工作階段都實例化）；例外是審批/問答 `requested` 幀——它們不落 history、open 無法回補，故緩衝進 `pendingBuffers`，實例化時重播。
-- **Notifier**（notifier.ts）：兩條通知通道，按變更來源取用。`markDirty()`（默認；幀驅動一律用它）按微任務合批——N 次變更、一次通知、一次重渲染；flush 先重建快照快取再通知。`notifyNow()`（僅使用者手勢的直接回響）同 tick 重建並通知——受控輸入的回響若延到微任務，DOM 會回滾、遊標跳尾。幀驅動程式碼用 notifyNow 會讓合批塌回逐幀渲染；禁。
+- **Notifier**（notifier.ts）：兩條通知通道，按變更來源取用。`markDirty()`（預設；幀驅動一律用它）按微任務合批——N 次變更、一次通知、一次重渲染；flush 先重建快照快取再通知。`notifyNow()`（僅使用者手勢的直接回響）同 tick 重建並通知——受控輸入的回響若延到微任務，DOM 會回滾、遊標跳尾。幀驅動程式碼用 notifyNow 會讓合批塌回逐幀渲染；禁。
 - **ConversationNodeAssembler**（`runtime/src/client/conversation/`）：Session 擁有的增量引擎在原始事件上執行各自獨立註冊的 Definition。`match(event)` 無須掃描 Context 即選填出 `(kind, id)`；start/update 構造 Definition state；引擎計算的 Location 攜帶 Turn/Step 關閉資訊；向前查詢 Context 時記錄相依性，並由後續 prepend 修復；`buildViewNode(target)` 只物化 dirty Context。Chat builder 保留結構順序和 per-key value identity，`useSession` selector 負責消費隔離，Assistant token 發布則合併到每個 animation frame 一次。[Conversation Node 決策](2026-08-09-client-conversation-node-assembly.md)擁有組裝邊界，[Tool 展示所有權](2026-08-08-client-tool-presentation-ownership.md)擁有 Tool 遞迴渲染。
 - **ConnectionController**（在 `packages/client/connection`）：開 mux/host 雙流、for-await 泵入，代際圍欄之內指數退避重連（500ms 翻倍至 10s 封頂、抖動、無限重試）；sinks 單向注入（Controller 不認識 Session）。重連 = 重建：`onConnected` → 清單刷新 + 各已打開工作階段 resync。對象層只面向 `IApiClient`；Web 承載以 HTTP POST 載兩個 client→server 象限、以[每邏輯流一條 WebSocket](2026-08-04-websocket-downlink-carrier.md)載兩個 server→client 象限，用戶端類族歸分層筆記屬地。
 
@@ -82,7 +82,7 @@ Notifier 微任务合批 ──► ConversationSnapshot 缓存 ──uSES──�
 - 快照 store 引擎**住 runtime 包**（zustand vanilla + 草稿式更新，預設 `flush: 'sync'`，選填 `'raf'` 合批，選填整值 localStorage 持久化，dev 深凍結——全部從 `runtime` 的 `./client` 主出口匯出，無子路徑）：store 產物是裸的可觀察源，不帶任何掛鉤成員。外掛程式只經 [slot 體系標準](2026-07-22-slot-type-chain-implementation.md) 的 `defineStore` 聲明觸及引擎。web-react 在綁定處（`bindSnapshotSelector`，按源快取）從 React 消費的唯一資料約定合成每個掛鉤：`ObservableSnapshot<T>`（`getSnapshot`/`subscribe`）——Session 對象與快照 store 同構滿足它。業務外掛程式包只相依性 runtime 與 ui-slots；web-react 是僅殼可用的膠水。
 - `bindSnapshotSelector(source)`：把一個源綁定為經 uSES-with-selector 的帶類型 selector 掛鉤。uSES 約定四條按構造成立：getSnapshot 恆返快取引用；subscribe 是綁定期閉包（引用永穩）；純 CSR 不傳 server snapshot；相等性預設 `Object.is`，按呼叫選填 `shallowEqual`。
 - `useInvoke(fn)`：把非同步動作包成引用恆定的觸發器加 pending 標志；pending 走每個掛鉤的外部 store 經 uSES 讀出（渲染路徑零 setState），並行呼叫計數，invoke 引用永不變。
-- 相等性協議，全鏈一致：生產端結構共享；消費端以 `Object.is` 或 `shallowEqual` 短路；`React.memo` 淺比較。深比較全鏈禁止。
+- 相等性協定，全鏈一致：生產端結構共享；消費端以 `Object.is` 或 `shallowEqual` 短路；`React.memo` 淺比較。深比較全鏈禁止。
 
 ## 目錄形態
 

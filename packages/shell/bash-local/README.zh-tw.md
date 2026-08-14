@@ -1,10 +1,10 @@
 # @deepseek-ai/dsh-bash-local
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 `@deepseek-ai/dsh-shell` 執行器 seam 的本機 Service Provider，建置在 [`@deepseek-ai/dsh-subprocess`](../../subprocess/subprocess/README.md) 服務之上：`LocalBashExecutor` 每次呼叫都透過 `ctx.subprocess` 把 `bash -c <command>` 作為受管行程組 spawn，並負責所有 Bash 層職責（命令預設值補全與上限、逾時與取消分類、適合模型的終端機環境，以及後臺讀取時面向模型的 stdout/stderr 合併）。以 spill 文件兜底的有界輸出、憑據清除、kill 升級和 dispose（資源釋放）等行程組機制則由 subprocess 服務負責。
 
-包根目錄匯出默認與具名的 `LocalBashExecutor` 外掛程式及其 `Config`。
+包根目錄匯出預設與具名的 `LocalBashExecutor` 外掛程式及其 `Config`。
 
 ## 設定
 
@@ -41,7 +41,7 @@
 
 - **自身不提供隔離**：此執行器始終以 harness 行程的權限執行命令；需要隔離的部署可以組合 [`dsh-bash-sandbox`](../bash-sandbox/README.md)，每次呼叫的 allow/deny/ask 策略則屬於 `tools/pre-execute`。
 - **沒有持久 shell 或 PTY**：每次呼叫都啟動新的非登入 `bash -c`；僅持久化 cwd 與互動式終端機工作階段均繼續暫緩，直到真實工作流程需要它們。
-- **僅支持 POSIX**：`bash` 二進位已硬編碼，底層服務的行程組語義也是 POSIX 的；不支持 Windows。
+- **僅支援 POSIX**：`bash` 二進位已硬編碼，底層服務的行程組語義也是 POSIX 的；不支援 Windows。
 - **後臺 spawn 失敗提示只交付一次**：subprocess 服務不會為從未真正執行的行程緩衝任何輸出，因此執行器把 `spawn failed: …` 注入恰好一個 `readOutput()` 增量；丟棄了該增量的讀取方無法再復原它。
 
 憑據清除啟發式規則與 spill 保留的注意事項隨 [`dsh-subprocess-local`](../../subprocess/subprocess-local/README.md) 記錄；這些機制歸它所有。

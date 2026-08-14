@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-07-15-llm-model-catalog-and-acp-selection.md) | [简体中文](2026-07-15-llm-model-catalog-and-acp-selection.zh.md) | 繁體中文
+[English](2026-07-15-llm-model-catalog-and-acp-selection.md) | 繁體中文
 
-> 目錄決策仍然有效。ACP（Agent Client Protocol）工作階段級模型選擇已由 [ACP 作為僅面向自動化的協議](../simplification/2026-07-23-acp-automation-only-protocol.md)取代。
+> 目錄決策仍然有效。ACP（Agent Client Protocol）工作階段級模型選擇已由 [ACP 作為僅面向自動化的協定](../simplification/2026-07-23-acp-automation-only-protocol.md)取代。
 
 ## 問題
 
-基於提供方路由的配接器允許每次請求選擇 `provider + model`，但 `LlmRuntime` 只暴露路由和流式呼叫。UI 無法發現已註冊的提供方，也無法知道配接器願意推薦哪些模型。因此，ACP 用戶端收不到 `model` 工作階段設定項；即使 LLM（大型語言模型）服務已經支持執行時期切換，Zed、JetBrains 和 VS Code 整合仍沒有模型清單。
+基於提供方路由的配接器允許每次請求選擇 `provider + model`，但 `LlmRuntime` 只暴露路由和流式呼叫。UI 無法發現已註冊的提供方，也無法知道配接器願意推薦哪些模型。因此，ACP 用戶端收不到 `model` 工作階段設定項；即使 LLM（大型語言模型）服務已經支援執行時期切換，Zed、JetBrains 和 VS Code 整合仍沒有模型清單。
 
 模型發現不能變成請求校驗。手寫 DeepSeek 配接器會把任意模型 ID 原樣轉發給公開或私有端點，而 pi-ai 的有限安裝目錄則是其自身請求解析的權威依據。將共享目錄視為白名單，會破壞提供方路由需要保留的私有端點能力。
 
@@ -18,13 +18,13 @@ ACP 選擇還必須保留提供方維度。同一個模型 ID 可能存在於多
 
 ### 提供方無關的建議性發現
 
-`LlmAdapter` 增加 `providerInfo(provider)` 與非同步 `listModels(provider)` 方法。其提供方無關結果分別為 `LlmProviderInfo { id, name }` 和 `LlmModelInfo { provider, id, name, description? }`。默認實作以路由名稱作為提供方名稱，並且不展示模型，從而保持現有配接器行為。
+`LlmAdapter` 增加 `providerInfo(provider)` 與非同步 `listModels(provider)` 方法。其提供方無關結果分別為 `LlmProviderInfo { id, name }` 和 `LlmModelInfo { provider, id, name, description? }`。預設實作以路由名稱作為提供方名稱，並且不展示模型，從而保持現有配接器行為。
 
 `LlmRuntime.listProviders()` 按註冊順序返回元資料副本。`LlmRuntime.listModels(provider)` 委託給路由所有者，校驗非空 ID 和名稱，並在提供方不匹配或模型 ID 重複時以 `INVALID_CATALOG` 失敗，最後回傳值的副本。未知提供方仍以 `NO_ADAPTER` 失敗。提供方元資料在 `registerAdapter()` 期間進行原子校驗，錯誤展示記錄不會留下部分註冊。
 
 目錄成員關係僅提供建議。它驅動選擇器與診斷，但不會改變 `stream()` 路由，也不會拒絕原本有效的請求。提供方所有權仍然具有排他性並綁定生命週期；模型 ID 仍是請求時傳給配接器的輸入。
 
-`dsh-llm-pi-ai` 將已設定提供方的 `getModels(provider)` 返回的已安裝條目對映為提供方無關的目錄。其現有請求時目錄查詢仍是權威依據，未知模型仍以 `UNKNOWN_MODEL` 失敗。`dsh-llm-deepseek` 接受包含展示條目的選填 `models` 設定，默認包含名為 `DeepSeek-V4-Flash` 的 `deepseek-v4-flash` 和名為 `DeepSeek-V4-Pro` 的 `deepseek-v4-pro`。顯式清單會替換這些預設值，空清單則關閉發現。這些條目改善已知公開或私有模型的選擇體驗，而所有未列出的模型 ID 仍會原樣透傳。
+`dsh-llm-pi-ai` 將已設定提供方的 `getModels(provider)` 返回的已安裝條目對映為提供方無關的目錄。其現有請求時目錄查詢仍是權威依據，未知模型仍以 `UNKNOWN_MODEL` 失敗。`dsh-llm-deepseek` 接受包含展示條目的選填 `models` 設定，預設包含名為 `DeepSeek-V4-Flash` 的 `deepseek-v4-flash` 和名為 `DeepSeek-V4-Pro` 的 `deepseek-v4-pro`。顯式清單會替換這些預設值，空清單則關閉發現。這些條目改善已知公開或私有模型的選擇體驗，而所有未列出的模型 ID 仍會原樣透傳。
 
 ### 前端內的工作階段級選擇
 
@@ -52,8 +52,8 @@ ACP 自動化傳輸層不是目錄消費端。它透過部署設定為新建立�
 
 - 任意配接器都能暴露動態模型清單，無需把提供方庫類型洩漏到 LLM Service Definition。
 - 目錄消費端必須把缺失理解為「未展示」，而不是「請求無效」。
-- pi-ai 配接器會暴露其已安裝的提供方目錄；手寫 DeepSeek 部署顯式列出已知選項，同時保留對任意模型的支持。
-- 面向人類的目錄消費端擁有各自的選擇互動。ACP 使用固定部署目標，不會為模型發現擴大協議範圍。
+- pi-ai 配接器會暴露其已安裝的提供方目錄；手寫 DeepSeek 部署顯式列出已知選項，同時保留對任意模型的支援。
+- 面向人類的目錄消費端擁有各自的選擇互動。ACP 使用固定部署目標，不會為模型發現擴大協定範圍。
 - 請求標頭與基於提供方路由的工作階段形態保持相容；不需要新的 JSONL 事件或格式版本。
 - 目錄讀取可以是非同步的，且每個呼叫方都會收到值的獨立副本。
 

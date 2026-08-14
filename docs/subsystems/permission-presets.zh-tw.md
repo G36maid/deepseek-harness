@@ -1,6 +1,6 @@
 # 權限預設
 
-[English](permission-presets.md) | [简体中文](permission-presets.zh.md) | 繁體中文
+[English](permission-presets.md) | 繁體中文
 
 [dsh-permission-presets](../../packages/interaction/permission-presets) 的權限預設層（`ctx.permissionPresets`，`PermissionPresetService`）把兩個相互獨立的強制執行 knob，即[沙盒模式](sandbox.md)（`sandbox/mode`）與[審批策略](approval.md)（`approval/policy`），捆綁成具名預設，供用戶端作為單個權限（Permissions）選擇器提供。它是一項選填能力，不屬於 agent loop（代理循環）主幹，也不擁有任何強制執行：執行、提示詞敘述與重播仍然讀取各自 knob的摺疊結果，預設切換只記錄意圖，並透過每個 knob各自的規範 setter 寫入。[包 README](../../packages/interaction/permission-presets/README.md) 負責組合狀態與限制；[沙盒切換設計](../../.agents/notes/implemented/feature/2026-07-06-sandbox.md)負責決策依據。
 
@@ -8,7 +8,7 @@
 
 ## 預設表
 
-預設是一個表鍵，對映到一個沙盒／審批組合，外加選填的用戶端展示資訊；默認預設表自帶 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。
+預設是一個表鍵，對映到一個沙盒／審批組合，外加選填的用戶端展示資訊；預設預設表自帶 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。
 
 ```ts type-equiv
 /** One preset's sandbox/approval bundle and optional client presentation. */

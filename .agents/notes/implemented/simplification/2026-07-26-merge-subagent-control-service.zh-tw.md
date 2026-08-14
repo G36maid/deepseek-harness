@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-merge-subagent-control-service.md) | [简体中文](2026-07-26-merge-subagent-control-service.zh.md) | 繁體中文
+[English](2026-07-26-merge-subagent-control-service.md) | 繁體中文
 
 公開操作集合由[以意圖命名的 subagent 繼續執行操作](2026-07-27-intent-named-subagent-continuation-operations.md)進一步細化，並由[可繼續的 subagent](../feature/2026-07-28-continuable-subagent-conversations.md)再次細化——後者保留這一個合併後的服務，同時移除提供方 `resume` 派發和基於 Task 的繼續執行生命週期。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 `startContinuable` 與底層 `start` 保持分離，因為二者的所有權與時序約定不同：前者分配持久化 child id、建立 Task，並同步返回兩個 id，而啟動過程繼續在 Task 內執行；底層 `start` 則等待提供方發布，並移交一個由持有方負責的 run。若透過標志或回傳值聯合類型將該方法並入 `start`，會擴大底層約定，改動反而多於保留現有的顯式入口。
 
-每個 `@deepseek-ai/dsh-tool-subagent` 實例都會選擇 `backgroundMode: 'one-shot' | 'continuable'`，預設值為 `one-shot`。這項設定表示策略；`provider.resume` 只用於檢查所設定的可繼續模式是否受提供方支持。因此，可復原的提供方仍可執行一次性後臺工作。`send_message` 工具是獨立配接器：載入或省略該工具既不會啟用也不會停用 `startContinuable`。
+每個 `@deepseek-ai/dsh-tool-subagent` 實例都會選擇 `backgroundMode: 'one-shot' | 'continuable'`，預設值為 `one-shot`。這項設定表示策略；`provider.resume` 只用於檢查所設定的可繼續模式是否受提供方支援。因此，可復原的提供方仍可執行一次性後臺工作。`send_message` 工具是獨立配接器：載入或省略該工具既不會啟用也不會停用 `startContinuable`。
 
 ## 已考慮的替代方案
 

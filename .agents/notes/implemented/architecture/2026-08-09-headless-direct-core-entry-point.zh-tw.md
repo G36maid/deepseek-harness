@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-headless-direct-core-entry-point.md) | [简体中文](2026-08-09-headless-direct-core-entry-point.zh.md) | 繁體中文
+[English](2026-08-09-headless-direct-core-entry-point.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ Status: implemented
 
 `loadProfile` 識別安裝過程擁有的精確 headless 元組（`dsh-base`、`dsh-web-app`、`dsh-headless`），將其規範化為隨附的 headless 範本，並保留 manifest（中繼資料清單）的其他所有欄位。帶額外項、缺少項或順序不同的組合包清單歸使用者所有，保持不變。
 
-本 Agent Note 負責 headless 的傳輸與完成約定。[應用持有自己的命令列](2026-08-06-app-owned-command-line.md)負責當前的 `dsh --profile headless` 文法；原 [`dsh run` 決策](../../archived/feature/2026-08-08-dsh-run-headless-command.md)記錄已被取代的啟動器持有文法，[GUI 分層與 RPC 協議](2026-07-19-gui-layering-and-rpc-protocol.md)負責瀏覽器閘道邊界，[Web 設定樹啟動與傳輸分層](2026-07-24-web-config-tree-boot-and-transport-layering.md)負責 Web 外掛程式樹，[默認模型跟隨選擇器](../feature/2026-08-07-default-model-follows-the-picker.md)負責共享 Agent 預設值的持久化。
+本 Agent Note 負責 headless 的傳輸與完成約定。[應用持有自己的命令列](2026-08-06-app-owned-command-line.md)負責當前的 `dsh --profile headless` 文法；原 [`dsh run` 決策](../../archived/feature/2026-08-08-dsh-run-headless-command.md)記錄已被取代的啟動器持有文法，[GUI 分層與 RPC 協定](2026-07-19-gui-layering-and-rpc-protocol.md)負責瀏覽器閘道邊界，[Web 設定樹啟動與傳輸分層](2026-07-24-web-config-tree-boot-and-transport-layering.md)負責 Web 外掛程式樹，[預設模型跟隨選擇器](../feature/2026-08-07-default-model-follows-the-picker.md)負責共享 Agent 預設值的持久化。
 
 ## 驗證
 
@@ -31,8 +31,8 @@ Status: implemented
 | 替代方案 | 約定不匹配之處 |
 |---|---|
 | 保留 `dsh-web-app`，但隱藏觀察行 | 行程仍會打開埠並攜帶 Host、Web 與瀏覽器外掛程式樹。 |
-| 圍繞 ApiProxy 建置純 Host 一次性組合包 | ApiProxy 是用戶端協議閘道，而本機一次性入口沒有用戶端邊界。 |
-| 使用 `InProcessApiClient` 實作產品級協議覆蓋 | 產品執行會僅為測試無關協議而相依性該協議。 |
+| 圍繞 ApiProxy 建置純 Host 一次性組合包 | ApiProxy 是用戶端協定閘道，而本機一次性入口沒有用戶端邊界。 |
+| 使用 `InProcessApiClient` 實作產品級協定覆蓋 | 產品執行會僅為測試無關協定而相依性該協定。 |
 | 為 headless 單獨提供提供方／模型設定 | 直接建立與 Web 建立會擁有彼此獨立的預設值和持久化。 |
 | 省略 Code Mode 與工作階段持久化 | 兩項能力都屬於一次性 Agent 執行，而不是 Web 呈現。 |
 | 規範化所有包含 Web 與 headless 組合包的元組 | 組合包清單是擴充面；只有精確的安裝過程所屬元組可以安全分類。 |

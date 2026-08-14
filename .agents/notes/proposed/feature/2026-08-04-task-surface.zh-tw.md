@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-08-04-task-surface.md) | [简体中文](2026-08-04-task-surface.zh.md) | 繁體中文
+[English](2026-08-04-task-surface.md) | 繁體中文
 
 ## 問題
 
@@ -10,13 +10,13 @@ Status: proposed
 
 這兩種變通方案的職責歸屬都不合理。產品專用元件要求每種任務形態都新增觸發方式並行布新版本。對於只需一個輪次的表單，生成程式碼所擁有的權限和生命週期成本都遠超實際需要。這樣做還會把展示介面而非使用者結論變成持久產物。
 
-目前缺少這樣一份約定：用有界、可重播的描述來定義臨時 UI，並讓它只屬於一個工作階段和一次工具呼叫實例。產品應當負責校驗、放置、互動機制和提交；agent 應當負責特定任務的文案、資料，以及從受支持元件中作出選擇。
+目前缺少這樣一份約定：用有界、可重播的描述來定義臨時 UI，並讓它只屬於一個工作階段和一次工具呼叫實例。產品應當負責校驗、放置、互動機制和提交；agent 應當負責特定任務的文案、資料，以及從受支援元件中作出選擇。
 
 ## 提案
 
 新增 **Task Surface**：一種由普通 Web 用戶端外掛程式渲染、帶版本的聲明式模型。面向模型提供一個穩定工具 `show_task_surface`，用於發布該模型。呼叫成功後，當前輪次結束。使用者編輯並提交渲染出的面板；Host 將提交內容記錄為一條普通的可見使用者訊息，並開始下一輪。
 
-同時滿足以下條件時，Task Surface 是默認的結構化 UI 路徑：
+同時滿足以下條件時，Task Surface 是預設的結構化 UI 路徑：
 
 - 互動屬於當前工作階段和當前任務；
 - 行為可以由已聲明的元件集合表達；
@@ -29,7 +29,7 @@ Status: proposed
 
 ## 聲明式模型
 
-`TaskSurfaceModelV1` 使用 JSON。它包含內容區塊、輸入欄位和一個提交標籤；不包含程式碼、回呼、選擇器、HTML、CSS、可執行產物的 URL，也不包含表達式語言。該類型與核心工作階段中現有的 `SurfaceManager`/`SurfaceOp` 訊息歸約類型無關；Task Surface 是一套產品互動協議。
+`TaskSurfaceModelV1` 使用 JSON。它包含內容區塊、輸入欄位和一個提交標籤；不包含程式碼、回呼、選擇器、HTML、CSS、可執行產物的 URL，也不包含表達式語言。該類型與核心工作階段中現有的 `SurfaceManager`/`SurfaceOp` 訊息歸約類型無關；Task Surface 是一套產品互動協定。
 
 ```ts
 interface TaskSurfaceModelV1 {
@@ -69,19 +69,19 @@ type TaskSurfaceField =
 interface TaskSurfaceOption { id: string; label: string; detail?: string }
 ```
 
-渲染器控制字體排印、間距、響應式版面配置、焦點順序、鍵盤行為和主題 token。未指定版面配置時使用 `stack`；`grid` 版面配置自帶列數，可用寬度無法容納時會摺疊。遇到未知版本或聯合類型分支時，系統使用通用工具結果回退，而不是隻解釋其中一部分。
+渲染器控制字體排印、間距、響應式版面設定、焦點順序、鍵盤行為和主題 token。未指定版面設定時使用 `stack`；`grid` 版面設定自帶列數，可用寬度無法容納時會摺疊。遇到未知版本或聯合類型分支時，系統使用通用工具結果回退，而不是隻解釋其中一部分。
 
-`markdown` 塊複用 `MarkdownText`，並顯式指定模型 URL 策略。`MarkdownText` 新增 `remoteImages: 'render' | 'alt-only'`，普通場景仍默認使用 `render`；Task Surface 始終傳入 `alt-only`，因此圖片文法只渲染替代文字。原始 HTML 和嵌入式媒體仍會被省略，不生成自動連結預覽；未經使用者顯式操作，不會解引用模型提供的任何 URL。普通 HTTP(S) 連結仍可在使用者選擇後導覽。文法高亮區塊等固定應用資源繼續遵循產品的常規載入策略。
+`markdown` 塊複用 `MarkdownText`，並顯式指定模型 URL 策略。`MarkdownText` 新增 `remoteImages: 'render' | 'alt-only'`，普通場景仍預設使用 `render`；Task Surface 始終傳入 `alt-only`，因此圖片文法只渲染替代文字。原始 HTML 和嵌入式媒體仍會被省略，不生成自動連結預覽；未經使用者顯式操作，不會解引用模型提供的任何 URL。普通 HTTP(S) 連結仍可在使用者選擇後導覽。文法高亮區塊等固定應用資源繼續遵循產品的常規載入策略。
 
-版本 1 有意不支持條件欄位、用戶端資料取得、圖表、文件上傳和任意事件處理器。新增任何塊或欄位類型都屬於協議變更，必須在同一變更中加入解析器、渲染器、無障礙行為、回退方式和重播 fixture（測試前置資料）。
+版本 1 有意不支援條件欄位、用戶端資料取得、圖表、文件上傳和任意事件處理器。新增任何塊或欄位類型都屬於協定變更，必須在同一變更中加入解析器、渲染器、無障礙行為、回退方式和重播 fixture（測試前置資料）。
 
-Task Surface 服務透過受 schema 校驗的設定定義限制。初始預設值為：規範化模型不超過 64 KiB、塊不超過 64 個、欄位不超過 32 個、表格行不超過 200 行、提交內容不超過 32 KiB。模型內的 ID 必須唯一；欄位值必須符合其聲明；未知欄位會被拒絕。這些限制約束日誌、DOM 和提示詞成本，但不改變協議。
+Task Surface 服務透過受 schema 校驗的設定定義限制。初始預設值為：規範化模型不超過 64 KiB、塊不超過 64 個、欄位不超過 32 個、表格行不超過 200 行、提交內容不超過 32 KiB。模型內的 ID 必須唯一；欄位值必須符合其聲明；未知欄位會被拒絕。這些限制約束日誌、DOM 和提示詞成本，但不改變協定。
 
 ## 工具與呈現約定
 
 `show_task_surface` 接收 `{ model: TaskSurfaceModelV1 }`。Host 解析並規範化完整模型；若該工作階段已有一個打開的 Task Surface，則拒絕呼叫；否則生成 `surfaceId`，並返回帶規範化模型的規範值 `{ surfaceId, model }`。`presentationMeta` 持久化 `value.model`，使投影器和執行器不會對規範化結果產生分歧。Native 結果會指明該 Surface，並說明用戶端無法渲染面板時，可以透過普通訊息繞過它。隨後工具呼叫 `exec.concludeTurn()`，防止 agent 越過所要求的人工檢查點繼續執行。
 
-工具定義省略 `isConcurrencySafe`。根據現有工具登錄檔約定，省略該欄位會將每次呼叫歸類為獨佔排序屏障，無需新增 `ToolDefinition` 欄位。該工具只會組裝到同時掛載 Host 服務和 Web 渲染器的 Web profile 中。版本 1 支持 `native` 和 `both` 工具模式；僅支持 `code` 的 profile 不會向模型公佈該工具，因為 Code Mode 分發屬於巢狀呼叫，無法把呈現元資料傳到外層結果。
+工具定義省略 `isConcurrencySafe`。根據現有工具登錄檔約定，省略該欄位會將每次呼叫歸類為獨佔排序屏障，無需新增 `ToolDefinition` 欄位。該工具只會組裝到同時掛載 Host 服務和 Web 渲染器的 Web profile 中。版本 1 支援 `native` 和 `both` 工具模式；僅支援 `code` 的 profile 不會向模型公佈該工具，因為 Code Mode 分發屬於巢狀呼叫，無法把呈現元資料傳到外層結果。
 
 瀏覽器安全的領域包從 `@deepseek-ai/dsh-brand` 以僅類型方式匯入 `Branded` 原語，並擁有全部三個 Task Surface ID。根據[規範工具輸出約定](../../implemented/architecture/2026-07-20-canonical-tool-output-contract.md)，規範值僅存在於本次執行中。因此，重播透過 `output.presentationMeta(args, value)` 將以下帶標籤的載荷隨 `tool/result.meta` 一並持久化：
 
@@ -100,7 +100,7 @@ interface TaskSurfacePresentationMeta {
 }
 ```
 
-該工具保留通用 [render intent](../../implemented/architecture/2026-07-02-tool-render-intent-union.md)。帶 key 的 Web 行讀取 `ToolResultNode` 上已經保留的帶標籤元資料，無需新增 render-intent 分支或呈現登錄檔。不支持 Task Surface 的用戶端會渲染普通結果內容。
+該工具保留通用 [render intent](../../implemented/architecture/2026-07-02-tool-render-intent-union.md)。帶 key 的 Web 行讀取 `ToolResultNode` 上已經保留的帶標籤元資料，無需新增 render-intent 分支或呈現登錄檔。不支援 Task Surface 的用戶端會渲染普通結果內容。
 
 Web 外掛程式按照 [toolview](../../implemented/architecture/2026-07-23-toolview-dissolution.md) 和 [slot 註冊](../../implemented/architecture/2026-07-22-slot-type-chain-implementation.md)約定，提供兩個靜態的工作階段作用域註冊項。一個以 `show_task_surface` 為 key 的 `conversation.chat.toolview` 條目將持久 transcript（文字記錄）呼叫實例渲染為簡潔摘要和只讀重播。現有 `conversation.input.dock` 中的一個 `TaskSurfaceDock` 條目是唯一可操作的掛載點：它讀取活動投影，針對確切身份呼叫 `getActive`，並擁有欄位、草稿、提交和關閉操作。Dock 與 transcript 分頁相互獨立，因此即使 `ToolResultNode` 位於已載入歷史視窗之外，活動 Surface 仍可操作。
 
@@ -178,7 +178,7 @@ interface TaskSurfaceUserMessageSource {
 }
 ```
 
-`session/queue` 協議條目已經攜帶完整 `Message`。用戶端投影會顯式擴充以保留其來源，不再丟失關聯資訊：
+`session/queue` 協定條目已經攜帶完整 `Message`。用戶端投影會顯式擴充以保留其來源，不再丟失關聯資訊：
 
 ```ts ignore-check
 interface QueuedMessage {
@@ -216,7 +216,7 @@ interface TaskSurfaceProjection {
 
 一個工作階段最多隻能有一個打開的 Task Surface。成功的結果會打開它；匹配的 Task Surface 使用者訊息或關閉事件會將其關閉。後續的普通使用者訊息也會將其關閉，這是一條顯式的繞過路徑；在以上任一事件關閉活動呼叫實例前，再次呼叫 `show_task_surface` 都會失敗。回退和 fork 會透過摺疊相應日誌推匯出活動呼叫實例；瞬態佇列階段不會被複制，也不會有獨立的 Surface 資料庫參與其中。
 
-完整模型仍存放在對應的 `tool/result.meta` 中；投影只攜帶活動身份。`TaskSurfaceDock` 獨立於歷史行存在，並會回應該身份。`taskSurface.getActive({ sessionId, surfaceId })` 會從工作階段日誌中讀取確切呼叫實例，重新校驗其元資料，合併 Task Surface 服務的待處理協調記錄，並返回 `{ callId, surfaceId, model, pending }`。呼叫實例不存在或已經關閉時返回 `not-open`。因此，即使結果位於歷史尾段之外，刷新和重新連線仍能復原可操作的 Surface 及其同進程待處理階段，而無需把模型複製到每一個投影基線中。
+完整模型仍存放在對應的 `tool/result.meta` 中；投影只攜帶活動身份。`TaskSurfaceDock` 獨立於歷史行存在，並會回應該身份。`taskSurface.getActive({ sessionId, surfaceId })` 會從工作階段日誌中讀取確切呼叫實例，重新校驗其元資料，合併 Task Surface 服務的待處理協調記錄，並返回 `{ callId, surfaceId, model, pending }`。呼叫實例不存在或已經關閉時返回 `not-open`。因此，即使結果位於歷史尾段之外，刷新和重新連線仍能復原可操作的 Surface 及其同行程待處理階段，而無需把模型複製到每一個投影基線中。
 
 Web 外掛程式將未提交值保存在一個有界、按工作階段持久化的 slot store 中，並以 `surfaceId` 為 key；這些值永遠不會進入工作階段日誌、提示詞或長期記憶。已提交值存放在接納的使用者訊息中，因此即使瀏覽器草稿丟失，也不會抹去結論。
 
@@ -236,7 +236,7 @@ Web 外掛程式將未提交值保存在一個有界、按工作階段持久化�
 
 `ui-task-surface` 相依性瀏覽器安全的 Task Surface 領域包、用戶端連線與執行時期、locale、`ui-conversation` 所聲明的 slot 約定、用於註冊的 `ui-slots`，以及 `ui-primitives`；`ui-primitives` 不反向相依性 Task Surface。ApiProxy 相依性 Task Surface 服務約定和通用 AgentLoop 終態結果。核心 Agent 包不匯入 Task Surface 類型。
 
-該實作相依性現有的訊息日誌、規範工具輸出、帶標籤的 render intent、工作階段投影、按工作階段作用域聲明的 slot store 和 slot 生命週期，不相依性在執行時期建立用戶端外掛程式。Generated Client Plugin 工作流程可以使用 Task Surface 展示審閱表單，但兩個協議都不擁有或啟用另一個協議。
+該實作相依性現有的訊息日誌、規範工具輸出、帶標籤的 render intent、工作階段投影、按工作階段作用域聲明的 slot store 和 slot 生命週期，不相依性在執行時期建立用戶端外掛程式。Generated Client Plugin 工作流程可以使用 Task Surface 展示審閱表單，但兩個協定都不擁有或啟用另一個協定。
 
 ## 交付階段
 
@@ -256,18 +256,18 @@ Web 外掛程式將未提交值保存在一個有界、按工作階段持久化�
 
 **只在規範工具值中保留模型。**不予採用，因為規範值不會持久化。重播要求將規範化模型寫入 `presentationMeta`。
 
-**將面板存入長期記憶。**不予採用，因為版面配置和草稿狀態不是可複用事實。現有記憶策略可以保留使用者提交的結論。
+**將面板存入長期記憶。**不予採用，因為版面設定和草稿狀態不是可複用事實。現有記憶策略可以保留使用者提交的結論。
 
 ## 驗收標準
 
-- 在 `native` 或 `both` 工具模式下，真實模型可以呼叫一個穩定的 `show_task_surface` schema；呼叫結束當前輪次；具備相應能力的 Web 用戶端在即時執行和重播後都能渲染同一份規範化模型；僅支持 `code` 的模式不會向模型公佈該工具。
+- 在 `native` 或 `both` 工具模式下，真實模型可以呼叫一個穩定的 `show_task_surface` schema；呼叫結束當前輪次；具備相應能力的 Web 用戶端在即時執行和重播後都能渲染同一份規範化模型；僅支援 `code` 的模式不會向模型公佈該工具。
 - 靜態 `TaskSurfaceDock` 是唯一的編輯器，即使活動結果位於已載入歷史視窗之外也仍可操作；帶 key 的 toolview 始終是 transcript 的只讀摘要和重播。composer 接管會隱藏仍處於掛載狀態的 Dock、保留其草稿，並在接管釋放後重新顯示同一個所有者。
 - 每個 `submissionId` 的提交操作恰好生成一條可見使用者訊息，透過普通佇列接納開始下一輪，並在保留 `source.kind: 'user'` 的同時維持帶品牌類型的確切呼叫實例關聯；關閉操作記錄一條日誌事件，且不啟動輪次。
 - 用戶端排隊行保留已關聯的訊息來源。`getActive` 可在同一行程的重新連線前後公開 `queued` 或 `claiming`；持久化完成後會關閉投影，顯式丟棄則會清除待處理狀態並讓 Surface 保持打開。佇列行消失本身不會改變任何 UI 狀態。系統會拒絕編輯和 steering，且移除操作只能在認領前成功。
 - 刷新、重新連線、工作階段切換、fork 和回退都生成日誌所決定的生命週期狀態；`getActive` 可以復原歷史尾段之外的模型和待處理階段，任何面板、待處理狀態或草稿都不會洩漏到其他工作階段。
-- 不受支持的版本、格式錯誤的元資料以及用戶端能力缺失時，系統回退到帶普通訊息繞過路徑的可讀工具結果內容；巢狀呼叫以及已有另一個活動 Surface 時發起的呼叫都無法打開 Surface，並以失敗結束。
-- 協議 schema 會校驗 ID 字串，領域 API 始終公開帶品牌類型的 ID。模型解析器會在面板可互動前強制校驗帶標籤的版面配置形態、欄位值，以及設定的位元組數和數量限制。瀏覽器測試證明：圖片文法會變成替代文字，原始 HTML 和嵌入式媒體不會渲染，而且在使用者顯式操作前不會請求模型提供的 URL。
-- 元件測試覆蓋純鍵盤操作、焦點復原、無障礙名稱、窄屏版面配置、兩種主題，以及中英文產品介面。
+- 不受支援的版本、格式錯誤的元資料以及用戶端能力缺失時，系統回退到帶普通訊息繞過路徑的可讀工具結果內容；巢狀呼叫以及已有另一個活動 Surface 時發起的呼叫都無法打開 Surface，並以失敗結束。
+- 協定 schema 會校驗 ID 字串，領域 API 始終公開帶品牌類型的 ID。模型解析器會在面板可互動前強制校驗帶標籤的版面設定形態、欄位值，以及設定的位元組數和數量限制。瀏覽器測試證明：圖片文法會變成替代文字，原始 HTML 和嵌入式媒體不會渲染，而且在使用者顯式操作前不會請求模型提供的 URL。
+- 元件測試覆蓋純鍵盤操作、焦點復原、無障礙名稱、窄屏版面設定、兩種主題，以及中英文產品介面。
 - 無金鑰瀏覽器組合測試覆蓋顯示、Dock 與只讀行的職責歸屬、視窗外復原、編輯、接納被拒後的重試、從 `queued` 到 `claiming` 的轉換、丟棄、沒有可編輯空檔的持久交接、禁止的佇列操作、關閉、重新連線和雙重提交冪等性。
 - 前綴快照表明：無論任務特定模型如何變化，都只存在一個穩定的工具定義；只有呼叫參數和後續使用者結論發生變化。
 - 解除安裝 Web 外掛程式時，其所屬 Fiber 會對 Dock、工具行和草稿 store 執行 dispose，但不會改變持久 transcript。

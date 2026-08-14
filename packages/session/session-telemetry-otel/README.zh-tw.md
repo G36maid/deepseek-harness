@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-telemetry-otel
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 [遙測（telemetry）seam](../session-telemetry/) 的 OpenTelemetry 後端，也是部署方唯一要載入的條目。其 `mode` 決定 seam 是即時跟隨工作階段事件、僅在記錄回饋時重播權威日誌，還是將遙測留在本機。上傳模式會原樣組合 OTel JS SDK（`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP 日誌匯出器），把每條已交接記錄對映到 `logger.emit()`，並使用兩個插樁作用域（instrumentation scope）：ledger 記錄掛在 `@deepseek-ai/dsh-session-sessionTelemetry-otel` 下，運維記錄掛在 `@deepseek-ai/dsh-session-sessionTelemetry-otel/ops` 下。資源身份包含 `service.name`/`service.version`（來自 `dsh-llm` 的 `APP_IDENTITY`），以及本包的匿名 `user.id`（`$DSH_HOME/.anonymous-user-id`；首次使用時建立的隨機 UUID，刪除該文件可重設）；這些身份隨每個匯出批次攜帶一次，而非逐條記錄攜帶。
 
@@ -39,7 +39,7 @@
 
 ## 欄位對映
 
-seam 記錄 → SDK 日誌記錄：`time` → `timestamp`/`observedTimestamp`；`severity` → `severityNumber`/`severityText`（INFO 9 / WARN 13 / ERROR 17）；`body` → 結構化日誌 body；`attributes` 原樣照搬。接收端基於 `(session.id, event.seq)` 去重，並按嚴重等級告警。在 `FULL` 中，接收端還可透過缺少 `shutdown` 記錄偵測崩潰：該標記在工作階段自身 dispose（資源釋放）或應用關閉時寄出；標記之後出現更多事件，說明遙測發生了重載。在 `FEEDBACK_ONLY` 中，已釋放的前綴通常不包含隨後的 `shutdown` 標記，因此缺少該標記不是崩潰訊號。跨譜系（lineage）的流並不自足：復原的工作階段在其自身 id 的流上從上一個行程停止之處繼續；fork 出的工作階段的流從繼承邊界開始，其前綴位於父工作階段的流中，由接收端基於 `session.parent_id` + `session.seed_length` 拼接。復原後的本機日誌可能包含從未匯出的合成關閉事件；協議流忠實於實際交給 SDK 的記錄。
+seam 記錄 → SDK 日誌記錄：`time` → `timestamp`/`observedTimestamp`；`severity` → `severityNumber`/`severityText`（INFO 9 / WARN 13 / ERROR 17）；`body` → 結構化日誌 body；`attributes` 原樣照搬。接收端基於 `(session.id, event.seq)` 去重，並按嚴重等級告警。在 `FULL` 中，接收端還可透過缺少 `shutdown` 記錄偵測崩潰：該標記在工作階段自身 dispose（資源釋放）或應用關閉時寄出；標記之後出現更多事件，說明遙測發生了重載。在 `FEEDBACK_ONLY` 中，已釋放的前綴通常不包含隨後的 `shutdown` 標記，因此缺少該標記不是崩潰訊號。跨譜系（lineage）的流並不自足：復原的工作階段在其自身 id 的流上從上一個行程停止之處繼續；fork 出的工作階段的流從繼承邊界開始，其前綴位於父工作階段的流中，由接收端基於 `session.parent_id` + `session.seed_length` 拼接。復原後的本機日誌可能包含從未匯出的合成關閉事件；協定流忠實於實際交給 SDK 的記錄。
 
 ## 模型體驗
 

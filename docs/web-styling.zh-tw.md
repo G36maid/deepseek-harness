@@ -1,6 +1,6 @@
 # Web UI 樣式參考
 
-[English](web-styling.md) | [简体中文](web-styling.zh.md) | 繁體中文
+[English](web-styling.md) | 繁體中文
 
 本文規定瀏覽器用戶端包的樣式職責歸屬與元件規則。當前 token 值位於 [`packages/client/ui-theme/src/styles/`](../packages/client/ui-theme/src/styles/)；本文不重複這份由原始碼生成的清單。
 
@@ -8,7 +8,7 @@
 
 [`ui-theme`](../packages/client/ui-theme/README.md) 負責 `--dsw-*` 靜態色階、語義別名、排版、動效、漸變、陰影、捲軸樣式以及明暗主題偏好。[`ui-layout`](../packages/client/ui-layout/README.md) 將解析後的主題快照應用到文件。功能包使用語義別名，不得另行定義全域性主題。
 
-全域性樣式表歸 `ui-theme/src/styles/` 所有。元件樣式以 CSS Modules 形式放在元件旁。當某個值屬於該元件的版面配置或呈現約定時，元件可以定義區域性自訂屬性；共享顏色、排版、層級和動效屬於主題包。
+全域性樣式表歸 `ui-theme/src/styles/` 所有。元件樣式以 CSS Modules 形式放在元件旁。當某個值屬於該元件的版面設定或呈現約定時，元件可以定義區域性自訂屬性；共享顏色、排版、層級和動效屬於主題包。
 
 ## 元件規則
 

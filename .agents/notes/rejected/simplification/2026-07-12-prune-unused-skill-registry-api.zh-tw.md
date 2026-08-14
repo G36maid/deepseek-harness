@@ -2,7 +2,7 @@
 
 Status: rejected — 直接在執行時期註冊 skill 是為第三方外掛程式保留的有意擴充路徑。
 
-[English](2026-07-12-prune-unused-skill-registry-api.md) | [简体中文](2026-07-12-prune-unused-skill-registry-api.zh.md) | 繁體中文
+[English](2026-07-12-prune-unused-skill-registry-api.md) | 繁體中文
 
 ## 問題
 
@@ -26,4 +26,4 @@ skill（技能）服務的嵌入式執行時期子系統中，`ctx.skills.regist
 
 ## 風險
 
-這是對預發布 skill 登錄檔的編譯可見收縮。外部程式設計式 `list()`/`get()` 消費端將失去 `whenToUse` 路由提示和 candidate/definition 的 `path`；已交付的模型目錄從未渲染它們，資源解析保留了顯式的 `resourceBase` 加上提供方自有的不透明 locator，但這些欄位並非觀測等價。skill 本機 frontmatter 解析必須繼續保留並校驗所支持的 metadata schema，外部提供方仍可提供嵌入式、檔案系統、遠端或其他 skill 來源。
+這是對預發布 skill 登錄檔的編譯可見收縮。外部程式設計式 `list()`/`get()` 消費端將失去 `whenToUse` 路由提示和 candidate/definition 的 `path`；已交付的模型目錄從未渲染它們，資源解析保留了顯式的 `resourceBase` 加上提供方自有的不透明 locator，但這些欄位並非觀測等價。skill 本機 frontmatter 解析必須繼續保留並校驗所支援的 metadata schema，外部提供方仍可提供嵌入式、檔案系統、遠端或其他 skill 來源。

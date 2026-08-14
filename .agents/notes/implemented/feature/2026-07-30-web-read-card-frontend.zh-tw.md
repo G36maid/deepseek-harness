@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-read-card-frontend.md) | [简体中文](2026-07-30-web-read-card-frontend.zh.md) | 繁體中文
+[English](2026-07-30-web-read-card-frontend.md) | 繁體中文
 
 ## Problem
 
@@ -18,7 +18,7 @@ Status: implemented
 
 聊天行把卡片**常駐**渲染在摘要行之下，上限 `CHAT_READ_MAX_LINES`（8，是 primitive 預設值的一半），與 `BashRow` 對終端機卡片的姿態相同 —— block 的內部展開器讓長讀取不會佔據整個訊息流。兩個渲染點承載它：keyed `ReadRow`（經 `ctx.slots.inject` 以 `read` 鍵註冊，與 bash 樣例完全一致），其摘要是作為可打開的宿主連結的檔案路徑；以及 `GenericToolCard` 對沒有自己 keyed 行的讀取聲明工具（例如歸到 `read` 變體的 `web_fetch`）的回退。詳情面板以 primitive 自己的全高上限（16）渲染同一張卡片，因為面板是單次呼叫的閱讀介面。
 
-整行摺疊/展開（把每個工具呼叫默認摺疊）歸[統一展開與檢視 note](2026-07-30-web-tool-row-unified-expand-and-inspect.md)所有，它已一次性翻轉每張常駐卡片；本 note 的卡片是常駐的，與它旁邊的終端機卡片一致。
+整行摺疊/展開（把每個工具呼叫預設摺疊）歸[統一展開與檢視 note](2026-07-30-web-tool-row-unified-expand-and-inspect.md)所有，它已一次性翻轉每張常駐卡片；本 note 的卡片是常駐的，與它旁邊的終端機卡片一致。
 
 **讀取卡片的文法按需 lazy 載入，只有 boot 三種保持 eager。** `highlight.ts` 是 `ui-primitives` 在每次 Web 啟動都載入的平臺 seed，其預熱會無條件建置 shiki 單例。讀取卡片的 `langFromPath` 提示覆蓋完整的原始碼/設定/標記擴充集（python、rust、yaml、html……）；把它們全部 eager 註冊會給啟動 chunk 增加約 1.6 MB 的文法模組、並把它們的同步初始化攤給每個工作階段，包括從不打開讀取卡片的工作階段。因此只有每個工作階段本就渲染的三種文法 —— TypeScript、shell、JSON（markdown 圍欄與 `run_code` 語言）—— 在 boot 時載入。每種讀取卡片擴充文法置於 `LAZY_GRAMMARS` 中一個動態 `import()` 之後，以其別名解析到的文法 id 為鍵。對某個 lazy 語言首次呼叫 `highlightLines`/`highlightToHtml` 時，`ensureGrammar` 啟動 import（僅一次）並返回未就緒，於是卡片該幀渲染純文字；import 解析後用 `loadLanguageSync` 註冊該文法、遞增一個載入計數、並通知訂閱者。`ReadBlock` 與 `CodeBlock` 透過 `useSyncExternalStore(subscribeGrammarLoaded, grammarLoadCount)` 訂閱，因此文法就緒的那一刻卡片就重渲染帶上高亮。未知/預設語言仍同步返回 undefined（純文字，絕不報錯）。
 

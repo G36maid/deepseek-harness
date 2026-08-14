@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-pwsh
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 註冊在 `ctx.shell` 執行器 seam 之上的面向模型的 `pwsh` 工具。面向由 PowerShell 執行器（如 `@deepseek-ai/dsh-pwsh-local`）支撐 `ctx.shell` 的 Windows 組合；工具約定是 PowerShell 方言：原生 `C:\...` 路徑與 `$env:NAME` 變數。行為與 `dsh-tool-bash` 逐呼叫對齊——透過通用任務執行時期執行前臺與 `run_in_background`、透過共享 `shell-env` 登錄檔管理 `DSH_*` 環境、sandbox 拒絕渲染與同輪次 `sandbox_permissions` 升級面、以及 bash 的 marker/截斷渲染故事（乾淨退出不產生 marker）。
 
@@ -19,7 +19,7 @@
 | `command` | string (required) | 透過 `pwsh -Command` 執行。呼叫之間不保留狀態——用 `workdir`，不要用 `cd`。 |
 | `description` | string (required) | 命令的一行主動語態摘要（5-10 詞），僅用於 UI/日誌展示——不影響執行。 |
 | `timeoutMs` | number | 逾時覆蓋值（毫秒）。執行器應用其設定的預設值與上限。 |
-| `workdir` | string | 本次呼叫的工作目錄。默認取呼叫 agent（代理）的工作階段 cwd（`session.header.cwd`），使每個工作階段在自己的工作區執行；相對 `workdir` 基於同一身份解析。 |
+| `workdir` | string | 本次呼叫的工作目錄。預設取呼叫 agent（代理）的工作階段 cwd（`session.header.cwd`），使每個工作階段在自己的工作區執行；相對 `workdir` 基於同一身份解析。 |
 | `run_in_background` | boolean | 立即返回 job id；不適用逾時。 |
 | `sandbox_permissions` | string enum | 僅當已掛載 sandbox 執行器時才會公開（`ctx.shell.sandboxMode` 已定義）。用於對剛被 sandbox 拒絕的命令做一次性重試的更寬 sandbox 模式——取剛好足夠的最窄更寬模式，要求 `justification` 並在執行**之前**經 `ctx.approval` 獲得使用者批准。未拓寬或無法獲批的請求 fail-closed，不執行任何內容。 |
 | `justification` | string | 必須與 `sandbox_permissions` 一同提供：用一句話向使用者解釋為何正是這條命令需要更寬的訪問。 |

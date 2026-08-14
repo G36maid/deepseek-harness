@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-bounded-background-job-admission.md) | [简体中文](2026-08-11-bounded-background-job-admission.zh.md) | 繁體中文
+[English](2026-08-11-bounded-background-job-admission.md) | 繁體中文
 
 ## 問題
 
@@ -34,7 +34,7 @@ owner 與服務釋放保留現有順序：請求取消，在生產方釋放資�
 
 ## 驗證
 
-任務 Service Provider 測試覆蓋默認與顯式上限、生產方執行前拒絕、id 計數器不變、`stopping` 佔位、每種終態釋放、確切 owner 隔離、同工作階段替代對象、共享無 owner 桶、非法設定、owner 清理和服務拆除。spine 與 ACP 組合測試固定 typed 轉發。一條 keyless ACP 重播以 1 為上限啟動真實 Loader 組合，啟動一個真實後臺 Bash 行程，觀察第二次啟動返回可操作錯誤，按返回的 job id 停止第一個任務，並驗證被拒絕生產方的標記文件從未生成。
+任務 Service Provider 測試覆蓋預設與顯式上限、生產方執行前拒絕、id 計數器不變、`stopping` 佔位、每種終態釋放、確切 owner 隔離、同工作階段替代對象、共享無 owner 桶、非法設定、owner 清理和服務拆除。spine 與 ACP 組合測試固定 typed 轉發。一條 keyless ACP 重播以 1 為上限啟動真實 Loader 組合，啟動一個真實後臺 Bash 行程，觀察第二次啟動返回可操作錯誤，按返回的 job id 停止第一個任務，並驗證被拒絕生產方的標記文件從未生成。
 
 ## 曾考慮的替代方案
 

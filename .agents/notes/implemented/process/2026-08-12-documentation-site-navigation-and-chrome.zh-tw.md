@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-documentation-site-navigation-and-chrome.md) | [简体中文](2026-08-12-documentation-site-navigation-and-chrome.zh.md) | 繁體中文
+[English](2026-08-12-documentation-site-navigation-and-chrome.md) | 繁體中文
 
 ## 問題
 
@@ -26,7 +26,7 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**為中文查詢訂製搜尋分詞器。** 已實作並撤回。其前提——MiniSearch 會把中文散文留作無法切分的整句——是用一個語料中根本不存在的詞（`子代理`）驗證的；中文頁面寫的是 `Subagent` 和 `子 agent`。在未改動的索引上實測，`插件配置` 返回 120 條命中、`会话持久化` 85 條、`工作流` 28 條、`沙箱` 12 條，且各自的頁面均排在首位：`prefix: true` 已經能透過標點切出的短 token 命中中文詞。相鄰字元二元組把中文索引從 1.23MB 增至 2.12MB，卻沒有帶來收益。該嘗試還暴露出一個值得保留的陷阱：VitePress 透過 `Function.prototype.toString` 把搜尋選項中的函式送到瀏覽器，再用 `new Function` 重建，因此任何閉包引用了模組級常數的此類函式都會在空作用域中拋錯，並靜默地返回零結果。
+**為中文查詢訂製搜尋分詞器。** 已實作並撤回。其前提——MiniSearch 會把中文散文留作無法切分的整句——是用一個語料中根本不存在的詞（`子代理`）驗證的；中文頁面寫的是 `Subagent` 和 `子 agent`。在未改動的索引上實測，`外掛程式設定` 返回 120 條命中、`工作階段持久化` 85 條、`工作流` 28 條、`沙盒` 12 條，且各自的頁面均排在首位：`prefix: true` 已經能透過標點切出的短 token 命中中文詞。相鄰字元二元組把中文索引從 1.23MB 增至 2.12MB，卻沒有帶來收益。該嘗試還暴露出一個值得保留的陷阱：VitePress 透過 `Function.prototype.toString` 把搜尋選項中的函式送到瀏覽器，再用 `new Function` 重建，因此任何閉包引用了模組級常數的此類函式都會在空作用域中拋錯，並靜默地返回零結果。
 
 **把子系統分組直接放在 `概念` 之後。** 已否決：這樣能讓架構頁回到頂部，但生成參考、Cordis API 和開發手冊仍處在 43 行之下。
 

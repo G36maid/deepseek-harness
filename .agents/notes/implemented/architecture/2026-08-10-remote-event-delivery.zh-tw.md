@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-remote-event-delivery.md) | [简体中文](2026-08-10-remote-event-delivery.zh.md) | 繁體中文
+[English](2026-08-10-remote-event-delivery.md) | 繁體中文
 
 ## 問題
 
@@ -102,7 +102,7 @@ API_REMOTE_FORWARDED_EVENTS satisfies readonly TypertForwardableEvent[]
 
 載荷 JSON-safe 交給執行時期：apiproxy 轉發前用 `dsh-session` 的 `isJsonValue` 逐元素校驗，不合格**拋錯 fail loud**（這是名單設定錯誤，不是外部輸入）。
 
-### 線協議（apiproxy）
+### 線協定（apiproxy）
 
 ```ts ignore-check
 | { type: 'host/remote-event'; event: string; args: JsonValue[] }
@@ -172,6 +172,6 @@ zod 側 `args: z.array(z.unknown())`：幀本身來自 `JSON.parse`，元素必�
 - **載體交接是開發者可見的**：任何持有 `ctx.remote` 的 client 外掛程式都能調 `$dispatch` 合成一條轉發事件。這個暴露面早於該動詞存在——先前由內部事件中轉幀時，`ctx.emit` 同樣可達——與 `connection/reset` 可被偽造成重連同一量級（client 是單一信任域）。測試只釘「交接到 `$on` 的轉換」，不假裝該埠鑒別調用方。
 - **畸形實參在發射方的收容裡失敗，而非載入期**：`assertJsonArgs` 在轉發監聽內拋出，因此由發射 seam 自己的 listener 收容記錄並丟棄該幀——響亮地出現在 host 日誌裡，而不是載入時或 emit 點。
 - **測試側映像檔值可能漂移**：沒有任何機制核對 `apps/web/tests` 中映像檔的 client 常數與其源；安全網只是漂移會讓選擇器失配。規則寫在 `apps/web/tests/README.md`，由 review 守；grep 級閘門經評估後刻意不做。
-- **放棄的能力**：不支持投影或脫敏載荷、不支持 Scope 化事件（`agentCtx.remote.$on`）、重連不重放——這些都是純失效訊號，且 `connection/reset` 已覆蓋重連後的重新拉取。mux 流的工作階段事件、可應答幀與快照基線不在範圍內。
+- **放棄的能力**：不支援投影或脫敏載荷、不支援 Scope 化事件（`agentCtx.remote.$on`）、重連不重放——這些都是純失效訊號，且 `connection/reset` 已覆蓋重連後的重新拉取。mux 流的工作階段事件、可應答幀與快照基線不在範圍內。
 - **仍有 client 包留在 host 圖裡**：12 個工程（`connection`、`runtime`、`ui-slots` 等）經未拆分的 `directory-picker-browse`/`-native` 與 `api/gateway → client/connection` 仍可達 host 圖。它們都能編譯且不再牽連 api/remotes 的 client face，因此沒有阻塞本次改動；拆分那些包能減少幾個，但經評估後不做。兩個 chat e2e 直接引 `dsh-client-runtime/client` 相依性 `runtime` 本來就在圖裡——屬偶然而非保證。
 - **invariant companion 不做執行期檢查**：早先的修訂曾在活事件總線上斷言投遞形狀（`thisArg === null`、`mode === 'emit'`），這讓 companion 與名單值耦合，並使 rolldown 把它提成第三個 bundle chunk——而機械推導的發布文件清單並不攜帶它。host 面的 `TypertForwardableEvent` 斷言在編譯期已拒絕這兩種偏離，因此該 companion 是一個帶說明的空 installer。

@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-28-web-agent-runtime-context.md) | [简体中文](2026-07-28-web-agent-runtime-context.zh.md) | 繁體中文
+[English](2026-07-28-web-agent-runtime-context.md) | 繁體中文
 
 ## 問題
 
-CLI（命令列介面）共享 base 設定了空的部署 persona，Web overlay 沒有替換它，而 Web 啟動器既未新增原始碼提示詞段，也未新增互動介面提示詞段。工作階段 header 會記錄工作目錄，供工具與持久化使用，但模型提示詞既不說明該目錄，也不標識 DeepSeek Harness Web GUI。因此，當用戶提出「修改這個頁面的主題」之類的請求時，即使使用者指的是承載當前工作階段的 GUI，agent（代理）也會在所選項目中搜尋一個未明確說明的頁面。
+CLI（命令列介面）共享 base 設定了空的部署 persona，Web overlay 沒有替換它，而 Web 啟動器既未新增原始碼提示詞段，也未新增互動介面提示詞段。工作階段 header 會記錄工作目錄，供工具與持久化使用，但模型提示詞既不說明該目錄，也不標識 DeepSeek Harness Web GUI。因此，當使用者提出「修改這個頁面的主題」之類的請求時，即使使用者指的是承載當前工作階段的 GUI，agent（代理）也會在所選項目中搜尋一個未明確說明的頁面。
 
 ## 決策
 

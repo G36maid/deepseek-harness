@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-schema-form
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 面向 settings 編輯器的 schema／草稿模型層。wire 側的 `settings.describe` 攜帶每個 namespace 的序列化 schemastery schema（`schema.toJSON()` 的 ref 封裝）；`rehydrateSchema` 用 `new Schema(json)` 將其還原（rehydrate）為活的校驗器——在宿主上校驗分節的那份 schema 對象，就是在瀏覽器裡校驗草稿的那份對象，因此用戶端校驗絕不會偏離 Service Definition 的校驗。編輯器各自渲染自己的控制元件（Models 頁圍繞它在此探測到的欄位手寫自己的卡片）；該包不含任何 React，也不做任何渲染。
 
@@ -18,6 +18,6 @@
 
 ## 已知限制與暫緩事項
 
-- **重建 schema 會執行所收到的封裝**——`rehydrateSchema` 會重建一個活的 schemastery 校驗器，而 schemastery 透過 `new Function` 復活序列化過的回呼函式，因此 schema 信封是可執行內容，而不是不可執行資料。只有該封裝來自取供該頁面的同一受信任宿主時才安全；該協議沒有跨信任邊界使用的不可執行表示。
+- **重建 schema 會執行所收到的封裝**——`rehydrateSchema` 會重建一個活的 schemastery 校驗器，而 schemastery 透過 `new Function` 復活序列化過的回呼函式，因此 schema 信封是可執行內容，而不是不可執行資料。只有該封裝來自取供該頁面的同一受信任宿主時才安全；該協定沒有跨信任邊界使用的不可執行表示。
 - **校驗是草稿級的，而非逐欄位**——`validateDraft` 報告 schemastery 的第一條失敗訊息及其 `$.path`；它不會把錯誤對映到各個控制元件。
 - **沒有通用渲染器**——消費端在這些輔助函式上建置功能專用表單。[Web 設定面 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-30-web-config-plane.md) 記錄該權衡。

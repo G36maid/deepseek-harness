@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-session-list-browsing-and-manual-order.md) | [简体中文](2026-07-25-session-list-browsing-and-manual-order.zh.md) | 繁體中文
+[English](2026-07-25-session-list-browsing-and-manual-order.md) | 繁體中文
 
 ## 問題
 
@@ -52,7 +52,7 @@ ui-sidebar 縮為列幾何殼：品牌行、摺疊狀態機、New Session、Sett
 
 - 手動序是 Host workspace 帳本的唯一順序權威：活動絕不改動 `WorkspaceView.sessionIds`。後續加入的瀏覽器本機最近更新檢視表可以把活躍行提到最前，但不會改變該帳本；其獨立語義見 [Workspace 側邊欄順序與摺疊](2026-08-11-workspace-sidebar-order-and-folding.md)。
 - 殼/區域兩事實約定把 workspace 域的後續功能（Delete 確認、跨組移動、Ungrouped 收編）全部收進 ui-workspace 單包；ui-sidebar 不再隨 session 清單功能演進。
-- 平鋪模式不支持重排，也沒有在指定 workspace 中建立 session 的入口（需切回分組檢視表），是拍板接受的範圍收窄。
+- 平鋪模式不支援重排，也沒有在指定 workspace 中建立 session 的入口（需切回分組檢視表），是拍板接受的範圍收窄。
 - session Delete 的功能接線與擴充 wire 狀態枚舉，留待後續迭代。
 
 ## 測試

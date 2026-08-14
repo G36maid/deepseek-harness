@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-durable-web-schedule.md) | [简体中文](2026-08-05-durable-web-schedule.zh.md) | 繁體中文
+[English](2026-08-05-durable-web-schedule.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 ## 決策
 
-[`examples/web-schedule`](../../../../examples/web-schedule/README.md) overlay 顯式載入 `@deepseek-ai/dsh-time-context` 與 `@deepseek-ai/dsh-schedule`；默認 Web 設定樹保持不變。Schedule 只觀察外掛程式載入後發布的根 Agent，並在該 Agent scope 中安裝三個工具和一個可丟棄 owner。cold history 讀取、已發布的根、child Agent 與其他 host 都不會啟用它。
+[`examples/web-schedule`](../../../../examples/web-schedule/README.md) overlay 顯式載入 `@deepseek-ai/dsh-time-context` 與 `@deepseek-ai/dsh-schedule`；預設 Web 設定樹保持不變。Schedule 只觀察外掛程式載入後發布的根 Agent，並在該 Agent scope 中安裝三個工具和一個可丟棄 owner。cold history 讀取、已發布的根、child Agent 與其他 host 都不會啟用它。
 
 使用者可見邊界是 `session-local`：原 Session 只有在 live 時才會準時執行提醒，cold 期間不傳送任何外部通知；該 Session 再次 live 後才會處理 overdue 提醒。到期工作會等待 Agent 完全 idle，再透過 `followup()` 進入普通的下一輪佇列；它絕不會中途引導當前輪次，也沒有獨立 Web 回執（[對話式交付](../simplification/2026-08-09-conversational-schedule-delivery.md)）。
 
@@ -46,7 +46,7 @@ Every 是固定時長間隔，而不是日曆規則。第一個目標是建立�
 
 所有不同的逾期 Every 記錄都會參與同一個批次，每條記錄各自取供一個最新發生時點，並共享同一個 `acceptedAt`。系統不存在跨記錄的冷卻、門控、配額或保留的批次時間戳。至少 5 分鐘的限制約束了喚醒與模型請求頻率。如果下一個序列點會超出四位年份儲存範圍，dispatch 會終結該記錄。
 
-日曆表達式與 Cron 表達式被有意排除（[有界週期性簡化](../simplification/2026-08-09-bounded-fixed-rate-schedule.md)）；支持這些表達式需要增加時區敏感的日曆語言、求值器相依性、校驗範圍和 tzdata 重播策略，而這些都與固定速率提醒無關。
+日曆表達式與 Cron 表達式被有意排除（[有界週期性簡化](../simplification/2026-08-09-bounded-fixed-rate-schedule.md)）；支援這些表達式需要增加時區敏感的日曆語言、求值器相依性、校驗範圍和 tzdata 重播策略，而這些都與固定速率提醒無關。
 
 ### Live 交付生命週期
 
@@ -60,7 +60,7 @@ dispatch 記錄的是佇列准入，而不是模型完成或使用者收到提�
 
 **使用 `ctx.jobs`。** Task 擁有行程本機工作、結果和通知，而不是 Session 日誌狀態和對話 follow-up。
 
-**把提醒存入私有資料庫或全域性 scheduler。** 這樣可以執行 cold Session，卻需要第二套身份對映、啟動掃描、ownership lease、崩潰協議和通知策略。
+**把提醒存入私有資料庫或全域性 scheduler。** 這樣可以執行 cold Session，卻需要第二套身份對映、啟動掃描、ownership lease、崩潰協定和通知策略。
 
 **持久化 Session 時區並推斷本機 `at`。** 這會讓一個解釋預設值擴散到 Session core、Host create／fork、持久化格式、client 和不匹配復原中。請求本機的模型指導與顯式工具邊界消除了這種耦合。
 
@@ -70,7 +70,7 @@ dispatch 記錄的是佇列准入，而不是模型完成或使用者收到提�
 
 **在 `followup()` 前認領 dispatch，或增加 exactly-once fencing。** claim-first 會在入隊失敗時靜默丟失提醒。跨行程 exactly-once 需要 lease、outbox、acknowledgement 與下游冪等邊界，超出了此 Session-local 範圍。
 
-**接管既有根或註冊全域性工具。** 晚接管會讓外掛程式載入順序啟用不可見的 timer，並把工具暴露到受支持的根組合之外。
+**接管既有根或註冊全域性工具。** 晚接管會讓外掛程式載入順序啟用不可見的 timer，並把工具暴露到受支援的根組合之外。
 
 ## 驗證
 

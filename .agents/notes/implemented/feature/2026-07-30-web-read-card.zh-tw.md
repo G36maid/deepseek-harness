@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-read-card.md) | [简体中文](2026-07-30-web-read-card.zh.md) | 繁體中文
+[English](2026-07-30-web-read-card.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 給[渲染意圖 union](../architecture/2026-07-02-tool-render-intent-union.md) 新增第四個 `card` 標籤 `read`——僅在結果側。`ToolResultView` 增加 `ReadResultView { card: 'read'; title?; path; lines: ReadFileLine[]; totalLines; lang?; content? }`；`ReadFileLine { number; text }` 是共享的行單元。`ToolCallView` 不動：待定狀態仍是 `GenericCallView`（`kind: 'read'`），因為一次呼叫在 `execute` 返回前不攜帶文件內容，呼叫時沒有可展示的結構。這與 bash 終端機 card 不同——終端機 card 兩側都打標籤，因為終端機呼叫在呼叫時已攜帶命令和 cwd，而 read 呼叫既無內容也無總數，給呼叫側打標籤只會新增一個空變體。
 
-read 工具透過 `output.presentationMeta` 投影結構化視窗，這與 write/edit 用來投影其應用 diff hunk 的持久化通道相同（[規範化工具輸出約定](../architecture/2026-07-20-canonical-tool-output-contract.md)）。`presentationMeta` 對一次頂層 surface 呼叫執行一次，返回 `{ path, offset, lines, totalLines, lang? }` 作為工作階段校驗並存儲在結果 `meta` 上的 JSON，`presentResult` 在即時和重播路徑上都把該 meta 收窄回 `ReadResultView`。`offset`（視窗請求的 1-based 起始行）一並攜帶，是因為當位元組上限低於首個選中行時，視窗會返回空的 `lines` 陣列而 `totalLines` 為正；沒有持久化的 `offset`，這類視窗的重播 card 就無法報告它從哪行開始、或續讀應從哪行繼續，而末行推斷與文字重解析兩種兜底都有損。沒有這個通道，行陣列和總數就無法觸及：原始輸出對象不線上上，而重新解析 `N: text` 文字既有損又對截斷尾註脆弱。
+read 工具透過 `output.presentationMeta` 投影結構化視窗，這與 write/edit 用來投影其應用 diff hunk 的持久化通道相同（[規範化工具輸出約定](../architecture/2026-07-20-canonical-tool-output-contract.md)）。`presentationMeta` 對一次頂層 surface 呼叫執行一次，返回 `{ path, offset, lines, totalLines, lang? }` 作為工作階段校驗並儲存在結果 `meta` 上的 JSON，`presentResult` 在即時和重播路徑上都把該 meta 收窄回 `ReadResultView`。`offset`（視窗請求的 1-based 起始行）一並攜帶，是因為當位元組上限低於首個選中行時，視窗會返回空的 `lines` 陣列而 `totalLines` 為正；沒有持久化的 `offset`，這類視窗的重播 card 就無法報告它從哪行開始、或續讀應從哪行繼續，而末行推斷與文字重解析兩種兜底都有損。沒有這個通道，行陣列和總數就無法觸及：原始輸出對象不線上上，而重新解析 `N: text` 文字既有損又對截斷尾註脆弱。
 
 `presentResult` 在以下情況返回 `undefined`——即 generic 回退：meta 缺失或畸形（`readMetaFromMeta` 防禦性收窄它，因此重播舊的已記錄結果永不拋錯）、結果是錯誤、以及單個文字塊不是 read 信封。本 card 出現之前記錄的結果——信封合法但無持久化 `meta`——有意走同一條 `undefined` 路徑：用戶端回退到原始 `result.content`，因此顯示帶 `<path>/<type>/<content>` 信封的原文，而非舊展示器返回的剝信封 generic card。這是 [pre-release 立場](../../../../AGENTS.md#pre-release-stance-foundation-over-blast-radius)下接受的降級：拒絕舊的磁碟格式，而非加一個剝信封的相容分支——本變更已重錄全部已發布 fixture（測試前置資料），且工作階段格式不承諾向後相容。在成功路徑上，`presentResult` 在結構化欄位之外攜帶 `content`（剝信封後的文字），因此不具備 read 能力的 UI 會透過自己的 generic/default card 分支渲染文件文字。原 TUI 證明瞭這條回退的必要性：它的非窮盡結果 switch 讀取 `view.content`，而另一道 dim-Markdown 門控也必須接納 `card: 'read'`。該前端隨後被移除，但對任何沒有結構化 read 卡片的消費端而言，content 回退仍是檢視表約定的一部分。
 
@@ -34,7 +34,7 @@ read 工具透過 `output.presentationMeta` 投影結構化視窗，這與 write
 
 ## 影響
 
-`ToolResultView` 多了第四個成員。消費端可以渲染結構化的 `lines`/`lang`/`totalLines` 形狀，也可以將不支持的 card 路由到 generic 路徑；read card 攜帶 `content`，所以後者仍會顯示文件文字。本次生產者變更是讓結構化資料可觸及的後端，無需每個消費端同時實作更豐富的檢視表。
+`ToolResultView` 多了第四個成員。消費端可以渲染結構化的 `lines`/`lang`/`totalLines` 形狀，也可以將不支援的 card 路由到 generic 路徑；read card 攜帶 `content`，所以後者仍會顯示文件文字。本次生產者變更是讓結構化資料可觸及的後端，無需每個消費端同時實作更豐富的檢視表。
 
 read 工具現在為每次頂層 read 計算 `presentationMeta`，這是對已有資料的一次小投影（一次 `lines.map` 和一次 `langFromPath` 呼叫）。meta 隨工作階段日誌持久化，因此 read 結果在磁碟上略大——它已渲染為文字的行陣列，現在也以結構化形式存在。
 

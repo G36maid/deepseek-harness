@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-in-repository-landlock-release.md) | [简体中文](2026-08-06-in-repository-landlock-release.zh.md) | 繁體中文
+[English](2026-08-06-in-repository-landlock-release.md) | 繁體中文
 
 ## 問題
 
@@ -27,18 +27,18 @@ Status: implemented
 ## 曾考慮的替代方案
 
 - **保留獨立倉庫作為發布映像檔**：不予採納，因為在權威原始碼已經遷入本倉庫後，這仍會保留拆分的鎖定檔、原始碼匯出、測試使用過時登錄檔版本的時間窗，以及跨倉庫發布序列。
-- **發布一個包含所有平臺二進位檔案的 npm 包**：不予採納，因為使用者會下載無法在其主機上執行的二進位檔案，而且 npm 無法再利用包級 `os`／`cpu` 篩選。倉庫歸屬與 npm 包版面配置是兩個彼此獨立的選擇。
+- **發布一個包含所有平臺二進位檔案的 npm 包**：不予採納，因為使用者會下載無法在其主機上執行的二進位檔案，而且 npm 無法再利用包級 `os`／`cpu` 篩選。倉庫歸屬與 npm 包版面設定是兩個彼此獨立的選擇。
 - **讓啟動器使用 DeepSeek Harness 根版本，並遞迴發布整個 monorepo**：不予採納，因為本次改動負責的是一個由 3 個包組成的公開包家族，而不是獨立的 `@deepseek-ai/dsh-*` 基線。[產物優先的 npm 基線提案](../../proposed/process/2026-08-04-artifact-first-npm-baseline-publication.md)明確將原生 workspace 排除在其目標集合之外。
 - **在一個發布作業中交叉編譯兩個二進位檔案**：不予採納，因為倉庫內已提交的包矩陣已經為每種架構分配了原生 GitHub runner，無需再把交叉工具鏈納入信任邊界。
 
 ## 後果
 
-同一個 PR 可以同時修改啟動器協議、TypeScript 入口程式碼、原生原始碼、harness 消費端式和發布路徑測試，並從同一份鎖定檔解析這些內容。發布 tag 現在標識原始碼、消費端整合、建置指令，以及主倉庫測試過的 tarball。獨立映像檔已不再屬於發布路徑，可以在第一次成功從本倉庫發布後歸檔。
+同一個 PR 可以同時修改啟動器協定、TypeScript 入口程式碼、原生原始碼、harness 消費端式和發布路徑測試，並從同一份鎖定檔解析這些內容。發布 tag 現在標識原始碼、消費端整合、建置指令，以及主倉庫測試過的 tarball。獨立映像檔已不再屬於發布路徑，可以在第一次成功從本倉庫發布後歸檔。
 
-npm 消費端改為安裝 `@deepseek-ai/node-addon-landlock-run`；原先的非 scoped 包名不會被靜默重定向。受支持的 Linux 主機會下載 scoped 入口包及與其架構匹配的包，並跳過另一架構的包。不受支持的主機不會收到平臺二進位檔案，並繼續沿用現有的確定性失敗閉合探測路徑。
+npm 消費端改為安裝 `@deepseek-ai/node-addon-landlock-run`；原先的非 scoped 包名不會被靜默重定向。受支援的 Linux 主機會下載 scoped 入口包及與其架構匹配的包，並跳過另一架構的包。不受支援的主機不會收到平臺二進位檔案，並繼續沿用現有的確定性失敗閉合探測路徑。
 
 實作涉及的文件比只修改一行相依性更多，因為倉庫還必須負責 workspace 約束、TypeScript 建置順序、清理、CI 觸發條件、發布 tag、鎖定檔生成、將已安裝二進位與 workspace 建置進行比較、發布文件和生成的第三方聲明。行為邊界仍然很窄：此次改動隻影響 Landlock 包家族及其 3 個直接 workspace 消費端，不改變其他 DeepSeek Harness 包的版本或發布狀態。
 
-第一次發布 scoped 包時，必須透過 `npm-publish` 環境的 `NPM_TOKEN` 使用 `@deepseek-ai` 組織 token，因為 npm 只有在包已經存在後才能設定 trusted publishing。完成 bootstrap 後，必須讓 3 個包都授權本倉庫的發布工作流程，才能移除後備 token。npm 仍會按順序發布各個包，且不提供跨包交易，因此發布失敗可能留下只完成了一部分的版本。由於 npm 會拒絕已經發布的同名同版本包，操作人員必須檢查登錄檔並只發布缺失的 tarball，而不能原樣重新執行工作流程。Linux x64 和 arm64 runner 仍提供權威的二進位建置與真實核心檢查；macOS checkout 可以驗證入口包和不受支持平臺上的行為，但不能取代這些作業。
+第一次發布 scoped 包時，必須透過 `npm-publish` 環境的 `NPM_TOKEN` 使用 `@deepseek-ai` 組織 token，因為 npm 只有在包已經存在後才能設定 trusted publishing。完成 bootstrap 後，必須讓 3 個包都授權本倉庫的發布工作流程，才能移除後備 token。npm 仍會按順序發布各個包，且不提供跨包交易，因此發布失敗可能留下只完成了一部分的版本。由於 npm 會拒絕已經發布的同名同版本包，操作人員必須檢查登錄檔並只發布缺失的 tarball，而不能原樣重新執行工作流程。Linux x64 和 arm64 runner 仍提供權威的二進位建置與真實核心檢查；macOS checkout 可以驗證入口包和不受支援平臺上的行為，但不能取代這些作業。
 
 本說明僅取代[沙盒 Agent Note](../feature/2026-07-06-sandbox.md)中有關發布映像檔和開發原始碼時相依性登錄檔固定版本的表述；該 Agent Note 仍負責沙盒行為、runner 選擇和強制執行語義。

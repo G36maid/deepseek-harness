@@ -1,8 +1,8 @@
 # 工具
 
-[English](tools.md) | [简体中文](tools.zh.md) | 繁體中文
+[English](tools.md) | 繁體中文
 
-[dsh-tools](../../packages/core/tools) 的工具管線。[core.md](core.md) 介紹了核心包共用、用於編寫管線的類型 `ToolDefinition`；面向模型的 [`ToolSchema`](llm-streaming.md#the-model-request-and-result) 協議類型與模型請求一起聲明。本頁記錄 `ToolDefinition` 的每個欄位、用於建置它的類型化 schema DSL、帶守衛的執行類型和 UI 展示類型。
+[dsh-tools](../../packages/core/tools) 的工具管線。[core.md](core.md) 介紹了核心包共用、用於編寫管線的類型 `ToolDefinition`；面向模型的 [`ToolSchema`](llm-streaming.md#the-model-request-and-result) 協定類型與模型請求一起聲明。本頁記錄 `ToolDefinition` 的每個欄位、用於建置它的類型化 schema DSL、帶守衛的執行類型和 UI 展示類型。
 
 原始碼：[`packages/core/tools/src/index.ts`](../../packages/core/tools/src/index.ts) · [`packages/core/tools/src/schema.ts`](../../packages/core/tools/src/schema.ts) · [`packages/core/tools/src/presentation.ts`](../../packages/core/tools/src/presentation.ts)
 
@@ -97,7 +97,7 @@ interface ToolDefinition extends ToolSchema {
 
 ## 統一的 JSON 值 schema DSL
 
-外掛程式作者使用同一套詞彙描述類型化參數和類型化輸出值。`ValueSchemaSpec` 支持 `string`、`number`、`integer`、`boolean`、`null`、`array`、`object`、僅作者側可用的 `json`，以及要求恰好命中一個分支的 `oneOf`；標量 `enum` 和 `const` 值必須與節點類型匹配。顯式對象節點始終聲明 `additionalProperties: true | false`。參數定義仍是隱式的開放對象屬性對映，每個必填屬性都附帶 `required: true`。
+外掛程式作者使用同一套詞彙描述類型化參數和類型化輸出值。`ValueSchemaSpec` 支援 `string`、`number`、`integer`、`boolean`、`null`、`array`、`object`、僅作者側可用的 `json`，以及要求恰好命中一個分支的 `oneOf`；標量 `enum` 和 `const` 值必須與節點類型匹配。顯式對象節點始終聲明 `additionalProperties: true | false`。參數定義仍是隱式的開放對象屬性對映，每個必填屬性都附帶 `required: true`。
 
 原始碼：[`packages/core/tools/src/schema.ts`](../../packages/core/tools/src/schema.ts)
 
@@ -146,9 +146,9 @@ type InferValue<S> = InferValueAt<S, []>
 type InferArgs<S> = InferProperties<S, []>
 ```
 
-`defineTool({ name, description, parameters, output, execute, … })` 將參數推導與 `parameterSchemaSpecToJsonSchema()` 和 `validateArgs()` 綁定，並將 `execute`/`render`/`presentationMeta` 與 `InferValue<OutputSchema>` 綁定。schema 記錄只包含自有且可枚舉的字串鍵，schema 陣列是稠密的內建陣列，因此推導、編譯與校驗觀察到的是同一份聲明。精確推導保持到 16 層容器，之後放寬為 `JsonValue`；執行時期校驗仍會繼續遍歷完整 schema。`valueSchemaSpecToJsonSchema()` 透過同一套已強制執行的原始子集編譯輸出聲明。參數不匹配時拋出 `ToolArgsError`（`INVALID_ARGS`）；函式體或後置策略產生的值無效時拋出 `ToolOutputError`（`INVALID_TOOL_OUTPUT`）。兩者都經由常規工具錯誤路徑處理。原始 JSON Schema 默認保持開放；不支持的關鍵字會被拒絕，而不會在未強制執行的情況下獲準進入。
+`defineTool({ name, description, parameters, output, execute, … })` 將參數推導與 `parameterSchemaSpecToJsonSchema()` 和 `validateArgs()` 綁定，並將 `execute`/`render`/`presentationMeta` 與 `InferValue<OutputSchema>` 綁定。schema 記錄只包含自有且可枚舉的字串鍵，schema 陣列是稠密的內建陣列，因此推導、編譯與校驗觀察到的是同一份聲明。精確推導保持到 16 層容器，之後放寬為 `JsonValue`；執行時期校驗仍會繼續遍歷完整 schema。`valueSchemaSpecToJsonSchema()` 透過同一套已強制執行的原始子集編譯輸出聲明。參數不匹配時拋出 `ToolArgsError`（`INVALID_ARGS`）；函式體或後置策略產生的值無效時拋出 `ToolOutputError`（`INVALID_TOOL_OUTPUT`）。兩者都經由常規工具錯誤路徑處理。原始 JSON Schema 預設保持開放；不支援的關鍵字會被拒絕，而不會在未強制執行的情況下獲準進入。
 
-註冊是一項受信任的同進程約定。登錄檔以 readonly 輸入借用已類型化定義，要求它聲明 `output`，校驗其原始 schema，並檢查 `timeoutMs` 必須為正有限值等語義要求；`schemas()` 在建置請求時生成面向模型的投影，使執行和展示共享同一份已解析定義，而不會將回調洩漏到協議上。
+註冊是一項受信任的同行程約定。登錄檔以 readonly 輸入借用已類型化定義，要求它聲明 `output`，校驗其原始 schema，並檢查 `timeoutMs` 必須為正有限值等語義要求；`schemas()` 在建置請求時生成面向模型的投影，使執行和展示共享同一份已解析定義，而不會將回調洩漏到協定上。
 
 ## `ToolRestriction` — 單個作用域對其繼承內容的即時過濾器
 
@@ -399,13 +399,13 @@ type PostToolDecision =
   | { kind: 'block'; feedback: ContentBlock[]; additionalContexts?: UserMessage[] }
 ```
 
-呼叫 `next()` 取得默認決策，或直接返回一個決策以短路。前置策略可以 deny 或 ask；只有 `allowed-once` 才繼續執行，而未授權、缺少審批通道或服務、或無 agent 的請求都會變為拒絕。Guard 仍可施加最終拒絕。參數不可被改寫，因為歷史記錄、審計、UI 和執行必須保持一致。
+呼叫 `next()` 取得預設決策，或直接返回一個決策以短路。前置策略可以 deny 或 ask；只有 `allowed-once` 才繼續執行，而未授權、缺少審批通道或服務、或無 agent 的請求都會變為拒絕。Guard 仍可施加最終拒絕。參數不可被改寫，因為歷史記錄、審計、UI 和執行必須保持一致。
 
 後置策略可以替換內容或值，但不能同時替換兩者。替換內容會保留規範值和現有元資料；替換值會重新校驗並重新計算內容/元資料；阻止會移除值，並轉為包含糾正回饋的 `isError`。內容替換是展示策略，而非保密策略；需要隱藏程序化值的監聽器必須阻止或替換該值。`tools/result` 在歸一化後接收凍結的執行和結果；觀察者無法對其進行變換，觀察者的失敗也會被隔離。未知工具和拋出例外的工具都會變為結構化錯誤（`ToolNotFoundError` 對映為 `UNKNOWN_TOOL`），呼叫失敗但不終止當前輪次。
 
 ## 已強制執行的原始 JSON Schema 子集
 
-subagent、工作流程、MCP 和動態註冊提供的原始 schema 使用作者側 DSL 在協議層的對應表示。`assertSupportedJsonSchema()` 接受任意 JSON 根，`validateJsonSchemaValue()` 強制執行該 schema，`JsonSchemaError` 則報告每條不受支持或格式錯誤的 schema 路徑。僅含註解的空節點表示不受約束的無損 JSON。`oneOf` 至少要求兩個分支，且一個值必須恰好匹配其中一個。仍要求對象根的消費端呼叫 `assertObjectJsonSchema()` 並攜帶 `ObjectJsonSchema`；這樣，subagent/工作流程中由呼叫方定義的結構化輸出可以繼續以對象為根，而不會限制共享詞彙。
+subagent、工作流程、MCP 和動態註冊提供的原始 schema 使用作者側 DSL 在協定層的對應表示。`assertSupportedJsonSchema()` 接受任意 JSON 根，`validateJsonSchemaValue()` 強制執行該 schema，`JsonSchemaError` 則報告每條不受支援或格式錯誤的 schema 路徑。僅含註解的空節點表示不受約束的無損 JSON。`oneOf` 至少要求兩個分支，且一個值必須恰好匹配其中一個。仍要求對象根的消費端呼叫 `assertObjectJsonSchema()` 並攜帶 `ObjectJsonSchema`；這樣，subagent/工作流程中由呼叫方定義的結構化輸出可以繼續以對象為根，而不會限制共享詞彙。
 
 ```ts type-equiv
 /** Scalar JSON values supported by `enum` and `const`. */
@@ -458,9 +458,9 @@ type ObjectJsonSchema = JsonSchemaNode & { type: 'object' }
 
 ## 工具展示 UI 詞彙
 
-工具希望其呼叫在 UI 中如何呈現（編輯器工具呼叫卡片、CLI（命令列介面）日誌行），提供方無關，使工具在不相依性任何用戶端協議的情況下描述自身。`presentCall`/`presentResult` 返回一個 **`card` 標籤的渲染意圖**——一個可辨識聯合類型，UI 橋接層據此分發：
+工具希望其呼叫在 UI 中如何呈現（編輯器工具呼叫卡片、CLI（命令列介面）日誌行），提供方無關，使工具在不相依性任何用戶端協定的情況下描述自身。`presentCall`/`presentResult` 返回一個 **`card` 標籤的渲染意圖**——一個可辨識聯合類型，UI 橋接層據此分發：
 
-- `ToolCallView`（待執行）：`{ card: 'generic', title, kind?, rawInput?, content?, locations? }`（默認卡片；`locations` 是 `{ path, line? }[]`，表示呼叫讀取/修改的文件，供編輯器跟隨）、`{ card: 'terminal', title, description?, cwd? }`（shell 命令→終端機卡片）、或 `{ card: 'diff', title, diffs, locations? }`（文件建立/修改→行內 diff 卡片；`diffs` 是 `{ path, oldText, newText }[]`，新文件時 `oldText: null`）。
+- `ToolCallView`（待執行）：`{ card: 'generic', title, kind?, rawInput?, content?, locations? }`（預設卡片；`locations` 是 `{ path, line? }[]`，表示呼叫讀取/修改的文件，供編輯器跟隨）、`{ card: 'terminal', title, description?, cwd? }`（shell 命令→終端機卡片）、或 `{ card: 'diff', title, diffs, locations? }`（文件建立/修改→行內 diff 卡片；`diffs` 是 `{ path, oldText, newText }[]`，新文件時 `oldText: null`）。
 - `ToolResultView`（已完成）：`{ card: 'generic', title?, content? }`、`{ card: 'terminal', title?, output?, exitCode?, signal? }`（捕獲的執行輸出 + 退出狀態；有能力的 UI 顯示退出狀態標籤，其他 UI 可以派生圍欄 ` ```console ` 回退）、`{ card: 'diff', title?, diffs }`（已完成的文件變更→要展示的變更，通常是從變更前後內容計算出帶上下文行的已應用 hunk，或在沒有前像時的整文件 diff）、`{ card: 'search', shape, title?, truncated, total, … }`（已完成的發現型搜尋→`shape: 'matches'`（grep）為按文件分組的匹配，`shape: 'paths'`（glob）為扁平路徑清單；`truncated`/`total` 報告內聯結果是否被截斷，使 UI 永不把部分結果當作完整結果呈現；該檢視表不攜帶結果文字——無 search 卡片的 UI 回退到原始結果內容）、`{ card: 'read', title?, path, offset, lines, totalLines, lang?, content? }`（已完成的文件讀取→帶行號、選填文法高亮的程式碼檢視表；`offset` 是視窗請求的 1-based 起始行，即使 `lines` 為空也保留；`lang` 是從擴充名推得的語言提示，`content` 是無讀取能力的 UI 回退時使用的去信封文字）、或 `{ card: 'web', kind: 'search' | 'fetch', title?, … }`（已完成的 web 檢索；`kind: 'search'` 攜帶結構化的 `sources`/`answer?`/`truncated`，`kind: 'fetch'` 攜帶 `url`/`statusCode`/`truncated`，不具備 `web` 能力的 UI 回退到原始結果內容——正文不會重複進檢視表）。已完成檢視表會替換待執行檢視表，因此變更工具即使與呼叫時的片段重複也要返回 diff 結果；搜尋和 web 檢索都沒有 `card` 的呼叫時對應檢視表（其 pending 狀態保持為 generic 卡片，因為結構化結果只在 `execute` 之後才存在）。
 
 `ToolCallKind`（`'read' | 'edit' | 'delete' | 'move' | 'search' | 'execute' | 'fetch' | 'other'`）用於為通用卡片選擇圖示。`FileLocation`（`{ path, line? }`）、`FileDiff`（`{ path, oldText, newText }`）與 `ReadFileLine`（`{ number, text }`，讀取視窗中一行帶 1-based 行號的內容）是共享的文件卡片詞彙。該設計由[渲染意圖聯合類型 Agent Note](../../.agents/notes/implemented/architecture/2026-07-02-tool-render-intent-union.md)固定；host/client 執行時期將這套中性詞彙投影為各自的檢視表。

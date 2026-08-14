@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-07-mcp-client-plugin.md) | [简体中文](2026-07-07-mcp-client-plugin.zh.md) | 繁體中文
+[English](2026-07-07-mcp-client-plugin.md) | 繁體中文
 
 ## 問題
 
@@ -89,7 +89,7 @@ type Config = StdioConfig | StreamableHttpConfig
 
 每個 MCP 工具有兩個名稱：
 
-- `rawName`——MCP `Tool.name` 的原始值，僅用於協議通訊（`tools/call`）。
+- `rawName`——MCP `Tool.name` 的原始值，僅用於協定通訊（`tools/call`）。
 - `publicName`——在 `ToolRuntime` 中註冊的全域性唯一模型可見名稱：
 
       mcp__<serverName>__<rawName>
@@ -159,11 +159,11 @@ MCP 僅保證工具名在[單個伺服器內](https://modelcontextprotocol.io/sp
 
 ### MCP Server 端（將 harness 工具暴露給外部 MCP 用戶端）
 
-延後。ACP 橋接已將 harness 暴露為 agent 伺服器。再加一層 MCP server 會以不同協議重複這一功能，而使用者的首要需求是消費外部工具，而非暴露自身工具。
+延後。ACP 橋接已將 harness 暴露為 agent 伺服器。再加一層 MCP server 會以不同協定重複這一功能，而使用者的首要需求是消費外部工具，而非暴露自身工具。
 
 ### 能力 seam 三包拆分（介面 / 實作 / 消費端）
 
-否決。可預見範圍內不會有替代的 MCP 用戶端實作——MCP 只有一個協議、一個 SDK。約定是「不要預防性拆分」，直到出現第二種實作。
+否決。可預見範圍內不會有替代的 MCP 用戶端實作——MCP 只有一個協定、一個 SDK。約定是「不要預防性拆分」，直到出現第二種實作。
 
 ### 指數退避自動重連
 
@@ -193,13 +193,13 @@ v1 否決。它能防止跨伺服器衝突，但無法將 MCP 註冊與原生 ha
 
 覆蓋範圍按層級列出；每項行為都放在能夠表達它的最低成本層級。
 
-- **單元測試**（`tests/mcp-client.spec.ts`、`tests/apply.spec.ts`，mock MCP SDK）：`publicToolName` 演算法（乾淨名稱、規範化、截斷加 hash、確定性、不同標識的分離）、raw 與 public 的協議紀律、跨伺服器與原生工具共存、重複 `serverName` 載入失敗與預留釋放、無效工具清單拒絕、註冊代切換/回滾、重新同步失敗時保留上一代註冊、結果對映、取消、設定 schema 校驗。100% 逐文件覆蓋率閘門約束該包。
-- **E2E**（`tests/mcp-client.e2e.ts`，無需金鑰）：使用真實 MCP 協議對接倉庫內的 fixture（測試前置資料）伺服器、`@modelcontextprotocol/server-everything` 和 `@modelcontextprotocol/server-filesystem`（stdio 傳輸），以及行程內 `StreamableHTTPServerTransport` 伺服器（Streamable HTTP 傳輸）——命名空間下的發現、帶點號名稱的端到端規範化、執行往返、重複 `serverName` 拒絕、dispose。
+- **單元測試**（`tests/mcp-client.spec.ts`、`tests/apply.spec.ts`，mock MCP SDK）：`publicToolName` 演算法（乾淨名稱、規範化、截斷加 hash、確定性、不同標識的分離）、raw 與 public 的協定紀律、跨伺服器與原生工具共存、重複 `serverName` 載入失敗與預留釋放、無效工具清單拒絕、註冊代切換/回滾、重新同步失敗時保留上一代註冊、結果對映、取消、設定 schema 校驗。100% 逐文件覆蓋率閘門約束該包。
+- **E2E**（`tests/mcp-client.e2e.ts`，無需金鑰）：使用真實 MCP 協定對接倉庫內的 fixture（測試前置資料）伺服器、`@modelcontextprotocol/server-everything` 和 `@modelcontextprotocol/server-filesystem`（stdio 傳輸），以及行程內 `StreamableHTTPServerTransport` 伺服器（Streamable HTTP 傳輸）——命名空間下的發現、帶點號名稱的端到端規範化、執行往返、重複 `serverName` 拒絕、dispose。
 - **快照**：刻意不做。MCP 工具不引入新的展示形態——它們以原始 `ToolDefinition` 註冊，UI 消費端使用各自展示測試套件已固定的通用卡片兜底。將 MCP 伺服器新增到某個可執行的快照組合會改變其已固定的系統提示詞 fixture，且使每次重播相依性於 spawn 外部 MCP 伺服器行程，而新增行為為零。如果後續變更為 MCP 工具引入專屬渲染意圖，該變更屆時自行聲明快照覆蓋。
 
 ## 後果
 
-- 每個 MCP 伺服器只需 `cordis.yml` 中的一條設定即完成整合：`serverName: filesystem` 加一條 stdio 命令（或一個 Streamable HTTP URL），就能將 `mcp__filesystem__read_file` 放入模型的工具清單，可呼叫，協議上使用原始的 `read_file`。
+- 每個 MCP 伺服器只需 `cordis.yml` 中的一條設定即完成整合：`serverName: filesystem` 加一條 stdio 命令（或一個 Streamable HTTP URL），就能將 `mcp__filesystem__read_file` 放入模型的工具清單，可呼叫，協定上使用原始的 `read_file`。
 - 公開名稱是工作階段歷史和權限/設定 API 的一部分；命名演算法是由測試固定的 v1 約定，發布後變更即為破壞性變更。
 - `mcp__<serverName>__` 限定符在每個名稱上消耗 token。已接受：描述和 JSON Schema 在工具定義 token 中佔主導，而限定符換來了穩定標識、衝突隔離和 MCP 全域性策略匹配模式（`mcp__*`、`mcp__github__*`）。
 - **MCP SDK 穩定性**：`@modelcontextprotocol/sdk` 仍在演進中；破壞性變更需要更新橋接。版本已固定，且該 SDK 被廣泛採用（Claude Desktop、Cursor、VS Code），因此破壞性變更不太可能悄然發生。

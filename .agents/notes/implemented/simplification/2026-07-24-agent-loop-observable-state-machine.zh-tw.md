@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-agent-loop-observable-state-machine.md) | [简体中文](2026-07-24-agent-loop-observable-state-machine.zh.md) | 繁體中文
+[English](2026-07-24-agent-loop-observable-state-machine.md) | 繁體中文
 
 ## 問題
 
@@ -27,11 +27,11 @@ agent 生命週期、agent 整體活動狀態、收件箱條目的進度以及�
 
 模型請求失敗會先關閉當前步驟，再攜帶該錯誤本身、標準化 `LlmFailure` 和仍有效的輪次訊號進入 `agent/request-error`。負責復原的監聽器修復狀態、返回 `{ kind: 'retry' }`，並停止繼續委託。迴圈會關閉失敗輪次，並基於該狀態開啟一個重試輪次，中間不發布空閒通知；重試不是失敗輪次內的另一個步驟。`agent/settled` 報告終態結果；對於需要脫離輪次結帳單獨報告失敗的消費端，`agent/error` 仍作為即時錯誤通知保留。[重試動作決策](2026-07-27-request-error-retry-action.md)取代了本設計中命令形式的部分。
 
-事件分類體系移除了舊的提示詞準備／提交與序列步驟掛鉤，以及 `agent/post-step`、`agent/session-prefix`、`agent/step-result`、`agent/turn-continuation` 和 `agent/turn-stop`。唯一的 `agent/pre-step` waterfall 負責已領取消息能否進入步驟。持久的輪次與步驟邊界仍由工作階段事件記錄。面向模型的新增內容使用有日誌記錄的訊息通道，請求設定使用 `agent/request`，回應內容按組裝後的原樣記錄，失敗請求復原使用 `agent/request-error` 返回動作，輪次結束時是否繼續則使用 `agent/turn-stopping` 加 steering 表達。
+事件分類體系移除了舊的提示詞準備／提交與序列步驟掛鉤，以及 `agent/post-step`、`agent/session-prefix`、`agent/step-result`、`agent/turn-continuation` 和 `agent/turn-stop`。唯一的 `agent/pre-step` waterfall 負責已領取訊息能否進入步驟。持久的輪次與步驟邊界仍由工作階段事件記錄。面向模型的新增內容使用有日誌記錄的訊息通道，請求設定使用 `agent/request`，回應內容按組裝後的原樣記錄，失敗請求復原使用 `agent/request-error` 返回動作，輪次結束時是否繼續則使用 `agent/turn-stopping` 加 steering 表達。
 
 ## 考慮過的替代方案
 
-**保留細粒度事件序列。** 這樣可以為每個內部階段保留專用攔截點，包括僅用於請求的前綴、助手訊息改寫、步驟後處理、輪次內請求復原以及終止覆蓋。但這也會使迴圈的私有執行順序成為永久的公開約定，並允許相互重疊的擴充點表達彼此衝突的決策。當前決策接受這些攔截點的缺失，以換取每項受支持的擴充職責僅對應一個邊界。
+**保留細粒度事件序列。** 這樣可以為每個內部階段保留專用攔截點，包括僅用於請求的前綴、助手訊息改寫、步驟後處理、輪次內請求復原以及終止覆蓋。但這也會使迴圈的私有執行順序成為永久的公開約定，並允許相互重疊的擴充點表達彼此衝突的決策。當前決策接受這些攔截點的缺失，以換取每項受支援的擴充職責僅對應一個邊界。
 
 **將 dispose 表示為第三種 `AgentStatus`。** 這樣會讓仍被持有的控制代碼得到一個終止狀態值，但也會重複表達 `agent/disposed` 已經體現的登錄檔生命週期。當前決策讓 `AgentStatus` 只表示 agent 存續期間的活動狀態，並將註冊生命週期作為獨立維度。
 

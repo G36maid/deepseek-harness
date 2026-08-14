@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-todo
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 面向模型的 `todo_write` 工具：agent（代理）的完整任務清單，每次呼叫都會整體替換。
 
@@ -34,7 +34,7 @@
 
 ## 匯出形狀
 
-函式／命名空間外掛程式：匯出 `name`/`inject`/`apply`，不提供默認匯出。意外的 `export default` 會被 Loader 的 `unwrapExports` 摺疊為默認匯出，並導致 `inject` 丟失（參見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
+函式／命名空間外掛程式：匯出 `name`/`inject`/`apply`，不提供預設匯出。意外的 `export default` 會被 Loader 的 `unwrapExports` 摺疊為預設匯出，並導致 `inject` 丟失（參見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
 
 ## 模型體驗
 

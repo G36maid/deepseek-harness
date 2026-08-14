@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-minimal-preset-owns-rl-composition.md) | [简体中文](2026-08-10-minimal-preset-owns-rl-composition.zh.md) | 繁體中文
+[English](2026-08-10-minimal-preset-owns-rl-composition.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ preset persona 恰好是 `You are a helpful software engineer assistant.`，它�
 
 ## 驗證
 
-系統提示詞與 persona 包測試證明瞭 complete 段最終約束與 runtime-context 抑制，包括 waterfall 修改與重複項拒絕。交付 preset 組合測試在默認原生呈現下斷言精確的提示詞、Bash 描述、要求絕對路徑的編輯器 schema 和雙工具目錄。無金鑰 Web 重播透過 `minimal` agent 傳送一個真實請求，同時註冊全域性身份、Web 定位文字、動態策略上下文和一個測試段落；它斷言不存在 runtime-context 快照、entry 本機檔案系統是裸後端且壓縮不存在，隨後執行兩次持久 Bash 呼叫，證明環境與 cwd 狀態能夠保留，並透過絕對路徑執行編輯器。
+系統提示詞與 persona 包測試證明瞭 complete 段最終約束與 runtime-context 抑制，包括 waterfall 修改與重複項拒絕。交付 preset 組合測試在預設原生呈現下斷言精確的提示詞、Bash 描述、要求絕對路徑的編輯器 schema 和雙工具目錄。無金鑰 Web 重播透過 `minimal` agent 傳送一個真實請求，同時註冊全域性身份、Web 定位文字、動態策略上下文和一個測試段落；它斷言不存在 runtime-context 快照、entry 本機檔案系統是裸後端且壓縮不存在，隨後執行兩次持久 Bash 呼叫，證明環境與 cwd 狀態能夠保留，並透過絕對路徑執行編輯器。
 
 獨立的 [`minimal.cordis.yml`](../../../../examples/jsonrpc-agent/minimal.cordis.yml) 是內建 JSON-RPC 執行時期的完整雙工具組合。[裸雙工具執行時期決策](../feature/2026-08-11-minimal-profiles-bare-two-tool-runtime.md)說明其啟動方式專屬的環境設定、裸檔案系統和無壓縮選擇。其無金鑰 SDK 重播會斷言組裝後的系統提示詞與雙工具目錄，跨呼叫執行持久 Bash，並使用編輯器；Python SDK 教程提供可執行的入口。
 
@@ -36,4 +36,4 @@ preset persona 恰好是 `You are a helpful software engineer assistant.`，它�
 
 ## 後果
 
-Web RL 提示詞固定不變，不能透過環境覆蓋；獨立 JSON-RPC 提示詞由部署選擇。Web preset 與獨立 JSON-RPC 示例分別在各自的啟動路徑聲明相同的雙工具約定。模型只看到持久 `bash` 與 `str_replace_editor`；shell 狀態按 agent 隔離，並隨該 agent 一並消失。Web preset 為自身的 PTY 與裸檔案系統服務實例承擔開銷，其他 preset 無需承擔。持久 shell 的本機後端需要受支持的 POSIX 終端機基礎環境，因此該 preset 不支持 Windows agent。
+Web RL 提示詞固定不變，不能透過環境覆蓋；獨立 JSON-RPC 提示詞由部署選擇。Web preset 與獨立 JSON-RPC 示例分別在各自的啟動路徑聲明相同的雙工具約定。模型只看到持久 `bash` 與 `str_replace_editor`；shell 狀態按 agent 隔離，並隨該 agent 一並消失。Web preset 為自身的 PTY 與裸檔案系統服務實例承擔開銷，其他 preset 無需承擔。持久 shell 的本機後端需要受支援的 POSIX 終端機基礎環境，因此該 preset 不支援 Windows agent。

@@ -1,8 +1,8 @@
 # LLM（大型語言模型）流式輸出
 
-[English](llm-streaming.md) | [简体中文](llm-streaming.zh.md) | 繁體中文
+[English](llm-streaming.md) | 繁體中文
 
-[`packages/llm`](../../packages/llm/README.md) 提供對話與流式輸出類型：每個請求和持久歷史共用的 `Message`/`ContentBlock` 變體、完整組裝的模型請求、原始 `StreamChunk` 協議、每個配接器必須實作的配接器約定（adapter contract），以及共享的 assembler。[核心包](core.md)在每個輪次持有並記錄這些值；本頁聲明它們。
+[`packages/llm`](../../packages/llm/README.md) 提供對話與流式輸出類型：每個請求和持久歷史共用的 `Message`/`ContentBlock` 變體、完整組裝的模型請求、原始 `StreamChunk` 協定、每個配接器必須實作的配接器約定（adapter contract），以及共享的 assembler。[核心包](core.md)在每個輪次持有並記錄這些值；本頁聲明它們。
 
 原始碼：[`packages/llm/llm/src/types.ts`](../../packages/llm/llm/src/types.ts)
 
@@ -28,7 +28,7 @@ interface ContentBlockMap {
 }
 ```
 
-各塊介面（完整欄位見原始碼）：`TextBlock`（`text`）、`ReasoningBlock`（thinking，區別於可見文字）、`ImageBlock`（一個持久的[圖片附件](attachment.md)）、`ToolCallBlock`（`id: CallId`、`name`、原始 JSON `arguments`），以及 `ToolResultBlock`（`toolCallId`、巢狀 `content: ContentBlock[]`、`isError?`）。`ContentBlock = ContentBlockMap[ContentBlockType]`。僅當配接器、UI、壓縮（compaction）和持久重播路徑均支持某種新模態時，才將其納入可合併擴充的 map。
+各塊介面（完整欄位見原始碼）：`TextBlock`（`text`）、`ReasoningBlock`（thinking，區別於可見文字）、`ImageBlock`（一個持久的[圖片附件](attachment.md)）、`ToolCallBlock`（`id: CallId`、`name`、原始 JSON `arguments`），以及 `ToolResultBlock`（`toolCallId`、巢狀 `content: ContentBlock[]`、`isError?`）。`ContentBlock = ContentBlockMap[ContentBlockType]`。僅當配接器、UI、壓縮（compaction）和持久重播路徑均支援某種新模態時，才將其納入可合併擴充的 map。
 
 原始碼：[`packages/llm/llm/src/message.ts`](../../packages/llm/llm/src/message.ts)
 
@@ -153,7 +153,7 @@ type ContextFormed =
 
 <a id="streamchunk--the-raw-protocol"></a>
 
-## `StreamChunk`：原始協議
+## `StreamChunk`：原始協定
 
 一個流式回應交錯包含多種類型的塊（文字、推理（reasoning）、多個工具呼叫）。`index` 將每個 delta 關聯到其所屬塊；`block-end` 攜帶完整組裝好的 `ContentBlock`，消費端無需自行重新組裝 delta。這是一個**封閉的**可辨識聯合類型：對 `type` 的 `switch` 以 `assertNever` 結尾，因此新增變體會在每個必須處理它的消費端處觸發編譯錯誤。
 
@@ -209,12 +209,12 @@ interface LlmFailure {
 
 - **`usage` 在 `finish` 之前，`finish` 之後不再有任何區塊。** 將兩者都推遲到提供方的流結束標記，這樣尾部的 usage-only 區塊就不會違反順序。
 - **工具呼叫的 `arguments` 全程保持原始 JSON 字串。** 部區塊段透過 `argumentsDelta` 流式傳輸；如果提供方返回的是已解析的對象，配接器在 `block-end` 時重新序列化為字串。
-- **兩條受支持的錯誤路徑，共用一個 `LlmFailure` 類型。** 失敗可以從 `stream()` 拋出（傳輸／協議錯誤），**或者**以 `finish {kind:'error'|'aborted', failure}` 結束流（無法在流中途拋例外的配接器用它表示提供方帶內錯誤）。`LlmError.failure` 攜帶同一個 `LlmFailure`。呼叫選定配接器後，流會保留被拋出的確切 `Error` 對象，並將不可變事實以及實際服務註冊所對應的不可變重試策略關聯到該呼叫；agent loop（代理循環）關閉失敗步驟，再把錯誤、事實、不可變的先前已重試失敗事實、實際服務策略和輪次訊號提供給 `agent/request-error`。處理該錯誤的 listener 在其 await 的修復完成後返回 `{ kind: 'retry' }`；若未復原，結構化失敗會成為輪次錯誤，並且該次嘗試不會提交正常 assistant 訊息或工具副作用。
+- **兩條受支援的錯誤路徑，共用一個 `LlmFailure` 類型。** 失敗可以從 `stream()` 拋出（傳輸／協定錯誤），**或者**以 `finish {kind:'error'|'aborted', failure}` 結束流（無法在流中途拋例外的配接器用它表示提供方帶內錯誤）。`LlmError.failure` 攜帶同一個 `LlmFailure`。呼叫選定配接器後，流會保留被拋出的確切 `Error` 對象，並將不可變事實以及實際服務註冊所對應的不可變重試策略關聯到該呼叫；agent loop（代理循環）關閉失敗步驟，再把錯誤、事實、不可變的先前已重試失敗事實、實際服務策略和輪次訊號提供給 `agent/request-error`。處理該錯誤的 listener 在其 await 的修復完成後返回 `{ kind: 'retry' }`；若未復原，結構化失敗會成為輪次錯誤，並且該次嘗試不會提交正常 assistant 訊息或工具副作用。
 - **一次配接器呼叫就是一次提供方嘗試。** 配接器停用庫重試。agent 層復原會打開另一個持久、帶編號的輪次；直接呼叫 `ctx.llm.stream()` 的呼叫方仍然只嘗試一次。
-- **提供方停頓在傳輸層受到時限約束。** 兩個已交付的遠端配接器都暴露正數且有限的 `streamIdleTimeoutMs`，默認五分鐘。watchdog 只在 iterator `next()` 尚未完成時啟動，整個請求使用同一個穩定 signal，把自身到期對映為 `TIMEOUT`，並把更早發生的呼叫方中止保留為 `ABORTED`。
+- **提供方停頓在傳輸層受到時限約束。** 兩個已交付的遠端配接器都暴露正數且有限的 `streamIdleTimeoutMs`，預設五分鐘。watchdog 只在 iterator `next()` 尚未完成時啟動，整個請求使用同一個穩定 signal，把自身到期對映為 `TIMEOUT`，並把更早發生的呼叫方中止保留為 `ABORTED`。
 - **上下文溢位只有一個規範 code。** 兩個 DeepSeek 配接器都透過 `isContextWindowExceededError()` 對提供方的顯式細節分類並暴露 `CONTEXT_WINDOW_EXCEEDED`，無論失敗以拋出的 HTTP `LlmError` 還是帶內 finish error 到達。消費端按 code 路由，絕不相依性提供方文字。
-- **空 completion 是可重試錯誤，而不是靜默的成功結果。** 兩個配接器都把沒有攜帶任何內容區塊的終止性 `stop` 結束對映為攜帶規範 `EMPTY_RESPONSE` code 的 `finish {kind:'error'}`，`dsh-llm-retry` 默認會重試它；詳見[空模型回應可重試](../../.agents/notes/implemented/bug-fix/2026-07-24-empty-model-response-is-retryable.md)。
-- **每個提供方 HTTP 請求都攜帶應用歸屬頭。** 配接器傳送 `attributionHeaders()`（見下文）作為 `User-Agent` 基線，並透過協議級測試加以證明。
+- **空 completion 是可重試錯誤，而不是靜默的成功結果。** 兩個配接器都把沒有攜帶任何內容區塊的終止性 `stop` 結束對映為攜帶規範 `EMPTY_RESPONSE` code 的 `finish {kind:'error'}`，`dsh-llm-retry` 預設會重試它；詳見[空模型回應可重試](../../.agents/notes/implemented/bug-fix/2026-07-24-empty-model-response-is-retryable.md)。
+- **每個提供方 HTTP 請求都攜帶應用歸屬頭。** 配接器傳送 `attributionHeaders()`（見下文）作為 `User-Agent` 基線，並透過協定級測試加以證明。
 - **重播狀態歸配接器所有。** 成功的 `finish` 可以攜帶重建提供方原生回應所需的無損 JSON 狀態。迴圈會將其與組裝後的 assistant 訊息一起儲存。後續請求中，僅當歷史提供方與目標提供方當前註冊到完全相同的配接器實例時，`LlmRuntime` 才會傳遞該狀態。該配接器負責校驗狀態並擁有所有跨模型或跨提供方轉換；其他配接器只會收到提供方無關的內容以及提供方／模型欄位，不會收到私有狀態。
 
 ## `ResolvedRetryPolicy`
@@ -223,7 +223,7 @@ interface LlmFailure {
 
 ## `AppIdentity`：應用歸屬
 
-每個配接器都會向提供方傳送的靜態公開應用標識（[`packages/llm/llm/src/attribution.ts`](../../packages/llm/llm/src/attribution.ts)）。`attributionHeaders(identity?)` 只把它對映到標準 `User-Agent` header；該約定有意不支持 OpenRouter 特有的應用歸屬 header。默認 `APP_IDENTITY` 從包 manifest（中繼資料清單）取得版本；每個欄位都是公開產品事實——不含 secret、路徑、工作階段 id 或逐使用者標識，且任何逐請求資訊都不得影響這些值。設計理由見[強制 `User-Agent` 歸屬](../../.agents/notes/implemented/architecture/2026-06-21-mandatory-app-attribution-headers.md)。
+每個配接器都會向提供方傳送的靜態公開應用標識（[`packages/llm/llm/src/attribution.ts`](../../packages/llm/llm/src/attribution.ts)）。`attributionHeaders(identity?)` 只把它對映到標準 `User-Agent` header；該約定有意不支援 OpenRouter 特有的應用歸屬 header。預設 `APP_IDENTITY` 從包 manifest（中繼資料清單）取得版本；每個欄位都是公開產品事實——不含 secret、路徑、工作階段 id 或逐使用者標識，且任何逐請求資訊都不得影響這些值。設計理由見[強制 `User-Agent` 歸屬](../../.agents/notes/implemented/architecture/2026-06-21-mandatory-app-attribution-headers.md)。
 
 ```ts type-equiv
 /**
@@ -541,7 +541,7 @@ interface ToolSchema {
 }
 ```
 
-面向模型的 `ToolSchema` 是協議類型；產出它的已註冊 `ToolDefinition`（schema + `execute`）在 [tools.md](tools.md) 中。
+面向模型的 `ToolSchema` 是協定類型；產出它的已註冊 `ToolDefinition`（schema + `execute`）在 [tools.md](tools.md) 中。
 
 介面正在起草的提供方既沒有路由也沒有 catalog，因此詢問被單獨描述：請求攜帶使用者正在編輯的草稿，回覆是介面可以採納的候選，而不是它必須服務的 catalog。
 
@@ -596,9 +596,9 @@ interface LlmDiscoveredModel {
 
 迴圈從已記錄狀態建置每個請求。`EpochHeader` 記錄呼叫設定，標記由配接器預設值提供的欄位，並透過完整的 `request/header` 快照記錄渲染後的提示詞以及權威返回工具順序（由 `toolOrder` 設定；未設定時按字典序）。結合派生歷史，請求便可由工作階段日誌重建。見 [session.md](session.md#the-request-header-event-requestheader) 與[可重建性 Agent Note](../../.agents/notes/implemented/architecture/2026-07-05-reconstructable-requests.md)。
 
-`agent/request` 接收凍結的呼叫設定種子，並可返回替代值以切換提供方、模型、推理強度或採樣參數。waterfall（瀑布式事件）開始前，迴圈會移除標記為配接器預設值的值，使確切模型準備過程填入所選路由的當前值；未帶標記的顯式設定仍保留在提議中。waterfall 結束後，準備過程會在輪次訊號控制下拒絕顯式指定但不受支持的推理強度 ID（不自動調整），並記錄生效設定以及由配接器預設值提供的欄位。準備完成的呼叫直至分派完成始終持有同一項配接器註冊。到達 `llm/stream` 的請求會被深度凍結，因此變更會拋例外；請求還攜帶行程本機迴圈標識，使觀察者不會把單獨記錄的凍結輔助呼叫誤認成對話請求。
+`agent/request` 接收凍結的呼叫設定種子，並可返回替代值以切換提供方、模型、推理強度或採樣參數。waterfall（瀑布式事件）開始前，迴圈會移除標記為配接器預設值的值，使確切模型準備過程填入所選路由的當前值；未帶標記的顯式設定仍保留在提議中。waterfall 結束後，準備過程會在輪次訊號控制下拒絕顯式指定但不受支援的推理強度 ID（不自動調整），並記錄生效設定以及由配接器預設值提供的欄位。準備完成的呼叫直至分派完成始終持有同一項配接器註冊。到達 `llm/stream` 的請求會被深度凍結，因此變更會拋例外；請求還攜帶行程本機迴圈標識，使觀察者不會把單獨記錄的凍結輔助呼叫誤認成對話請求。
 
-在協議中，迴圈建置的請求先讀取 `system` slot（渲染後的提示詞組裝），再讀取派生歷史。已記錄的請求快照會以最新的 `user/message`（輪次首步）或上一步的工具結果（後續步驟）結尾。開發不變式針對每個迴圈建置的請求精確重算此等式。
+在協定中，迴圈建置的請求先讀取 `system` slot（渲染後的提示詞組裝），再讀取派生歷史。已記錄的請求快照會以最新的 `user/message`（輪次首步）或上一步的工具結果（後續步驟）結尾。開發不變式針對每個迴圈建置的請求精確重算此等式。
 
 FIXME(call-config-shape)：重新審視其餘哪些欄位出於快取目的確實屬於 epoch 層級（`model` 和模型持有的推理強度已明確屬於；取樣標量目前出於謹慎保留在此）。
 

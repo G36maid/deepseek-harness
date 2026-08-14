@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-20-core-data-structures-catalog.md) | [简体中文](2026-06-20-core-data-structures-catalog.zh.md) | 繁體中文
+[English](2026-06-20-core-data-structures-catalog.md) | 繁體中文
 
 ## 問題
 
@@ -50,7 +50,7 @@ Status: implemented
 
 ## 驗證教訓
 
-`verify-type-equiv` 必須掃描完整的 Markdown 範圍，而不僅是 manifest 點名的文件。否則，未列入清單的 `type-equiv` 塊就會逃過所宣稱的一一檢查。因此，閘門會將此類塊報告為未列入清單的塊。本 Agent Note 將這條默認拒絕放行的掃描規則，連同主幹與子系統的分界決策及逐字匹配決策一並記錄；生成的 Cordis 目錄在[其已歸檔的 Agent Note](../../archived/process/2026-06-20-generated-cordis-catalog.md) 中有對稱的設計記錄。
+`verify-type-equiv` 必須掃描完整的 Markdown 範圍，而不僅是 manifest 點名的文件。否則，未列入清單的 `type-equiv` 塊就會逃過所宣稱的一一檢查。因此，閘門會將此類塊報告為未列入清單的塊。本 Agent Note 將這條預設拒絕放行的掃描規則，連同主幹與子系統的分界決策及逐字匹配決策一並記錄；生成的 Cordis 目錄在[其已歸檔的 Agent Note](../../archived/process/2026-06-20-generated-cordis-catalog.md) 中有對稱的設計記錄。
 
 ## 後果
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-max-tokens-turn-end-notice.md) | [简体中文](2026-08-12-max-tokens-turn-end-notice.zh.md) | 繁體中文
+[English](2026-08-12-max-tokens-turn-end-notice.md) | 繁體中文
 
 ## Problem
 
@@ -24,4 +24,4 @@ agent loop 已把 `max-tokens` 記錄為獨立的 `turn/end` 原因，但沒有�
 
 ## Consequences
 
-max-tokens 結束在即時流、刷新和重播中都可見、已本機化，並與錯誤和正常完成明確區分。fixture 重編號需要更新兩處相依性 snapshot 的註釋，之後釘 fixture 輪次號的改動要按新版面配置計數。Web 聊天流之外的表面（ACP 和 SDK 消費端）仍按各自的呈現對映該原因，本次不變。
+max-tokens 結束在即時流、刷新和重播中都可見、已本機化，並與錯誤和正常完成明確區分。fixture 重編號需要更新兩處相依性 snapshot 的註釋，之後釘 fixture 輪次號的改動要按新版面設定計數。Web 聊天流之外的表面（ACP 和 SDK 消費端）仍按各自的呈現對映該原因，本次不變。

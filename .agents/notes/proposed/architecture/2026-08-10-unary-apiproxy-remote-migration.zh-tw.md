@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-08-10-unary-apiproxy-remote-migration.md) | [简体中文](2026-08-10-unary-apiproxy-remote-migration.zh.md) | 繁體中文
+[English](2026-08-10-unary-apiproxy-remote-migration.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ API Proxy 還包含一些不以業務方法為約定的 BFF 操作：Session 生
 
 `@deepseek-ai/dsh-api-remotes/client` 將掛載所選各業務包生成的 `/remote` 貢獻。Client 業務包將呼叫 `ctx.remote.<service>`，並在包內執行歸 Client 所有的關聯或呈現投影。對應的 API Proxy 介面成員、schema、路由、處理程序、生成的用戶端方法、fixture（測試前置資料）實作和生產呼叫點，將在該服務的縱向提交中一並移除。
 
-大型 BFF 方法仍留在 `dsh-host-apiproxy` 中。如果實作過程中發現某個方法包含端點特有的生命週期策略、大量編排、Client 相依性僅存在於協議層的錯誤區分，或者其傳輸資料結構無法用歸屬方的小型配接器表達，則該方法不在此次遷移範圍內。
+大型 BFF 方法仍留在 `dsh-host-apiproxy` 中。如果實作過程中發現某個方法包含端點特有的生命週期策略、大量編排、Client 相依性僅存在於協定層的錯誤區分，或者其傳輸資料結構無法用歸屬方的小型配接器表達，則該方法不在此次遷移範圍內。
 
 ## 遷移集合
 
@@ -46,10 +46,10 @@ Remote API 有意採用服務名稱，而不保留舊 RPC 的點分名稱。例�
 | Agent 輸入與控制 | `session.prompt`、`updateQueue`、`cancel` | 圖片准入、Inbox 變更和端點特有的僅限 live 語義。 |
 | 設定 Remote | `settings.describe`、`openDocument`、`update`、`replace`、`mutate` | namespace 暴露、脫敏、修訂檢查和原生打開操作屬於產品策略。 |
 | Session skill 目錄 | `skill.list` | 不得復原冷 Session；preset 的常駐 scope 和呈現器過濾屬於 BFF 關聯操作。 |
-| Host 執行時期資訊 | `host.describe` | 版本、cwd、默認模型和當前已附加的 Session 數量來自多個 Host 所有者。 |
+| Host 執行時期資訊 | `host.describe` | 版本、cwd、預設模型和當前已附加的 Session 數量來自多個 Host 所有者。 |
 | Host 路徑打開 | `host.openPath`、`agentPreset.openDocument` | 原生桌面權限和取消屬於 Host 組合。 |
 | 其餘 preset、subagent 和 workspace 呼叫 | `agentPreset.list`、`select`；`subagent.list`、`history`、`prompt`；`workspace.create`、`rename`、`delete` | 這些呼叫包含名單策略、live／cold 關聯、授權或多項操作的序列執行順序。 |
-| 有狀態協議和流式協議 | 審批、問題、回應、mux 和 Host 流 | 它們不是一次請求／一次結果的業務呼叫。 |
+| 有狀態協定和流式協定 | 審批、問題、回應、mux 和 Host 流 | 它們不是一次請求／一次結果的業務呼叫。 |
 
 `workspace.delete` 與 `create` 和 `rename` 保持在一起，因為三者都參與同一條序列的建立／命名／刪除操作鏈。單獨遷出一個方法會使服務與 API Proxy 觀察到不同的操作順序。
 
@@ -66,7 +66,7 @@ Remote API 有意採用服務名稱，而不保留舊 RPC 的點分名稱。例�
 - 持久化儲存中不存在的 id 以 `session-not-found` 失敗；
 - resolver 失敗會保留現有的 `RpcError`，並透過 `TypertLookupFailure` 傳遞。
 
-Lookup 策略作用於整個 key，而非特定端點。提示詞輸入、佇列編輯、取消、模型選擇和 skill 清單等方法如果使用共享 `agent` 或 `session` lookup，就無法保留僅限 live 或禁止復原的行為，因此在 Typert 支持顯式的逐端點策略之前，這些方法仍留在 API Proxy 中。
+Lookup 策略作用於整個 key，而非特定端點。提示詞輸入、佇列編輯、取消、模型選擇和 skill 清單等方法如果使用共享 `agent` 或 `session` lookup，就無法保留僅限 live 或禁止復原的行為，因此在 Typert 支援顯式的逐端點策略之前，這些方法仍留在 API Proxy 中。
 
 簽名只包含 branded id 的方法不會呼叫 Typert 對象 lookup。`subagents.interruptByParent()` 必須保留現有的行程內 Activation lookup 和父級離線行為：它不會呼叫 `agentFor`、讀取目錄、檢查持久化，也不會冷復原父 Agent 或子 Agent。
 
@@ -89,7 +89,7 @@ Connection 必須在選擇 Typert interceptor 或 API Proxy 回退路徑之前�
 
 此次遷移將以一個 RFC 提交、每項服務各一個縱向提交，以及一個最終整合提交落地。服務提交包含其 Host 綁定與裝飾器、生成約定所需的包聲明、API Remotes 掛載、Client 業務接入，以及移除該服務的舊版 API Proxy 路由和生產用戶端呼叫。服務提交可能暫時無法透過閘門，因為生成產物和共享 fixture 將在最終整合提交中統一調整。
 
-最終提交從乾淨狀態生成所有 `/remote` 產物，更新共享 fixture 和測試，將本文移至 `implemented`，更新中央一元呼叫所有權發生變化之處仍具權威性的協議文件，並執行選定的倉庫閘門。
+最終提交從乾淨狀態生成所有 `/remote` 產物，更新共享 fixture 和測試，將本文移至 `implemented`，更新中央一元呼叫所有權發生變化之處仍具權威性的協定文件，並執行選定的倉庫閘門。
 
 ## 考慮過的替代方案
 
@@ -99,7 +99,7 @@ Connection 必須在選擇 Typert interceptor 或 API Proxy 回退路徑之前�
 
 **為 Remote 方法提供單獨的復原實作。** 第二個 resolver 可能在 preset 復原、並行去重或 subagent 所有權方面出現偏差。與舊版 `agentFor()` 共享完全相同的 closure，使等價性成為實作事實，而不只是一項承諾。
 
-**保留每一個舊版 RPC 名稱和回應 envelope。** 這會使業務包變成舊協議的副本。面向服務的名稱和業務值讓 Client 負責關聯操作，而 Connection 繼續負責統一的 RPC envelope。
+**保留每一個舊版 RPC 名稱和回應 envelope。** 這會使業務包變成舊協定的副本。面向服務的名稱和業務值讓 Client 負責關聯操作，而 Connection 繼續負責統一的 RPC envelope。
 
 **相依性 API Proxy 回退路徑強制執行特權方法權限。** interceptor 選擇會繞過該回退路徑，因此這會悄然擴大已遷移方法的權限範圍。
 
@@ -109,16 +109,16 @@ Connection 必須在選擇 Typert interceptor 或 API Proxy 回退路徑之前�
 - 簽名匹配的現有方法直接帶有 `@Remote`；每個新增方法都執行表中所述的適配，且不保留只做恆等轉發的 `remote*` 包裝層。
 - Agent／Session 整合測試證明共享 lookup 的各項結果，subagent 中斷測試證明不會發生冷復原。
 - 已遷移的特權端點拒絕受信任的非環回呼用方，並接受環回呼用方，且該判定在任一分發路徑執行前完成。
-- 每項已遷移呼叫的 Client 行為和立即提交狀態的行為保持等價，包括支持取消之處的取消行為。
+- 每項已遷移呼叫的 Client 行為和立即提交狀態的行為保持等價，包括支援取消之處的取消行為。
 - 暫緩遷移的方法及其現有行為仍保留在 API Proxy 上。
 - 一次從乾淨狀態開始的生成與建置會生成並消費所選的每項 Remote 貢獻，且聚焦測試和最終倉庫閘門均透過。
 
 ## 風險
 
-移除舊版 schema 也會移除其協議特有的錯誤分類。如果 Client 中存在相依性其中某個錯誤碼的隱蔽分支，該呼叫就不是簡單呼叫，必須在接受相應服務提交前發現它。
+移除舊版 schema 也會移除其協定特有的錯誤分類。如果 Client 中存在相依性其中某個錯誤碼的隱蔽分支，該呼叫就不是簡單呼叫，必須在接受相應服務提交前發現它。
 
 生成的 Remote 約定會為每個業務包引入建置順序要求和發布條目。如果遺漏執行時期掛載、聲明匯出、source map 來源、包相依性或 Project Reference 中的任何一項，區域性原始碼測試可能仍會透過，但從乾淨狀態開始的 Client 建置會失敗。
 
 將權限強制執行移至複合分發會改變安全敏感的載體程式碼。測試必須覆蓋一個由 Remote 擁有的端點和一個舊版回退端點，確保兩條路徑都無法繞過環回判定。
 
-本文應用現有 Typert Remote 架構，而非取代它。本文部分取代 [GUI RPC 協議筆記](../../implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md)中的中央一元呼叫所有權和五步擴充檢查清單，以及 [Web 設定平面筆記](../../implemented/architecture/2026-07-30-web-config-plane.md)中的中央接線清單；對於已遷移方法之外的 Connection envelope 和設定行為，這些筆記仍具權威性。標題、命令、設定邊界、subagent 中斷和歸檔筆記繼續負責各自的業務行為，只需如實更新傳輸相關事實，無需歸檔。[瀏覽器信任邊界](../../implemented/architecture/2026-07-28-api-browser-trust-boundary.md)和[生成約定建置順序](../../implemented/process/2026-08-08-api-remotes-generated-contract-build.md)仍具權威性，無需執行歸檔操作。
+本文應用現有 Typert Remote 架構，而非取代它。本文部分取代 [GUI RPC 協定筆記](../../implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md)中的中央一元呼叫所有權和五步擴充檢查清單，以及 [Web 設定平面筆記](../../implemented/architecture/2026-07-30-web-config-plane.md)中的中央接線清單；對於已遷移方法之外的 Connection envelope 和設定行為，這些筆記仍具權威性。標題、命令、設定邊界、subagent 中斷和歸檔筆記繼續負責各自的業務行為，只需如實更新傳輸相關事實，無需歸檔。[瀏覽器信任邊界](../../implemented/architecture/2026-07-28-api-browser-trust-boundary.md)和[生成約定建置順序](../../implemented/process/2026-08-08-api-remotes-generated-contract-build.md)仍具權威性，無需執行歸檔操作。

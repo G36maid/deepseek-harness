@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-package-regrouping.md) | [简体中文](2026-07-29-package-regrouping.zh.md) | 繁體中文
+[English](2026-07-29-package-regrouping.md) | 繁體中文
 
 ## 問題
 
@@ -29,7 +29,7 @@ Status: implemented
 
 - **`session/`** 是持久工作階段資料平面：持久化 seam 連同其各後端與檢查點策略、從該日誌摺疊（fold）出全量值並對外提供的投影、基於日誌的標題，以及 OTel 上報。標題摺疊本身就是讀取側的承重構件（`session-query` 對 `dsh-session-title` 聲明對等相依性），所以標題屬於資料平面，而非某個「派生服務」附屬區。用這個樸素的名字是有意為之（名字要像人起的）；旁邊的 `core/session` 包仍是常駐記憶體的即時服務，本組則是圍繞它的持久家族。`session-query/` 保持獨立成組：這個讀取／工具面自帶模型工具和 SQLite FTS 後端，其消費不相依性持久化內部實作。
 - **`interaction/`** 是人機協作平面加上應答它的終端機通道：提問／批准 seam、權限預設、面向模型的 `ask_user_question` 工具、人類命令登錄檔（`plan-mode` 與 `command-goal` 已經把 `commands` 和各互動 seam 放在一起消費），以及 `tui`——這個互動通道是該平面功能最豐富的提供方與消費端（對 `commands` 與 `user-questions` 均有對等相依性邊），而一個單包 `tui/` 組會把一個頂層名字花在一個外掛程式上。
-- **`boot/`** 是角色完備的單包組：不歸屬任何通道也不歸屬任何組裝的共享 bin boot 膠水（被 `apps/cli` 與 `examples/` 各演示 bin 消費）。
+- **`boot/`** 是角色完備的單包組：不歸屬任何通道也不歸屬任何組裝的共享 bin boot 膠水（被 `apps/cli` 與 `examples/` 各示範 bin 消費）。
 - **`guard/`** 保留其文件記載的角色（迴圈衛生守衛），並新納入強制執行工具呼叫逾時的包；那個與 `util/timeout` 撞名的單包組 `timeout/` 隨之解散。
 - **`extensions/`** 把 `cordis/` 遮蔽掉的角色說了出來：它是供 agent（代理）在自身當前執行時期中檢查和掛載外掛程式的工具集，也是未來自我修改類包的落點。
 
@@ -37,11 +37,11 @@ Status: implemented
 
 ## 後續命名決策
 
-[倉庫命名約定](2026-08-11-repository-naming-contract-and-rename-ledger.md)解決了本次移動有意推遲的兩個名稱。`@deepseek-ai/dsh-sdk-jsonrpc-server` 表示執行時期 SDK 協議的 JSON-RPC 伺服器一側。`@deepseek-ai/dsh-tool-call-timeout-policy` 準確表示策略所限制的操作，同時保留其 `guard/timeout-policy/` 歸屬。這些重新命名會一並移除阻塞發布的 `FIXME` 標記。
+[倉庫命名約定](2026-08-11-repository-naming-contract-and-rename-ledger.md)解決了本次移動有意推遲的兩個名稱。`@deepseek-ai/dsh-sdk-jsonrpc-server` 表示執行時期 SDK 協定的 JSON-RPC 伺服器一側。`@deepseek-ai/dsh-tool-call-timeout-policy` 準確表示策略所限制的操作，同時保留其 `guard/timeout-policy/` 歸屬。這些重新命名會一並移除阻塞發布的 `FIXME` 標記。
 
 ## 移動觸及了什麼
 
-移動以純 `git mv` 形式落地，歷史由重新命名偵測承載。組移動觸及了：被移動包的 `tsconfig.json` 相對 `references` 及每個相依性方的對應條目（含 `apps/cli` 的 project references）；tsconfig 聚合與路徑對映；各組 README；[packages/README.md](../../../../packages/README.md) 的層級結構表；根 `AGENTS.md` 的版面配置圖；重新生成的產物（`docs/module-graph.md`、內嵌路徑的目錄以及鎖定檔的 importer 鍵）；以及散文與閘門指令碼中以倉庫根為基準的 `packages/...` 引用。其餘每一處組路徑引用（workspace 設定、測試 glob、lint 鍵）都由驗收閘門的響亮失敗機械地找了出來——這正是本倉庫自己的「設定錯誤必須響亮失敗」規則。
+移動以純 `git mv` 形式落地，歷史由重新命名偵測承載。組移動觸及了：被移動包的 `tsconfig.json` 相對 `references` 及每個相依性方的對應條目（含 `apps/cli` 的 project references）；tsconfig 聚合與路徑對映；各組 README；[packages/README.md](../../../../packages/README.md) 的層級結構表；根 `AGENTS.md` 的版面設定圖；重新生成的產物（`docs/module-graph.md`、內嵌路徑的目錄以及鎖定檔的 importer 鍵）；以及散文與閘門指令碼中以倉庫根為基準的 `packages/...` 引用。其餘每一處組路徑引用（workspace 設定、測試 glob、lint 鍵）都由驗收閘門的響亮失敗機械地找了出來——這正是本倉庫自己的「設定錯誤必須響亮失敗」規則。
 
 組移動未觸及：npm 包名、import、`cordis.yml` 設定、快照 fixture（測試前置資料）、`pnpm-workspace.yaml` 與 `tsdown` 的 glob（都是 `packages/*/*`），以及 Python 執行時期 manifest（中繼資料清單）——它們全部按 npm 包名引用包。
 

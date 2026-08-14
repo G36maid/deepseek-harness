@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-approval-seam.md) | [简体中文](2026-07-06-approval-seam.zh.md) | 繁體中文
+[English](2026-07-06-approval-seam.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Status: implemented
 
 ### 部署如何使用它
 
-一條 `cordis.yml` 條目掛載該 seam。不載入它就是默認拒絕請求的退出方式：即使沒有註冊任何審批程式碼，消費端也會拒絕無法應答的請求。
+一條 `cordis.yml` 條目掛載該 seam。不載入它就是預設拒絕請求的退出方式：即使沒有註冊任何審批程式碼，消費端也會拒絕無法應答的請求。
 
 ```yaml
 - id: approval
@@ -25,7 +25,7 @@ Status: implemented
   #   policy: never   # deployment default for sessions without an override; 'ask' when omitted
 ```
 
-僅有這條條目只提供機制，不提供通道：沒有組合應答者時，每次 ask 都解析為 `unavailable`，發起請求的工具呼叫會被拒絕——無需設定即可做到故障時默認拒絕。組合 ACP 應用（`@deepseek-ai/dsh-acp-demo`，如 [acp-agent 示例的默認樹](../../../../examples/acp-agent/README.md)）即可閉環：其[僅面向自動化的橋接層](../simplification/2026-07-23-acp-automation-only-protocol.md)註冊一個應答者，向擁有該工作階段的用戶端傳送 `session/request_permission`，攜帶精確的工具呼叫 id 和一次性 allow/reject 選項。`policy: never` 是無人值守姿態：每次 ask 都會被確定性地自動拒絕，當前值也會加入執行時期上下文快照。`policy` 在外掛程式載入時對照封閉清單校驗；非法值直接拋例外。
+僅有這條條目只提供機制，不提供通道：沒有組合應答者時，每次 ask 都解析為 `unavailable`，發起請求的工具呼叫會被拒絕——無需設定即可做到故障時預設拒絕。組合 ACP 應用（`@deepseek-ai/dsh-acp-demo`，如 [acp-agent 示例的預設樹](../../../../examples/acp-agent/README.md)）即可閉環：其[僅面向自動化的橋接層](../simplification/2026-07-23-acp-automation-only-protocol.md)註冊一個應答者，向擁有該工作階段的用戶端傳送 `session/request_permission`，攜帶精確的工具呼叫 id 和一次性 allow/reject 選項。`policy: never` 是無人值守姿態：每次 ask 都會被確定性地自動拒絕，當前值也會加入執行時期上下文快照。`policy` 在外掛程式載入時對照封閉清單校驗；非法值直接拋例外。
 
 組合部署的可觀測行為：`allowed-once` 僅允許該次呼叫繼續；拒絕、關閉和通道缺失以三種不同原因拒絕，模型可以區分；輪次內成功的請求會在發起請求的 agent 的工作階段日誌上落一對持久化的 `approval/asked`/`approval/decided` 事件；授權不會在發起請求的呼叫結束後繼續存在。空閒時的請求或審計追加失敗會拒絕，而不會返回未經審計的決策。
 
@@ -45,7 +45,7 @@ approval/decided {"outcome": "allowed-once"}
 tool/result      "escalated" — this one call ran under the wider mode; the grant died with it
 ```
 
-`escalation-rejected` 孿生場景以 `{"outcome": "rejected"}` 結束：不執行任何操作，模型的結果攜帶發起方的逐字失敗關閉文字（`the user rejected escalating this command to "workspace-write"`）。掛鉤的 `permissionDecision: ask` 走完全相同的協議；只有發起方和拒絕文字不同（§ dsh-tools 中的 Ask 路由）。沒有應答者時，同一請求直接結帳為 `unavailable`。
+`escalation-rejected` 孿生場景以 `{"outcome": "rejected"}` 結束：不執行任何操作，模型的結果攜帶發起方的逐字失敗關閉文字（`the user rejected escalating this command to "workspace-write"`）。掛鉤的 `permissionDecision: ask` 走完全相同的協定；只有發起方和拒絕文字不同（§ dsh-tools 中的 Ask 路由）。沒有應答者時，同一請求直接結帳為 `unavailable`。
 
 ### 設計細節
 
@@ -53,7 +53,7 @@ tool/result      "escalated" — this one call ran under the wider mode; the gra
 
 經過校驗並成功追加 `approval/asked` 後，服務將 `approval/request` waterfall 解析為 `allowed-once`、`rejected`、`cancelled` 或 `unavailable`。服務沿用只讀的請求標識和 signal，將中止視為 `cancelled`，把應答者失敗和無效返回統一轉換為 `unavailable`，丟棄遲到的應答，並追加配對的 `approval/decided` 事件。提交前的審計失敗會拒絕；追加後的觀察者失敗無法復原權威事件。`allowed-once` 僅授權所詢問的操作，而 `request()` 會拒絕進行中的輪次之外的呼叫，以保證審計對留在持久提交邊界內。
 
-應答者是 `approval/request` waterfall 監聽器。零監聽器會直接落到 `unavailable`；識別該 agent 的監聽器佔用先到先得的決策槽，而不識別的監聽器必須呼叫 `next()` 委派。監聽器會隨其 fiber 一同 dispose（資源釋放），因此解除安裝通道後，請求會在故障時默認被拒絕。由於兄弟外掛程式的註冊順序不確定，部署應組合一個終端機應答者，並保留 `prepend` 給「決策或委派」閘門。
+應答者是 `approval/request` waterfall 監聽器。零監聽器會直接落到 `unavailable`；識別該 agent 的監聽器佔用先到先得的決策槽，而不識別的監聽器必須呼叫 `next()` 委派。監聽器會隨其 fiber 一同 dispose（資源釋放），因此解除安裝通道後，請求會在故障時預設被拒絕。由於兄弟外掛程式的註冊順序不確定，部署應組合一個終端機應答者，並保留 `prepend` 給「決策或委派」閘門。
 
 `ApprovalRequest` 攜帶發起請求的 `agent`、`toolName`、選填的精確 `callId`、人類可讀的 `reason` 和選填的 `signal`。它使用 `CallId` brand 而不匯入相依性本 seam 的 `dsh-tools`。通道配接器可按 `callId` 關聯任何更豐富的呼叫狀態；審批請求本身不重複攜帶工具參數。
 
@@ -93,12 +93,12 @@ ACP 橋只應答其工作階段對映所擁有的精確 agent 對象。它攜帶
 
 ## 曾考慮的替代方案
 
-- **單一註冊提供方而非 waterfall 監聽器**：否決。`registerProvider()` API 迫使所有組合問題——允許清單預過濾、外部掛鉤決策者、指令碼化測試應答、人類前面的策略閘門——都塞進一個提供方實作。waterfall 直接複用執行時期已有的組合能力、缺失時默認拒絕行為和 HMR（熱模組替換）資源釋放機制；seam 的 JSDoc 以約定固定單決策槽語義，而非發明一個提供方登錄檔。
+- **單一註冊提供方而非 waterfall 監聽器**：否決。`registerProvider()` API 迫使所有組合問題——允許清單預過濾、外部掛鉤決策者、指令碼化測試應答、人類前面的策略閘門——都塞進一個提供方實作。waterfall 直接複用執行時期已有的組合能力、缺失時預設拒絕行為和 HMR（熱模組替換）資源釋放機制；seam 的 JSDoc 以約定固定單決策槽語義，而非發明一個提供方登錄檔。
 - **在 ACP 橋中內聯 `tools/pre-execute` 權限閘門**：否決。對橋擁有的每次呼叫都彈出提示，會將請求策略硬編碼進傳輸層，無法服務第二個發起方（沙盒升級發生在執行開始之後，沒有 pre-execute 時刻），且掛鉤產生的 `ask` 決策沒有共享機制。
-- **通用使用者互動 seam（`ctx.userQuestions`）**：否決作為審批機制。二者骨架相似（按 agent 路由、阻塞等待人類、處理缺失），但審批的約定在每個關鍵維度上都更窄：封閉的結果詞彙而非自由文字、附著在工具呼叫上的協議原生提示而非通用表單、強制的缺失時失敗關閉、以及審計事件。因此審批不走已交付的 `packages/interaction/user-questions` / `ask_user_question` 資訊徵集路徑——資訊徵集表單不是權限提示，自由文字應答不是封閉結果；如果二者將來趨同，共享提供方管道仍然開放。
+- **通用使用者互動 seam（`ctx.userQuestions`）**：否決作為審批機制。二者骨架相似（按 agent 路由、阻塞等待人類、處理缺失），但審批的約定在每個關鍵維度上都更窄：封閉的結果詞彙而非自由文字、附著在工具呼叫上的協定原生提示而非通用表單、強制的缺失時失敗關閉、以及審計事件。因此審批不走已交付的 `packages/interaction/user-questions` / `ask_user_question` 資訊徵集路徑——資訊徵集表單不是權限提示，自由文字應答不是封閉結果；如果二者將來趨同，共享提供方管道仍然開放。
 - **`dsh-tools` 中的靜態選填注入**：否決。vendor 的 Cordis `Inject` 類型沒有 optional 標志——對象形式將服務名對映到攔截設定，聲明的 inject 會阻塞 fiber。`ctx.get('approval')` 是文件化的機會性消費模式（`tool-bash` 的 owner-token 尋找、loop 的持久化探測），按呼叫讀取存在性，跨 HMR 正確降級，無需額外機制。
 - **能力 seam 的三包拆分**：否決。Service Definition/Service Provider/Consumer 適合 Service Provider 可替換的 seam（bash-local vs bash-sandbox）。此處服務體是固定機制，可變部分是留在各自通道擁有者外掛程式中的監聽器——拆分只會製造一個空的 Service Provider 包（「不要預防性拆分」）。
-- **現在就提供 `allow_always`**：否決。協議能表達它，但兌現它意味著設計授權儲存、作用域標識和撤銷（§ 延後）。展示 harness 無法兌現的選項只會製造註定失敗的授權。
+- **現在就提供 `allow_always`**：否決。協定能表達它，但兌現它意味著設計授權儲存、作用域標識和撤銷（§ 延後）。展示 harness 無法兌現的選項只會製造註定失敗的授權。
 
 ## 後果
 
@@ -117,7 +117,7 @@ ACP 橋只應答其工作階段對映所擁有的精確 agent 對象。它攜帶
 
 ## 常見問題
 
-- **在完全沒有應答者的部署中（headless、CI）會發生什麼？** 每次 ask 都會沿空的 waterfall 落到 `unavailable`，工具呼叫以「no approval channel is available」原因被拒絕。失敗關閉是零監聽器的默認行為，不是設定。
+- **在完全沒有應答者的部署中（headless、CI）會發生什麼？** 每次 ask 都會沿空的 waterfall 落到 `unavailable`，工具呼叫以「no approval channel is available」原因被拒絕。失敗關閉是零監聽器的預設行為，不是設定。
 - **授權能持久化嗎——「始終允許」？** 不能。`allowed-once` 僅授權單次被詢問的操作，服務在請求之間不儲存任何內容；`allow_always` 在授權儲存設計完成之前刻意不展示（§ 延後）。
 - **模型看到審批的什麼？** 只看到發起方從結果派生的工具結果——審計對永遠不進入 transcript（文字記錄）。三種非授權原因各不相同，模型可以區分人類說「不」、提示被關閉、通道缺失。
 - **誰決定一次呼叫是否需要 ask？** 策略生產者：返回 `permissionDecision: ask` 的掛鉤、任何 `tools/pre-execute` 監聽器、或沙盒升級閘門。seam 和橋只負責路由和應答；二者都不注入自己對「什麼值得彈出提示」的判斷。

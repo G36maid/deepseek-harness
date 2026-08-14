@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-continuable-subagent-interrupt.md) | [简体中文](2026-08-06-continuable-subagent-interrupt.zh.md) | 繁體中文
+[English](2026-08-06-continuable-subagent-interrupt.md) | 繁體中文
 
 ## 問題
 
@@ -39,7 +39,7 @@ Host RPC `subagent.interrupt` 接收 continuable 的 `SubagentAddress` 並返回
 
 僅憑地址的 RPC 會暴露一項關於線上駐留狀態的二值資訊：不存在的目標會被接受，而 parent 不匹配的線上目標會返回 `subagent-unauthorized`。單使用者本機 Host 的信任模型接受這種可觀察性；未來的多主體 Host 必須重新審視權限和回應不可區分性。
 
-在 Web 側，正在執行的 continuable child 使用相互獨立的 Send 與 Stop 操作：用戶端 `Session.cancel()` 將 Stop 路由到 `subagent.interrupt`（one-shot 地址保持不可取消，普通工作階段仍透過 `session.cancel` 保留既有的 primary Send/Stop 切換），同時 Send 繼續將後續訊息加入佇列。parent 離線但仍在執行的 continuable child 保留默認 composer，停用輸入區與 Send，但 Stop 仍然可達；停止後復原為只讀接管介面（周邊目錄與 composer 約定由 [Web subagent 對話](2026-07-27-web-subagent-conversations.md)擁有）。
+在 Web 側，正在執行的 continuable child 使用相互獨立的 Send 與 Stop 操作：用戶端 `Session.cancel()` 將 Stop 路由到 `subagent.interrupt`（one-shot 地址保持不可取消，普通工作階段仍透過 `session.cancel` 保留既有的 primary Send/Stop 切換），同時 Send 繼續將後續訊息加入佇列。parent 離線但仍在執行的 continuable child 保留預設 composer，停用輸入區與 Send，但 Stop 仍然可達；停止後復原為只讀接管介面（周邊目錄與 composer 約定由 [Web subagent 對話](2026-07-27-web-subagent-conversations.md)擁有）。
 
 `dsh-tool-subagent-control` 中面向模型的 `interrupt_agent(agent_id)` 工具把 `exec.agent` 作為 `ancestor` 授權傳入，自身不增加任何權限：核心原語校驗線上登錄檔身份與記錄的 lineage，因此該工具可以用同一個通用 `agent_id` 參數指定直接 child 或更深的後代——刻意不用會暗示僅限直接 child 的 `subagent_id`。發現相依性 `list_agents({ scope: 'descendants' })`，其底層是新的 `SubagentRuntime.listDescendants()` 單次追蹤 pre-order 遍歷，每個條目帶經校驗的 `parentId`／`depth`（清單約定由[持久化目錄 note](2026-07-22-durable-subagent-catalog-and-list-agents.md)擁有）；發現只是提示，絕非權限。`send_message` 保持其確切直接 parent 權限——只有中斷是 ancestor 級的。
 

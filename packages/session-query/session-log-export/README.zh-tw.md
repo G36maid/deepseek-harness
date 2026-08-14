@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-log-export
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 Web Session 日誌下載控制，使用 `dsh-host-apiproxy` 擁有的 Host 流式 ZIP 端點。Host 半包註冊 `/export`；瀏覽器半包在 Session Header 中提供 111×32 的 `Session log` 操作，以及一個供該按鈕與斜槓命令共用的下載控制器和彈出視窗。ZIP 生成、原始 JSONL/zstd 讀取、子 Session、附件、背壓和 HTTP 錯誤語義仍由 [ApiProxy 下載實作](../../host/apiproxy/README.md)負責。
 
@@ -44,6 +44,6 @@ Web bundle 將本包與 `dsh-host-apiproxy`、`dsh-commands`、`dsh-client-ui-co
 
 ## 已知限制與暫緩事項
 
-- 下載端點要求持久化後端具有逐 Session 原始工件。隨附 JSONL 後端支持明文和 zstd 工件；本次改動不包含 SQLite 匯出。
+- 下載端點要求持久化後端具有逐 Session 原始工件。隨附 JSONL 後端支援明文和 zstd 工件；本次改動不包含 SQLite 匯出。
 - 這是瀏覽器下載，不是 Host 路徑寫入。目標位置由瀏覽器選擇，不會返回 Host 路徑或原生資料夾操作。
 - 預檢只報告 ZIP 開始流式傳輸前發現的失敗。瀏覽器接受 GET 後發生的子 Session 或附件讀取失敗由瀏覽器下載管理器報告，不透過彈出視窗報告。

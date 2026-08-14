@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-06-22-subagent-snapshot-replay.md) | [简体中文](2026-06-22-subagent-snapshot-replay.zh.md) | 繁體中文
+[English](2026-06-22-subagent-snapshot-replay.md) | 繁體中文
 
 ## 問題
 
-快照層（`pnpm run test:snapshot`）會啟動真實 `acp-agent` 子行程，透過 [`dsh-llm-replay`](../../../../packages/test-support/llm-replay) 重播已記錄工作階段，並將規範化後的自動化協議輸出 + 重新持久化的工作階段日誌與已提交預期輸出進行 diff。大多數場景透過這條真實行程邊界測試組裝後的後端行為。
+快照層（`pnpm run test:snapshot`）會啟動真實 `acp-agent` 子行程，透過 [`dsh-llm-replay`](../../../../packages/test-support/llm-replay) 重播已記錄工作階段，並將規範化後的自動化協定輸出 + 重新持久化的工作階段日誌與已提交預期輸出進行 diff。大多數場景透過這條真實行程邊界測試組裝後的後端行為。
 
 該層最初為每個行程只有一個工作階段而建置，這一假設硬編碼在兩處：
 
@@ -39,7 +39,7 @@ Status: implemented
 
 ### 3. harness 收集所有日誌，主工作階段優先
 
-`harvestSessionLogs` 遞迴收集 sessions 根目錄下所有固定命名為 `session.jsonl` 的 transcript（JSONL 後端為每個父工作階段和子工作階段分別提供獨立的項目/工作階段目錄），解析各自的 header，並按主工作階段優先排序：頂層工作階段（無 `parentSession`）在前，各子工作階段按 `createdAt` 升序排列。`RunResult.sessionLogs` 包含多份日誌；spec 在錄制時將每份日誌寫回對應 fixture（`session.jsonl` + `session.<n>.jsonl`），在重播時將每份收集到的日誌與其 fixture 做 diff。歸一化器已支持多個工作階段 id 並會摺疊任何遊離 UUID，因此無需修改歸一化器。
+`harvestSessionLogs` 遞迴收集 sessions 根目錄下所有固定命名為 `session.jsonl` 的 transcript（JSONL 後端為每個父工作階段和子工作階段分別提供獨立的項目/工作階段目錄），解析各自的 header，並按主工作階段優先排序：頂層工作階段（無 `parentSession`）在前，各子工作階段按 `createdAt` 升序排列。`RunResult.sessionLogs` 包含多份日誌；spec 在錄制時將每份日誌寫回對應 fixture（`session.jsonl` + `session.<n>.jsonl`），在重播時將每份收集到的日誌與其 fixture 做 diff。歸一化器已支援多個工作階段 id 並會摺疊任何遊離 UUID，因此無需修改歸一化器。
 
 ### 4. 場景
 
@@ -48,11 +48,11 @@ Status: implemented
 - **`subagent-spawn-in-process`**：父 agent 透過 `subagent` 工具將一個子任務委派給一個新 spawn 的子 agent（2 個工作階段）。
 - **`subagent-multi`**：父 agent 委派兩個子任務，各自交給自己的 spawn 子 agent（3 個工作階段），以三份獨立的逐工作階段指令碼和同一父 agent 下兩個子工作階段的 `createdAt` 排序來壓測逐工作階段鍵控。
 
-兩者均在默認閘門中以 keyless 方式重播。
+兩者均在預設閘門中以 keyless 方式重播。
 
 ## 後果
 
 - `TODO(subagent-snapshots)` 延期項已解決：巢狀 agent 的 transcript 現在是快照層的一等形態。
 - `GenerateOptions.sessionId` 是一個小而誠實的 core API 新增，在重播之外同樣有用（遙測、請求路由）。
-- `subagent` 工具綁定到單一提供方，因此 `subagent-multi` 中的兩個子 agent 都是 spawn（全新建立）。鍵控按工作階段路由而非按後端路由，因此對 fork 同樣正確。但指令碼*派生*邏輯此前不正確：fork 子工作階段的日誌以種子化的父前綴（父工作階段的 `assistant/chunk` 事件）開頭，如果從完整日誌派生指令碼，就會把父 agent 的回應當作子 agent 的來回放。這一正確性缺口透過持久化種子邊界來彌合——見[持久化 seed 邊界以確保 fork 子工作階段重播正確路由](2026-06-22-fork-child-replay-seed-boundary.md)——錄制的 fork 與混合 spawn+fork 場景現在透過一份 transcript 同時驗證兩種傳輸方式（見[記錄 fork 與混合 spawn+fork 快照場景](../../archived/testing/2026-06-22-fork-snapshot-scenarios.md)）。
+- `subagent` 工具綁定到單一提供方，因此 `subagent-multi` 中的兩個子 agent 都是 spawn（全新建立）。鍵控按工作階段路由而非按後端路由，因此對 fork 同樣正確。但指令碼*派生*邏輯此前不正確：fork 子工作階段的日誌以種子化的父前綴（父工作階段的 `assistant/chunk` 事件）開頭，如果從完整日誌派生指令碼，就會把父 agent 的回應當作子 agent 的來重播。這一正確性缺口透過持久化種子邊界來彌合——見[持久化 seed 邊界以確保 fork 子工作階段重播正確路由](2026-06-22-fork-child-replay-seed-boundary.md)——錄制的 fork 與混合 spawn+fork 場景現在透過一份 transcript 同時驗證兩種傳輸方式（見[記錄 fork 與混合 spawn+fork 快照場景](../../archived/testing/2026-06-22-fork-snapshot-scenarios.md)）。
 - 行程外（ACP（Agent Client Protocol））subagent 是完全不同的重播形態（每個子 agent 是自己的行程、有自己的重播），作為 `TODO(acp-subagent-replay)` 記錄在 `subagent-acp` 中。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-conversational-schedule-delivery.md) | [简体中文](2026-08-09-conversational-schedule-delivery.zh.md) | 繁體中文
+[English](2026-08-09-conversational-schedule-delivery.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ Schedule 不公開呈現投影、Host 伴隨資料、瀏覽器事件節點、按
 
 ## 已考慮的替代方案
 
-**保留提交感知回執。** 即使模型失敗，它也可以證明 dispatch 已到達持久化，但這是實作結果，而不是使用者的提醒。其跨元件協議與後到的同序號合併邏輯，與這點價值不成比例。
+**保留提交感知回執。** 即使模型失敗，它也可以證明 dispatch 已到達持久化，但這是實作結果，而不是使用者的提醒。其跨元件協定與後到的同序號合併邏輯，與這點價值不成比例。
 
 **在對話中渲染原始 `schedule/change` 事件。** 這樣可以避免領域卡片，但仍會把內部狀態轉換暴露為面向使用者的訊息，而且僅為 Schedule 就需要通用的內部事件呈現機制。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-repository-naming-contract-and-rename-ledger.md) | [简体中文](2026-08-11-repository-naming-contract-and-rename-ledger.zh.md) | 繁體中文
+[English](2026-08-11-repository-naming-contract-and-rename-ledger.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 這些名稱並非無關緊要。名稱會告訴貢獻者一項職責從哪裡開始、到哪裡結束。`Store` 表示資料訪問。`Registry` 表示註冊與尋找。`Runtime` 表示即時執行和生命週期。如果同一個詞同時表示這三者，呼叫方就必須閱讀實作，才能判斷哪個對象擁有策略、工作或狀態。
 
-倉庫還曾在兩種含義下使用 `SDK`。受支持的 Python 和 TypeScript 用戶端使用 JSON-RPC SDK 協議。項目整體是 DeepSeek Harness，而不是 SDK 項目。已移除的 SDK 項目工具鏈使寬泛的含義失去依據，但文案和名稱仍保留了部分舊用法。
+倉庫還曾在兩種含義下使用 `SDK`。受支援的 Python 和 TypeScript 用戶端使用 JSON-RPC SDK 協定。項目整體是 DeepSeek Harness，而不是 SDK 項目。已移除的 SDK 項目工具鏈使寬泛的含義失去依據，但文案和名稱仍保留了部分舊用法。
 
 首次發布帶標籤版本之前的最後一個視窗，使倉庫級重新命名仍可低成本完成。若繼續保留含義不清的名稱，偶然形成的詞彙就會變成相容性約定。
 
@@ -24,7 +24,7 @@ Status: implemented
 
 ### `SDK` 只表示一件事
 
-`SDK` 表示受支持的 Python 和 TypeScript SDK 所使用、基於 JSON-RPC 的用戶端／伺服器協議。倉庫保留 `@deepseek-ai/dsh-sdk-client`、`@deepseek-ai/dsh-sdk-protocol` 和協議身份 `deepseek-harness-sdk-runtime`；JSON-RPC 伺服器屬於同一系列。DeepSeek Harness 本身不是 SDK，已移除的項目生成器、啟動器、輔助工具和啟動器遙測包繼續保持不存在。
+`SDK` 表示受支援的 Python 和 TypeScript SDK 所使用、基於 JSON-RPC 的用戶端／伺服器協定。倉庫保留 `@deepseek-ai/dsh-sdk-client`、`@deepseek-ai/dsh-sdk-protocol` 和協定身份 `deepseek-harness-sdk-runtime`；JSON-RPC 伺服器屬於同一系列。DeepSeek Harness 本身不是 SDK，已移除的項目生成器、啟動器、輔助工具和啟動器遙測包繼續保持不存在。
 
 本決策部分取代三項現行決策。它替換[包重新分組決策](2026-07-29-package-regrouping.md)中保留的 `bash/`、`pty/` 和 `self-modification/` 組名，以及兩項暫定包名。它只替換[移除 SDK 項目工具鏈](../simplification/2026-08-11-remove-sdk-project-toolchain.md)中將整個倉庫稱為 SDK 的說法；後者仍負責說明刪除範圍和保留的執行時期 SDK。它只替換[工具呼叫逾時策略](2026-07-07-tool-call-timeout-policy.md)中的包名理由；逾時機制及其 `guard/timeout-policy/` 歸屬保持不變。
 
@@ -34,7 +34,7 @@ Status: implemented
 
 使用常見且具體的名詞。名稱應描述穩定職責，而不是最初的實作、當前目錄或未來可能出現的擴充。不得新增不傳遞任何資訊的詞。不得為了縮短名稱而刪除用於限定作用域的詞。
 
-介面包以能力命名。實作包增加機制、協議、環境或供應商限定詞，以區分不同實作。只有同主機執行屬於約定時，才能使用 `local`。如果提供方只是透過可替換的 `ctx.fs` 讀取看似本機的路徑，或透過可替換的 `ctx.subprocess` 啟動工作，就不得使用該詞。
+介面包以能力命名。實作包增加機制、協定、環境或供應商限定詞，以區分不同實作。只有同主機執行屬於約定時，才能使用 `local`。如果提供方只是透過可替換的 `ctx.fs` 讀取看似本機的路徑，或透過可替換的 `ctx.subprocess` 啟動工作，就不得使用該詞。
 
 如果對象是單個引擎、執行時期、策略、控制器、解析器、儲存或當前設定，使用單數 `ctx` 鍵。如果對象是登錄檔，或服務擁有多個具名成員，使用複數鍵。類的職責和鍵的單複數必須一致。複數鍵本身不能證明對象是登錄檔；應由其操作和所有權決定。不得讓不相容的 host 與 client 聲明複用同一個 Cordis `Context` 鍵。即使二者使用獨立的執行時期上下文，TypeScript 聲明合併仍會同時看到兩種類型。如果自然複數已經屬於另一個端面，就增加職責後綴。
 
@@ -52,10 +52,10 @@ Status: implemented
 | `Runtime` | 對象執行即時工作。它跨呼叫擁有分派、取消、提供方協調或操作生命週期。 | 對象只儲存記錄、返回目錄、解析單個值或保存設定。`Runtime` 不是 `Service` 的通用替代詞。 |
 | `Resolver` | 對象根據所提供的輸入計算或定位一個答案，通常不擁有答案的生命週期。 | 對象擁有可變集合或長時間執行的執行生命週期。 |
 | `Binder` | 對象將一個已聲明介面附加到呼叫方的上下文或生命週期，並返回綁定後的值。 | 對象以集合形式擁有綁定值、控制其領域狀態，或僅轉換資料。 |
-| `Engine` | 對象實作領域演算法或有狀態執行模型，例如工作流程、壓縮或查詢求值。 | 對象只選擇提供方，或跨協議邊界轉發請求。 |
+| `Engine` | 對象實作領域演算法或有狀態執行模型，例如工作流程、壓縮或查詢求值。 | 對象只選擇提供方，或跨協定邊界轉發請求。 |
 | `Policy` | 對象決定允許、選擇、限制或觀察什麼。 | 對象執行決策所允許的機制。策略和執行器必須分別命名。 |
 | `Executor` | 對象在一項能力內執行明確的請求或已解析的規範。 | 對象擁有寬泛的應用生命週期或提供方目錄。 |
-| `Gateway` | 對象適配行程、網路、RPC 或 API 邊界，並在兩側之間轉換。 | 對象只註冊同進程服務或儲存元資料。 |
+| `Gateway` | 對象適配行程、網路、RPC 或 API 邊界，並在兩側之間轉換。 | 對象只註冊同行程服務或儲存元資料。 |
 | `Provider` | 對象為一項能力定義提供一種實作。如果可以存在多個提供方，應增加機制或供應商限定詞。 | 對象是能力定義、提供方登錄檔或面向消費端的執行時期。 |
 | `Backend` | 對象在已定義介面之後，實作可替換的底層持久化、傳輸或執行後端。 | 對象是面向使用者的服務，或只是對某個即時對象返回的引用。 |
 | `Handle` | 該值是對一個即時資源的引用，並控制或觀察該資源。 | 對象建立並管理整個資源池。不得使用 `Owner` 或含義模糊的 `Resource`；如果 `Handle` 或更精確的管理職責合適，就應採用後者。 |
@@ -66,7 +66,7 @@ Status: implemented
 
 ### 使用能夠補充資訊的限定詞
 
-如果協議或方言名稱能夠區分實作，就應保留。實作相依性相應機制時，保留 `Bash`、`Pwsh`、`JSON-RPC`、`SQLite`、`JSONL`、`OpenTelemetry`、`Claude Code` 和 `E2B`。每個當前後端都已使用 LLM（大型語言模型）seam 時，不要在壓縮後端名稱中加入 `LLM`；在出現更具體的演算法名稱之前，`basic` 纔是如實且中性的名稱。
+如果協定或方言名稱能夠區分實作，就應保留。實作相依性相應機制時，保留 `Bash`、`Pwsh`、`JSON-RPC`、`SQLite`、`JSONL`、`OpenTelemetry`、`Claude Code` 和 `E2B`。每個當前後端都已使用 LLM（大型語言模型）seam 時，不要在壓縮後端名稱中加入 `LLM`；在出現更具體的演算法名稱之前，`basic` 纔是如實且中性的名稱。
 
 不得虛構 `process sandbox` 概念。當前 `sandbox` 系列已經準確命名其產品職責。本決策不改變該職責。
 
@@ -86,7 +86,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 
 | 舊名稱 | 當前名稱 | 理由 |
 |---|---|---|
-| `@deepseek-ai/dsh-jsonrpc` | `@deepseek-ai/dsh-sdk-jsonrpc-server` | 它是 SDK 協議的伺服器端。單獨使用 `jsonrpc` 只說明編碼；`sdk-jsonrpc-server` 則同時說明所屬系列、機制和職責。 |
+| `@deepseek-ai/dsh-jsonrpc` | `@deepseek-ai/dsh-sdk-jsonrpc-server` | 它是 SDK 協定的伺服器端。單獨使用 `jsonrpc` 只說明編碼；`sdk-jsonrpc-server` 則同時說明所屬系列、機制和職責。 |
 | `HarnessSdkServer` | `HarnessSdkJsonRpcServer` | 該類是 JSON-RPC 伺服器的一種實作，並不代表所有可能的 SDK 伺服器。 |
 
 保留 `@deepseek-ai/dsh-sdk-client`、`@deepseek-ai/dsh-sdk-protocol` 和 `deepseek-harness-sdk-runtime`。排除 `@deepseek-ai/create-sdk`、`@deepseek-ai/dsh-scripts`、`@deepseek-ai/dsh-helper` 和 `@deepseek-ai/dsh-telemetry`；單獨的移除決策負責刪除這些包及其支撐相依性圖。
@@ -95,7 +95,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 
 | 舊名稱 | 當前名稱 | 理由 |
 |---|---|---|
-| `packages/bash/` | `packages/shell/` | 該組包含方言無關的執行器 seam、Bash 和 PowerShell 實作、環境支持以及 shell 工具。 |
+| `packages/bash/` | `packages/shell/` | 該組包含方言無關的執行器 seam、Bash 和 PowerShell 實作、環境支援以及 shell 工具。 |
 | `@deepseek-ai/dsh-bash`, `ctx.bash` | `@deepseek-ai/dsh-shell`, `ctx.shell` | PowerShell 已經實作該 seam。此項能力是 shell 執行，而不是 Bash。 |
 | 方言無關的 `BashExecutor`、`BashExecRequest`、`BashExecSpec`、`BashProcess`、`BashRunResult`、`BashSandboxInfo`、`BashProcessRead` 和 `BashProcessStatus` 名稱 | 對應的 `Shell*` 名稱 | 這些類型橫跨 Bash 和 PowerShell 實作。描述 Bash 文法或行為的葉層類型保留 `Bash`。 |
 | `BASH_SETTINGS_NAMESPACE`，設定命名空間 `bash` | `SHELL_SETTINGS_NAMESPACE`，設定命名空間 `shell` | 兩個 shell 提供方都註冊這項由能力擁有的設定分區。常數和持久化命名空間必須使用能力名稱。 |
@@ -127,21 +127,21 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | `TaskView`、線路幀 `session/tasks`、`tasksBySession` | `JobView`、線路幀 `session/jobs`、`jobsBySession` | 瀏覽器約定及其映像檔應採用與登錄檔和工具相同的作業領域名稱。 |
 | `docs/subsystems/tasks.md` | `docs/subsystems/jobs.md` | 該子系統頁面必須採用公開的作業詞彙。 |
 
-保留基礎 LSP 包、`ctx.lsp`、LSP 協議類型和 LSP 工具。該 seam 有意公開語言伺服器語義；錯誤的只有提供方限定詞。
+保留基礎 LSP 包、`ctx.lsp`、LSP 協定類型和 LSP 工具。該 seam 有意公開語言伺服器語義；錯誤的只有提供方限定詞。
 
 ### 輸入觸發器、工具呈現、權限預設和使用者問題
 
 | 舊名稱 | 當前名稱 | 理由 |
 |---|---|---|
 | `@deepseek-ai/dsh-client-ui-slash`, `ui-slash/` | `@deepseek-ai/dsh-client-ui-input-trigger`, `ui-input-trigger/` | 用戶端處理 `/`、`@`、鍵盤仲裁、候選選單和程序化啟動，並非只處理斜槓命令。 |
-| `ctx.slash`、`SlashService`、`SlashController`、`SlashSource` | `ctx.inputTriggers`、`InputTriggerService`、`InputTriggerController`、`InputTriggerSource` | 這些名稱覆蓋所有受支持的觸發器，並保留現有的服務、控制器和來源職責。耦合的區域設定和公開類型名稱也改用 `InputTrigger`。 |
+| `ctx.slash`、`SlashService`、`SlashController`、`SlashSource` | `ctx.inputTriggers`、`InputTriggerService`、`InputTriggerController`、`InputTriggerSource` | 這些名稱覆蓋所有受支援的觸發器，並保留現有的服務、控制器和來源職責。耦合的區域設定和公開類型名稱也改用 `InputTrigger`。 |
 | `@deepseek-ai/dsh-agent-tool-mode`，外掛程式 `tool-mode` | `@deepseek-ai/dsh-agent-tool-presentation`，外掛程式 `tool-presentation` | 該外掛程式改變工具向模型呈現的方式，而不改變執行行為。保留區域性 `Config.mode` 和 `ToolPresentationMode`。 |
 | `packages/interaction/permission/` | `packages/interaction/permission-presets/` | 該包擁有沙盒與審批設定的具名組合，而不負責執行權限。 |
 | `@deepseek-ai/dsh-permission`, `ctx.permission`, `PermissionService` | `@deepseek-ai/dsh-permission-presets`, `ctx.permissionPresets`, `PermissionPresetService` | 該服務選擇並持久化預設。沙盒和審批服務負責執行結果。 |
 | `@deepseek-ai/dsh-client-ui-permission` | `@deepseek-ai/dsh-client-ui-permission-presets` | UI 編輯和選擇權限預設。 |
 | `docs/subsystems/permission.md` | `docs/subsystems/permission-presets.md` | 該頁面記錄預設選擇，而不是權限執行。 |
-| `@deepseek-ai/dsh-user-interaction`, `user-interaction/` | `@deepseek-ai/dsh-user-questions`, `user-questions/` | 該 seam 僅支持批次問題和答案。審批、命令和目錄選擇屬於其他互動 seam。 |
-| `ctx.userInteraction`, `UserInteractionService`, `UserInteractionProvider`, `UserInteractionError` | `ctx.userQuestions`, `UserQuestionService`, `UserQuestionProvider`, `UserQuestionError` | 這些名稱說明唯一受支持的互動形式。保留 `AskUserQuestion*`、`ask_user_question` 工具和 `@deepseek-ai/dsh-tool-ask-user`。 |
+| `@deepseek-ai/dsh-user-interaction`, `user-interaction/` | `@deepseek-ai/dsh-user-questions`, `user-questions/` | 該 seam 僅支援批次問題和答案。審批、命令和目錄選擇屬於其他互動 seam。 |
+| `ctx.userInteraction`, `UserInteractionService`, `UserInteractionProvider`, `UserInteractionError` | `ctx.userQuestions`, `UserQuestionService`, `UserQuestionProvider`, `UserQuestionError` | 這些名稱說明唯一受支援的互動形式。保留 `AskUserQuestion*`、`ask_user_question` 工具和 `@deepseek-ai/dsh-tool-ask-user`。 |
 | `docs/subsystems/user-interaction.md` | `docs/subsystems/user-questions.md` | 該頁面只記錄問題和答案。 |
 
 保留 `/permission`、`permissions` 投影、`permission` 設定命名空間和 `permission/preset`；它們都是準確的產品詞彙或持久化詞彙。保留完整名稱 `PermissionPresetSettingsController`。刪除 `Preset` 會去掉限定其權限的詞。移除 `both` 工具呈現模式的工作仍推遲到另一份提案；本次重新命名不移除行為。
@@ -150,11 +150,11 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 
 | 舊名稱 | 當前名稱 | 理由 |
 |---|---|---|
-| `packages/typert/type-meta/`, `@deepseek-ai/dsh-type-meta` | `typert/protocol/`, `@deepseek-ai/dsh-typert-protocol` | 該包擁有 Typert Remote 協議、裝飾器、綁定、編解碼器、尋找邏輯和上下文約定。它不是通用類型元資料。 |
-| 協議包中的 `GatewayService` | `TypertRemoteService` | 該基類標記要匯出為 Remote 的同進程服務。它不是 API 閘道。 |
+| `packages/typert/type-meta/`, `@deepseek-ai/dsh-type-meta` | `typert/protocol/`, `@deepseek-ai/dsh-typert-protocol` | 該包擁有 Typert Remote 協定、裝飾器、綁定、編解碼器、尋找邏輯和上下文約定。它不是通用類型元資料。 |
+| 協定包中的 `GatewayService` | `TypertRemoteService` | 該基類標記要匯出為 Remote 的同行程服務。它不是 API 閘道。 |
 | `bindTypeRTGateway`、`typertGateway` 綁定 | `bindTypertRemote`、`typertRemote` | 這些綁定公開 Typert Remote 服務，而非具體的 API 閘道服務。 |
 | 公開的 `TypeRT*` 識別符號和小駝峯形式的 `typeRT*` 識別符號 | `Typert*` 和 `typert*` | `Typert` 是唯一規範的產品拼寫。 |
-| 協議介面 `TypeRTService` | `TypertRegistryContract` | 該協議擁有的介面是現有具體類 `TypertRegistry` 所實作的相依性倒置介面。不同的後綴可避免匯入和聲明衝突。 |
+| 協定介面 `TypeRTService` | `TypertRegistryContract` | 該協定擁有的介面是現有具體類 `TypertRegistry` 所實作的相依性倒置介面。不同的後綴可避免匯入和聲明衝突。 |
 | `ToolRegistry` | `ToolRuntime` | 該類擁有呈現、審批與防護策略、分派、取消、驗證、終結和觀察。註冊只是內部組成部分。 |
 | `ToolRegistryScheduler`, `TOOL_REGISTRY_SCHEDULER` | `ToolRuntimeScheduler`, `TOOL_RUNTIME_SCHEDULER` | 調度器控制執行時期分派，而不是註冊。 |
 
@@ -164,7 +164,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 
 | 舊名稱 | 當前名稱 | 理由 |
 |---|---|---|
-| Host `ctx.workspace` | Host `ctx.workspaceRegistry` | `WorkspaceRegistry` 擁有多個工作區，但 Client `ctx.workspaces` 已經使用不相容的類型。即使二者執行時期上下文獨立，兩份聲明仍會在編譯時合併進同一個 Cordis `Context` 介面。職責後綴明確指出 host 服務，並避免該衝突。保留 `@deepseek-ai/dsh-workspace`、`WorkspaceRegistry`、`Workspace` 和 `workspace.*` 協議名稱。 |
+| Host `ctx.workspace` | Host `ctx.workspaceRegistry` | `WorkspaceRegistry` 擁有多個工作區，但 Client `ctx.workspaces` 已經使用不相容的類型。即使二者執行時期上下文獨立，兩份聲明仍會在編譯時合併進同一個 Cordis `Context` 介面。職責後綴明確指出 host 服務，並避免該衝突。保留 `@deepseek-ai/dsh-workspace`、`WorkspaceRegistry`、`Workspace` 和 `workspace.*` 協定名稱。 |
 | `@deepseek-ai/dsh-workspace-context`, `context/workspace-context/` | `@deepseek-ai/dsh-agent-instructions`, `context/agent-instructions/` | 該包為 agent（代理）載入分層的 `AGENTS.md` 和 `CLAUDE.md` 文件。它並非通用工作區上下文。 |
 | 外掛程式名稱和持久來源名稱 `workspace-context` 與 `workspace-instructions` | `agent-instructions` | 記錄的來源是一類具體的 agent 指令。以 `AgentInstruction*` 替換公開的 `WorkspaceInstruction*` 名稱。該術語不包括系統訊息、開發者訊息或使用者訊息。 |
 | `ctx.telemetry`、抽象類 `Telemetry` | `ctx.sessionTelemetry`、`SessionTelemetryBackend` | 該服務捕獲工作階段帳本遙測，並交給報告後端。它不是倉庫級指標或追蹤服務。 |
@@ -205,7 +205,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | 抽象類 `Credentials` | `CredentialProvider` | 該類解析憑據引用。保留包名、鍵和事件。 |
 | `CredentialsLocal` | `LocalCredentialProvider` | 該提供方讀取宿主行程和 `.env` 狀態，因此本機執行屬於其約定。 |
 | `ClientModuleHostService`, `ctx.clientModuleHost` | `ClientModuleRegistry`, `ctx.clientModules` | 該服務擁有多個已註冊的用戶端模組。保留包和瀏覽器端的 `ClientModuleLoader`。 |
-| `AgentDefaultModelService` | `AgentDefaultModelConfig` | 該物件儲存一項默認模型選擇。它不執行服務，也不是通用登錄檔。保留其包、鍵、設定命名空間和類型。 |
+| `AgentDefaultModelService` | `AgentDefaultModelConfig` | 該物件儲存一項預設模型選擇。它不執行服務，也不是通用登錄檔。保留其包、鍵、設定命名空間和類型。 |
 | `SessionReferenceService`, `ctx.sessionReferences` | `SessionReferenceResolver`, `ctx.sessionReferenceResolver` | 它從 URI 或輸入解析一個工作階段引用，並不擁有引用集合。 |
 | `SessionQueryService`, `SessionQuerySqlite` | `SessionQueryEngine`, `SqliteSessionQueryEngine` | 這些類執行查詢模型及其 SQLite 實作。保留包名、鍵和工具。 |
 | `@deepseek-ai/dsh-session-export`, `session-export/`, Loader id `session-export`, `ctx.sessionExport` | `@deepseek-ai/dsh-session-log-export`, `session-log-export/`, Loader id `session-log-download`, `ctx.sessionLogDownload` | npm 包名使用 Session 日誌匯出語義，因為 npm 禁止包名包含 `download`。Loader id 與瀏覽器 API 保留 `download`，因為它們描述瀏覽器副作用。 |
@@ -259,7 +259,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | `PlanModeService` | `PlanModeController` | 該對象控制進入和退出計畫模式的狀態轉換，而不是通用執行執行時期。 |
 | `packages/self-modification/` | `packages/extensions/` | 該組包含倉庫外掛程式檢查和掛載工具。`extensions` 說明穩定的包職責，但不聲稱 agent 會修改自身。保留包名 `tool-cordis` 和倉庫外掛程式名稱。 |
 | `packages/support/` | `packages/test-support/` | 該組僅包含測試基礎設施，其路徑必須明確說明這一點。 |
-| 原 support 系列中的 `invariants/` | `runtime-diagnostics/invariants/` | 儘管交付預設未包含不變數檢查，它們仍可在生產診斷中執行，因此不屬於測試支持。 |
+| 原 support 系列中的 `invariants/` | `runtime-diagnostics/invariants/` | 儘管交付預設未包含不變數檢查，它們仍可在生產診斷中執行，因此不屬於測試支援。 |
 | `InvariantService` | `InvariantRegistry` | 該對象擁有已註冊的不變數檢查。保留 `@deepseek-ai/dsh-invariants` 和 `ctx.invariants`。 |
 | `packages/client/test-runtime/` | `packages/test-support/client-runtime/` | 該包是用戶端測試基礎設施。如果現有 NPM 名稱已經說明這一約定，則予以保留。 |
 
@@ -273,11 +273,11 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | `util/retention/`, `@deepseek-ai/dsh-retention` | `util/output-retention/`, `@deepseek-ai/dsh-output-retention` | 該策略保留命令和工具輸出，而不是通用資料保留框架。 |
 | `E2BSandboxService` | `E2BRuntime` | 該類建立、複用和釋放檔案系統與子行程配接器所使用的 E2B 執行環境。它比單個沙盒控制代碼的職責更廣，又比通用所有者更具體。保留 `@deepseek-ai/dsh-e2b`、`ctx.e2b` 和 `e2b/` 組。 |
 | `@deepseek-ai/dsh-frontend-static` | `@deepseek-ai/dsh-host-frontend-static` | 該包是提供前端資源的 Host 外掛程式。此前綴可將它與前端應用程式碼區分開。 |
-| `PluginInventoryService` | `PluginInventoryGateway` | 該類只負責把即時 Loader 樹適配到 `pluginInventory/list` RPC。它不擁有同進程服務、快取、歷史或修改路徑。`Gateway` 準確說明現有角色。 |
-| `@deepseek-ai/dsh-jsonrpc-demo` | `@deepseek-ai/dsh-sdk-jsonrpc-demo` | 該示例演示透過 JSON-RPC 使用執行時期 SDK，屬於 SDK 的唯一含義。 |
+| `PluginInventoryService` | `PluginInventoryGateway` | 該類只負責把即時 Loader 樹適配到 `pluginInventory/list` RPC。它不擁有同行程服務、快取、歷史或修改路徑。`Gateway` 準確說明現有角色。 |
+| `@deepseek-ai/dsh-jsonrpc-demo` | `@deepseek-ai/dsh-sdk-jsonrpc-demo` | 該示例示範透過 JSON-RPC 使用執行時期 SDK，屬於 SDK 的唯一含義。 |
 | `@deepseek-ai/dsh-frontend` | `@deepseek-ai/dsh-web-frontend` | 該應用是 Web 前端。保留其物理目錄 `apps/web/`。 |
 
-保留 atomic-write、brand、native-command、timeout 實用工具、目錄選擇器、`dsh-base`、`dsh-web-app`、應用啟動、CLI（命令列介面）名稱，以及 `headless` 包、組合包和示例身份。`headless` 是預期的產品本質，未來也可以支持不止一次性執行。
+保留 atomic-write、brand、native-command、timeout 實用工具、目錄選擇器、`dsh-base`、`dsh-web-app`、應用啟動、CLI（命令列介面）名稱，以及 `headless` 包、組合包和示例身份。`headless` 是預期的產品本質，未來也可以支援不止一次性執行。
 
 ### 用戶端執行時期與 UI
 
@@ -289,7 +289,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | `WorkspaceGroupBy`、`WorkspaceOrderBy`、`workspaceExpansion`、`setWorkspaceExpanded`、`expandedProjects`、`projectLabel`、`recentSessionOrder`、`recentSessionUpdatedAt`、`syncRecentSessions`、`setRecentSessionOrder`、`retainWorkspaceKeys`、`workspaceKey` | `SessionGroupBy`、`SessionOrderBy`、`groupExpansion`、`setGroupExpanded`、`expandedGroups`、`workspaceLabel`、`sessionOrderByAccount`、`sessionUpdatedAtByAccount`、`syncSessionOrderAccount`、`setSessionOrder`、`retainAccountKeys`、`accountKey` | 這些名稱描述的是工作階段清單查看狀態。其 account 包括真實工作區、未分組項和平鋪清單。因此，`Workspace`、`project` 和 `recent` 指向了錯誤的對象或機制。保留 `WorkspaceViewState`；該儲存仍屬於工作區瀏覽器。 |
 | `LocaleService` | `LocaleRuntime` | 該對象協調區域設定定義、選擇、持久化和變更發布。 |
 | `ThemeService` | `ThemeRuntime` | 該對象協調主題、偏好解析、系統感知和變更發布。 |
-| `LayoutService` | `LayoutController` | 該對象控制當前 UI 版面配置狀態。 |
+| `LayoutService` | `LayoutController` | 該對象控制當前 UI 版面設定狀態。 |
 | `@deepseek-ai/dsh-client-ui-model` | `@deepseek-ai/dsh-client-ui-model-selection` | 該包控制工作階段的模型選擇。單數 `model` 名稱作用域過寬。 |
 | `ModelService`, `ctx.models` | `ModelDirectoryResolver`, `ctx.modelDirectories` | 它唯一的公開操作 `directoryFor(sessionId)` 為每個即時工作階段解析並保留一個目錄。它沒有註冊 API，因此使用 `Registry` 並不準確。每個 `ModelDirectory` 仍是面向消費端的選填模型目錄。 |
 | `SettingsScopeService` | `SettingsScopeBinder` | 它唯一的操作把一份命名空間規範綁定到呼叫方的傳輸層和生命週期，並返回 `SettingsScopeController`。保留 `ctx.settingsScope`；它命名的是單一綁定能力，而不是 scope 集合。 |
@@ -325,7 +325,7 @@ PascalCase 識別符號內部使用 `Ui`，不要使用 `UI`。除非清單明�
 - 保留 `ModelsSettingsStore`；其主要約定是一個具有儲存操作的設定資料模型。
 - 保留 `InputHub`；它是支撐 `SessionInputResolver` 的具體中樞。
 - 保留 `dsh-subagent-dsh-sdk` 和提供方 id `dsh-sdk`；重複的限定詞可避免歧義。
-- 保留 `headless`；即使執行時期以後支持不止一次性使用，該產品身份仍然準確。
+- 保留 `headless`；即使執行時期以後支援不止一次性使用，該產品身份仍然準確。
 - 保留已棄用的 Host `ApiProxy` 和用戶端連線名稱，直至 API 替代方案將其移除。
 - Host 伺服器和提供方無關的 Web 能力都保留 `Web`。僅直接抓取提供方使用 `HTTP`。
 - 保留 `E2B` 作為包名和上下文名稱，不改為 `E2B sandbox`。
@@ -345,7 +345,7 @@ PascalCase 識別符號內部使用 `Ui`，不要使用 `UI`。除非清單明�
 
 **為每個 NPM 包新增所屬組前綴。**不予採納。扁平的 NPM 名稱不需要復刻目錄樹。機械新增前綴只會增加長度，無法解釋包的職責。
 
-**將整個倉庫稱為 SDK。**不予採納。該專案是 agent harness（代理框架）。SDK 是 Python 和 TypeScript 用戶端使用的、受支持的 JSON-RPC 用戶端／伺服器棧。一詞兩義會使包名和產品文案產生歧義。
+**將整個倉庫稱為 SDK。**不予採納。該專案是 agent harness（代理框架）。SDK 是 Python 和 TypeScript 用戶端使用的、受支援的 JSON-RPC 用戶端／伺服器棧。一詞兩義會使包名和產品文案產生歧義。
 
 **所有 Cordis 服務類都使用 `Service`。**不予採納。Cordis 繼承只是實作事實。類名必須告訴呼叫方該對象負責註冊、儲存、解析、控制還是執行工作。
 
@@ -370,14 +370,14 @@ PascalCase 識別符號內部使用 `Ui`，不要使用 `UI`。除非清單明�
 - 清單中的每項對映都出現在倉庫中。每個系列只有一套公開詞彙；同一個 Cordis 上下文中沒有相容包、重新匯出別名、重複的 `ctx` 鍵、雙重外掛程式 id、雙重事件 id、舊工具別名或回退解析器。
 - 執行時期行為、包邊界、預設值、策略、持久化語義和模型行為保持等價，只有識別符號本身可見時除外。
 - 包目錄、NPM 名稱、匯入、manifest（中繼資料清單）、TypeScript 引用和路徑、Cordis 設定、外掛程式 id、服務鍵、事件、工具、RPC 名稱、清單點名的持久化名稱、fixture、快照、示例、生成的目錄和當前文案都使用已實作詞彙。
-- 當前處於 implemented 狀態的 Agent Note 使用事實名稱和路徑。包重新分組說明記錄分組清單和包名目標，SDK 移除說明將 `SDK` 限定為執行時期協議，逾時策略說明記錄包名理由。
+- 當前處於 implemented 狀態的 Agent Note 使用事實名稱和路徑。包重新分組說明記錄分組清單和包名目標，SDK 移除說明將 `SDK` 限定為執行時期協定，逾時策略說明記錄包名理由。
 - 配對的包建立指南包含職責詞約定，`packages/AGENTS.md` 連結到該約定，術語表記錄選定用詞和 `Typert` 拼寫，根項目文案將產品稱為 DeepSeek Harness，而不是 DeepSeek Harness SDK。
 - 已移除的 SDK 項目工具鏈繼續保持不存在。
 - `pnpm run check:ci` 覆蓋原始碼平面的型別檢查、建置、包衛生檢查、生成參考資料檢查、受影響的快照、翻譯配對、`doc-sync` 和 lint。發布形態的 Python 執行時期冒煙測試和必需 CI 覆蓋打包執行時期與平臺路徑。
 
 ## 後果
 
-倉庫為每個重新命名系列保留一套詞彙。清單點名的舊磁碟名稱、協議值、工具名稱和設定項不再工作。能夠識別過時設定的所屬解析器會明確報錯，而不是同時接受兩種形式。
+倉庫為每個重新命名系列保留一套詞彙。清單點名的舊磁碟名稱、協定值、工具名稱和設定項不再工作。能夠識別過時設定的所屬解析器會明確報錯，而不是同時接受兩種形式。
 
 一些名稱更長。額外增加的詞只有在防止誤述權限或機制時纔有意義。如果名稱中的詞不能全部限定職責，長名稱仍然錯誤。
 

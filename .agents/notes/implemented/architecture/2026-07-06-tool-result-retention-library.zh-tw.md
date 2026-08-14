@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-tool-result-retention-library.md) | [简体中文](2026-07-06-tool-result-retention-library.zh.md) | 繁體中文
+[English](2026-07-06-tool-result-retention-library.md) | 繁體中文
 
 ## 問題
 
@@ -16,8 +16,8 @@ Status: implemented
 
 該庫包含兩個相互獨立的 retainer：
 
-- `ItemRetainer<T>` 處理有序邏輯單元，例如路徑、grep 匹配項或搜尋來源。v1 只支持 `head` 保留，同時維持 retainer 形態，以便未來加入其他保留策略。
-- `TextRetainer` 處理面向位元組的文字流，例如 bash stdout／stderr 或 web 回應正文。它支持 `head`、`tail` 和 `headTail` 保留，並在 `finish()` 時維持 UTF-8 邊界。
+- `ItemRetainer<T>` 處理有序邏輯單元，例如路徑、grep 匹配項或搜尋來源。v1 只支援 `head` 保留，同時維持 retainer 形態，以便未來加入其他保留策略。
+- `TextRetainer` 處理面向位元組的文字流，例如 bash stdout／stderr 或 web 回應正文。它支援 `head`、`tail` 和 `headTail` 保留，並在 `finish()` 時維持 UTF-8 邊界。
 
 兩個 retainer 都會返回一個小型 `PushDecision`；每次呼叫 `push()` 後，呼叫方都能得知該單元／區塊是否完整保留，以及累積結果此時是否已被截斷。因為呼叫方會繼續輸入每一個已觀察到的條目／區塊，所以省略計數是精確的。
 
@@ -64,7 +64,7 @@ interface RetainedText {
 
 ### 策略
 
-條目保留支持頭部視窗。文字保留支持頭部、尾部與首尾位元組視窗。
+條目保留支援頭部視窗。文字保留支援頭部、尾部與首尾位元組視窗。
 
 ```ts ignore-check
 type ItemRetentionStrategy =
@@ -142,7 +142,7 @@ const formatGrepNotice = (notice: RetentionNotice): string =>
 
 **該庫維持的邊界。** `truncated` 表示 retainer 因預算省略了原本可用的內容，絕不表示上游不完整。工具專用狀態，包括 `incomplete`、權限失敗、提供方區域性失敗、跳過二進位檔案、bash spill 路徑復原和無效 UTF-8，均留在工具領域欄位中、位於 retainer 之外。未來改動遷移某項工具時，該包的 README 與測試必須證明，除了有意改變的提示措辭外，模型可見的結果文字沒有變化。
 
-**接受的取捨。** v1 介面刻意只支持條目的 `head` 保留，以及文字的 `head`／`tail`／`headTail` 保留；視窗、分組預算、感知排序的上限和上游停止控制，要等第二個消費端證明需求後再引入。文字保留按位元組計數，以保障行程／正文安全；字元級和行級預覽預算繼續由具體工具負責。
+**接受的取捨。** v1 介面刻意只支援條目的 `head` 保留，以及文字的 `head`／`tail`／`headTail` 保留；視窗、分組預算、感知排序的上限和上游停止控制，要等第二個消費端證明需求後再引入。文字保留按位元組計數，以保障行程／正文安全；字元級和行級預覽預算繼續由具體工具負責。
 
 ## 考慮過的替代方案
 
@@ -154,4 +154,4 @@ const formatGrepNotice = (notice: RetentionNotice): string =>
 
 **讓截斷成為 `ToolExecutionResult` 的一部分。** 不予採納：工具登錄檔將不得不理解工具專用的復原指引、分組、行號、退出狀態和提供方語義。保留是由工具的 Native renderer（原生渲染器）使用的庫；模型可見投影繼續由工具所有，而[規範值](2026-07-20-canonical-tool-output-contract.md)可以保留完整的已採集結果。
 
-**在每個面向模型的工具 schema 中公開上限。** 不作為默認方案：Claude Code 的 grep 公開 `head_limit`／`offset`，但本 harness 會把常規預算保留為部署設定，除非模型確實需要控制分頁。未來可以為具體工具增加類似 read 的續傳欄位；它不屬於共享保留原語。
+**在每個面向模型的工具 schema 中公開上限。** 不作為預設方案：Claude Code 的 grep 公開 `head_limit`／`offset`，但本 harness 會把常規預算保留為部署設定，除非模型確實需要控制分頁。未來可以為具體工具增加類似 read 的續傳欄位；它不屬於共享保留原語。

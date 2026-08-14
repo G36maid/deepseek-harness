@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-config-hot-reload-resilience.md) | [简体中文](2026-07-20-config-hot-reload-resilience.zh.md) | 繁體中文
+[English](2026-07-20-config-hot-reload-resilience.md) | 繁體中文
 
 ## Problem
 
@@ -12,7 +12,7 @@ Status: implemented
 
 vendor 中的 Cordis 生命週期和 Loader 外掛程式提供可等待、帶補償的設定交易，並在 [vendor/README.md](../../../../vendor/README.md) 中記錄為本機修改第 6、8、9 條。
 
-`Fiber.update()` 返回其 `internal/update` waterfall（瀑布式事件）的結果。設定校驗保持同步，而默認 continuation 返回重新啟動 promise。因此，Loader 設定項更新可以區分校驗、匯入、應用和回滾失敗，以及生命週期成功完成。`EntryTree.await()` 會在 Loader 任務排空後重新檢查受服務門控的 fiber，並在 fiber 已結帳為失敗時 reject；等待缺失服務的 fiber 仍是有效的 pending 設定項，不會讓結帳掛起。
+`Fiber.update()` 返回其 `internal/update` waterfall（瀑布式事件）的結果。設定校驗保持同步，而預設 continuation 返回重新啟動 promise。因此，Loader 設定項更新可以區分校驗、匯入、應用和回滾失敗，以及生命週期成功完成。`EntryTree.await()` 會在 Loader 任務排空後重新檢查受服務門控的 fiber，並在 fiber 已結帳為失敗時 reject；等待缺失服務的 fiber 仍是有效的 pending 設定項，不會讓結帳掛起。
 
 Loader 會先匯入變化後的模組名，再 dispose（資源釋放）活動 fiber。它會 await 候選項的應用；若失敗，則 dispose 候選項的 effect，並復原先前的外掛程式或設定。組內對帳會並行啟動各候選項，等待每項結果，並會在拒絕前復原已變更的設定項、新增項、移除項和移動項。只有程序化變更成功後才會持久化。這是一種補償交易：生命週期 effect 可能短暫可見；回滾失敗會報告為 `AggregateError`，而不會被誤稱為樹已保留。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-cordis-host-runner
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 由模型掛載的動態包在 host 側的那一半：定義登錄檔、host 半所用的 `node:vm` 沙盒與 fiber 生命週期、invoke handler 表，以及由某個瀏覽器頁面執行的 run 往返。以 `ctx.dynamicCordisRunner` 提供。面向模型的工具在 [`@deepseek-ai/dsh-tool-cordis`](../tool-cordis/README.md) 中；瀏覽器半由 [`@deepseek-ai/dsh-cordis-client-runner`](../cordis-client-runner/README.md) 裝載。
 
@@ -41,7 +41,7 @@ vm 沙盒隔離全域性變數，但不是安全邊界：Node 全域性變數不
 
 ## 匯出形狀
 
-服務包：默認匯出 `DynamicCordisRunnerService`（服務鍵 `dynamicCordisRunner`），`./types` 則承載 `dynamicCordisRunner` remote namespace 與其消費端共享的載荷形狀。`define`／`undefine` 的形狀留在包內部，因為它們從不跨 wire。
+服務包：預設匯出 `DynamicCordisRunnerService`（服務鍵 `dynamicCordisRunner`），`./types` 則承載 `dynamicCordisRunner` remote namespace 與其消費端共享的載荷形狀。`define`／`undefine` 的形狀留在包內部，因為它們從不跨 wire。
 
 ## 模型體驗
 

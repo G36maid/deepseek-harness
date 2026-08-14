@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-tool-row-unified-expand-and-inspect.md) | [简体中文](2026-07-30-web-tool-row-unified-expand-and-inspect.zh.md) | 繁體中文
+[English](2026-07-30-web-tool-row-unified-expand-and-inspect.md) | 繁體中文
 
 ## 問題
 
@@ -16,8 +16,8 @@ Status: implemented
 - 展開卡片（figma 1249:35657）是 IN/OUT 分區列：每個分區是獨立滾動區（max-height 150px），側欄標籤 sticky 固定，l2 分隔線橫貫整卡寬度。Think 的推理文字和 run_code 的 CodeBlock 保持非卡片體；上下文注入複用此行並以無標籤的 `plainBody` 卡片展開。
 - `terminalFailed` 讀取已結帳 terminal 卡片的退出狀態，讓 BashRow 和 GenericToolCard 把失敗命令顯示為行的紅色狀態點——這是摺疊行唯一的失敗訊號，因為呼叫本身結帳為 `isError:false`。
 - TerminalBlock 的橫幅並入同一閱讀模型：與卡片共用同一表面（不再用 banner token），與正文之間是 l2 細線，命令列上限 150px 內部滾動，複製/狀態控制元件 sticky 且頂對齊第一行提示符。
-- Inspect：`ToolCallOwnerProps.inspect`（無呼叫身份的行不提供）在展開體左下角的正常版面配置流中渲染膠囊，hover 到工具呼叫的任意位置時顯示。點擊將 `{ callId }` 寫入 chat store 的一次性 `inspect` 欄位並切換到 trajectory 檢視表；TrajectoryTable 找到記錄、打開其摘要，並透過清空欄位確認。
-- 滾動保留：每次非貼底滾動時，聊天檢視表把 `{ anchorKey, anchorTop, scrollTop }` 保存到 apply 作用域的按工作階段 Map，並以 `chatScroll` 暴露；重掛載時先用 `scrollTop` 到達近似視窗，再按穩定 node／call 錨點的矩形差值校正，因此寬度重排後仍把同一閱讀行保持在原位。包括「回到底部」在內的每條貼底路徑都會在切換 tab 或工作階段前同步清除該項。Map 仍刻意不持久化——新頁面載入保持打開即貼底的默認行為。
+- Inspect：`ToolCallOwnerProps.inspect`（無呼叫身份的行不提供）在展開體左下角的正常版面設定流中渲染膠囊，hover 到工具呼叫的任意位置時顯示。點擊將 `{ callId }` 寫入 chat store 的一次性 `inspect` 欄位並切換到 trajectory 檢視表；TrajectoryTable 找到記錄、打開其摘要，並透過清空欄位確認。
+- 滾動保留：每次非貼底滾動時，聊天檢視表把 `{ anchorKey, anchorTop, scrollTop }` 保存到 apply 作用域的按工作階段 Map，並以 `chatScroll` 暴露；重掛載時先用 `scrollTop` 到達近似視窗，再按穩定 node／call 錨點的矩形差值校正，因此寬度重排後仍把同一閱讀行保持在原位。包括「回到底部」在內的每條貼底路徑都會在切換 tab 或工作階段前同步清除該項。Map 仍刻意不持久化——新頁面載入保持打開即貼底的預設行為。
 
 ## 曾考慮的替代方案
 

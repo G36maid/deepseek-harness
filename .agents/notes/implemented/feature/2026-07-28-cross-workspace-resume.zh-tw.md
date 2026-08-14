@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-07-28-cross-workspace-resume.md) | [简体中文](2026-07-28-cross-workspace-resume.zh.md) | 繁體中文
+[English](2026-07-28-cross-workspace-resume.md) | 繁體中文
 
 ## Problem
 
 `/resume` 只能觸達在啟動目錄中建立的工作階段，因此要回到昨天在另一個項目裡的工作，就得記住它的路徑、退出 TUI、再到那裡重新啟動。造成這一限制的原因有兩個，彼此獨立，只修其中一個都不會有任何變化。
 
-儲存是那個決定性的原因。已交付的 TUI 組合把持久化根默認成相對路徑 `./.sessions`，於是每個啟動目錄都獨佔一份互不相交的 JSONL 根目錄，以及一份互不相交的派生 `session-query.db`。來自另一個項目的工作階段並不是在清單中被過濾掉的——它們根本不存在於清單讀取的儲存中。JSONL 後端本來就會在*同一個*根目錄*內部*按 cwd 分區，所以分區被疊加了兩層：一層按根目錄，一層在根目錄內部。
+儲存是那個決定性的原因。已交付的 TUI 組合把持久化根預設成相對路徑 `./.sessions`，於是每個啟動目錄都獨佔一份互不相交的 JSONL 根目錄，以及一份互不相交的派生 `session-query.db`。來自另一個項目的工作階段並不是在清單中被過濾掉的——它們根本不存在於清單讀取的儲存中。JSONL 後端本來就會在*同一個*根目錄*內部*按 cwd 分區，所以分區被疊加了兩層：一層按根目錄，一層在根目錄內部。
 
 接著選擇器又過濾了一次。它在展示前丟棄 `cwd` 與當前工作階段不同的記錄，而 `summarizeResumeCandidate` 又獨立地把不同的 `cwd` 標記為 `disabledReason: 'different workspace'`，於是一個確實進入了儲存的外部工作階段既被隱藏，也會被拒絕。
 
@@ -24,7 +24,7 @@ Status: implemented
 
 因此 `summarizeResumeCandidate` 去掉了 `'different workspace'`，並新增 `'session has no recorded workspace'`。這是一條真正新增的拒絕理由，而不是改名：沒有 `cwd` 的頭部沒有指明任何目錄供宿主進入，所以即便它的日誌完好也無法完成交接。
 
-**交接。** `TuiResumeHost.handoff` 在 `SessionId` 之外還接收目標 `cwd`。`preflightResume` 把兩者一起解析並一起返回，因此呼叫方無法從它展示過的那一行裡重新推匯出一個過時目錄——在清單展示與預檢之間 `cwd` 發生了變化的記錄，會在*重新讀取到的*目錄中復原，這也是原先「拒絕發生變化的 cwd」的行為如今變成攜帶新路徑完成交接的原因。已交付的宿主在 dispose（資源釋放）應用之前切換目錄：不可達的目錄必須在呼叫方還能復原終端機時就拒絕，因為拆卸之後已經沒有任何所有者可供彙報。復原始終使用默認的 `dsh --resume` 介面，因為 `meta` 會拒絕父級選項；交接過程已經進入持久化保存的目標目錄。
+**交接。** `TuiResumeHost.handoff` 在 `SessionId` 之外還接收目標 `cwd`。`preflightResume` 把兩者一起解析並一起返回，因此呼叫方無法從它展示過的那一行裡重新推匯出一個過時目錄——在清單展示與預檢之間 `cwd` 發生了變化的記錄，會在*重新讀取到的*目錄中復原，這也是原先「拒絕發生變化的 cwd」的行為如今變成攜帶新路徑完成交接的原因。已交付的宿主在 dispose（資源釋放）應用之前切換目錄：不可達的目錄必須在呼叫方還能復原終端機時就拒絕，因為拆卸之後已經沒有任何所有者可供彙報。復原始終使用預設的 `dsh --resume` 介面，因為 `meta` 會拒絕父級選項；交接過程已經進入持久化保存的目標目錄。
 
 ## Alternatives considered
 
@@ -46,4 +46,4 @@ Status: implemented
 
 ## Testing
 
-TUI 測試覆蓋默認範圍隱藏其他 workspace 但報告其數量、Tab 顯示它們並帶上逐行 workspace 標籤、再按 Tab 返回時清空查詢與選中項、按 workspace 標籤搜尋、無 cwd 的記錄仍可見但不選填，以及交接同時收到 id 和在預檢時重新讀取到的 workspace。原先「拒絕發生變化的 cwd」的用例現在斷言交接攜帶新目錄。建置後的 CLI PTY 測試會檢驗共享設定預設值與每行程派生的查詢索引。無金鑰 TUI 快照固定選擇器的兩個範圍，包括範圍行、逐行 workspace 行，以及頁腳中的 Tab 提示。手動執行的一次跨 workspace 復原在行程層面驗證了替換後進程的工作目錄變為目標 workspace。
+TUI 測試覆蓋預設範圍隱藏其他 workspace 但報告其數量、Tab 顯示它們並帶上逐行 workspace 標籤、再按 Tab 返回時清空查詢與選中項、按 workspace 標籤搜尋、無 cwd 的記錄仍可見但不選填，以及交接同時收到 id 和在預檢時重新讀取到的 workspace。原先「拒絕發生變化的 cwd」的用例現在斷言交接攜帶新目錄。建置後的 CLI PTY 測試會檢驗共享設定預設值與每行程派生的查詢索引。無金鑰 TUI 快照固定選擇器的兩個範圍，包括範圍行、逐行 workspace 行，以及頁腳中的 Tab 提示。手動執行的一次跨 workspace 復原在行程層面驗證了替換後行程的工作目錄變為目標 workspace。

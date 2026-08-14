@@ -1,6 +1,6 @@
 # dsh-home-paths
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 DeepSeek Harness 使用者資料的共享檔案系統路徑輔助工具。
 
@@ -10,11 +10,11 @@ DeepSeek Harness 使用者資料的共享檔案系統路徑輔助工具。
 
 `dshHomePath(...segments)` 使用 Node 的平臺路徑規則，將子路徑段拼接到解析後的主目錄下。不傳入任何路徑段時，返回主目錄本身。
 
-`dshHomeDisplay()` 以符號方式表示當前根目錄，用於面向使用者的路徑：默認主目錄表示為 `~/.dsh`，任何已設定的主目錄表示為 `$DSH_HOME`。它絕不會洩露機器的絕對路徑。
+`dshHomeDisplay()` 以符號方式表示當前根目錄，用於面向使用者的路徑：預設主目錄表示為 `~/.dsh`，任何已設定的主目錄表示為 `$DSH_HOME`。它絕不會洩露機器的絕對路徑。
 
-`DSH_HOME_DIR_NAME` 定義默認使用者資料目錄名：`.dsh`。
+`DSH_HOME_DIR_NAME` 定義預設使用者資料目錄名：`.dsh`。
 
-`defaultDshHome()` 使用 Node 的平臺路徑規則，將作業系統主目錄與 `.dsh` 拼接，並返回默認 DeepSeek Harness 主目錄。
+`defaultDshHome()` 使用 Node 的平臺路徑規則，將作業系統主目錄與 `.dsh` 拼接，並返回預設 DeepSeek Harness 主目錄。
 
 `expandHomePath()` 使用作業系統主目錄展開 `~`、`~/...` 和 Windows 風格的 `~\...` 前綴。它會保留非波浪號路徑和 `~user/...` 原樣不變。
 

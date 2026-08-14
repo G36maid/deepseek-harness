@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-cmdline-program-action.md) | [简体中文](2026-08-11-cmdline-program-action.zh.md) | 繁體中文
+[English](2026-08-11-cmdline-program-action.md) | 繁體中文
 
 ## Problem
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## Decision
 
-`parseCmdline(ctx, program): void` 只把 commander 的控制流適配到啟動器：它解析不可變的 `cmdlineArgs` 快照，並把 help、version、解析錯誤與 action 的拒絕轉換為一次 `ctx.appExit` 請求。應用程式碼——commander 文法表達不了的校驗，以及應用自有服務的 `ctx.provide`——放在 program 自己的同步 `.action()` 裡，commander 在解析成功時執行它，在 help 或拒絕時絕不執行。`CmdlinePlan` 匯出、其 `ctx` 參數、默認 plan 與 `T | undefined` 回傳值全部刪除；兩個組合包提供方都在各自的 action 中發布。由於 `Command` 類型無法表達 action 前置條件，`parseCmdline` 按結構讀取處理器（如同 `isCommanderError` 按結構識別 commander 的控制流錯誤），在載入時拒絕整棵命令樹中沒有任何命令聲明 action 的 program 並點名它——若無此守衛，漏寫 action 的提供方（或仍在傳已刪除第三參數的過時呼叫方）會解析成功、什麼也不發布，只在 settlement 時以相依性行 pending 等待缺席服務的形式浮現。該配接器在整棵命令樹而非僅根命令上設定 `exitOverride` 與輸出：commander 只在註冊時把這些設定複製進子命令，只設定根命令會讓已註冊子命令的拒絕繞過 `ctx.appExit` 直接呼叫 `process.exit`。action 必須先拒絕後發布；寫在 `program.error(...)` 之前的語句已經執行。
+`parseCmdline(ctx, program): void` 只把 commander 的控制流適配到啟動器：它解析不可變的 `cmdlineArgs` 快照，並把 help、version、解析錯誤與 action 的拒絕轉換為一次 `ctx.appExit` 請求。應用程式碼——commander 文法表達不了的校驗，以及應用自有服務的 `ctx.provide`——放在 program 自己的同步 `.action()` 裡，commander 在解析成功時執行它，在 help 或拒絕時絕不執行。`CmdlinePlan` 匯出、其 `ctx` 參數、預設 plan 與 `T | undefined` 回傳值全部刪除；兩個組合包提供方都在各自的 action 中發布。由於 `Command` 類型無法表達 action 前置條件，`parseCmdline` 按結構讀取處理器（如同 `isCommanderError` 按結構識別 commander 的控制流錯誤），在載入時拒絕整棵命令樹中沒有任何命令聲明 action 的 program 並點名它——若無此守衛，漏寫 action 的提供方（或仍在傳已刪除第三參數的過時呼叫方）會解析成功、什麼也不發布，只在 settlement 時以相依性行 pending 等待缺席服務的形式浮現。該配接器在整棵命令樹而非僅根命令上設定 `exitOverride` 與輸出：commander 只在註冊時把這些設定複製進子命令，只設定根命令會讓已註冊子命令的拒絕繞過 `ctx.appExit` 直接呼叫 `process.exit`。action 必須先拒絕後發布；寫在 `program.error(...)` 之前的語句已經執行。
 
 交付前已在 commander 15 上驗證：action 在 `parse` 內部執行，其 `program.error(...)` 經 `exitOverride` 拋出 `CommanderError`；help 與 version 在 action 之前短路；有無 action 時的多餘參數處理完全一致。
 

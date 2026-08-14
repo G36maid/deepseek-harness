@@ -1,6 +1,6 @@
 # 子系統
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 每個子系統一頁，覆蓋 DeepSeek Harness 的全部子系統：它是什麼、它操作哪些資料結構，以及——當它由某個 `ctx` 服務或事件作用域支撐時——一段生成的 **Cordis API** 小節，承載其服務與事件參考。本目錄與 [architecture.md](../architecture.md) 互補：後者描述跨子系統的*行為*（服務對映、工作階段/輪次/步驟生命週期、事件分類體系）；這裡的每一頁是單個子系統詞彙與接線的參考。
 
@@ -24,7 +24,7 @@
 | [session-reference.md](session-reference.md) | 結構化跨工作階段引用：`SessionReferenceInput`/`Candidate`、prepared 訊息上下文、穩定錯誤分類 |
 | [system-prompt.md](system-prompt.md) | 逐次組裝的上下文、工具提供方結果、提示詞段落與協作式組裝 |
 | [tools.md](tools.md) | `ToolDefinition` 完整欄位、schema DSL、`ToolExecution`/`ToolResult`、工具展示 UI 類型，以及受保護的執行管線 |
-| [user-questions.md](user-questions.md) | UI 支持的人工問答 seam：`AskUserQuestionRequest`、answer/options 詞彙、提供方 API、錯誤分類體系 |
+| [user-questions.md](user-questions.md) | UI 支援的人工問答 seam：`AskUserQuestionRequest`、answer/options 詞彙、提供方 API、錯誤分類體系 |
 | [approval.md](approval.md) | 一次性使用者審批 seam：`ApprovalRequest`、`ApprovalOutcome`、逐工作階段策略、審計事件和 answerer 約定 |
 | [attachment.md](attachment.md) | 持久圖片標識與元資料、校驗輸入、經校驗讀取，以及 `AttachmentStore` seam |
 | [shell.md](shell.md) | bash 執行器 seam：`ShellExecRequest`/`Spec`、`ShellRunResult`、後臺 `ShellProcess` 控制代碼 |

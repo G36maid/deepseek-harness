@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-persisted-same-session-goal-domain.md) | [简体中文](2026-07-19-persisted-same-session-goal-domain.zh.md) | 繁體中文
+[English](2026-07-19-persisted-same-session-goal-domain.md) | 繁體中文
 
 ## 問題
 
@@ -44,7 +44,7 @@ Status: implemented
 - **把每次持久變更與排隊的模型上下文綁定。** 後續的 [目標自有持久事件決策](../architecture/2026-07-31-goal-owned-durable-events.md) 不採用這一方案：目標工具與已調度的繼續執行提示詞會在需要時暴露狀態，而領域持久化不相依性佇列結果。
 - **持久化啟用態並自動重新啟動**——不予採納，因為打開或復原工作階段時必須等待人類輸入；持久階段記錄狀態，而不是再次消耗資源的授權。
 - **把所有工作階段輪次都計為 Goal Round**——不予採納，因為同一工作階段可以包含人類澄清、檢查和無關工作；只有歸屬於目標的繼續執行輪次才消耗該預算。
-- **向 `dsh-agent-loop` 新增目標狀態或通用迴圈抽象**——不予採納，因為狀態與繼續執行策略可以透過現有外掛程式、`Agent` 動詞和事件組合，而無需賦予默認迴圈實作特權。
+- **向 `dsh-agent-loop` 新增目標狀態或通用迴圈抽象**——不予採納，因為狀態與繼續執行策略可以透過現有外掛程式、`Agent` 動詞和事件組合，而無需賦予預設迴圈實作特權。
 
 ## 後果
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-api-key-format-validation.md) | [简体中文](2026-08-06-api-key-format-validation.zh.md) | 繁體中文
+[English](2026-08-06-api-key-format-validation.md) | 繁體中文
 
 ## 問題
 
@@ -58,13 +58,13 @@ Status: implemented
 | `llm-pi-ai` `discoverModels` | 在構造 header 之前歸一化，使非法 Key 成為憑據故障而非端點不可達。不帶 Key 的探測保持未鑒權。 |
 | `ui-settings-models` | 映像檔字元集規則，加入形狀啟發式，在探測與 `credentials.set` 之前 trim `keyDraft`，並修正 `stringAt` 的空值判斷。留空的輸入框仍是可以提交的空操作；只含空白的輸入框則是欄位級失敗。提交**與端點探測**同時受攔截，因此被拒絕的金鑰不會白花一次往返去換取欄位上已經寫明的答案；失敗呈現在欄位上，與既有的 `modelFailure` 模式一致。 |
 
-`ProviderEditor` 同時服務 DeepSeek 與 pi-ai 兩種版面配置，因此一處用戶端改動覆蓋兩個提供方。`CustomProviderCard` 為手工聲明的路由承載同一套判定。
+`ProviderEditor` 同時服務 DeepSeek 與 pi-ai 兩種版面設定，因此一處用戶端改動覆蓋兩個提供方。`CustomProviderCard` 為手工聲明的路由承載同一套判定。
 
 `credentials-local` 刻意不動。它儲存各類憑據，而可列印 ASCII 是 HTTP header 的約束而非憑據儲存的約束；它既有的、拒絕任何 dotenv 樣式都無法表示的值的行為保持原樣。
 
 ## 曾考慮的替代方案
 
-**由 client 與 host 共享一個校驗模組。** 被 source plane 版面配置否決：client 包只 reference client 包外加 `vendor/cordis` 與 `runtime-diagnostics/invariants`，把它放寬到夠得著 host 包會撞上這一分割本就要隔開的兩份 `Context` 合併。在兩側各映像檔一行斷言並各配一份測試，是此處的既定形態。
+**由 client 與 host 共享一個校驗模組。** 被 source plane 版面設定否決：client 包只 reference client 包外加 `vendor/cordis` 與 `runtime-diagnostics/invariants`，把它放寬到夠得著 host 包會撞上這一分割本就要隔開的兩份 `Context` 合併。在兩側各映像檔一行斷言並各配一份測試，是此處的既定形態。
 
 **在 `llm-deepseek` 與 `llm-pi-ai` 中各留一個拋錯 helper。** 最初的計畫正是各留一份，差別僅在訊息中的包名前綴，並配一個重複偵測豁免來放行這一對。在實作之前即被否決：`LlmError` 聲明在 Service Definition 中，因此該包完全可以自己擁有這句診斷，而那裡的一個豁免恰恰會掩蓋它本要遮掩的重複。
 
@@ -84,7 +84,7 @@ Status: implemented
 
 限定為可列印 ASCII 比傳輸本身的要求更嚴：header value 是可以承載 `\x80`–`\xFF` 的。放行 latin-1 會讓 `é` 透過並換回一個語焉不詳的 401，而不是一次本機的、有解釋的拒絕，因此從嚴是刻意的。若某個提供方簽發 latin-1 的 Key，這條規則需要放寬。
 
-字元集斷言存在兩份，每個 source plane 一份。版面配置禁止共享它；兩側各自帶測試並在註釋中指名其孿生體。
+字元集斷言存在兩份，每個 source plane 一份。版面設定禁止共享它；兩側各自帶測試並在註釋中指名其孿生體。
 
 早先版本已存下的 Key 會經 `resolveApiKey` 讀取，因此一個非法的既存值將從解析時開始失敗，而非到請求時才失敗。診斷變好了，但對當前正持有這類值的人而言，失敗點提前了。
 

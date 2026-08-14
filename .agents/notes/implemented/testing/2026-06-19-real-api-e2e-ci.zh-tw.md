@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-06-19-real-api-e2e-ci.md) | [简体中文](2026-06-19-real-api-e2e-ci.zh.md) | 繁體中文
+[English](2026-06-19-real-api-e2e-ci.md) | 繁體中文
 
 ## 問題
 
 根據策略，harness 高度相依性真實 API 測試：[docs/testing.md](../../../../docs/testing.md) 指出，無金鑰套件證明的是管線，而非產品；[ACP（Agent Client Protocol）inject 事後檢討（postmortem）](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)則是常設證據——178 項無金鑰測試保持綠色時，真實 ACP 用戶端工作階段卻立即崩潰。真實 API e2e 套件（`pnpm run test:e2e`，即 `*.e2e.ts` 文件）的存在正是為了彌合這一缺口：它針對線上 DeepSeek API 驅動 agent（代理）——真實模型呼叫、真實 bash 工具、多輪次、復原、ACP-over-stdio。
 
-默認閘門（[.github/workflows/ci.yml](../../../../.github/workflows/ci.yml)）刻意無金鑰：不攜帶 secret，可供 fork 執行。`test:e2e` 在無金鑰時自動跳過（`describe.skipIf(!process.env.DEEPSEEK_API_KEY)`），因此將其加入該工作流程只會報綠而不會真正執行真實套件。要讓真實 API 覆蓋率成為合併訊號，需要一個獨立的、攜帶 secret 的工作流程。
+預設閘門（[.github/workflows/ci.yml](../../../../.github/workflows/ci.yml)）刻意無金鑰：不攜帶 secret，可供 fork 執行。`test:e2e` 在無金鑰時自動跳過（`describe.skipIf(!process.env.DEEPSEEK_API_KEY)`），因此將其加入該工作流程只會報綠而不會真正執行真實套件。要讓真實 API 覆蓋率成為合併訊號，需要一個獨立的、攜帶 secret 的工作流程。
 
 ## 決策
 
@@ -49,7 +49,7 @@ repo secret 命名為 `DEEPSEEK_API_KEY_EXTERNAL`；對映到配接器和測試�
 
 - **步驟級 secret。** `DEEPSEEK_API_KEY` 僅在 preflight 和 e2e 步驟的 `env:` 中設定，從不在 job 級設定——因此 checkout/setup-node/install 永遠看不到它。相依性中被入侵的安裝時生命週期指令碼無法讀取不在其環境中的 secret。
 - **`permissions: contents: read`。** job 僅讀取倉庫以執行測試；不需要寫權限（無 PR 評論、無 status 寫入），因此 `GITHUB_TOKEN` 降至最小權限。
-- **`DEEPSEEK_BASE_URL` 固定**為 e2e 步驟上的 `https://api.deepseek.com`。配接器在未設定時會默認使用此值（[packages/llm/llm-deepseek/src/index.ts](../../../../packages/llm/llm-deepseek/src/index.ts) `PUBLIC_BASE_URL`），但顯式固定具有自文件性和密封性——倉庫根目錄的 `.env`（如果存在，`vitest.e2e.config.ts` 會載入它）無法靜默地將執行重定向到其他端點。
+- **`DEEPSEEK_BASE_URL` 固定**為 e2e 步驟上的 `https://api.deepseek.com`。配接器在未設定時會預設使用此值（[packages/llm/llm-deepseek/src/index.ts](../../../../packages/llm/llm-deepseek/src/index.ts) `PUBLIC_BASE_URL`），但顯式固定具有自文件性和密封性——倉庫根目錄的 `.env`（如果存在，`vitest.e2e.config.ts` 會載入它）無法靜默地將執行重定向到其他端點。
 - **不回顯 secret。** preflight 僅列印 `DEEPSEEK_API_KEY present.`——不列印值或長度。
 
 ### 範圍與執行時期形態

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-13-shared-modal-product-onboarding.md) | [简体中文](2026-08-13-shared-modal-product-onboarding.zh.md) | 繁體中文
+[English](2026-08-13-shared-modal-product-onboarding.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 **由同一個既有 client Cordis 外掛程式持有兩個已發布步驟。** `ui-settings-models` 在 `settings.onboarding` 中以順序 `-100` 註冊 `welcome-notice`，以順序 `0` 註冊 `deepseek-official`。外殼仍然只掛載第一個未完成條目，因此兩個彈出視窗不會堆疊。不新增 client 包或外掛程式設定行。
 
-**兩個步驟共用同一個彈出視窗元件。** `OnboardingModal` 包裝既有 ui-primitives `Modal`，提供統一的標題和內容版面配置，並只在可見期間持有 `#root` 的 inert 狀態。Escape 和遮罩點擊不會靜默完成強制引導；每個步驟只暴露自己的明確操作。步驟仍在載入私有事實時返回 `null`，因此不會繪製或阻塞介面。
+**兩個步驟共用同一個彈出視窗元件。** `OnboardingModal` 包裝既有 ui-primitives `Modal`，提供統一的標題和內容版面設定，並只在可見期間持有 `#root` 的 inert 狀態。Escape 和遮罩點擊不會靜默完成強制引導；每個步驟只暴露自己的明確操作。步驟仍在載入私有事實時返回 `null`，因此不會繪製或阻塞介面。
 
 **歡迎聲明複用既有持久化欄位。** 完整文案與版本由 `onboarding-copy.ts` 持有。回環用戶端透過既有 settings API 比較和寫入 `ui-onboarding.welcomeNoticeVersion`，且只有點擊「繼續」才確認當前版本。遠端用戶端繼續使用既有的行程內回退，因為該 settings namespace 僅限回環訪問。不改變 Host schema、API Proxy 允許清單或持久化實作。
 
@@ -30,4 +30,4 @@ Status: implemented
 
 ## 後果
 
-新的回環 profile 會先看到指定的內測聲明；僅當沒有任何可用提供方時，之後才會出現行內 DeepSeek 金鑰彈出視窗。確認仍按版本寫入 `settings.yaml`，secret 仍以只寫方式存入 `.credentials.yaml`，已就緒或無法修復的部署在載入判定期間不會渲染任何引導框架。Models 包現在同時持有產品引導展示與提供方設定；README 和瀏覽器覆蓋明確記錄了這項擴充後的職責。本決策在歷史上的[全屏內測聲明移除](../simplification/2026-08-13-remove-first-run-beta-notice.md)之後復原簡潔的測試階段聲明，但不會復原那份聲明中的遙測文案或接管式版面配置。
+新的回環 profile 會先看到指定的內測聲明；僅當沒有任何可用提供方時，之後才會出現行內 DeepSeek 金鑰彈出視窗。確認仍按版本寫入 `settings.yaml`，secret 仍以只寫方式存入 `.credentials.yaml`，已就緒或無法修復的部署在載入判定期間不會渲染任何引導框架。Models 包現在同時持有產品引導展示與提供方設定；README 和瀏覽器覆蓋明確記錄了這項擴充後的職責。本決策在歷史上的[全屏內測聲明移除](../simplification/2026-08-13-remove-first-run-beta-notice.md)之後復原簡潔的測試階段聲明，但不會復原那份聲明中的遙測文案或接管式版面設定。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-14-cross-family-fs-sandbox.md) | [简体中文](2026-07-14-cross-family-fs-sandbox.zh.md) | 繁體中文
+[English](2026-07-14-cross-family-fs-sandbox.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 這個缺口並不只有 read-only 一種形態。一個受限編碼 agent（代理）的產品模式是 `workspace-write`：bash 已經可以在工作區根目錄下寫入，而其外的一切都被拒絕，所以只能全部拒絕的 fs 強制執行會嚴格劣於停用 fs 工具——模型會嘗試在工作區內 `write`，被拒，然後學會繞道 `bash` heredoc。因此跨家族強制執行必須涵蓋完整的模式階梯，包括 `workspace-write` 要求的路徑包含判定（規範化目標；`..`/符號連結/絕對路徑逃逸），以及與 bash 相同的升級手段。
 
-第二個強制執行家族還暴露了原版面配置中的一個歸屬問題。部署預設值（`mode` + `workspaceRoot`）設定在 `dsh-bash-sandbox` 上，而 per-session 覆蓋事件是 `shell/sandbox-mode`，由 `dsh-shell` 的 session-mode 工具集摺疊與寫入。當 fs 強制執行同一套策略時，要麼 fs 讀取 bash 的設定與事件（一個能力家族相依性同級外掛程式的設定），要麼各家族各持一份副本——兩份 `workspaceRoot` 會漂移進沙盒 RFC 警告過的割裂世界：bash 受限於一個根，而 fs 圍住另一個根。
+第二個強制執行家族還暴露了原版面設定中的一個歸屬問題。部署預設值（`mode` + `workspaceRoot`）設定在 `dsh-bash-sandbox` 上，而 per-session 覆蓋事件是 `shell/sandbox-mode`，由 `dsh-shell` 的 session-mode 工具集摺疊與寫入。當 fs 強制執行同一套策略時，要麼 fs 讀取 bash 的設定與事件（一個能力家族相依性同級外掛程式的設定），要麼各家族各持一份副本——兩份 `workspaceRoot` 會漂移進沙盒 RFC 警告過的割裂世界：bash 受限於一個根，而 fs 圍住另一個根。
 
 ## 決策
 
@@ -20,7 +20,7 @@ Status: implemented
 
 `packages/sandbox/sandbox-policy/`（`@deepseek-ai/dsh-sandbox-policy`）註冊 `ctx.sandboxPolicy`，即部署沙盒策略的唯一所有者：
 
-- `Config`：`mode`（封閉的 `SandboxMode` 聯合，默認 `read-only`）與 `workspaceRoot`（默認行程 cwd，解析為絕對路徑）。設定錯誤會在載入時明確報錯。
+- `Config`：`mode`（封閉的 `SandboxMode` 聯合，預設 `read-only`）與 `workspaceRoot`（預設行程 cwd，解析為絕對路徑）。設定錯誤會在載入時明確報錯。
 - per-session 覆蓋事件 `sandbox/mode`，連同它的純摺疊（`effectiveSandboxMode(events)`）、寫入路徑（`setSandboxMode(session, mode)`）與 `SANDBOX_MODES`。該事件是策略狀態——被兩個家族消費——所以它歸於此處，而不歸於任一能力的 seam。它的形狀與僅日誌（log-only）語義遵循 `approval/*` 的先例。
 - `resolve({ session?, mode? })` 返回完整的單次呼叫 `SandboxExecutionPolicy`：顯式批准的模式 > 工作階段摺疊結果 > `defaultMode`，而工作階段中不可變的 cwd > 設定的 `workspaceRoot` 回退值。
 - 保留 `defaultMode` / `workspaceRoot` 訪問器，作為部署回退值與能力宣告依據。
@@ -61,7 +61,7 @@ Status: implemented
 ## 考慮過的替代方案
 
 - **在 `fs/*` intent 事件上強制執行（沙盒 Agent Note 的原始草圖）**——因 § 強制執行點 中的兩個機制性事實被否決：單一 slot、先到先得且已被佔據，以及對直連 `ctx.fs` 呼叫方的繞過。提供方級強制執行覆蓋每一個呼叫方，並映像檔 bash 的換實作形態。
-- **在 `tools/pre-execute` 中執行**——否決：監聽器在 `resolve()` 之前看到模型的原始路徑字串，因此它會重新實作 cwd 默認化與符號連結規範化，並且仍與真正的 resolve 競態。這使其不適用於 `workspace-write`，因為後者需要對規範路徑作出判定。
+- **在 `tools/pre-execute` 中執行**——否決：監聽器在 `resolve()` 之前看到模型的原始路徑字串，因此它會重新實作 cwd 預設化與符號連結規範化，並且仍與真正的 resolve 競態。這使其不適用於 `workspace-write`，因為後者需要對規範路徑作出判定。
 - **在 `dsh-tool-fs` 中做內聯檢查**——否決：只覆蓋工具路徑（與 intent 事件同樣的繞過），並在規範目標已存在之上重複了一層 resolve 知識。
 - **在 `dsh-fs-local` 上加一個 `mode` 標志而非同級後端**——否決：能力事實必須是組合真相，正如 `dsh-bash-local` 對 `dsh-bash-sandbox`；一個設定標志會讓工具的宣告取決於設定，而 bash 家族已經確立了同級包形態。
 - **經受限 helper 子行程做核心級 fs 變更**——否決：每次寫入都要啟動一個行程；`editText` 的讀-匹配-寫臨界區不得不整體搬進子行程才能保持原子；而威脅面（可信操作、不可信路徑參數）不需要核心——可信程式碼中的圍欄就是完整答案，而不可信程式碼隔離仍在 `ctx.shell`。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-session-telemetry-otel-revival.md) | [简体中文](2026-07-23-session-telemetry-otel-revival.zh.md) | 繁體中文
+[English](2026-07-23-session-telemetry-otel-revival.md) | 繁體中文
 
 ## 問題
 
@@ -21,7 +21,7 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**實作 runtime-telemetry RFC 的 outbox（落盤 spool、每 sink 遊標、at-least-once、持久化 seam 的 `readCommitted` 方法）。** 推遲而非否決：SDK 立場使投遞語義歸屬 reporting SDK，OTel SDK 自身的批次處理管線是誠實的默認。outbox 是純增量層（`emit()` 約定不動）；待某個部署提出遙測必須滿足的崩潰丟失要求時再復活。
+**實作 runtime-telemetry RFC 的 outbox（落盤 spool、每 sink 遊標、at-least-once、持久化 seam 的 `readCommitted` 方法）。** 推遲而非否決：SDK 立場使投遞語義歸屬 reporting SDK，OTel SDK 自身的批次處理管線是誠實的預設。outbox 是純增量層（`emit()` 約定不動）；待某個部署提出遙測必須滿足的崩潰丟失要求時再復活。
 
 **不設行程內脫敏點，交給接收端 collector processor。** 否決——接收端脫敏是先把祕密寄出去再擦除。waterfall 在位元組離開行程前提供一個可審計、可堆疊的擦除點；分支版本（PR #222 交付的形態）完全沒有脫敏點，如今每條記錄都必經該脫敏點。
 
@@ -29,7 +29,7 @@ Status: implemented
 
 **對映到 OTel span（GenAI 語義約定）而非日誌。** 本次復活否決：分支實作的日誌對映已經過評審、形態可交付；span 模型對可 fork、可中斷的工作階段有損，留給將來真正有 span 查詢需求的消費端。
 
-**handoff 遊標未存活時全量重播日誌（重新匯出構造函式種子）。** 首輪復活曾交付此方案，其後收窄：接管操作現在從工作階段的構造邊界起重播（`Session.firstLiveSeq`，即構造函式種子長度，這一事實工作階段早已校驗過卻未曾暴露；`header.seedLength` 不能勝任：它是持久保存的 fork 譜系（lineage）值，而復原工作階段的構造函式種子是其完整的已儲存日誌）。復原工作階段的歷史已由上一個行程以同一 id 寄出，fork 繼承的前綴也已在父工作階段的流中寄出；再次匯出任何一者，都會讓每次復原為其完整歷史重複付費，並在沒有原生攝取去重的 OTLP 後端上使查詢時的計數翻倍。接收端基於 `session.parent_id` + `session.seed_length` 拼接 fork 譜系。此次收窄放棄的內容與至多一次立場一致：復原不再回填上一個行程未能投遞的記錄（彼時遙測未掛載，或崩潰時仍在佇列中）——這本是全量重播唯一的真實收益，代價卻由常見情形承擔。提出回填要求的部署需要的是上文已推遲的 outbox，而不是重播。該邊界同樣吞掉 `SessionPersistence.load()` 修復被崩潰打斷的日誌時寫入的合成輪次關閉事件（它們落在 `firstLiveSeq` 之前，儘管在上一個行程中從未存在過）。這是有意為之，而非附帶效果：遠端輪次的真實尾部記錄已隨崩潰行程的佇列一同消亡，匯出合成關閉事件無法補全該輪次，只會讓一個未完成的輪次看起來已經關閉。匯出的流忠實於崩潰行程實際寄出的內容；接收端會把復原後的流中一個從未關閉的輪次讀作「上一個行程死在了該輪次之內」（OTel README 陳述了這條規則），其後乾淨的 `shutdown` 標記也只證明復原後進程自身的退出。若為讓修復以即時事件的身份匯出而將修復前邊界貫穿 load/prepare 傳遞，將使三個包相互耦合，只為抹除這一訊號。
+**handoff 遊標未存活時全量重播日誌（重新匯出構造函式種子）。** 首輪復活曾交付此方案，其後收窄：接管操作現在從工作階段的構造邊界起重播（`Session.firstLiveSeq`，即構造函式種子長度，這一事實工作階段早已校驗過卻未曾暴露；`header.seedLength` 不能勝任：它是持久保存的 fork 譜系（lineage）值，而復原工作階段的構造函式種子是其完整的已儲存日誌）。復原工作階段的歷史已由上一個行程以同一 id 寄出，fork 繼承的前綴也已在父工作階段的流中寄出；再次匯出任何一者，都會讓每次復原為其完整歷史重複付費，並在沒有原生攝取去重的 OTLP 後端上使查詢時的計數翻倍。接收端基於 `session.parent_id` + `session.seed_length` 拼接 fork 譜系。此次收窄放棄的內容與至多一次立場一致：復原不再回填上一個行程未能投遞的記錄（彼時遙測未掛載，或崩潰時仍在佇列中）——這本是全量重播唯一的真實收益，代價卻由常見情形承擔。提出回填要求的部署需要的是上文已推遲的 outbox，而不是重播。該邊界同樣吞掉 `SessionPersistence.load()` 修復被崩潰打斷的日誌時寫入的合成輪次關閉事件（它們落在 `firstLiveSeq` 之前，儘管在上一個行程中從未存在過）。這是有意為之，而非附帶效果：遠端輪次的真實尾部記錄已隨崩潰行程的佇列一同消亡，匯出合成關閉事件無法補全該輪次，只會讓一個未完成的輪次看起來已經關閉。匯出的流忠實於崩潰行程實際寄出的內容；接收端會把復原後的流中一個從未關閉的輪次讀作「上一個行程死在了該輪次之內」（OTel README 陳述了這條規則），其後乾淨的 `shutdown` 標記也只證明復原後行程自身的退出。若為讓修復以即時事件的身份匯出而將修復前邊界貫穿 load/prepare 傳遞，將使三個包相互耦合，只為抹除這一訊號。
 
 **將 seam 的輪次邊界 `flush()` 提示轉發到 OTel 提供方的 `forceFlush()`。** 首輪復活曾交付此轉發，其後移除：三條不同的靜默丟失路徑共用同一份包裝層狀態——dispose 與進行中的 flush 之間的競態（SDK 的並行 flush 防護會令 shutdown 的內部排空被跳過）、相互重疊的提示頂掉留存的 promise、以及提供方固定的 30 秒 flush 逾時在批次處理器仍在排空時便 reject。這些路徑存在的唯一原因，是該轉發讓這個後端成為行程內第二個執行 flush 的元件，面對的還是上游實驗性（experimental）原始碼樹中未見諸文件的 SDK 內部行為；不實作 `flush()` 時，批次處理器就是唯一執行 flush 的元件，其 `scheduledDelayMillis`（已可由部署方經 `processor` passthrough 調優）決定匯出節奏，`shutdown()` 的排空從構造上就是完整的。僅當某個部署提出 `scheduledDelayMillis` 無法滿足的輪次邊界延遲要求時才復原此轉發——且屆時應呼叫留存的 `BatchLogRecordProcessor` 自身的 `forceFlush()`，絕不呼叫提供方那個帶逾時包裝的版本。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 工作階段持久化是一項能力 seam。抽象的 `SessionPersistence` 服務（`ctx.sessionPersistence`）是其 Service Definition。它要求持久化後端持久儲存、重新載入和列出工作階段，但不規定具體儲存實作。該 seam 採用與 `dsh-shell` 相同的角色劃分（見[能力 seam](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：本包負責 Service Definition，同級包負責 Service Provider，Consumer 注入該服務。
 
@@ -12,13 +12,13 @@
 |---|---|
 | `locate(meta): SessionLocation \| undefined` | 在不執行 I/O 或實體化的情況下解析每個工作階段的絕對產物目標。沒有獨立本機產物的後端返回 `undefined`。 |
 | `supportsRawArtifacts: boolean` | 明確說明該後端是否為每個工作階段暴露一份逐字工件。Consumer 在呼叫 `readRaw` 前檢查此能力；`false` 並不表示工作階段缺失。 |
-| `readRaw(id, signal?): Promise<SessionRawArtifact \| undefined>` | 讀取受支持後端自身的逐字工件文字；只解碼物理編碼，絕不從事件重建。`undefined` 僅表示所請求工件缺失；不支持的後端會拒絕。 |
+| `readRaw(id, signal?): Promise<SessionRawArtifact \| undefined>` | 讀取受支援後端自身的逐字工件文字；只解碼物理編碼，絕不從事件重建。`undefined` 僅表示所請求工件缺失；不支援的後端會拒絕。 |
 | `create(meta): Promise<void>` | 註冊新工作階段元資料。可以將物理寫入延遲到第一次 `append`（延遲實體化）。 |
 | `append(id, events): Promise<void>` | 持久保存一個批次。僅附加；任何修復後，第一個事件 `seq` == 已儲存 next-seq；非 JSON 可序列化資料會被拒絕，並命名違規類型。 |
 | `prepare(id, signal?): Promise<SessionPreparation>` | 預留復原所使用的那個未發布 Session。協調器會盡可能複用之前的檢查結果、提交待處理復原，並在 dispose（資源釋放）時將未發布 reservation 釋放回有界快取。 |
-| `load(id): Promise<{ meta; events }>` | 轉換同一格式版本中受支持的舊記錄後，返回不可變、平衡的邏輯日誌，並提交冷復原。即時 load 先 flush 其快照，並在輪次開放時拒絕；冷 load 保留中斷的最終輪次，並用合成 `tool/result`/`step/end?`/`turn/end {interrupted}` 事件持久關閉它。只丟棄撕裂尾部碎片；已提交損壞和格式錯誤的記錄以 `SessionPersistenceCorruptionError` 拒絕，不支持的格式 `version` 或本建置不認識且信封未帶 `ignorable` 標記的事件類型以 `SessionFormatUnsupportedError` 拒絕，訊息說明拒絕方向，並在後端為每個工作階段保留獨立文件時給出原始日誌路徑。 |
+| `load(id): Promise<{ meta; events }>` | 轉換同一格式版本中受支援的舊記錄後，返回不可變、平衡的邏輯日誌，並提交冷復原。即時 load 先 flush 其快照，並在輪次開放時拒絕；冷 load 保留中斷的最終輪次，並用合成 `tool/result`/`step/end?`/`turn/end {interrupted}` 事件持久關閉它。只丟棄撕裂尾部碎片；已提交損壞和格式錯誤的記錄以 `SessionPersistenceCorruptionError` 拒絕，不支援的格式 `version` 或本建置不認識且信封未帶 `ignorable` 標記的事件類型以 `SessionFormatUnsupportedError` 拒絕，訊息說明拒絕方向，並在後端為每個工作階段保留獨立文件時給出原始日誌路徑。 |
 | `inspect(id, signal?): Promise<{ meta; events }>` | 返回已經升級、驗證和深度凍結的邏輯檢視表，但不提交復原或發布 Session。冷檢視表會獲得僅存在於記憶體的合成復原 closer，物理撕裂尾部保持不變；即時狀態下的檢視表則是當前不可變快照，可能包含開放的輪次。基於協調器的實作會在有界 LRU 中保留該冷狀態下未發布的 Session 本身，供後續 `prepare` 使用，但已儲存修訂值變化後會丟棄並重新讀取。同 id 檢查共享進行中的讀取。 |
-| `readFrom(id, fromSeq, signal?): Promise<{ meta; events }>` | 返回 `seq >= fromSeq` 的有效已儲存事件，不進入 preparation 快取、不截斷、不合成 closer，也不發布協調器狀態。`fromSeq` 達到或超過已儲存末尾時返回空事件清單；負數或非安全整數 `fromSeq` 會被拒絕。可尋址後端（SQLite）只讀後綴，除非轉換受支持的舊記錄需要讀取更早的記錄；順序後端（JSONL）解析整個產物並向前跳過。未知類型拒絕遵循同一讀取方式：尋址讀取只檢查返回的後綴，順序回退路徑還會拒絕視窗以下的未知必需事件。供 checkpoint 消費端只應用已存序號之後的事件。 |
+| `readFrom(id, fromSeq, signal?): Promise<{ meta; events }>` | 返回 `seq >= fromSeq` 的有效已儲存事件，不進入 preparation 快取、不截斷、不合成 closer，也不發布協調器狀態。`fromSeq` 達到或超過已儲存末尾時返回空事件清單；負數或非安全整數 `fromSeq` 會被拒絕。可尋址後端（SQLite）只讀後綴，除非轉換受支援的舊記錄需要讀取更早的記錄；順序後端（JSONL）解析整個產物並向前跳過。未知類型拒絕遵循同一讀取方式：尋址讀取只檢查返回的後綴，順序回退路徑還會拒絕視窗以下的未知必需事件。供 checkpoint 消費端只應用已存序號之後的事件。 |
 | `list(signal?): Promise<SessionHeader[]>` | 從元資料輕量列出，不解析完整日誌。選填訊號取消後端清單工作。零事件延遲實體化工作階段不在 `list` 中。 |
 | `listSnapshots(signal?): Promise<SessionPersistenceSnapshot[]>` | 返回輕量元資料和每份日誌一個不透明、帶品牌類型的修訂值，不載入事件日誌。日誌及其後端儲存不變時，修訂保持相等；append 或變更性 load 修復後會改變；不會僅因兩個儲存使用相同本機計數器而衝突。選填訊號請求取消後端發現工作；第一方後端會先等待所有已啟動的列出工作結束，再予以拒絕，因此呼叫返回拒絕時，相關工作已完全靜止。 |
 
@@ -37,7 +37,7 @@
 
 崩潰修復只適用於冷狀態。對於已有活動工作階段的 id，`load(id)` 為權威記憶體日誌製作快照，等待該快照持久，並只在平衡時返回；活動工作階段中開放的輪次會被拒絕，而不會收到合成中斷 closer。對於冷 id，檢查只讀取、驗證、凍結並構造一次未發布 Session；只有來源修訂值仍然是當前值時，重複檢查才會複用該對象圖。`prepare(id)` 在修復前執行相同校驗，預留該 Session 本身，提交任何待處理的撕裂尾部或中斷輪次修復，並將其返回用於發布。HMR（熱模組替換）接管透過 `loadStored` 讀取，應用協調器 cwd 檢查，並絕不關閉活動輪次。
 
-後端讀取會在驗證當前記錄前，轉換同一格式版本中明確受支持的舊記錄。訊息標識機制引入前的訊息會獲得確定性的 id `legacy-message:<session-id>:<event-seq>`；工具結果的內容替換會繼承其目標匯入後的 id。react-loop 引入前的 `turn/start` 會移除過時的 trigger，已移除的 steering（中途引導）事件 `steering/message` 會轉換為同一條帶標識的 `user/message`；舊版 `turn/end` 會對映終止原因，但不會虛構舊記錄中沒有記載的呼叫方。協調器對 `load`、`inspect`、`readFrom`、無所有者狀態的認領和 HMR 前綴接管使用同一份轉換後檢視表。儲存仍然僅附加：讀取不會重寫舊記錄，此後追加的事件使用當前格式。這些是[訊息標識機制引入前的訊息](../../../.agents/notes/implemented/bug-fix/2026-07-28-load-pre-identity-session-messages.md)與 [react-loop 引入前工作階段](../../../.agents/notes/implemented/bug-fix/2026-08-04-load-pre-react-loop-sessions.md)決策所規定的範圍受限的匯入例外，並不構成通用的 v0 遷移承諾。
+後端讀取會在驗證當前記錄前，轉換同一格式版本中明確受支援的舊記錄。訊息標識機制引入前的訊息會獲得確定性的 id `legacy-message:<session-id>:<event-seq>`；工具結果的內容替換會繼承其目標匯入後的 id。react-loop 引入前的 `turn/start` 會移除過時的 trigger，已移除的 steering（中途引導）事件 `steering/message` 會轉換為同一條帶標識的 `user/message`；舊版 `turn/end` 會對映終止原因，但不會虛構舊記錄中沒有記載的呼叫方。協調器對 `load`、`inspect`、`readFrom`、無所有者狀態的認領和 HMR 前綴接管使用同一份轉換後檢視表。儲存仍然僅附加：讀取不會重寫舊記錄，此後追加的事件使用當前格式。這些是[訊息標識機制引入前的訊息](../../../.agents/notes/implemented/bug-fix/2026-07-28-load-pre-identity-session-messages.md)與 [react-loop 引入前工作階段](../../../.agents/notes/implemented/bug-fix/2026-08-04-load-pre-react-loop-sessions.md)決策所規定的範圍受限的匯入例外，並不構成通用的 v0 遷移承諾。
 
 活動工作階段寄出 `session/disposed` 時，協調器等待其 controller，以序列方式執行最終 drain，然後釋放該精確 `Session` 對象擁有的狀態。失敗退役會將 controller 保留在活動工作階段 map 中，使後端拆卸可重試。後端拆卸先停止事件接納，flush 每個剩餘 controller，等待每 id 操作，最後才關閉儲存控制代碼。
 

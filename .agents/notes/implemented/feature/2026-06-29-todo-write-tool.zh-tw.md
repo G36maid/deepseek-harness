@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-29-todo-write-tool.md) | [简体中文](2026-06-29-todo-write-tool.zh.md) | 繁體中文
+[English](2026-06-29-todo-write-tool.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ harness 為模型提供了 bash 和 subagent 工具，卻沒有辦法記錄結�
 
 ### 整清單替換，三態 status
 
-模型每次呼叫傳送完整清單；新清單替換舊清單（重播時 last-write-wins）。這是 claude-code V1、opencode 和 codex `update_plan` 共同採用的形狀，也是模型訓練最多的形狀——沒有逐項 id，沒有 delta 協議。`status` 恰好是 `pending | in_progress | completed`，與 codex `update_plan` 相同的三元組；在 bridge 還把 todo 清單投影為 `plan` 更新時，它也與 ACP `PlanEntryStatus` 1:1 對應，該對映已隨[僅面向自動化的 ACP 約定](../simplification/2026-07-23-acp-automation-only-protocol.md)退役。
+模型每次呼叫傳送完整清單；新清單替換舊清單（重播時 last-write-wins）。這是 claude-code V1、opencode 和 codex `update_plan` 共同採用的形狀，也是模型訓練最多的形狀——沒有逐項 id，沒有 delta 協定。`status` 恰好是 `pending | in_progress | completed`，與 codex `update_plan` 相同的三元組；在 bridge 還把 todo 清單投影為 `plan` 更新時，它也與 ACP `PlanEntryStatus` 1:1 對應，該對映已隨[僅面向自動化的 ACP 約定](../simplification/2026-07-23-acp-automation-only-protocol.md)退役。
 
 ### 狀態在工作階段日誌上，而非服務
 
@@ -26,11 +26,11 @@ harness 為模型提供了 bash 和 subagent 工具，卻沒有辦法記錄結�
 
 ### 相比 claude-code V1 捨棄的欄位：`activeForm`、id、priority
 
-claude-code V1 的條目是 `{ content, status, activeForm }`；後來（V2）增加了 id、相依性和所有權——但僅為支持 agent *叢集*（以磁碟為後端、鎖保護、逐項變更）。本工具將條目保持在最小集：`{ content, status }`。不要 `activeForm`（現在進行時標籤）——UI 直接展示 `content`；不要 id——整清單替換不需要穩定標識；不要 priority——它只曾是 ACP `PlanEntry` 的協定格式（wire format）要求，在 bridge 邊界合成為常數而非建模，並已隨該投影一起離開。每捨棄一個欄位，模型每次呼叫就少產出一項。
+claude-code V1 的條目是 `{ content, status, activeForm }`；後來（V2）增加了 id、相依性和所有權——但僅為支援 agent *叢集*（以磁碟為後端、鎖保護、逐項變更）。本工具將條目保持在最小集：`{ content, status }`。不要 `activeForm`（現在進行時標籤）——UI 直接展示 `content`；不要 id——整清單替換不需要穩定標識；不要 priority——它只曾是 ACP `PlanEntry` 的協定格式（wire format）要求，在 bridge 邊界合成為常數而非建模，並已隨該投影一起離開。每捨棄一個欄位，模型每次呼叫就少產出一項。
 
 ### 單一所有者——無叢集機制（YAGNI）
 
-每個清單屬於呼叫它的 agent 工作階段，非 agent 呼叫被拒絕。沒有共享作用域、resolver 或 delta 協議。跨 agent 清單需要逐項日誌 delta 和顯式作用域選擇，因此留作未來獨立設計。
+每個清單屬於呼叫它的 agent 工作階段，非 agent 呼叫被拒絕。沒有共享作用域、resolver 或 delta 協定。跨 agent 清單需要逐項日誌 delta 和顯式作用域選擇，因此留作未來獨立設計。
 
 ### 校驗：低成本的中間路線
 
@@ -52,9 +52,9 @@ schema 強制 type/required/enum。在此之上，`execute` 拒絕為空或重�
 ## 曾考慮的替代方案
 
 - **記憶體中的 `ctx.todos` 服務**——需要重新發明日誌免費提供的持久性、重播和復原重建。
-- **逐項 delta 協議**——僅在共享多所有者清單時需要，超出當前範圍；整清單替換更簡單，且與參考實作一致。
+- **逐項 delta 協定**——僅在共享多所有者清單時需要，超出當前範圍；整清單替換更簡單，且與參考實作一致。
 - **工具放在 `core/` 中**——`todo_write` 是註冊在 `ctx.tools` 上的擴充工具，不屬於主幹；它像其他工具族一樣位於自己的 `packages/todo/` 分組中。
 
 ## 後果
 
-todo 清單是持久、可重播的工作階段狀態：互動式宿主從最新持久化的 `todo/write` 重新推導它，日誌（而非外掛程式記憶體）是唯一真源。整清單替換意味著每次更新需呼叫一次工具，last-write-wins；沒有需要協調的 delta 協議。事件不進入模型 surface，因此 todo 更新永遠不會擾動推匯出的模型歷史——模型只看到自己的工具呼叫和結果。
+todo 清單是持久、可重播的工作階段狀態：互動式宿主從最新持久化的 `todo/write` 重新推導它，日誌（而非外掛程式記憶體）是唯一真源。整清單替換意味著每次更新需呼叫一次工具，last-write-wins；沒有需要協調的 delta 協定。事件不進入模型 surface，因此 todo 更新永遠不會擾動推匯出的模型歷史——模型只看到自己的工具呼叫和結果。

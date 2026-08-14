@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-13-session-content-search-opt-in.md) | [简体中文](2026-08-13-session-content-search-opt-in.zh.md) | 繁體中文
+[English](2026-08-13-session-content-search-opt-in.md) | 繁體中文
 
 ## 問題
 
-交付的 bundle 之前以啟用狀態掛載 SQLite 工作階段查詢提供方的全文索引（`openAt: first-search`），因此每個默認部署都攜帶一個派生 FTS 索引，Web 側邊欄提供內容搜尋。一個部署是否需要該索引——它的 node:sqlite 匯入、每次搜尋的來源對帳和派生儲存——是部署自身的選擇，產品默認不攜帶它交付；面向模型的搜尋工具此前已經是 opt-in 且未掛載（見[非默認交付決策](../feature/2026-08-02-session-search-not-shipped-default.md)）。
+交付的 bundle 之前以啟用狀態掛載 SQLite 工作階段查詢提供方的全文索引（`openAt: first-search`），因此每個預設部署都攜帶一個派生 FTS 索引，Web 側邊欄提供內容搜尋。一個部署是否需要該索引——它的 node:sqlite 匯入、每次搜尋的來源對帳和派生儲存——是部署自身的選擇，產品預設不攜帶它交付；面向模型的搜尋工具此前已經是 opt-in 且未掛載（見[非預設交付決策](../feature/2026-08-02-session-search-not-shipped-default.md)）。
 
 透過解除安裝外掛程式行來關閉該能力不可行。`ApiProxyService` 將 `sessionQuery` 聲明為必需注入，沒有該提供方時整個宿主 API 閘道保持未載入，Web GUI 無法啟動。工作階段日誌匯出透過 `ctx.sessionQuery.traceSession` 追蹤子代理後代，子代理分叉也透過同一血緣追蹤解析其 Workspace——兩者都需要選填服務守衛加一個替代血緣來源，改動面大約擴大三倍，同時使精確讀取在所有地方消失。
 
@@ -26,7 +26,7 @@ base bundle 在 `session-query-sqlite` 行上設定 `openAt: never`，web bundle
 
 ## 結果
 
-- 默認部署不執行任何派生索引：沒有 node:sqlite 匯入或實驗性 SQLite 啟動警告，沒有對帳工作，磁碟上沒有派生資料庫。側邊欄搜尋只匹配工作階段標題和工作區名稱。
-- 默認狀態下的搜尋失敗是類型化且穩定的，呼叫方可以把部署選擇與索引故障（`SESSION_QUERY_INDEX_FAILED`）區分開。
+- 預設部署不執行任何派生索引：沒有 node:sqlite 匯入或實驗性 SQLite 啟動警告，沒有對帳工作，磁碟上沒有派生資料庫。側邊欄搜尋只匹配工作階段標題和工作區名稱。
+- 預設狀態下的搜尋失敗是類型化且穩定的，呼叫方可以把部署選擇與索引故障（`SESSION_QUERY_INDEX_FAILED`）區分開。
 - 重新啟用內容搜尋是逐部署設定而非程式碼改動，並原樣復原完整的 FTS 行為。
 - 掛載搜尋工具但未覆蓋 `openAt` 的組合，每次搜尋呼叫都會得到模型安全的已停用訊息；啟用工具意味著同時啟用索引。

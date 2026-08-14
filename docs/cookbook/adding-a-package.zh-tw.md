@@ -1,6 +1,6 @@
 # 實作手冊：新增 workspace 包
 
-[English](adding-a-package.md) | [简体中文](adding-a-package.zh.md) | 繁體中文
+[English](adding-a-package.md) | 繁體中文
 
 為新建 `@deepseek-ai/dsh-<name>` 包提供的逐文件清單。本清單以 bash 和配接器這兩個包為範本進行驗證；如果清單與範本有出入，請在此修正。
 
@@ -31,7 +31,7 @@ package.json 不變式（由 `pnpm run constraints` / `scripts/check-workspace-c
 | 文件 | 變更 |
 |---|---|
 | `tsconfig.base.json` | 已有分組無需編輯；新分組需為 `@deepseek-ai/dsh-*` 萬用字元新增 `./packages/<group>/*/src` 候選路徑 |
-| `tsconfig.host.json`（Host 包）或 `tsconfig.client.json`（Client 包） | 在 `references` 中新增 `{ "path": "./packages/<group>/<pkg>" }`——普通包恰好屬於一個 aggregate，絕不兩個都加。`api/remotes` 因 Host 生成約定與 Client 消費約定之間存在順序相依性而使用倉庫專屬拆分，新增包不得仿照（[版面配置](../development.md#typescript-project-layout)） |
+| `tsconfig.host.json`（Host 包）或 `tsconfig.client.json`（Client 包） | 在 `references` 中新增 `{ "path": "./packages/<group>/<pkg>" }`——普通包恰好屬於一個 aggregate，絕不兩個都加。`api/remotes` 因 Host 生成約定與 Client 消費約定之間存在順序相依性而使用倉庫專屬拆分，新增包不得仿照（[版面設定](../development.md#typescript-project-layout)） |
 | `knip.json` | 僅當包有倉庫發現機制尚未覆蓋的入口時需要 |
 
 `packages/client/*` 包改為 extends `tsconfig.base.client.json`（而非 `tsconfig.base.json`）；client 外掛程式包還需在 package.json 聲明 `dsh.client`、匯出 `./client`、呼叫共享 tsdown preset（`packages/client/tsdown.client.ts`）——client 側見 [packages/client/AGENTS.md](../../packages/client/AGENTS.md)。
@@ -44,7 +44,7 @@ package.json 不變式（由 `pnpm run constraints` / `scripts/check-workspace-c
 
 ### 使用符合實際的角色名稱
 
-名稱必須描述當前穩定職責。不要用首個實作、可能的未來擴充或 Cordis 基類命名。介面包使用能力名稱。實作包加上能夠區分實作的機制、協議、環境或廠商限定詞。只有同主機執行屬於約定時，才使用 `local`。
+名稱必須描述當前穩定職責。不要用首個實作、可能的未來擴充或 Cordis 基類命名。介面包使用能力名稱。實作包加上能夠區分實作的機制、協定、環境或廠商限定詞。只有同主機執行屬於約定時，才使用 `local`。
 
 一個 engine、runtime、policy、controller、resolver、store 或當前設定使用單數 `ctx` key。registry 或擁有多個具名成員的服務使用複數 key。類的角色與 key 的單複數必須一致。不得讓不相容的 host 與 client 聲明複用同一個 Cordis `Context` key。即使二者使用獨立的執行時期 context，TypeScript 聲明合併仍會同時看到兩種類型。如果自然複數已經屬於另一個端面，就增加職責後綴。
 
@@ -58,17 +58,17 @@ package.json 不變式（由 `pnpm run constraints` / `scripts/check-workspace-c
 | `Runtime` | 執行即時工作，並跨呼叫擁有分派、取消、provider 協調或操作生命週期。 | 只儲存記錄、返回目錄、解析一個值或保存設定。 |
 | `Resolver` | 根據輸入計算或定位一個答案，但不擁有該答案的生命週期。 | 擁有可變集合或長時間執行的執行過程。 |
 | `Binder` | 把一個已聲明介面綁定到呼叫方的 context 或生命週期，並返回綁定值。 | 把該值作為集合持有、控制其領域狀態，或只轉換資料。 |
-| `Engine` | 實作領域演算法或有狀態執行模型。 | 只選擇 provider 或跨協議邊界轉發請求。 |
+| `Engine` | 實作領域演算法或有狀態執行模型。 | 只選擇 provider 或跨協定邊界轉發請求。 |
 | `Policy` | 決定允許、選擇、限制或觀察什麼。 | 執行該決定所允許的機制。 |
 | `Executor` | 在一項能力中執行一個明確請求或已解析 spec。 | 擁有廣泛應用生命週期或 provider 目錄。 |
-| `Gateway` | 適配行程、網路、RPC 或 API 邊界。 | 只註冊同進程服務或儲存元資料。 |
+| `Gateway` | 適配行程、網路、RPC 或 API 邊界。 | 只註冊同行程服務或儲存元資料。 |
 | `Provider` | 提供一項能力定義的一個實作。存在多個實作時，加上機制或廠商限定詞。 | 表示能力定義、provider registry 或消費端 runtime。 |
 | `Backend` | 在已定義介面之後實作可替換的底層持久化、傳輸或執行。 | 表示面向使用者的服務或一個已返回的即時資源引用。 |
 | `Handle` | 引用一個即時資源，並控制或觀察該資源。 | 建立並管理完整資源池。 |
 | `Config` | 擁有一個已解析設定值，或一項邊界嚴格的設定記錄及其更新約定。 | 儲存通用集合、執行工作或暴露無關設定。 |
 | `Service` | 擁有一項無法用以上更精確角色誠實描述的內聚領域服務。 | 只因為類繼承 Cordis `Service` 而使用該名稱。 |
 
-只對受支持的 Python 與 TypeScript SDK 所使用的 JSON-RPC 用戶端／伺服器協議使用 `SDK`。DeepSeek Harness 本身是 agent harness，不是 SDK 項目。產品拼寫統一使用 `Typert`，不得使用 `TypeRT` 或 `typeRT`。
+只對受支援的 Python 與 TypeScript SDK 所使用的 JSON-RPC 用戶端／伺服器協定使用 `SDK`。DeepSeek Harness 本身是 agent harness，不是 SDK 項目。產品拼寫統一使用 `Typert`，不得使用 `TypeRT` 或 `typeRT`。
 
 ## 4. 編寫包 README
 

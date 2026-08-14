@@ -1,6 +1,6 @@
 # 工作階段
 
-[English](session.md) | [简体中文](session.zh.md) | 繁體中文
+[English](session.md) | 繁體中文
 
 [dsh-session](../../packages/core/session) 的記憶體事件溯源模型。`Session` 是一份由類型化 `SessionEvent` 組成的**僅附加日誌**，是 agent（代理）完整互動歷史的唯一真源。LLM（大型語言模型）訊息歷史從日誌*派生*而來，從不單獨儲存；重播即從同一組事件重新派生。日誌如何實作**持久化**（持久化 seam、後端、當機復原）是兄弟文件 [persistence.md](persistence.md) 的關注點。
 
@@ -541,7 +541,7 @@ declare class Session {
 
 ## 輪次的結束原因：`TurnEndReasonMap`
 
-`turn/start` 沒有 trigger 欄位。已進入的 `user/message` 批次記錄進入每個步驟的內容，`llm/retry` 記錄請求復原，idle 注入則保持待處理，直到喚醒交付抵達後續 pre-step。即時輪次會保留停止驅動器的類型化 [`AgentCancelCause`](core.md#the-agent-handle)；只有在匯入受支持的粗粒度取消記錄且記錄未保存呼叫方時，持久化才使用額外的 `{ kind: 'legacy' }` 原因。
+`turn/start` 沒有 trigger 欄位。已進入的 `user/message` 批次記錄進入每個步驟的內容，`llm/retry` 記錄請求復原，idle 注入則保持待處理，直到喚醒交付抵達後續 pre-step。即時輪次會保留停止驅動器的類型化 [`AgentCancelCause`](core.md#the-agent-handle)；只有在匯入受支援的粗粒度取消記錄且記錄未保存呼叫方時，持久化才使用額外的 `{ kind: 'legacy' }` 原因。
 
 ```ts type-equiv
 /** Durable cancellation cause, including imports whose original coarse record carried no cause. */

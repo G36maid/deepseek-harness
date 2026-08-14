@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-workflow
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 工作流程 seam（擴充點，`ctx.workflowEngine`）執行由模型編寫、可扇出 subagent 的編排指令碼。該 seam 定義指令碼、執行、結果、錯誤和事件契約；引擎負責決定如何隔離並執行指令碼。
 
@@ -10,7 +10,7 @@
 
 ## 服務與執行契約
 
-`WorkflowEngine.start(request): WorkflowRun` 會同步完成足夠多的校驗，在執行建立前拒絕格式錯誤的 meta 塊、無法解析的指令碼、不可用的提供方路由或不受支持的單次執行限制。返回後，`WorkflowRun.result` 絕不拒絕：執行失敗以 `stopReason: 'error'` 兌現，取消則在引擎有限的寬限時間內以 `cancelled` 兌現。
+`WorkflowEngine.start(request): WorkflowRun` 會同步完成足夠多的校驗，在執行建立前拒絕格式錯誤的 meta 塊、無法解析的指令碼、不可用的提供方路由或不受支援的單次執行限制。返回後，`WorkflowRun.result` 絕不拒絕：執行失敗以 `stopReason: 'error'` 兌現，取消則在引擎有限的寬限時間內以 `cancelled` 兌現。
 
 執行由持有方負責。引擎外掛程式解除安裝會阻止新的啟動，但不會撤銷已接受的執行。持有方必須在每條路徑上呼叫 `dispose()`；dispose（資源釋放）會取消剩餘工作，並在文件規定的期限內達到或放棄完全靜止。
 
@@ -26,7 +26,7 @@
 - `workflow/phase` 和 `workflow/log` 公開指令碼敘述；
 - `workflow/agent-start` / `workflow/agent-end` 按 `seq` 為每次子 agent 呼叫配對；提供方的非同步啟動呼叫被拒絕時，該子 agent 不會發出其中任何一個事件。
 
-同進程事件 payload 是以不可變方式借用的值。每個監聽器都獨立隔離：同步拋出例外或返回的 promise 被拒絕時，只會記錄日誌，不會阻塞同級監聽器或改變執行。
+同行程事件 payload 是以不可變方式借用的值。每個監聽器都獨立隔離：同步拋出例外或返回的 promise 被拒絕時，只會記錄日誌，不會阻塞同級監聽器或改變執行。
 
 ## 失敗紀律
 
@@ -52,7 +52,7 @@
 
 ## 已知限制與暫緩事項
 
-- **僅支持前臺收集**：呼叫方負責一個活動執行並等待它；後臺啟動／輪詢、spill 控制代碼和分離收集均暫緩處理。
+- **僅支援前臺收集**：呼叫方負責一個活動執行並等待它；後臺啟動／輪詢、spill 控制代碼和分離收集均暫緩處理。
 - **沒有日誌化或復原**：指令碼、子 agent 進度和中間值均不設檢查點，因此行程重新啟動後無法繼續執行。
 - **沒有已保存或巢狀工作流程**：該 seam 只啟動呼叫方提供的指令碼，工作流程指令碼不會收到用於遞迴編排的 `workflow()` 掛鉤。
 - **沒有 token 預算詞彙**：引擎會限制並行、條目和子 agent，但請求與結果都不會統計跨子 agent 的模型 token。

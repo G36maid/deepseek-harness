@@ -1,12 +1,12 @@
 # @deepseek-ai/dsh-tool-workflow
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 面向模型的 **`workflow` 工具**：執行一段扇出 subagent 的 JavaScript 編排指令碼，並返回指令碼的最終值。本包負責基於 [`ctx.workflowEngine`](../workflow/README.md) 定義面向模型的 schema 和執行生命週期；指令碼解析、執行、上限與取消位於 seam 之後，消費端仍負責面向父級的 schema 和結果包絡。
 
 ## 模型看到的內容
 
-工具有三個參數：`meta`（必需的身份資料：`name`、`description` 和選填的進度註解）、`script`（必需的純 JavaScript 指令碼體，不含 `export const meta` 語句；工具描述包含完整的編寫約定）以及 `args`（選填 JSON 對象，作為全域性變數 `args` 向指令碼公開；裸清單應包裝到欄位中，使協議 schema 如實表達形態）。外掛程式還會貢獻一個 `tool:<toolName>` 系統提示詞段，其中包含使用策略：只有使用者明確要求工作流程／大型編排時才使用該工具；一兩項委派優先使用普通 subagent 呼叫。這遵循工具指導隨工具外掛程式交付、絕不放入部署 persona 的約定。
+工具有三個參數：`meta`（必需的身份資料：`name`、`description` 和選填的進度註解）、`script`（必需的純 JavaScript 指令碼體，不含 `export const meta` 語句；工具描述包含完整的編寫約定）以及 `args`（選填 JSON 對象，作為全域性變數 `args` 向指令碼公開；裸清單應包裝到欄位中，使協定 schema 如實表達形態）。外掛程式還會貢獻一個 `tool:<toolName>` 系統提示詞段，其中包含使用策略：只有使用者明確要求工作流程／大型編排時才使用該工具；一兩項委派優先使用普通 subagent 呼叫。這遵循工具指導隨工具外掛程式交付、絕不放入部署 persona 的約定。
 
 ## 生命週期
 
@@ -53,7 +53,7 @@ Use the <toolName> tool ONLY when the user explicitly asks for a workflow or for
 
 #### 模型看到的內容
 
-工具可見時，已生成的默認 [`workflow` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-workflow) 包含完整的 JavaScript 掛鉤與元資料約定；`toolName` 可以重新命名該定義，模型會提交指令碼、元資料和選填 args。
+工具可見時，已生成的預設 [`workflow` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-workflow) 包含完整的 JavaScript 掛鉤與元資料約定；`toolName` 可以重新命名該定義，模型會提交指令碼、元資料和選填 args。
 
 #### Token 影響
 

@@ -1,6 +1,6 @@
 # client/ — web GUI 瀏覽器端
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 UI 服務和功能外掛程式。編寫規則見 [AGENTS.md](AGENTS.md)；宿主半側是 [`host/`](../host/README.md)。除 `test-runtime` 外，均為名為 `@deepseek-ai/dsh-client-<name>` 的**產品**包。
 
@@ -14,7 +14,7 @@ dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 U
 | [`hmr/`](hmr/README.md) | 在開發期間刷新用戶端外掛程式。 |
 | [`locale/`](locale/README.md) | 提供本機化偏好與訊息詞典。 |
 | [`schema-form/`](schema-form/README.md) | 為設定編輯器提供 schema 驅動的草稿處理。 |
-| [`test-runtime/`](../test-support/client-runtime/README.md) | 為用戶端功能包提供共享的倉庫測試支持。 |
+| [`test-runtime/`](../test-support/client-runtime/README.md) | 為用戶端功能包提供共享的倉庫測試支援。 |
 | [`ui-slots/`](ui-slots/README.md) | 定義 UI 功能註冊和組合擴充 slot 的方式。 |
 | [`ui-theme/`](ui-theme/README.md) | 應用所選顏色主題。 |
 | [`ui-primitives/`](ui-primitives/README.md) | 提供共享 React 控制元件、圖示和內容渲染器。 |
@@ -33,7 +33,7 @@ dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 U
 | [`ui-subagent/`](ui-subagent/README.md) | 提供 subagent（子 agent）導覽、子級 transcript（文字記錄）的狀態和內聯引用。 |
 | [`ui-jobs/`](ui-jobs/README.md) | 在工作階段標題欄列出當前工作階段的背景工作。 |
 | [`ui-model-selection/`](ui-model-selection/README.md) | 在對話介面中提供模型選擇。 |
-| [`ui-permission/`](ui-permission-presets/README.md) | 設定默認權限並切換當前工作階段的訪問模式。 |
+| [`ui-permission/`](ui-permission-presets/README.md) | 設定預設權限並切換當前工作階段的訪問模式。 |
 | [`ui-plan/`](ui-plan/README.md) | 展示生效中的 plan mode 狀態及其退出控制元件。 |
 | [`ui-settings-plugins/`](ui-settings-plugins/README.md) | 擁有“外掛程式”設定分區、它的分頁標籤擴充點，以及可設定的宿主平面外掛程式卡片。 |
 | [`ui-user-questions/`](ui-user-questions/README.md) | 展示 agent 請求的互動式問題。 |

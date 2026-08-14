@@ -2,14 +2,14 @@
 
 Status: implemented
 
-[English](2026-08-04-drop-windows-powershell-picker-fallback.md) | [简体中文](2026-08-04-drop-windows-powershell-picker-fallback.zh.md) | 繁體中文
+[English](2026-08-04-drop-windows-powershell-picker-fallback.md) | 繁體中文
 
 ## 問題
 
 原生目錄選擇器的 win32 分支在 koffi `IFileOpenDialog` 子行程之下保留了一條兩級 PowerShell 回退：先 `pwsh.exe`，再 `powershell.exe`（Windows PowerShell 5.1），兩者執行同一個主動啟用 `SetProcessDPIAware` 的 WinForms 指令碼。該鏈的存在是為了在 koffi 層「不可用」時仍能給出一個可用的選擇器，但它可能保護的每一個觸發條件都是我們自己打包或部署的失敗，而不是作業系統的：
 
 - koffi 的原生二進位作為普通的選填 NPM 相依性（`@koromix/koffi-win32-x64`，無 install script）分發；能裝上該包的宿主就一定有二進位，裝不上的宿主會在安裝期明確報錯——回退程式碼也根本不會得到載入。
-- 「上古 Windows」不可能出現：本倉庫支持的 Node 版本執行在遠比 Vista 時代 `IFileOpenDialog` ABI 新的 Windows 世代上。
+- 「上古 Windows」不可能出現：本倉庫支援的 Node 版本執行在遠比 Vista 時代 `IFileOpenDialog` ABI 新的 Windows 世代上。
 - koffi/COM 缺陷只崩對話框子行程（crash isolation）；對我們自己 bug 的正確反應是上報失敗，而不是靜默降級到舊版對話框。
 
 這條鏈還付出了真實的複雜度：兩個 spawn 層執行同一指令碼、把回退觸發從 `ENOENT` 拓寬為 pwsh 的任何失敗以修復 PowerShell 6（無 WinForms）回歸問題、攜帶全部三個原因的三連敗 `AggregateError`，以及每層的 abort 重檢。seam 早已擁有唯一重要的回退——組合層面的 `browse` 後端，由 `directory-picker-auto` 在啟動時選擇一次。
@@ -34,5 +34,5 @@ win32 層恰好就是 koffi `IFileOpenDialog` 子行程；任何失敗原樣上�
 
 - win32 選擇器的失敗面是來自單一層的一個錯誤；呼叫方看到真實原因（koffi 載入失敗、COM 拒絕、對話框崩潰），而不是鏈式聚合的錯誤。
 - 本包不再呼叫 `pwsh`/`powershell.exe`；WinForms 指令碼、其 `SetProcessDPIAware` 修正與 `-STA` 標志隨之消失。
-- 測試相應縮減：pwsh/5.1 級聯與三連敗用例被一個「失敗原樣上報、無回退」用例取代；默認配接器測試改驅動 Linux 層。
+- 測試相應縮減：pwsh/5.1 級聯與三連敗用例被一個「失敗原樣上報、無回退」用例取代；預設配接器測試改驅動 Linux 層。
 - 重新引入條件：未來出現在我們打包鏈之外的 win32 機制（我們不隨包分發的系統提供的對話框宿主）才值得在同一判據下保留一層回退。

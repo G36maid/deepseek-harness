@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-local-json-tree-renderer.md) | [简体中文](2026-07-28-local-json-tree-renderer.zh.md) | 繁體中文
+[English](2026-07-28-local-json-tree-renderer.md) | 繁體中文
 
 ## 問題
 
@@ -25,7 +25,7 @@ Status: implemented
 
 **渲染後注入預覽和行元資料。** 不予採納：Effect 或 MutationObserver 仍會相依性同一套私有 DOM 結構，同時使 React 和命令式變更機制分別負責同一行的不同部分。
 
-**採用更大型的 JSON 查看器。** 不予採納：編輯、搜尋與主題系統不在當前只讀約定範圍內；擴大相依性範圍也無法去除檢查器專用的複製和版面配置程式碼。
+**採用更大型的 JSON 查看器。** 不予採納：編輯、搜尋與主題系統不在當前只讀約定範圍內；擴大相依性範圍也無法去除檢查器專用的複製和版面設定程式碼。
 
 ## 後果
 

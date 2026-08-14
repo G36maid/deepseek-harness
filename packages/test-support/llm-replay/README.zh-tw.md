@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-llm-replay
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 用於無金鑰快照測試的 LLM（大型語言模型）重播外掛程式。它根據已記錄的**工作階段 JSONL** fixture（測試前置資料）重建模型流，使測試無需 API 金鑰即可針對固定的模型 transcript（文字記錄）啟動真實 agent（代理）。設定 `providers` 後，它會註冊僅用於重播的配接器，其模型目錄可供測試模型發現功能的場景使用；未設定 `providers` 時，它會安裝無需模型發現功能的測試所用 catch-all `llm/stream` waterfall（瀑布式事件）。
 
@@ -64,7 +64,7 @@ fixture 就是持久化的工作階段日誌（`<scenario>/session.jsonl`）。�
 
 ## 外掛程式匯出形態
 
-命名匯出 `name` / `inject` / `Config` / `apply`，且**沒有默認匯出**：Cordis Loader 的 `unwrapExports` 執行 `exports.default ?? exports`，因此意外的默認匯出會將模組摺疊為函式本身，並丟棄 `inject` 命名空間（見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
+命名匯出 `name` / `inject` / `Config` / `apply`，且**沒有預設匯出**：Cordis Loader 的 `unwrapExports` 執行 `exports.default ?? exports`，因此意外的預設匯出會將模組摺疊為函式本身，並丟棄 `inject` 命名空間（見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
 
 ## 模型體驗
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-web-markdown-incremental-ast-renderer.md) | [简体中文](2026-08-06-web-markdown-incremental-ast-renderer.zh.md) | 繁體中文
+[English](2026-08-06-web-markdown-incremental-ast-renderer.md) | 繁體中文
 
 ## Problem
 
@@ -14,7 +14,7 @@ Status: implemented
 
 - **文法**([parse.ts](../../../../packages/client/ui-primitives/src/markdown/parse.ts)):`parseGfm`(流式臂與 `extractMarkdownPlainText`)和 `parseGfmWithMath`(定稿臂)以被替換的 remark 外掛程式所包裝的同一組 micromark 擴充呼叫 `mdast-util-from-markdown`,因此各處塊邊界完全一致。`mathCompatibility`(原 `remarkMathCompatibility`)現在直接匯出其 micromark 擴充。
 - **增量解析**([incremental.ts](../../../../packages/client/ui-primitives/src/markdown/incremental.ts)):CommonMark 塊解析按行推進,追加文字只會重塑解析前沿。`IncrementalMarkdownParser` 保留末尾兩個塊不穩定(最後一塊是前沿;倒數第二塊是安全裕量),凍結其前的所有塊,只從最後一個凍結塊的 `position.end.offset` 起重新解析源尾部——用的是解析器自己的偏移量,沒有任何自製源掃描。每個源區間在整個流中解析 O(1) 次而非每 chunk 一次;單個巨型塊(未閉合圍欄)退化為舊的全量重解析成本,不會更差。非追加輸入在遞增的 generation 下重設狀態。
-- **渲染**([render.tsx](../../../../packages/client/ui-primitives/src/markdown/render.tsx)、[katex.tsx](../../../../packages/client/ui-primitives/src/markdown/katex.tsx)):一個對 mdast 節點類型的 switch 取代 remark-rehype + react-markdown,逐位元組復刻被替換管線的 DOM——表格對齊渲染為 `text-align` 樣式、緊湊清單段落解包、任務清單類名與核取方塊空格、腳註區(其頁內錨點本就被協議白名單降為純文字)、字面 raw HTML、會與字面 HTML 文字相鄰顯形的分隔換行,以及 rehype-katex 的三臂容錯鏈,KaTeX HTML 經瀏覽器自帶的 `DOMParser` 對映為 React(無包裹元素,首/末子元素的 margin 規則仍能作用於 `.katex-display`;React 18 會把 `.katex-mathml` 子樹放進 HTML 命名空間,與被替換管線完全一致——既有限制,不在本對等性約定範圍內,對承擔視覺渲染的 `.katex-html` 臂不可見)。凍結塊快取其 React 元素並保持源偏移 key,跨過凍結邊界時走 reconcile 而非重掛載;`MarkdownText` 已 memo 化。
+- **渲染**([render.tsx](../../../../packages/client/ui-primitives/src/markdown/render.tsx)、[katex.tsx](../../../../packages/client/ui-primitives/src/markdown/katex.tsx)):一個對 mdast 節點類型的 switch 取代 remark-rehype + react-markdown,逐位元組復刻被替換管線的 DOM——表格對齊渲染為 `text-align` 樣式、緊湊清單段落解包、任務清單類名與核取方塊空格、腳註區(其頁內錨點本就被協定白名單降為純文字)、字面 raw HTML、會與字面 HTML 文字相鄰顯形的分隔換行,以及 rehype-katex 的三臂容錯鏈,KaTeX HTML 經瀏覽器自帶的 `DOMParser` 對映為 React(無包裹元素,首/末子元素的 margin 規則仍能作用於 `.katex-display`;React 18 會把 `.katex-mathml` 子樹放進 HTML 命名空間,與被替換管線完全一致——既有限制,不在本對等性約定範圍內,對承擔視覺渲染的 `.katex-html` 臂不可見)。凍結塊快取其 React 元素並保持源偏移 key,跨過凍結邊界時走 reconcile 而非重掛載;`MarkdownText` 已 memo 化。
 
 DOM 由 `tests/fixtures/markdown-dom` 釘死:fixture 錄制自替換前的 react-markdown 實作,新渲染器必須在空白規整序列化器下復現。fixture 差異即使用者可見的 markdown 樣式變更,必須按此評審,絕不能為重構而重錄。`tests/markdown-incremental.spec.tsx` 承載等價性性質——以 1/3/7/16 位元組分塊,在每個追加前綴處,常駐元件的 DOM 都等於全新掛載——外加凍結邊界的 DOM 節點同一性與重設行為。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-even-out-shipped-tool-rosters.md) | [简体中文](2026-07-31-even-out-shipped-tool-rosters.zh.md) | 繁體中文
+[English](2026-07-31-even-out-shipped-tool-rosters.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Status: implemented
 
 有兩行仍是 surface 專屬。`tmux-context` 只在 TUI，因為瀏覽器 surface 沒有終端機複用器可描述。`session-reference` 只在 TUI，因為它以 launcher 的行程本機路徑驅動共享的 session-query 索引，而瀏覽器側邊欄會在自己的首次搜尋裡重建該索引。
 
-**本次工具清單決策當時只做加法。** 落地時兩個 surface 均未移除任何工具行，目錄對比只發現了新增，別無其他。後續的 session-search 與單一編輯器決策分別負責對應的默認清單例外。共享執行器、沙盒組合與訪問預設值獨立歸屬[workspace-write 預設值決策](2026-07-31-workspace-write-surface-default.md)。
+**本次工具清單決策當時只做加法。** 落地時兩個 surface 均未移除任何工具行，目錄對比只發現了新增，別無其他。後續的 session-search 與單一編輯器決策分別負責對應的預設清單例外。共享執行器、沙盒組合與訪問預設值獨立歸屬[workspace-write 預設值決策](2026-07-31-workspace-write-surface-default.md)。
 
 ### 什麼保持不掛，以及為什麼
 
@@ -24,7 +24,7 @@ Status: implemented
 
 **`dsh-tool-cordis`** 讓模型寫一段 JavaScript 並掛成臨時外掛程式。它的 README 寫明瞭這個界限:「The sandbox is containment for honest code, not a security boundary — host-realm helpers on the sandbox global are reachable, so mount code can reach Node」([Known limitations](../../../../packages/extensions/tool-cordis/README.md))。`node:vm` 的 realm 就在 harness 行程內,而 `dsh-sandbox-local` 只約束它 spawn 出去的 argv,因此在 Web surface 上,沙盒與批准接縫是被繞過而非被執行。
 
-**`dsh-web-fetch-http`** 保持不掛,`dsh-tool-web` 保持 `fetch: false`。SSRF 防護在實作中是 deferred 狀態([`policy.ts`](../../../../packages/web/web-fetch-http/src/policy.ts) 只校驗協議、憑據與長度),包裡也直說了:「this provider is an SSRF primitive and **must not be enabled** in a deployment that can reach sensitive internal network targets」([README](../../../../packages/web/web-fetch-http/README.md))。目標由模型選擇,其中包括 harness 自己跑在環回地址上的閘道、內網段和雲元資料端點。
+**`dsh-web-fetch-http`** 保持不掛,`dsh-tool-web` 保持 `fetch: false`。SSRF 防護在實作中是 deferred 狀態([`policy.ts`](../../../../packages/web/web-fetch-http/src/policy.ts) 只校驗協定、憑據與長度),包裡也直說了:「this provider is an SSRF primitive and **must not be enabled** in a deployment that can reach sensitive internal network targets」([README](../../../../packages/web/web-fetch-http/README.md))。目標由模型選擇,其中包括 harness 自己跑在環回地址上的閘道、內網段和雲元資料端點。
 
 不掛載它收窄的是接觸面而非可達性：`bash` 是掛著的,`curl` 照樣能拿到同一個頁面——一次真實執行確認了這點。這個缺席買到的是去掉一個無需 shell、以參數成形的請求原語,以及隨之而來的那條意外路徑:一次「幫我總結這個頁面」悄悄打到環回地址。真要收住出站流量的部署需要的是網路層管控。
 
@@ -34,7 +34,7 @@ Status: implemented
 
 `@deepseek-ai/dsh-mcp-client` 成為本 CLI（命令列介面）的執行時期相依性,但在任何交付設定裡都沒有對應的行。該外掛程式每個實例只掛載一臺伺服器,且 `command` 是必填,因此一個預設值必須點名一臺第三方伺服器,並在每次啟動時把它作為子行程 spawn——不經 `ctx.shell`,因而也在 Web surface 所組合的沙盒策略之外。
 
-真正能讓 MCP 成為默認的那一層,恰恰是本倉庫尚未擁有的:一個讀取使用者伺服器清單、按條目逐臺掛載用戶端的橋接,形態與 [`dsh-hooks-claude-code`](../../../../packages/hooks/hooks-claude-code/README.md) 讀取 Claude Code 的 `hooks.json` 完全相同。交付這個相依性意味著已安裝的 `dsh` 今天就能從 `$DSH_HOME/config.yaml` 掛載伺服器;CLI README 裡給了那段 YAML。
+真正能讓 MCP 成為預設的那一層,恰恰是本倉庫尚未擁有的:一個讀取使用者伺服器清單、按條目逐臺掛載用戶端的橋接,形態與 [`dsh-hooks-claude-code`](../../../../packages/hooks/hooks-claude-code/README.md) 讀取 Claude Code 的 `hooks.json` 完全相同。交付這個相依性意味著已安裝的 `dsh` 今天就能從 `$DSH_HOME/config.yaml` 掛載伺服器;CLI README 裡給了那段 YAML。
 
 ## 測試
 
@@ -58,7 +58,7 @@ Status: implemented
 
 **開啟 Code Mode。** 它的信任立場按設計與 bash 同級,工具呼叫要過與 bash 相同的 `tools/pre-execute` 閘門,所以它與上面那些模型寫碼工具不是同一個判斷。在這裡仍被否決:`both` 會改變兩個 surface 上每一個模型可見請求,而 `code` 是把線路替換而非加一個——兩者都是呈現方式的決定,不是工具清單的決定。
 
-**默認掛一臺 MCP 伺服器。**否決，因為交付預設值必須點名一臺，而任何選擇都會在每個使用者的機器上、在沙盒之外 spawn 一個第三方子行程。改為交付相依性。
+**預設掛一臺 MCP 伺服器。**否決，因為交付預設值必須點名一臺，而任何選擇都會在每個使用者的機器上、在沙盒之外 spawn 一個第三方子行程。改為交付相依性。
 
 ## 後果
 
@@ -66,4 +66,4 @@ Status: implemented
 
 `apps/cli` 增加了五個 workspace 相依性:四個是交付樹當時掛載的,外加 `dsh-mcp-client`——它並不被掛載,存在的意義是讓已安裝的 `dsh` 能掛。四個保留了下來——[session-search-not-shipped-default 決策](2026-08-02-session-search-not-shipped-default.md)把 `@deepseek-ai/dsh-tool-session-query` 連同它的行一起移除了。
 
-執行策略獨立於工具清單。[共享 workspace-write 決策](2026-07-31-workspace-write-surface-default.md)擁有兩個 surface 的沙盒執行器與默認權限；更改該策略不會增加或移除工具。
+執行策略獨立於工具清單。[共享 workspace-write 決策](2026-07-31-workspace-write-surface-default.md)擁有兩個 surface 的沙盒執行器與預設權限；更改該策略不會增加或移除工具。

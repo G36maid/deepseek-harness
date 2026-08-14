@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-02-fs-per-session-cwd.md) | [简体中文](2026-07-02-fs-per-session-cwd.zh.md) | 繁體中文
+[English](2026-07-02-fs-per-session-cwd.md) | 繁體中文
 
 ## 問題
 
-ACP（Agent Client Protocol）橋接層為每個工作階段提供獨立的工作區：`session/new` 將自動化用戶端的項目目錄記錄為 `SessionHeader.cwd`，`dsh-tool-bash` 將每次 bash 呼叫的 `workdir` 默認設為呼叫方 agent（代理）的 `session.header.cwd`（見 [ACP 包](../../../../packages/acp/acp) 與 `dsh-tool-bash` 中的 `resolveWorkdir`）。因此工作階段 A 中的 bash 命令在 A 的項目目錄執行，工作階段 B 中的在 B 的項目目錄執行——一個伺服器行程，N 個工作區。
+ACP（Agent Client Protocol）橋接層為每個工作階段提供獨立的工作區：`session/new` 將自動化用戶端的項目目錄記錄為 `SessionHeader.cwd`，`dsh-tool-bash` 將每次 bash 呼叫的 `workdir` 預設設為呼叫方 agent（代理）的 `session.header.cwd`（見 [ACP 包](../../../../packages/acp/acp) 與 `dsh-tool-bash` 中的 `resolveWorkdir`）。因此工作階段 A 中的 bash 命令在 A 的項目目錄執行，工作階段 B 中的在 B 的項目目錄執行——一個伺服器行程，N 個工作區。
 
 檔案系統解析使用的是外掛程式載入時的 cwd，而 bash 使用的是工作階段的項目目錄。因此，當自動化用戶端的項目目錄與伺服器啟動目錄不同時，相對路徑的解析結果就會不一致；快照測試因為讓這兩個路徑相同而掩蓋了這個 bug。
 
@@ -32,8 +32,8 @@ ACP（Agent Client Protocol）橋接層為每個工作階段提供獨立的工�
 
 ## 後果
 
-- 在 ACP 演示中，fs 工具與 bash 對每個工作階段的工作區達成一致；自動化用戶端可以選擇任意絕對項目目錄，兩類工具都在該目錄下操作。
+- 在 ACP 示範中，fs 工具與 bash 對每個工作階段的工作區達成一致；自動化用戶端可以選擇任意絕對項目目錄，兩類工具都在該目錄下操作。
 - 對於包含 `symlink/..` 的工作階段 cwd，或普通符號連結 cwd 搭配含父目錄遍歷的相對路徑，bash、檔案系統工具和沙盒授權都會從同一個物理工作區解析；詞法父目錄不會獲得授權。
 - `FsTarget` 的標識不變：`targetKey` 仍為解析後絕對路徑的 realpath，因此 observed-state 鍵控與符號連結標識不受影響——正確的每工作階段 cwd 產生與 bash 目標相同的 key。
 - 向後相容：所有現有的 `resolve(path)` 呼叫（均在測試中）繼續正常工作；新參數是選填的。
-- 單工作階段 stdio 演示不受影響：它不提供工作階段 cwd（其 agent 的工作階段沒有 `cwd`），因此解析回退到 `config.cwd = process.cwd()`，即工作區本身。
+- 單工作階段 stdio 示範不受影響：它不提供工作階段 cwd（其 agent 的工作階段沒有 `cwd`），因此解析回退到 `config.cwd = process.cwd()`，即工作區本身。

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-plan
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 Plan mode 狀態徽章，純瀏覽器 surface 外掛程式。瀏覽器側佔用工作階段聲明的 `conversation.input.plan` 單實例 seat（位於 access 模式控制元件右側）；node 側是空 apply（roster 行）。plan 行為本身——`/plan` 命令、邊界或空閒即時提交的 `plan/mode` 狀態、`plan` 投影單元與 policy 段——歸 [`@deepseek-ai/dsh-plan-mode`](../../plan/plan-mode/README.md) 所有，由 host roster 獨立組合。
 
@@ -21,5 +21,5 @@ chip 攜帶無障礙描述 "Plan mode on, press to turn off"。准入失敗（`m
 ## 已知侷限與延後工作
 
 - **Plan mode 是引導而非執行沙盒**：需要強制只讀規劃的部署必須組合獨立的沙盒與審批策略。
-- **chip 屬於默認編輯器**：待處理的整編輯器互動（如 plan 評審）會臨時取代 InputBar 及其 chip。
+- **chip 屬於預設編輯器**：待處理的整編輯器互動（如 plan 評審）會臨時取代 InputBar 及其 chip。
 - **無未啟用態 plan 控制元件**——入口使用共享 Command source；有能力但 mode 未啟用的工作階段在工具行不顯示 plan 入口。

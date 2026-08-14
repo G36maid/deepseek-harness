@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-request-error-retry-action.md) | [简体中文](2026-07-27-request-error-retry-action.zh.md) | 繁體中文
+[English](2026-07-27-request-error-retry-action.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-`agent/request-error` 返回 `RequestErrorAction`，其中負責處理的動作是 `{ kind: 'retry' }`；默認的 `undefined` 會讓失敗輪次保持終態。不擁有該失敗的監聽器呼叫 `next()`。擁有該失敗的監聽器執行所有需要等待的修復，然後直接返回重試動作而不繼續委託。
+`agent/request-error` 返回 `RequestErrorAction`，其中負責處理的動作是 `{ kind: 'retry' }`；預設的 `undefined` 會讓失敗輪次保持終態。不擁有該失敗的監聽器呼叫 `next()`。擁有該失敗的監聽器執行所有需要等待的修復，然後直接返回重試動作而不繼續委託。
 
 waterfall 結帳後，迴圈讀取該動作，關閉失敗輪次，並從持久歷史開啟一個重試輪次。迴圈在使用該動作時會再次檢查輪次訊號，因此即使監聽器隨後返回重試動作，復原期間發生的取消或 dispose（資源釋放）仍會阻止重試。拋出例外的復原不會產生動作。
 

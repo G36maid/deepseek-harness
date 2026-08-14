@@ -1,6 +1,6 @@
 # dsh-session
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 事件溯源的工作階段日誌和記憶體儲存。`Session` 是 agent（代理）全部互動歷史的僅附加真源，LLM（大型語言模型）訊息歷史由它*派生*。原始日誌之上維護一個 **surface** 層（產生訊息事件的有序投影），以便高效派生和壓縮（compaction）。
 
@@ -46,7 +46,7 @@
 
 ### 無損 JSON 工具
 
-持久值需要一種已接受的表示，不能先檢查再二次讀取。`isJsonValue(value)` 是布林判斷函式；`snapshotJsonValue(value)` 在一趟迭代中校驗並複製普通值，無效輸入返回 `undefined`，getter 拋出的例外則向外傳播。快照輔助函式接受除 `-0` 外的有限 JSON 數值（JSON 會將其改寫為 `0`）、稠密普通陣列、普通對象或 null 原型對象；它會在規範化前拒絕迴圈引用、不支持的標量和特殊原型，同時不施加呼叫棧深度限制。
+持久值需要一種已接受的表示，不能先檢查再二次讀取。`isJsonValue(value)` 是布林判斷函式；`snapshotJsonValue(value)` 在一趟迭代中校驗並複製普通值，無效輸入返回 `undefined`，getter 拋出的例外則向外傳播。快照輔助函式接受除 `-0` 外的有限 JSON 數值（JSON 會將其改寫為 `0`）、稠密普通陣列、普通對象或 null 原型對象；它會在規範化前拒絕迴圈引用、不支援的標量和特殊原型，同時不施加呼叫棧深度限制。
 
 工作階段事件匯入將所有權與訊息校驗分開處理。`snapshotSessionEvent(event)` 會先克隆借用的事件，再校驗並凍結其中帶標識的訊息。`adoptSessionEvent(event)` 原地執行相同的訊息處理並返回原事件；呼叫方只有在移交獨佔的對象圖，且該對象圖沒有與其他事件共享可變子對象時，纔可以使用此函式。
 
@@ -74,7 +74,7 @@
 
 此包還定義 `TurnEndReasonMap`，即用於輪次結束、可合併擴充且以 `kind` 為標籤的和類型。`turn/start` 只攜帶輪次編號；隨後已進入的 `user/message` 批次記錄其輸入，`llm/retry` 則記錄請求復原。
 
-被中斷的即時輪次以 `{ kind: 'aborted', reason: AgentCancelCause }` 結束，在持久 transcript 中保留類型化取消原因。持久化會將受支持舊格式中的粗粒度中止結果匯入為 `{ kind: 'aborted', reason: { kind: 'legacy' } }`，因為該記錄沒有保留呼叫方。輪次失敗攜帶 `{ kind: 'error', error }`；只有當機復原會合成 `{ kind: 'interrupted' }`。
+被中斷的即時輪次以 `{ kind: 'aborted', reason: AgentCancelCause }` 結束，在持久 transcript 中保留類型化取消原因。持久化會將受支援舊格式中的粗粒度中止結果匯入為 `{ kind: 'aborted', reason: { kind: 'legacy' } }`，因為該記錄沒有保留呼叫方。輪次失敗攜帶 `{ kind: 'error', error }`；只有當機復原會合成 `{ kind: 'interrupted' }`。
 
 每個 `SessionEvent` 都有三個選填頂層欄位（結構元資料）：
 
@@ -139,6 +139,6 @@
 ## 已知限制與暫緩事項
 
 - **工作階段分支／樹結構**（pi 風格條目樹）：除非需要超越基於邊界的 `fork()` 能力，否則暫緩。
-- **`fork()` 僅在即時工作階段的穩定邊界處切分**：所選前綴結束時不得有開放輪次，且源工作階段必須位於儲存中；[fork API](../../../.agents/notes/implemented/feature/2026-06-30-session-store-fork-api.md) 不支持對已持久化但未載入的工作階段進行 fork。
+- **`fork()` 僅在即時工作階段的穩定邊界處切分**：所選前綴結束時不得有開放輪次，且源工作階段必須位於儲存中；[fork API](../../../.agents/notes/implemented/feature/2026-06-30-session-store-fork-api.md) 不支援對已持久化但未載入的工作階段進行 fork。
 - **`SESSION_FORMAT_VERSION` 固定為 `0`**：預發布階段不承諾廣泛相容性；`Session` 只接受當前 seed 形狀，後端拒絕其他任何版本並說明方向（更新的版本提示"由更新的 harness 寫入，請升級"；更舊的版本說明尚無升級路徑）。不認識的事件類型同樣被拒絕，除非信封帶 `ignorable` 標記；版本機制見 [session-log 版本機制 Agent Note](../../../.agents/notes/implemented/architecture/2026-08-10-session-log-version-mechanism.md)。範圍受限的儲存匯入升級應由持久化邊界負責（[政策](../../../AGENTS.md)、[訊息標識機制引入前的訊息復原](../../../.agents/notes/implemented/bug-fix/2026-07-28-load-pre-identity-session-messages.md)）。
 - **`TurnEndReasonMap` 不含 ACP（Agent Client Protocol）命名的 `refusal`／`max_turn_requests` 變體**：受生產方約束；只有當配接器或迴圈首次產生這些變體時才加入。

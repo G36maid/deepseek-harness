@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-21-subagent-capability-seam.md) | [简体中文](2026-06-21-subagent-capability-seam.zh.md) | 繁體中文
+[English](2026-06-21-subagent-capability-seam.md) | 繁體中文
 
 > 完整 seam 已交付：`dsh-subagent` 介面與 `dsh-tool-subagent` 消費端；兩個行程內後端（`dsh-subagent-spawn-in-process`、`dsh-subagent-fork-in-process`）；巢狀 agent（代理）快照基礎設施（[逐工作階段快照重播](../testing/2026-06-22-subagent-snapshot-replay.md)）；以及行程外的 ACP（Agent Client Protocol）、Codex 與 Claude Code 後端（[ACP Agent Note](2026-06-22-acp-subagent-backend.md)、[產品提供方 Agent Note](2026-08-04-claude-code-and-codex-subagent-backends.md)）。
 
@@ -45,7 +45,7 @@ bash seam（[能力 seam](../architecture/2026-06-13-capability-seams.md)）在�
 
 ### 兩類選填能力，兩種發現方式
 
-- **啟動時功能**（`outputSchema`、`depthLimit`、`toolFilter`、`persona`）掛在靜態的 `provider.capabilities` 描述符上。服務在委派之前檢查每個被請求的功能，如果提供方不支持則**響亮拒絕**（`SubagentError('UNSUPPORTED_CAPABILITY')`），絕不接受後靜默忽略。這些功能必須在 run 存在之前檢查，因此不能是執行時期方法。
+- **啟動時功能**（`outputSchema`、`depthLimit`、`toolFilter`、`persona`）掛在靜態的 `provider.capabilities` 描述符上。服務在委派之前檢查每個被請求的功能，如果提供方不支援則**響亮拒絕**（`SubagentError('UNSUPPORTED_CAPABILITY')`），絕不接受後靜默忽略。這些功能必須在 run 存在之前檢查，因此不能是執行時期方法。
 - **可繼續建立**使用選填的 `SubagentProvider.prepareContinuable` 方法；方法是否存在本身即為能力，TypeScript 類型收窄即為發現機制，因此不需要可能與實作失同步的獨立 flag。繼續執行管理器直接透過 `AgentHandle` 負責後續投遞與冷復原，而一次性 `SubagentRun` 沒有 steering 或 resume 操作，具體由[可繼續 subagent](2026-07-28-continuable-subagent-conversations.md) 細化。
 
 ### Fork 與 fresh 是獨立後端，而非一個 flag

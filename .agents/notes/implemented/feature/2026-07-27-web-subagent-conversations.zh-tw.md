@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-web-subagent-conversations.md) | [简体中文](2026-07-27-web-subagent-conversations.zh.md) | 繁體中文
+[English](2026-07-27-web-subagent-conversations.md) | 繁體中文
 
 ## 問題
 
@@ -26,7 +26,7 @@ Web 產品透過頁頭操作公開選中工作階段中由工作階段支撐的�
 
 ## 設計上下文
 
-Figma 中的 [subagent 清單](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5J8/Harness?node-id=383-14602&p=f)、[層級展開](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5J8/Harness?node-id=383-15917&p=f)與 [child 對話](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5J8/Harness?node-id=388-18584&p=f)畫框是非規範性的互動與視覺參考。本記錄負責生命週期、協議與失敗語義。
+Figma 中的 [subagent 清單](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5J8/Harness?node-id=383-14602&p=f)、[層級展開](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5J8/Harness?node-id=383-15917&p=f)與 [child 對話](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5J8/Harness?node-id=388-18584&p=f)畫框是非規範性的互動與視覺參考。本記錄負責生命週期、協定與失敗語義。
 
 | 設計意圖 | 已交付約定 |
 | --- | --- |
@@ -37,19 +37,19 @@ Figma 中的 [subagent 清單](https://www.figma.com/design/jRBBK7zBgcszdVWQ0Fh5
 
 ## 產品約定
 
-只有當完整的直接目錄空回應與工作階段摘要投影相符，二者均表明沒有已知的 subagent 後代時，纔不顯示頁頭操作。其觸發器會統計經不間斷的 `origin: 'subagent'` 譜系可達的每個已知工作階段摘要後代，在普通 fork 處停止，並在任一計入統計的後代處於 `running` 時顯示活動仍在進行。由於普通側邊欄行會隱藏 origin 為 subagent 的工作階段，Workspace 瀏覽器會在每個可見的普通行上索引同一條不間斷譜系：任何執行中的後代都會讓該行顯示藍色活動指示器，並在懸停與無障礙文字中給出確切數量，同時不會把空閒 parent 描述為正在執行。普通 fork 會開啟單獨的聚合子樹。待處理互動優先於 parent 的執行中狀態；二者無論哪一項存在都會保持為主要狀態，而後代活動則成為懸停與無障礙狀態中的第二項。兩者均不存在時，後代活動優先於未查看的完成提醒；最後一個執行中的後代停止後，該提醒會復原。每個健康的直接目錄行都攜帶讀取時的 `hasChildren` 提示，該值只根據持久化 `origin: 'subagent'` 的直接譜系 header 派生；正常的健康與 diagnostic subagent 候選都會攜帶該標記，而普通 fork 不會。該預查不讀取任何後代事件日誌，展開後仍以描述符支撐的目錄為權威依據。當摘要在該目錄尚不存在時或在一次過時的空回應後確認已有後代時，該操作會保持可見，並且在打開它以刷新目錄之前僅顯示停用的載入行；僅由摘要支撐的行絕不會提供導覽能力。UI 會在互動前就省略已知葉子節點的展開控制元件；該提示不承諾 child 會一直是葉子。已展開的直接目錄載入期間，已知譜系會為每個直接後代預留一行停用的載入行，而不會遞迴取得後代目錄。隨後樹會呈現可繼續與 one-shot 行；one-shot 的選填 label 缺失時，回退到其工作階段 id。損壞、不受支持或不可用的候選仍以停用的 diagnostic 行顯示。
+只有當完整的直接目錄空回應與工作階段摘要投影相符，二者均表明沒有已知的 subagent 後代時，纔不顯示頁頭操作。其觸發器會統計經不間斷的 `origin: 'subagent'` 譜系可達的每個已知工作階段摘要後代，在普通 fork 處停止，並在任一計入統計的後代處於 `running` 時顯示活動仍在進行。由於普通側邊欄行會隱藏 origin 為 subagent 的工作階段，Workspace 瀏覽器會在每個可見的普通行上索引同一條不間斷譜系：任何執行中的後代都會讓該行顯示藍色活動指示器，並在懸停與無障礙文字中給出確切數量，同時不會把空閒 parent 描述為正在執行。普通 fork 會開啟單獨的聚合子樹。待處理互動優先於 parent 的執行中狀態；二者無論哪一項存在都會保持為主要狀態，而後代活動則成為懸停與無障礙狀態中的第二項。兩者均不存在時，後代活動優先於未查看的完成提醒；最後一個執行中的後代停止後，該提醒會復原。每個健康的直接目錄行都攜帶讀取時的 `hasChildren` 提示，該值只根據持久化 `origin: 'subagent'` 的直接譜系 header 派生；正常的健康與 diagnostic subagent 候選都會攜帶該標記，而普通 fork 不會。該預查不讀取任何後代事件日誌，展開後仍以描述符支撐的目錄為權威依據。當摘要在該目錄尚不存在時或在一次過時的空回應後確認已有後代時，該操作會保持可見，並且在打開它以刷新目錄之前僅顯示停用的載入行；僅由摘要支撐的行絕不會提供導覽能力。UI 會在互動前就省略已知葉子節點的展開控制元件；該提示不承諾 child 會一直是葉子。已展開的直接目錄載入期間，已知譜系會為每個直接後代預留一行停用的載入行，而不會遞迴取得後代目錄。隨後樹會呈現可繼續與 one-shot 行；one-shot 的選填 label 缺失時，回退到其工作階段 id。損壞、不受支援或不可用的候選仍以停用的 diagnostic 行顯示。
 
 `running` 表示在 Host 取樣邊界，確切 child Agent driver 正在處理工作；`inactive` 表示該 driver 空閒或不存在。UI 不會把任一值解釋為成功、失敗、取消、完成狀態或可復原性。`subagent.list` 提供當前 driver 狀態基線，`host/session-status` 會就地更新已知活動狀態，請求內重播會阻止更早發起但尚未完成的清單回應覆蓋較新的狀態轉換，`host/session-removed` 則會使已知行復原為 `inactive`；重連時會讀取新的基線。直接 subagent 的 `host/session-added` 幀會立即把任何已載入的 parent 行翻轉為 `hasChildren: true`，並使這項正向提示不被更早發起但尚未完成的目錄回應覆蓋；受影響分支打開期間，成員、label、mode、diagnostic 與權威快照仍需要透過去抖動的 `subagent.list` 刷新來更新。訊息投遞時仍以提示詞回應為權威依據。
 
 健康行會複用清單映像檔中保留的標準工作階段投影。token 用量數值會彙總持久化日誌中四個互不重疊的 `tokenUsage` 桶。`subagentTiming` 會在每個描述符處重設，使繼承的 fork 種子不會計入 child 總量；它會累加已完成的 `turn/start` → `turn/end` 時段，並攜帶未結束輪次同一切面的 `active.since` 和 `active.through` 邊界。該輪次保持未結束期間，現有工作階段事件會推進 `active.through`；選單不會增加單獨的計時器或日誌讀取，且僅在有已知後代處於執行狀態時才推進其本機時鐘。不足一天時，選單會以整秒格式化時間；達到一天後的視覺值最多保留兩個相鄰單位，其中月份按近似 30 天計算，年份按近似 365 天計算，而懸停資訊與無障礙名稱會保留精確的天／小時／分鐘／秒耗時。對 inactive 行，選單以 `active.through` 為被中斷未結束輪次的上界，因此過時投影絕不會借用更新的工作階段元資料，且重新打開選單絕不會讓已完成工作重新計時。這兩項指標都不蘊含持久化結果語義。
 
-選擇一行後，系統會先記錄其確切地址，再打開常駐用戶端 `Session`。歷史分頁、事件 fold、工具渲染意圖、title 與即時 mux 歸並都會複用普通對話機制。麵包屑導覽導覽使用目錄 label，只會沿 `origin: 'subagent'` 行的父連結逐級回溯，包含第一個普通 owner，並讓普通 fork 保持單層。從已尋址 subagent 建立 fork 時，會生成具有直接源譜系的普通 fork，並將其附加到最近擁有 Workspace 的祖先。目錄是一棵 ARIA 樹，支持延遲載入式 ArrowRight／ArrowLeft 展開與摺疊、線性 ArrowUp／ArrowDown 導覽、Home／End、Escape 以及焦點復原。
+選擇一行後，系統會先記錄其確切地址，再打開常駐用戶端 `Session`。歷史分頁、事件 fold、工具渲染意圖、title 與即時 mux 歸並都會複用普通對話機制。麵包屑導覽導覽使用目錄 label，只會沿 `origin: 'subagent'` 行的父連結逐級回溯，包含第一個普通 owner，並讓普通 fork 保持單層。從已尋址 subagent 建立 fork 時，會生成具有直接源譜系的普通 fork，並將其附加到最近擁有 Workspace 的祖先。目錄是一棵 ARIA 樹，支援延遲載入式 ArrowRight／ArrowLeft 展開與摺疊、線性 ArrowUp／ArrowDown 導覽、Home／End、Escape 以及焦點復原。
 
 one-shot 行始終會用文案替代輸入框，說明執行記錄為只讀。可繼續行僅在 `parentAvailable` 為 false 且 child 未在執行時期如此；parent 離線但仍在執行的 child 保留普通輸入框，並停用其輸入區和 Send 操作，讓獨立的 Stop 保持可達，停止後只讀替代復原。parent 線上時，即使 child 正在執行，Enter 和 Send 也會准入另一個 FIFO 輪次，而獨立的 Stop 經由 `subagent.interrupt` 路由（[中斷約定](2026-08-06-continuable-subagent-interrupt.md)）。提示詞失敗會透過普通錯誤行為保留草稿。
 
 已尋址 child 檢視表不提供綁定到 agent 的輔助控制元件。具體而言，模型選擇器與 `/model` contribution 不會呼叫普通 `session.models` 或 `session.selectModel`；Host 也會拒絕任何意外呼叫，而不是在直接 parent 繼續執行路徑之外啟用持久化 child 歷史。
 
-## 宿主配接器與協議約定
+## 宿主配接器與協定約定
 
 `@deepseek-ai/dsh-host-apiproxy` 擁有瀏覽器安全的 `subagents` 域：
 
@@ -75,7 +75,7 @@ one-shot 行始終會用文案替代輸入框，說明執行記錄為只讀。�
 
 該包現有的 `@label` source 仍然是獨立的面向模型純文字輸入。它不會將 label 解析為地址，也不會獲得繼續執行語義。
 
-## 默認 Web 組合
+## 預設 Web 組合
 
 已交付的 Web 組合會在 JSONL 持久化旁掛載 SQLite 工作階段查詢，並將 spawn 與 fork 後臺委派設定為可繼續模式。它還會掛載面向模型的 `send_message` 與 `list_agents` 配接器，以保持 coordinator 對等性，但 GUI 會透過宿主 RPC 域呼叫共享的 `SubagentRuntime`，而不是呼叫模型工具。one-shot child 仍在目錄中可見且只讀。
 
@@ -101,7 +101,7 @@ one-shot 行始終會用文案替代輸入框，說明執行記錄為只讀。�
 
 ## 測試
 
-- 宿主協議測試固定 schema（包括必需的布林可展開性）、id 回顯、mode 校驗、非啟用式歷史、確切 parent 強制要求、FIFO 准入回執、取消與脫敏後的失敗對映。
+- 宿主協定測試固定 schema（包括必需的布林可展開性）、id 回顯、mode 校驗、非啟用式歷史、確切 parent 強制要求、FIFO 准入回執、取消與脫敏後的失敗對映。
 - 通用 Host 測試固定在不發布 Agent 的情況下讀取已附加與冷態歷史及執行 fork、冷態投影歸並、按描述符／origin／執行時期 owner 拒絕、拒絕顯式 id 接納，以及直接佇列控制柵欄。
 - 用戶端對象測試固定已保留與已復原的地址、one-shot 只讀與取消拒絕、歷史路由、可繼續提示詞與中斷路由、封鎖綁定到 agent 的模型控制元件、即時活動狀態翻轉（包括運送中回應重播與 detach 回退）、subagent parent 可展開性翻轉與成員刷新。
 - jsdom 測試固定後代聚合計數與活動狀態、側邊欄活動在巢狀譜系中的傳播與普通 fork 邊界、行狀態優先級、token 用量總計、精確到秒的執行中耗時與凍結後 inactive 耗時、採用自適應單位的長耗時及其精確無障礙文字、目錄缺失或為過時空目錄時由摘要支撐的根操作、已知載入行的形態、混合 mode 行、點擊前的葉子展開控制元件、diagnostic、後代延遲載入展開、直接 parent 地址、鍵盤行為與兩種只讀原因。

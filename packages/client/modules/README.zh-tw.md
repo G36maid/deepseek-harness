@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-modules
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 用戶端模組系統：Node 內部 ESM loader 的瀏覽器端對等實作，以惰性 CJS 表實作。web 外殼掛載 vendored cordis Loader 來治理設定項（fiber 生命週期、inject 等待、update/refresh），並透過其 `internal` 約定注入該包的 `ClientModuleLoader`；vendored 一側唯一的消費點是 `EntryTree.import`，因此替換 `internal` 恰好只會替換「外掛程式程式碼如何到達」，不會改變其他內容。
 
@@ -20,5 +20,5 @@ Node 側會掃描已啟用的 Loader 設定項以發現 web `dsh.client` 包，�
 
 ## 已知限制與暫緩事項
 
-- **有意採用扁平模組圖**：每個 bundle 是一個模組節點，其邊只指向表中的葉節點；介面（`loadCache`/`edges`/`invalidate`）已經支持通用模組圖，因此可以改變 externalization 粒度而不更改介面。
+- **有意採用扁平模組圖**：每個 bundle 是一個模組節點，其邊只指向表中的葉節點；介面（`loadCache`/`edges`/`invalidate`）已經支援通用模組圖，因此可以改變 externalization 粒度而不更改介面。
 - **自身不維護解除安裝記錄**：樣式移除與 fiber 拆卸順序屬於 HMR 驅動器（`@deepseek-ai/dsh-client-hmr`）；loader 只在每條記錄中登記其擁有的樣式標籤 id。

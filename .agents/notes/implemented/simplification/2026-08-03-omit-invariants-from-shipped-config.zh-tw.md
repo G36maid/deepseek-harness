@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-omit-invariants-from-shipped-config.md) | [简体中文](2026-08-03-omit-invariants-from-shipped-config.zh.md) | 繁體中文
+[English](2026-08-03-omit-invariants-from-shipped-config.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 `apps/cli/config/` 下交付的 `dsh` 設定樹既不掛載 `@deepseek-ai/dsh-invariants`，也不掛載任何包擁有的 `./invariant` 伴隨外掛程式。因此，CLI 包不再直接相依性不變式服務。
 
-不變式支持仍可供聚焦測試、示例組合包、生成的 SDK 組合，以及顯式選擇診斷的自訂部署使用。工作階段驗證、快照、凍結和來源事件引用驗證始終啟用，且不相依性選填服務，具體由[源端擁有的不可變性決策](../architecture/2026-06-11-dev-invariants-over-deep-readonly.md)規定。
+不變式支援仍可供聚焦測試、示例組合包、生成的 SDK 組合，以及顯式選擇診斷的自訂部署使用。工作階段驗證、快照、凍結和來源事件引用驗證始終啟用，且不相依性選填服務，具體由[源端擁有的不可變性決策](../architecture/2026-06-11-dev-invariants-over-deep-readonly.md)規定。
 
 建置後 CLI 的設定轉儲測試會檢查兩個交付的 surface，並阻斷服務條目或任何 `@deepseek-ai/dsh-*/invariant` 條目。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 - **掛載服務並設定 `enabled: false`。** 不予採納，因為交付的設定樹和 CLI 相依性仍會攜帶不安裝任何檢查的診斷。
 - **保留僅由 TUI 掛載的方案。** 不予採納，因為兩個交付的 surface 仍會保留不同的診斷和失敗行為。
-- **從倉庫中移除不變式支持。** 不予採納，因為包擁有的檢查在測試、示例、生成的 SDK 及顯式開發組閤中仍然有用；只有默認產品設定不在其範圍內。
+- **從倉庫中移除不變式支援。** 不予採納，因為包擁有的檢查在測試、示例、生成的 SDK 及顯式開發組閤中仍然有用；只有預設產品設定不在其範圍內。
 
 ## 後果
 

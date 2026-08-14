@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-sticky-composer-conversation-scroll.md) | [简体中文](2026-07-29-sticky-composer-conversation-scroll.zh.md) | 繁體中文
+[English](2026-07-29-sticky-composer-conversation-scroll.md) | 繁體中文
 
 ## 問題
 
@@ -18,7 +18,7 @@ Chat 歷史前插透過穩定的已渲染 node／call 身份跟隨讀者意圖�
 
 ## 考慮過的替代方案
 
-**標題欄與編輯器都在同一列滾動容器內 sticky。** 標題欄否決：它必須作為固定版面配置 chrome 佔據頂部，而不是參與滾動容器的 sticky 層。
+**標題欄與編輯器都在同一列滾動容器內 sticky。** 標題欄否決：它必須作為固定版面設定 chrome 佔據頂部，而不是參與滾動容器的 sticky 層。
 
 **滾動容器下方 flex-none 固定編輯器並轉發滾輪。** 否決：產品要求編輯器 sticky 在 transcript 滾動容器內，使頁腳成為該滾動命中面的一部分，而不是僅轉發增量的兄弟節點。
 
@@ -30,4 +30,4 @@ Chat 歷史前插透過穩定的已渲染 node／call 身份跟隨讀者意圖�
 
 ## 後果
 
-在頁腳上滾輪會滾動 transcript；可見版面配置是固定標題欄、可滾動 transcript 與 sticky 底部編輯器。統計出現在每一個活躍檢視表標籤上。宿主下的巢狀檢視表 scroller 被抑制，因而 Trajectory 的 sticky 輪次標題貼在列宿主上。並行歷史載入、流式輸出、工具展開與編輯器重排會保留讀者的滾動決定，包括 Chromium 先推進合成器幾何狀態再交付事件，以及流收尾階段的收縮鉗制。貼底跟隨所有權依據[讀者滾動歸因筆記](2026-08-06-reader-scroll-attribution-observed-top-ledger.md)擴充到每一種讀者輸入。無工作階段 → blank Hero 與 Hero → active 都保持同一 textarea DOM 節點以及 InputHub 草稿。
+在頁腳上滾輪會滾動 transcript；可見版面設定是固定標題欄、可滾動 transcript 與 sticky 底部編輯器。統計出現在每一個活躍檢視表標籤上。宿主下的巢狀檢視表 scroller 被抑制，因而 Trajectory 的 sticky 輪次標題貼在列宿主上。並行歷史載入、流式輸出、工具展開與編輯器重排會保留讀者的滾動決定，包括 Chromium 先推進合成器幾何狀態再交付事件，以及流收尾階段的收縮鉗制。貼底跟隨所有權依據[讀者滾動歸因筆記](2026-08-06-reader-scroll-attribution-observed-top-ledger.md)擴充到每一種讀者輸入。無工作階段 → blank Hero 與 Hero → active 都保持同一 textarea DOM 節點以及 InputHub 草稿。

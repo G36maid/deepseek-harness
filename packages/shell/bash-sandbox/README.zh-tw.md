@@ -1,16 +1,16 @@
 # @deepseek-ai/dsh-bash-sandbox
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
-這是使用沙盒能力的 [`@deepseek-ai/dsh-shell`](../shell/) 執行器 seam 的 Service Provider。載入它時，應**用它替代** `@deepseek-ai/dsh-bash-local`，並同時載入 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@deepseek-ai/dsh-sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；默認模式和工作區根目錄由後者負責，並與受沙盒約束的檔案系統共享這些設定。無需使用替代工具外掛程式；`dsh-tool-bash` 會偵測執行器的 `sandboxMode` 能力並新增升權欄位。
+這是使用沙盒能力的 [`@deepseek-ai/dsh-shell`](../shell/) 執行器 seam 的 Service Provider。載入它時，應**用它替代** `@deepseek-ai/dsh-bash-local`，並同時載入 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@deepseek-ai/dsh-sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；預設模式和工作區根目錄由後者負責，並與受沙盒約束的檔案系統共享這些設定。無需使用替代工具外掛程式；`dsh-tool-bash` 會偵測執行器的 `sandboxMode` 能力並新增升權欄位。
 
-包根目錄匯出默認與具名的 `SandboxBashExecutor` 外掛程式及其 `Config`；結果分類 helper 保留在內部。
+包根目錄匯出預設與具名的 `SandboxBashExecutor` 外掛程式及其 `Config`；結果分類 helper 保留在內部。
 
 每條命令的限制方式都是：把本執行器即將 spawn 的精確 `['bash', '-c', command]` argv 交給提供方，並直接 spawn 返回的 argv。使用隨附的原生 runner 時，內層 Bash 保留 shell 語義，並且只在 runner 建立約束後才求值 `BASH_ENV`。由哪種平臺 runner 執行限制，以及是否有 runner 可用，屬於提供方職責；若無可用 runner，則按失敗關閉原則拒絕執行並返回結構化 `SANDBOX_UNAVAILABLE` 錯誤，絕不能靜默地無約束執行。本包只負責 bash 側。
 
 | 模式 | 文件影響 |
 |---|---|
-| `read-only`（默認） | 任何位置都不可寫（在 `/dev` 中只有 `/dev/null` 節點可寫，因此 `>/dev/null` 仍可正常工作） |
+| `read-only`（預設） | 任何位置都不可寫（在 `/dev` 中只有 `/dev/null` 節點可寫，因此 `>/dev/null` 仍可正常工作） |
 | `workspace-write` | 只能寫入 `workspaceRoot` + `/tmp`（在 bwrap 下為臨時目錄，在 Landlock 下為宿主 `/tmp`，在 Seatbelt 下為 `/private/tmp` 加每使用者臨時目錄） |
 | `danger-full-access` | 不作限制；絕不諮詢提供方。前臺結果攜帶 `sandbox: { mode, denied: false }`；後臺行程控制代碼不攜帶沙盒事實。 |
 

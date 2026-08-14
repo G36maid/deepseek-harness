@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-pnpm-action-setup-for-symmetric-ci-caching.md) | [简体中文](2026-07-26-pnpm-action-setup-for-symmetric-ci-caching.zh.md) | 繁體中文
+[English](2026-07-26-pnpm-action-setup-for-symmetric-ci-caching.md) | 繁體中文
 
 ## 問題
 
@@ -31,4 +31,4 @@ Status: implemented
 - generated-project e2e 執行根目錄鎖定的 Yarn 4 CLI，既不再沿用 runner 映像檔中的 Yarn 版本，也不會因此悄然跳過。
 - 已轉換泳道的快取鍵格式變更了一次；各跑一次冷執行重建快取後，命中率與舊步驟持平。內建快取鍵涵蓋平臺、架構與鎖定檔雜湊，但不含 Node 版本，因此 node-compat 的各個矩陣任務共享同一條 store 快取記錄——這是安全的，因為 pnpm store 與 Node 版本無關。
 - `setup-node` 內建的 pnpm 快取只按精確鍵復原，沒有 `restore-keys` 前綴回退：`pnpm-lock.yaml` 一旦變更，已轉換泳道會從冷 store 起步，而不是利用上一條快取記錄預填充。
-- `pnpm/action-setup` 每次執行都會刪除其安裝目錄，並把默認 store 放在由此產生的 `PNPM_HOME` 下。因此，需要快取配對或自託管持久化的 Linux 作業會把 `PNPM_CONFIG_STORE_DIR` 設為 `$HOME/.local/share/pnpm/store`，置於 action 目錄之外；只復原不上傳的作業與 serial-linux 會解析並共享這一穩定路徑及精確鍵。
+- `pnpm/action-setup` 每次執行都會刪除其安裝目錄，並把預設 store 放在由此產生的 `PNPM_HOME` 下。因此，需要快取配對或自託管持久化的 Linux 作業會把 `PNPM_CONFIG_STORE_DIR` 設為 `$HOME/.local/share/pnpm/store`，置於 action 目錄之外；只復原不上傳的作業與 serial-linux 會解析並共享這一穩定路徑及精確鍵。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-hover-popup-pointer-grace.md) | [简体中文](2026-07-30-hover-popup-pointer-grace.zh.md) | 繁體中文
+[English](2026-07-30-hover-popup-pointer-grace.md) | 繁體中文
 
 ## 問題
 
@@ -32,4 +32,4 @@ Status: implemented
 
 ## 測試
 
-`packages/client/ui-primitives/tests/hover-card.client.spec.tsx` 與 `tests/atoms.spec.tsx` 固定驗證寬限期邊界、折返取消、不重新啟動停留計時、所有者關閉時解除待執行關閉，以及清單關閉時不啟動關閉。可抵達性手勢本身——把指針移到卡片上，以及在打開的清單與其觸發按鈕之間移動——由 `apps/web/tests/workspace-management.e2e.ts` 在真實瀏覽器中固定驗證，因為它們相依性 jsdom 無法建模的命中測試與版面配置。
+`packages/client/ui-primitives/tests/hover-card.client.spec.tsx` 與 `tests/atoms.spec.tsx` 固定驗證寬限期邊界、折返取消、不重新啟動停留計時、所有者關閉時解除待執行關閉，以及清單關閉時不啟動關閉。可抵達性手勢本身——把指針移到卡片上，以及在打開的清單與其觸發按鈕之間移動——由 `apps/web/tests/workspace-management.e2e.ts` 在真實瀏覽器中固定驗證，因為它們相依性 jsdom 無法建模的命中測試與版面設定。

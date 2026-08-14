@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-skill
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 skill（技能）呼叫 source 的瀏覽器端：把 `/` 觸發的 `skill` source 註冊進 `ctx.inputTriggers`。普通工作階段的候選來自 `skill.list` RPC，以每次呼叫的 `ClientSessionContext` 投影中的 `{sessionId}` 尋址，host 從工作階段 header 解析 `cwd`。宿主提供每一個使用者可呼叫的 skill；`modelInvocable: false` 的條目（即 `disable-model-invocation` skill，此路徑是其唯一入口）會以當前語言把僅限使用者標記作為描述前綴帶上。由目錄尋址的可繼續 subagent 在用戶端解析為沒有 skill 候選，因為現有 skill RPC 要求工作階段已掛載；查看其持久化歷史不得啟用它。目錄按普通工作階段快取，拉取走 single-flight；scope 建立時的 `warm` 掛鉤預熱該工作階段的快取項，轉發的 owner 事件 `agent-preset/selected` 丟棄該工作階段這一項（目錄屬於 preset，而空工作階段可能在預熱之後才切換），`connection/reset` 清空全部快取。結果按 `startsWith(query)` 過濾。
 
@@ -32,6 +32,6 @@ pick 會落下字面文字 `/name `，寄出的提示詞中也是同一段字面
 
 ## 已知限制與暫緩事項
 
-- **僅含工具結果的 history 頁使用通用行**：鍵控分派要求配對的工具呼叫位於執行時期視窗內；分頁將工具呼叫留在視窗外時，工具結果沒有工具身份。這項用戶端呈現功能不會為了復原該身份而擴充 history 協議約定。
-- **文字是唯一依據**：引用是普通的草稿文字；手動鍵入的相同 token 就是同一個引用，宿主手勢邊界評判的是寄出的文字，而不是選單互動。chip 視覺由 lexicon 掃描派生；沒有 occurrence 身份、位置跟蹤，也沒有提示詞協議上的結構化引用載荷（兩者都是臺帳事項）。
+- **僅含工具結果的 history 頁使用通用行**：鍵控分派要求配對的工具呼叫位於執行時期視窗內；分頁將工具呼叫留在視窗外時，工具結果沒有工具身份。這項用戶端呈現功能不會為了復原該身份而擴充 history 協定約定。
+- **文字是唯一依據**：引用是普通的草稿文字；手動鍵入的相同 token 就是同一個引用，宿主手勢邊界評判的是寄出的文字，而不是選單互動。chip 視覺由 lexicon 掃描派生；沒有 occurrence 身份、位置跟蹤，也沒有提示詞協定上的結構化引用載荷（兩者都是臺帳事項）。
 - **預熱落定之前打開的選單**：在那次擊鍵下不顯示 skill 候選；下一次擊鍵會重新輪詢已落定的快取。

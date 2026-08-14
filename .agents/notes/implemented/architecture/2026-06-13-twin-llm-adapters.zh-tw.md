@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-06-13-twin-llm-adapters.md) | [简体中文](2026-06-13-twin-llm-adapters.zh.md) | 繁體中文
+[English](2026-06-13-twin-llm-adapters.md) | 繁體中文
 
 ## 問題
 
-`dsh-llm` 擁有一套提供方無關的流式詞彙：`StreamChunk` 協議（`block-start`、`text-delta`、`reasoning-delta`、`tool-call-delta`、`block-end`、`usage`、`finish`）以及內容區塊類型（[內容區塊詞彙](2026-06-11-content-block-vocabulary.md)）。如果詞彙僅針對單個配接器定義，就有可能將該配接器的特異行為固化到「中立」約定中：唯一實作碰巧做了什麼，什麼就成為事實上的規範；在第二個提供方到來之前，抽象層未經驗證——而屆時修復這種洩漏的代價已經很高。
+`dsh-llm` 擁有一套提供方無關的流式詞彙：`StreamChunk` 協定（`block-start`、`text-delta`、`reasoning-delta`、`tool-call-delta`、`block-end`、`usage`、`finish`）以及內容區塊類型（[內容區塊詞彙](2026-06-11-content-block-vocabulary.md)）。如果詞彙僅針對單個配接器定義，就有可能將該配接器的特異行為固化到「中立」約定中：唯一實作碰巧做了什麼，什麼就成為事實上的規範；在第二個提供方到來之前，抽象層未經驗證——而屆時修復這種洩漏的代價已經很高。
 
 ## 決策
 

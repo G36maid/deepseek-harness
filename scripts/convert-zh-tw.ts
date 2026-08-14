@@ -105,7 +105,37 @@ export function convertChineseMarkdown(markdown: string, corrections?: ZhTwCorre
   // Reinsert the protected switcher lines in order.
   converted = converted.replace(/\u0000ZH_TW_SWITCHER\u0000/g, () => switcherLines.shift() ?? 'SWITCHER')
   const restored = restoreSpans(converted, spans)
-  return fixSwitcher(restored)
+  return fixSwitcher(applyTerminologyOverrides(restored, table))
+}
+
+/**
+ * Apply the repo terminology table as a post-conversion override.
+ *
+ * zhtw-js's built-in dictionary wins over customDict for some composite
+ * terms (協議層, 默認引擎, 同進程), so a bare customDict entry is not
+ * enough for repo-wide Taiwan usage corrections. Walk the table again after
+ * restoration and replace each remaining source form — this is the
+ * authoritative pass the gate checks against.
+ */
+function applyTerminologyOverrides(markdown: string, corrections: ZhTwCorrections): string {
+  let out = markdown
+  for (const [source, target] of corrections) {
+    if (source === target) continue
+    out = out.split(source).join(target)
+  }
+  // Taiwan usage corrections for terms zhtw-js keeps as mainland forms or
+  // renders with a mainland choice. Each replacement must be unambiguous in
+  // the repo corpus: 程序 (program) is NOT remapped because it legitimately
+  // means 程式; only the in-process compound is. 用戶端 (client) stays — it
+  // is the standard Taiwan rendering — while bare 用戶 (user) becomes 使用者.
+  return out
+    .split('用戶端').join('\u0000ZH_TW_KEEP\u0000')
+    .split('用戶').join('使用者')
+    .split('\u0000ZH_TW_KEEP\u0000').join('用戶端')
+    .split('噪聲').join('噪音')
+    .split('存儲').join('儲存')
+    .split('同進程').join('同行程')
+    .split('進程').join('行程')
 }
 
 /** Convert one zh-CN file into its `.zh-tw.md` sibling. */

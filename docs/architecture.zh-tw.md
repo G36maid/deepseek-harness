@@ -1,6 +1,6 @@
 # DeepSeek Harness 架構
 
-[English](architecture.md) | [简体中文](architecture.zh.md) | 繁體中文
+[English](architecture.md) | 繁體中文
 
 改動 `packages/` 下的任何內容之前，請先閱讀本文。本文假定你已瞭解 Cordis；如果尚未瞭解，請先閱讀[入門](cordis-primer.md)或[教程](cordis-tutorial/index.md)。
 
@@ -46,7 +46,7 @@ dsh --profile web --dump-config
 | [`core/system-prompt`](subsystems/system-prompt.md) | 提示詞片段與工具 schema 的組裝 | `ctx.systemPrompt` |
 | [`core/tools`](subsystems/tools.md) | 作用域化的工具登錄檔和帶把關的執行管線 | `ctx.tools` |
 | [`core/agent`](subsystems/core.md) | `Agent` 介面、活躍 agent 登錄檔和 `agent/*` 事件 | `ctx.agents` |
-| [`core/agent-loop`](subsystems/core.md) | 實作該介面的默認驅動器 | `ctx.agentLoop` |
+| [`core/agent-loop`](subsystems/core.md) | 實作該介面的預設驅動器 | `ctx.agentLoop` |
 | [`core/scope`](subsystems/scope.md) | 按 agent 劃分作用域的註冊原語 | 庫，無 ctx 鍵 |
 | [`llm/llm`](subsystems/llm-streaming.md) | 訊息與流式詞彙表，以及配接器 seam | `ctx.llm` |
 

@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-06-20-branded-ids.md) | [简体中文](2026-06-20-branded-ids.zh.md) | 繁體中文
+[English](2026-06-20-branded-ids.md) | 繁體中文
 
 ## 問題
 
 harness 使用 `Branded<B> = string & { readonly [BRAND]: B }` 機制，為 `CallId`（`packages/llm/llm/src/brand.ts`）和 agent（代理）/工作階段共享的 `SessionId`（`packages/core/session/src/types.ts`）做 brand 處理；該機制由純類型包 `@deepseek-ai/dsh-brand` 擁有，位於 `packages/util/brand/`，見其 [README](../../../../packages/util/brand/README.md)，並為每個類型提供零開銷的 cast 工廠。`dsh-brand` 還聲明瞭治理策略：*「Branding 用於跨包邊界且可能被混淆的 id；不是每個 string 都需要 brand。」* 這條策略是正確的；問題在於它只落實了一半。兩處缺口使得結構相同但語義錯誤的 string 今天仍能透過型別檢查器。
 
-**缺口 1：bash seam 中未 brand 的跨邊界 ID。** 後臺 job id 是普通 `string`：`BashTask.id: string`（`packages/shell/shell/src/types.ts`），作為 `string` 貫穿整個執行器 seam（`packages/shell/shell/src/index.ts` 中的 `ShellExecutor.get`/`ownerOf`/`readOutput`/`kill(id: string)`），再由面向模型的工具以 `string` 校驗並傳遞（`validateJobId`、`assertTaskAccess`、`packages/shell/tool-bash/src/index.ts` 中 `job_id` 的 schema 參數）。它由每執行器計數器生成——`packages/shell/bash-local/src/index.ts` 中的 `` `bash-${this.nextTaskId++}` ``——其形状与 `SessionId` 的默认值**完全相同，都是 `name-N`**（`packages/core/session/src/index.ts` 中的 `` `session-${++counter}` ``）。bash job id 和会话 id 在调用点轻易就能互换，而编译器毫无反应。它是面向模型的 id（模型会把 `job_id` 传回 `bash_output`/`bash_kill`），所以該混淆可由不受信任的輸入觸達。
+**缺口 1：bash seam 中未 brand 的跨邊界 ID。** 後臺 job id 是普通 `string`：`BashTask.id: string`（`packages/shell/shell/src/types.ts`），作為 `string` 貫穿整個執行器 seam（`packages/shell/shell/src/index.ts` 中的 `ShellExecutor.get`/`ownerOf`/`readOutput`/`kill(id: string)`），再由面向模型的工具以 `string` 校驗並傳遞（`validateJobId`、`assertTaskAccess`、`packages/shell/tool-bash/src/index.ts` 中 `job_id` 的 schema 參數）。它由每執行器計數器生成——`packages/shell/bash-local/src/index.ts` 中的 `` `bash-${this.nextTaskId++}` ``——其形状与 `SessionId` 的預設值**完全相同，都是 `name-N`**（`packages/core/session/src/index.ts` 中的 `` `session-${++counter}` ``）。bash job id 和工作階段 id 在调用点轻易就能互换，而编译器毫无反应。它是面向模型的 id（模型会把 `job_id` 传回 `bash_output`/`bash_kill`），所以該混淆可由不受信任的輸入觸達。
 
 bash **owner token** 是相關的子情形：`ShellExecRequest.owner?: string` 和 `ShellExecSpec.owner: string | undefined`（`packages/shell/shell/src/types.ts`）被文件描述為刻意*不透明*的隔離鍵，但在所有實際呼叫方中，該值就是所屬 agent 共享的 `Agent.id`/`SessionId`（`callerToken = (exec) => exec.agent?.id`，位於 `packages/shell/tool-bash/src/index.ts`），只是披著另一個 seam 本機名稱。它被用於訪問控制比較（`owner !== callerToken(exec)`），因此一個不匹配但類型正確的 string 在此處就是跨工作階段隔離 bug，而當前類型系統無法捕獲。這正是[統一 agent/session 標識決策](../simplification/2026-06-20-unify-agent-and-session-id.md)覆蓋的共享 id 別名。
 

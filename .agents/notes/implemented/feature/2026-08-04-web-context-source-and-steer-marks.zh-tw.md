@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-web-context-source-and-steer-marks.md) | [简体中文](2026-08-04-web-context-source-and-steer-marks.zh.md) | 繁體中文
+[English](2026-08-04-web-context-source-and-steer-marks.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ transcript 為非提示訊息可能承擔的三種角色分別命名：注入上
 
 Chat Message Definition 為每個 `ContextMessageNode` 附加一份包含生產者角色和名稱的 `provenance` 檢視表；`contextProvenance()` 僅依據持久來源計算該檢視表。它返回 `role`（`inject`，跨工作階段快照則為 `recall`）與命名生產者的 `label`。`ContextInjectionRow` 以角色作為標題，並按 `ToolRow` 摘要的幾何在標題旁展示該名稱，因此摺疊態就已經回答了「注入了什麼、由誰注入」；141px 滾動視口與截斷上限沿用[已歸檔的展開項決策](../../archived/feature/2026-07-30-web-context-injection-disclosure.md)，未作改動。視口裡渲染什麼，則由[上下文形態決策](2026-08-05-context-form-vocabulary.md)引入的、相互獨立的形態軸決定。
 
-**名稱從日誌中讀出，絕不來自用戶端維護的生產者名稱表。** `agent-instructions` 以它對帳過的去重指令檔案路徑命名，`session-reference` 以它讀取的工作階段標題命名，外掛程式來源以其記錄的外掛程式 id 命名，其餘來源則以自身的 `kind` 命名——這正是可合併擴充聯合類型有文件記載的默認分支。沒有可讀 kind 的來源降級為無名注入。於是新增或重新命名的生產者無需用戶端發版即可辨識，任何名稱都不會相對程式碼失準，復原、fork 或來自外部的日誌與即時工作階段的投影結果完全一致。
+**名稱從日誌中讀出，絕不來自用戶端維護的生產者名稱表。** `agent-instructions` 以它對帳過的去重指令檔案路徑命名，`session-reference` 以它讀取的工作階段標題命名，外掛程式來源以其記錄的外掛程式 id 命名，其餘來源則以自身的 `kind` 命名——這正是可合併擴充聯合類型有文件記載的預設分支。沒有可讀 kind 的來源降級為無名注入。於是新增或重新命名的生產者無需用戶端發版即可辨識，任何名稱都不會相對程式碼失準，復原、fork 或來自外部的日誌與即時工作階段的投影結果完全一致。
 
 `recall` 覆蓋 `session-reference`，因為它是當前唯一會把另一個工作階段的材料搬進本工作階段的已發布來源。今天沒有任何 Web 葉子掛載 `dsh-session-reference`——它此前只有終端機宿主——因此該分支的存在是為了日誌可移植性，而不是為了某個已打包的生產方，其覆蓋來自單元測試而非組裝後的 Web 場景。
 

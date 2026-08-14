@@ -1,6 +1,6 @@
 # Vendored 包改名
 
-[English](rescope.md) | [简体中文](rescope.zh.md) | 繁體中文
+[English](rescope.md) | 繁體中文
 
 Cordis 框架及其基礎庫以原始碼形式 vendored 在 [`vendor/`](../vendor/README.md) 下，並以 `@deepseek-ai` scope 發布：每個 harness 包都把框架聲明為 peer dependency，發布 harness 就會連帶發布這一層，用上游名發布等於在 registry 上佔用別人的名字。本頁是名字對映表；決策與影響見 [改名 Agent Note](../.agents/notes/implemented/process/2026-08-10-vendor-package-rescope.md)，上游 commit 見 [`vendor/README.md`](../vendor/README.md)。
 
@@ -24,7 +24,7 @@ Cordis 框架及其基礎庫以原始碼形式 vendored 在 [`vendor/`](../vendo
 
 - **目錄名與版本號。** `vendor/hmr/` 仍是 `vendor/hmr/`，每個包保留清單表那行記錄的上游版本，所以 vendored 樹依舊讀作一份上游快照。
 - **相依性 range。** 相依性條目只換鍵、不換範圍：`"cordis": "^4.0.0-rc.7"` 變成 `"@deepseek-ai/cordis": "^4.0.0-rc.7"`；`linkWorkspacePackages` 靠這些保留下來的範圍把它們解析到固定的 workspace。
-- **Loader 的 `cordis:` 內建前綴。** `cordis:include`、`cordis:group` 是協議前綴，不是包名。
+- **Loader 的 `cordis:` 內建前綴。** `cordis:include`、`cordis:group` 是協定前綴，不是包名。
 - **`cordis.yml` 設定檔家族**，包括 `*.cordis.yml`、`*.cordis.snapshot.yml`、`cordis.patch.yml`。
 - **名字裡帶這個詞的 harness 包**，例如 `@deepseek-ai/dsh-tool-cordis`。
 - **上游執行時期識別符號**，例如 Schemastery 的 `Symbol.for('schemastery')` 及其 `vendor:` 元資料欄位。

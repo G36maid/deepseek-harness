@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-05-pwsh-ui-bash-parity.md) | [简体中文](2026-08-05-pwsh-ui-bash-parity.zh.md) | 繁體中文
+[English](2026-08-05-pwsh-ui-bash-parity.md) | 繁體中文
 
 ## Problem
 
-[pwsh 工具與 bash 對齊決策](../../implemented/feature/2026-08-02-pwsh-tool-bash-parity.md) 讓 `dsh-tool-pwsh` 在執行、marker 與背景工作上行為可互換，但明確推遲了面向人類的一半：完成的 pwsh 前臺呼叫呈現為通用 `console` 圍欄卡片，而 bash 工具的完成呼叫呈現為帶解析退出狀態 pill 的 terminal 卡。負責解決此缺口的路線圖（[Windows 默認改用 pwsh](../../implemented/feature/2026-08-01-windows-pwsh-default.md)）把「pwsh TUI/GUI 渲染」列為階段 2，但 TUI 包已被移除，使 Web 表面成為該缺口唯一影響的 UI。
+[pwsh 工具與 bash 對齊決策](../../implemented/feature/2026-08-02-pwsh-tool-bash-parity.md) 讓 `dsh-tool-pwsh` 在執行、marker 與背景工作上行為可互換，但明確推遲了面向人類的一半：完成的 pwsh 前臺呼叫呈現為通用 `console` 圍欄卡片，而 bash 工具的完成呼叫呈現為帶解析退出狀態 pill 的 terminal 卡。負責解決此缺口的路線圖（[Windows 預設改用 pwsh](../../implemented/feature/2026-08-01-windows-pwsh-default.md)）把「pwsh TUI/GUI 渲染」列為階段 2，但 TUI 包已被移除，使 Web 表面成為該缺口唯一影響的 UI。
 
 ## Decision
 
@@ -28,5 +28,5 @@ Web UI 的卡片本身不需要任何按工具編寫的程式碼：用戶端的 
 
 - 使用 `dsh-tool-pwsh` 的 Windows 組合現在在 Web UI 中顯示的 shell 呼叫與 bash 呼叫完全一致：cwd 頭的 terminal 卡、原始輸出、退出狀態 pill、執行狀態點，以及非零退出時的紅色失敗處理。
 - `parseExitStatus` 成為 `@deepseek-ai/dsh-shell` 公開約定的一部分；`dsh-tool-bash/src/render.ts` 繼續再匯出它，bash 工具消費端零改動。
-- 路線圖階段 2 收窄：TUI 已移除（EOL），對應的 terminal 卡現已在 Web 表面交付。Windows 默認組合（階段 1）仍是未完成的階段。
+- 路線圖階段 2 收窄：TUI 已移除（EOL），對應的 terminal 卡現已在 Web 表面交付。Windows 預設組合（階段 1）仍是未完成的階段。
 - 驗證：`dsh-shell` 在逐文件覆蓋率閘門下擁有解析邊界用例；`tool-pwsh` 的 presenter 套件映像檔 `tool-bash` 的（乾淨/非零/訊號/逾時往返、形似 marker 的輸出、後臺/錯誤通用卡片、多塊回退）；用戶端行模型套件釘住 `Pwsh` shell 家族行；web `pwsh-terminal` 通道是組裝後的 keyless 場景。

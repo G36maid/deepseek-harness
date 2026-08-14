@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-27-dispose-ladder-to-consumer.md) | [简体中文](2026-07-27-dispose-ladder-to-consumer.zh.md) | 繁體中文
+[English](2026-07-27-dispose-ladder-to-consumer.md) | 繁體中文
 
 ## 問題
 
-`SubprocessHandle.dispose(graces)` 與 `SubprocessDisposeGraces` 把一整套拆卸*策略*——等待 stdin EOF、再 SIGTERM、再 SIGKILL，每一層由呼叫方提供的時間窗約束——放在了一個其餘動詞均為單一機制的 seam 上。它始終只有一個消費端（ACP（Agent Client Protocol）subagent 後端）；bash 走 `terminate()` 與服務拆卸，LSP 主機執行自己的協議優先關閉流程。然而每個未來後端都必須實作該階梯才能滿足介面，實作包也僅為階梯的層級時限背上了 `dsh-timeout` 相依性。
+`SubprocessHandle.dispose(graces)` 與 `SubprocessDisposeGraces` 把一整套拆卸*策略*——等待 stdin EOF、再 SIGTERM、再 SIGKILL，每一層由呼叫方提供的時間窗約束——放在了一個其餘動詞均為單一機制的 seam 上。它始終只有一個消費端（ACP（Agent Client Protocol）subagent 後端）；bash 走 `terminate()` 與服務拆卸，LSP 主機執行自己的協定優先關閉流程。然而每個未來後端都必須實作該階梯才能滿足介面，實作包也僅為階梯的層級時限背上了 `dsh-timeout` 相依性。
 
 ## 決策
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-fork-children-stay-one-shot.md) | [简体中文](2026-08-10-fork-children-stay-one-shot.zh.md) | 繁體中文
+[English](2026-08-10-fork-children-stay-one-shot.md) | 繁體中文
 
 ## 問題
 
@@ -42,7 +42,7 @@ one-shot child——前臺與後臺皆然——經由 `SubagentRuntime.start()` 
 - 除非部署在 fork 委派工具上設定了 `persona` 或 `toolFilter`，fork child 的請求前綴與其 parent 逐位元組相同，因此初始內容的 token 成本重新換來了提供方側的複用。
 - fork 提供方的可繼續路徑沒有生產呼叫方，也沒有整體組裝層面的覆蓋。它保留自己的包內測試，seam 也仍然接受它，因此某個組合包或 `--patch` 覆蓋層可以無需改動程式碼、也不會有任何警告地把它重新引入。
 - `subagent_fork` 面向模型的 schema 發生變化：base 組合包中可繼續的後臺措辭被 one-shot 的 task 措辭取代，在兩個示例中則完全消失。受影響的無金鑰快照工具 schema 伴隨檔案在同一次改動中重新記錄。
-- 在隨附部署中，report 義務的覆蓋範圍收窄到 spawn 出的 child。它的 `wakeup` 默認調度、權限模型與覆蓋均保持不變。
+- 在隨附部署中，report 義務的覆蓋範圍收窄到 spawn 出的 child。它的 `wakeup` 預設調度、權限模型與覆蓋均保持不變。
 
 ### 已接受的風險
 

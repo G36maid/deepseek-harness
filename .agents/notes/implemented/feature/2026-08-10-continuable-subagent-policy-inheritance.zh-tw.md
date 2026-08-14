@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-10-continuable-subagent-policy-inheritance.md) | [简体中文](2026-08-10-continuable-subagent-policy-inheritance.zh.md) | 繁體中文
+[English](2026-08-10-continuable-subagent-policy-inheritance.md) | 繁體中文
 
 ## 問題
 
-自[行程內策略繼承決策](2026-07-25-subagent-policy-inheritance.md)以來，一次性行程內驅動器一直會把父級的沙盒／審批覆蓋項注入其子級，但可繼續路徑從未這樣做：`SubagentContinuationManager` 的物化只應用子級組合與 Activation（啟用）設定登錄檔。默認組合包把兩個委派工具都設定為 `backgroundMode: continuable`，因此在默認部署中，每個後臺子 agent（代理）都靜默回退到部署預設值：切換到 `danger-full-access` 的父級產出的子 agent 卡在 `workspace-write`，每次工作區外操作都會觸發審批提示；父級無人值守的 `'never'` 審批立場也退回為發起提示的行為（[dsh-external/issues#334](https://github.com/dsh-external/issues/issues/334)）。
+自[行程內策略繼承決策](2026-07-25-subagent-policy-inheritance.md)以來，一次性行程內驅動器一直會把父級的沙盒／審批覆蓋項注入其子級，但可繼續路徑從未這樣做：`SubagentContinuationManager` 的物化只應用子級組合與 Activation（啟用）設定登錄檔。預設組合包把兩個委派工具都設定為 `backgroundMode: continuable`，因此在預設部署中，每個後臺子 agent（代理）都靜默回退到部署預設值：切換到 `danger-full-access` 的父級產出的子 agent 卡在 `workspace-write`，每次工作區外操作都會觸發審批提示；父級無人值守的 `'never'` 審批立場也退回為發起提示的行為（[dsh-external/issues#334](https://github.com/dsh-external/issues/issues/334)）。
 
 ## 決策
 
@@ -23,7 +23,7 @@ Status: implemented
 
 ## 後果
 
-- 默認組合包的後臺委派（`backgroundMode: continuable`）現在會繼承父級顯式的沙盒覆蓋項，並把子級釘定為 `'never'` 審批；未組合任一策略服務的組合保持原有行為。
+- 預設組合包的後臺委派（`backgroundMode: continuable`）現在會繼承父級顯式的沙盒覆蓋項，並把子級釘定為 `'never'` 審批；未組合任一策略服務的組合保持原有行為。
 - `dsh-subagent` 新增針對 `dsh-sandbox-policy` 與 `dsh-user-approval` 的選填 peer 類型（即一次性驅動器所用的 `ctx.get` 模式）；`dsh-subagent-in-process-driver` 完全移除自己的策略服務 peer 與類型匯入，委託給共享輔助函式。
 - 可繼續測試套件（`packages/subagent/subagent/tests/continuation-inheritance.spec.ts`）鎖定全新啟動的種子寫入、await 前捕獲、預設值省略、冷復原快照穩定性與 fork 種子優先級；ACP 快照場景 `subagent-continuable-inheritance` 經組裝後的應用鎖定子級的委派事件與只讀執行時期上下文，移除捕獲時即失敗。
-- 行程外提供方（`acp`、`dsh-sdk`、`claude-code`、`codex`）不支持可繼續子 agent（沒有 `prepareContinuable`），其一次性子 agent 保留自身的部署策略（`inheritsParentContext = false`）；跨行程策略傳播仍不在範圍內。
+- 行程外提供方（`acp`、`dsh-sdk`、`claude-code`、`codex`）不支援可繼續子 agent（沒有 `prepareContinuable`），其一次性子 agent 保留自身的部署策略（`inheritsParentContext = false`）；跨行程策略傳播仍不在範圍內。

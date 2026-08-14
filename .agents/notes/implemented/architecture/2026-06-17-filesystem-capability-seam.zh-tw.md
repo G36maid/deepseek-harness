@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-17-filesystem-capability-seam.md) | [简体中文](2026-06-17-filesystem-capability-seam.zh.md) | 繁體中文
+[English](2026-06-17-filesystem-capability-seam.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ harness 已有一個具體的 `bash` 能力 seam（`dsh-shell` / `dsh-bash-local
 2. 後端：當前是本機磁碟，未來可能是沙盒/遠端/項目作用域的檔案系統。
 3. 消費端 API：面向模型的 `read` / `write` / `edit` schema 與結果格式化。
 
-如果沒有 `ctx.fs` 介面，將本機檔案系統訪問替換為沙盒或遠端後端時，即使面向模型的約定應當保持穩定，工具 schema、演示和提示詞引導也會被迫變動。這還使權限/沙盒邊界更難推理：一個 `cwd` 選項看起來像沙盒，但除非有顯式的後端或 `tools/execute` 策略強制執行路徑包含約束，否則它只是一個基礎路徑。
+如果沒有 `ctx.fs` 介面，將本機檔案系統訪問替換為沙盒或遠端後端時，即使面向模型的約定應當保持穩定，工具 schema、示範和提示詞引導也會被迫變動。這還使權限/沙盒邊界更難推理：一個 `cwd` 選項看起來像沙盒，但除非有顯式的後端或 `tools/execute` 策略強制執行路徑包含約束，否則它只是一個基礎路徑。
 
 檔案系統工具必須在成為公開包（package）介面之前，以與 bash 相同的能力 seam 形態落地。
 
@@ -88,11 +88,11 @@ Consumer 包僅相依性 Service Definition 包，從不相依性 `dsh-fs-local`
 
 讀取和變更結果必須包含不透明的文件 `version`。本機後端從 bigint stat 元資料（`dev`、`ino`、`size`、`mtimeNs` 和 `ctimeNs`）派生權杖，因此同大小重寫和 inode 替換都會可靠地使消費端失效；遠端後端可以使用 revision id 或類似 hash 的權杖。`dsh-fs-observation-policy` 外掛程式記錄版本用於過時檢查；消費端可以展示相關元資料但禁止解釋版本權杖。
 
-提供方返回已解碼的文字：`readText` 返回整個普通文字文件，`streamText` 為大文件或消費端自有的保留上限流式傳輸相同的文字語義。行視窗化、位元組上限、帶行號渲染和總行數統計歸 `dsh-tool-fs`、`dsh-lsp-stdio` 等消費端所有。提供方負責普通文件檢查、UTF-8 解碼和二進位／NUL 拒絕；它不知道行視窗、協議上限或檢視表。
+提供方返回已解碼的文字：`readText` 返回整個普通文字文件，`streamText` 為大文件或消費端自有的保留上限流式傳輸相同的文字語義。行視窗化、位元組上限、帶行號渲染和總行數統計歸 `dsh-tool-fs`、`dsh-lsp-stdio` 等消費端所有。提供方負責普通文件檢查、UTF-8 解碼和二進位／NUL 拒絕；它不知道行視窗、協定上限或檢視表。
 
 觀測狀態記錄不在 `ctx.fs` 上：成功讀取後，執行器寄出 `fs/observed`，`dsh-fs-observation-policy` 外掛程式為推匯出的 owner 記錄 `{ version }`。沒有 `full`/`partial` 檢視表——任何視窗的讀取都記錄版本，新鮮度（而非檢視表完整性）授權後續的寫入/編輯。
 
-全文件寫入建立或替換 UTF-8 文字文件。後端在支持且有文件說明時可以建立父目錄。已有的非常規目標被拒絕。`writeText` 接受一個選填期望：`createIfAbsent` 建立缺失的目標並拒絕已存在的（報 `FS_NOT_OBSERVED`，這是策略為未觀測 owner 使用的路徑）；`replaceIfVersion` 僅在目標處於觀測版本時替換，否則報 `FS_STALE_VERSION`；省略期望則為無條件的裸提供方建立或覆蓋。策略外掛程式根據 owner 的觀測狀態選擇提供哪個期望。
+全文件寫入建立或替換 UTF-8 文字文件。後端在支援且有文件說明時可以建立父目錄。已有的非常規目標被拒絕。`writeText` 接受一個選填期望：`createIfAbsent` 建立缺失的目標並拒絕已存在的（報 `FS_NOT_OBSERVED`，這是策略為未觀測 owner 使用的路徑）；`replaceIfVersion` 僅在目標處於觀測版本時替換，否則報 `FS_STALE_VERSION`；省略期望則為無條件的裸提供方建立或覆蓋。策略外掛程式根據 owner 的觀測狀態選擇提供哪個期望。
 
 字面編輯是提供方原語（`editText`），而非在 `tool-fs` 中由讀取加寫入組合而成。字面匹配、重複匹配拒絕、CRLF 保留、二進位拒絕、選填的過時版本檢查和原子讀-改-寫必須一起留在後端的變更臨界區內。`editText` 接受相同的選填版本期望；過時檢查在字面匹配之前執行，因此基於舊讀取的編輯會報 `FS_STALE_VERSION`。遠端後端可以將編輯實作為原生的 compare-and-edit 操作；消費端不強制本機風格的組合。
 
@@ -108,7 +108,7 @@ Consumer 包僅相依性 Service Definition 包，從不相依性 `dsh-fs-local`
 
 - `read`：檢查一個 UTF-8 文字文件並返回帶行號的內容與分頁引導。
 - `write`：建立或完全替換一個 UTF-8 文字文件。
-- `edit`：透過替換字面文字更新一個已有的 UTF-8 文字文件，默認要求唯一匹配，並允許顯式的全部替換模式。
+- `edit`：透過替換字面文字更新一個已有的 UTF-8 文字文件，預設要求唯一匹配，並允許顯式的全部替換模式。
 
 每個工具遵循相同的執行形態：
 
@@ -121,7 +121,7 @@ Consumer 包僅相依性 Service Definition 包，從不相依性 `dsh-fs-local`
 
 工具包在後端變化時保持面向模型的約定穩定：本機後端和遠端後端內部可能以不同方式解析路徑，但 `read` / `write` / `edit` schema 不會僅因後端變化而改變。
 
-默認部署要求在用 `write` 或 `edit` 更新已有文件之前先 `read`。`tool-fs` 不透過檢查是否執行過名為 `read` 的工具來實作這一點：它分發 `fs/write-intent`/`fs/edit-intent` 事件（將執行上下文作為不透明 actor 傳遞），`dsh-fs-observation-policy` 外掛程式推導 owner、對先前觀測進行門控並提供版本期望。任何視窗化讀取都能授權後續的寫入/編輯，只要文件未變。用 `write` 建立新文件不要求先前觀測。
+預設部署要求在用 `write` 或 `edit` 更新已有文件之前先 `read`。`tool-fs` 不透過檢查是否執行過名為 `read` 的工具來實作這一點：它分發 `fs/write-intent`/`fs/edit-intent` 事件（將執行上下文作為不透明 actor 傳遞），`dsh-fs-observation-policy` 外掛程式推導 owner、對先前觀測進行門控並提供版本期望。任何視窗化讀取都能授權後續的寫入/編輯，只要文件未變。用 `write` 建立新文件不要求先前觀測。
 
 根外掛程式透過組合各工具的註冊輔助函式來註冊完整套件。它注入 `fs`、`tools` 和 `systemPrompt`。
 

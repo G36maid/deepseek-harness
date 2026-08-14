@@ -1,13 +1,13 @@
 # `@deepseek-ai/dsh-app-boot`
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 供 app bin（[`dsh`](../../../apps/cli/README.md) 與 [`dsh-acp-demo`](../../examples/acp-demo/README.md)）共用的啟動粘合層：每個 bin 都是在這些輔助函式之上建置的精簡自執行組合，並以自身診斷前綴參數化。這樣，Loader 故障行為只由一處負責，不會在已發布產物之間逐漸分化。
 
 | 匯出 | 職責 |
 |---|---|
 | `resolveConfigPath(path, snapshotMode, cwd?)` | 生成絕對設定路徑；當 `snapshotMode === 'replay'` 時，把 basename 為 `cordis.yml`/`.yaml` 的文件替換為同級 `cordis.snapshot.yml` |
-| `loadEnv(binName, dir?, warn?)` | 載入已被 git 忽略的 `.env`（Node `process.loadEnvFile`）；文件不存在不影響啟動，文件無法載入時輸出一行帶標籤的警告（默認寫入 stderr） |
+| `loadEnv(binName, dir?, warn?)` | 載入已被 git 忽略的 `.env`（Node `process.loadEnvFile`）；文件不存在不影響啟動，文件無法載入時輸出一行帶標籤的警告（預設寫入 stderr） |
 | `loadLayeredEnv(binName, cwd?, warn?)` | 建置產品 CLI（命令列介面）凍結的「繼承環境 > 項目 `.env` > 使用者 `.env`」快照，拒絕文件中的 bootstrap-only 變數，並在不替換繼承值的前提下物化其餘文件值 |
 | `installFailLoud(binName, proc?, release?)` | 將啟動期或後續未處理的 Loader 拒絕轉換為一行帶標籤的 stderr 訊息並執行 `exit(1)`；兩者之間會等待選填的 `release` 清理掛鉤（以 `FAIL_LOUD_RELEASE_TIMEOUT_MS` 為上限），使持有終端機的介面能在退出前復原終端機；返回解除安裝函式 |
 | `FAIL_LOUD_RELEASE_TIMEOUT_MS` | `installFailLoud` 等待其 `release` 回呼的時長；卡死的 disposer 只會延遲致命退出，而不會取消它 |
@@ -19,13 +19,13 @@
 | `watchUserPatches(ctx, options)` | 向現有 Cordis HMR 服務註冊指名的 patch 文件；每次新增、變更或移除都會透過呼叫方的 `compose` 閉包（應用自有層圍繞當前使用者層）以交易方式重新組合完整 patch 清單，並返回非同步 disposer |
 | `resolveProfileDir` / `initProfile` / `loadProfile` / `readProfileManifest` / `writeProfileManifest` / `resolveBundleDir` / `composeEntries` / `healProfilesModuleFallback` / `PROFILE_TEMPLATES` / `DEFAULT_PROFILE_BUNDLES` / `PROFILES_DIR` / `PROFILE_PATCH_FILENAME` | Profile 機制（見 [Profile](#profiles)） |
 | `boot(binName, absoluteConfigPath, patches?, prepare?, bareModuleBaseUrl?)` | 建立根上下文，向 Loader `!!js` 設定表達式暴露 `dshHomePath(...segments)` 並安裝 Loader，在設定樹條目掛載前執行選填的宿主準備操作（`prepare` 可以使用 Loader，也可以提供由啟動器擁有的上下文插槽），再掛載並等待 include 樹結帳，斷言所有條目均已載入並激活，最後返回根上下文——失敗時 dispose（資源釋放）部分構造的上下文，並以帶標籤的錯誤 reject；選填模組基準與 `mountRootInclude` 的解析語義相同 |
-| `renderConfigDump(binName, absoluteConfigPath, layers, warn?)` | 使用 include 自己的解析器和修補程式演算法（`entryListSchema`/`applyEntryPatches`）離線合成基礎設定與帶標籤的覆蓋層，使結果與 `boot()` 掛載的內容一致，再渲染為 YAML，並原樣保留 `!!js` 表達式；每段來源於同一文件且由相同修補程式層修改的連續行之前都有一條 `# ==` 註釋，標明該文件和這些修補程式層，輸出仍是一份可載入的文件；未匹配到行的修補程式連同其層標籤交給 `warn`（默認：一行 stderr），讀取、解析或欄位驗證失敗則拋出 |
+| `renderConfigDump(binName, absoluteConfigPath, layers, warn?)` | 使用 include 自己的解析器和修補程式演算法（`entryListSchema`/`applyEntryPatches`）離線合成基礎設定與帶標籤的覆蓋層，使結果與 `boot()` 掛載的內容一致，再渲染為 YAML，並原樣保留 `!!js` 表達式；每段來源於同一文件且由相同修補程式層修改的連續行之前都有一條 `# ==` 註釋，標明該文件和這些修補程式層，輸出仍是一份可載入的文件；未匹配到行的修補程式連同其層標籤交給 `warn`（預設：一行 stderr），讀取、解析或欄位驗證失敗則拋出 |
 | `addHarnessSourceSection(ctx, sourceRoot)` | 新增全域性 `harness:source` 提示詞段落（順序緊隨 harness 身份、位於 persona 之前），告知 agent（代理）DSH 實作程式碼 checkout 的磁碟路徑，同時提醒它不得據此推斷當前工作目錄，而應使用 `pwd`；如果已啟動樹沒有此項服務，則不執行操作並返回 `undefined`。這裡的服務是 `systemPrompt`；該段落註冊到它的 fiber，因此開發環境 HMR 重新載入系統提示詞後，它會消失直至下次啟動 |
 | `HARNESS_SOURCE_SECTION` | `'harness:source'` 段落名稱，供 `addHarnessSourceSection` 註冊使用 |
 
 Loader 結帳會在匯入或生命週期失敗時返回拒絕結果，並攜帶失敗的設定項與階段；`boot()` 會 dispose 部分構造的上下文，並用 bin 名稱包裝該失敗。結帳後遺留的設定項由獨立審計處理：`assertEntriesLoaded` 將已啟用卻沒有 fiber 的設定項轉換為 rejection 並列出每個未解析外掛程式；`assertEntriesActivated` 會顯式等待每個失敗的 fiber，把原始錯誤堆疊寫入啟動 rejection，並列出每個等待中設定項尚未解析的服務。拋出錯誤前，審計會透過一個行程級檢查點標記這些 rejection 的確切原因，從而讓 `installFailLoud` 將 Loader 的重複通知合併為一次，而所有無關的未處理 rejection 仍然致命。
 
-Loader 並行掛載各個條目，因此當其他環節失敗時，某個介面可能已經持有終端機：此時不經過整棵樹自身的拆卸就退出，會把 raw 模式、bracketed paste 和鍵盤協議殘留在使用者的 shell 上，而尚未返回的終端機查詢回應會在下一個提示符處顯示為字面文字。設定樹失敗會經 `boot()` 結帳：它先 dispose 部分建置的上下文（從而執行該介面自身的 shutdown），再拋出帶標籤的 rejection。對於 `boot()` 看不到的 rejection（外掛程式遊離的非同步工作在掛載期間或掛載完成後失敗），持有終端機的 bin 會傳入 `release`，在提交退出前 dispose 整棵樹；`dsh` 在 `boot()` 的 `prepare` 回呼中捕獲根上下文，而不是取其回傳值，使該回調覆蓋整個掛載視窗。release 執行期間，處理函式保持註冊並處於鎖定狀態：被報告的始終是第一個 rejection，後續拒絕（包括拆卸自身產生的拒絕）會被忽略，而不會變成未捕獲錯誤、在拆卸中途殺死行程。
+Loader 並行掛載各個條目，因此當其他環節失敗時，某個介面可能已經持有終端機：此時不經過整棵樹自身的拆卸就退出，會把 raw 模式、bracketed paste 和鍵盤協定殘留在使用者的 shell 上，而尚未返回的終端機查詢回應會在下一個提示符處顯示為字面文字。設定樹失敗會經 `boot()` 結帳：它先 dispose 部分建置的上下文（從而執行該介面自身的 shutdown），再拋出帶標籤的 rejection。對於 `boot()` 看不到的 rejection（外掛程式遊離的非同步工作在掛載期間或掛載完成後失敗），持有終端機的 bin 會傳入 `release`，在提交退出前 dispose 整棵樹；`dsh` 在 `boot()` 的 `prepare` 回呼中捕獲根上下文，而不是取其回傳值，使該回調覆蓋整個掛載視窗。release 執行期間，處理函式保持註冊並處於鎖定狀態：被報告的始終是第一個 rejection，後續拒絕（包括拆卸自身產生的拒絕）會被忽略，而不會變成未捕獲錯誤、在拆卸中途殺死行程。
 
 `cordis:group` 與 `cordis:include` 一並註冊，使一份組裝能把一個提供方與它的消費端放進同一個 `isolate` realm。兩者都透過宿主的模組管線載入，而非被包含樹自身的說明符解析，這正是讓本工作區之外的組裝——放在 harness home 下的 agent preset——能夠使用 group 行的原因。
 

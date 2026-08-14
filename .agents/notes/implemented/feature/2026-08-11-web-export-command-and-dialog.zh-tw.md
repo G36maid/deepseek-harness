@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-web-export-command-and-dialog.md) | [简体中文](2026-08-11-web-export-command-and-dialog.zh.md) | 繁體中文
+[English](2026-08-11-web-export-command-and-dialog.md) | 繁體中文
 
 ## Problem
 
@@ -28,4 +28,4 @@ ZIP 端點與持久化 `readRaw` 能力仍由 `dsh-host-apiproxy` 和持久化�
 
 ## Consequences
 
-Header 操作與 `/export` 會下載同一個 ZIP，並顯示相同回饋。已執行命令保留在持久文字記錄中，且不建立模型輪次。預檢會報告流式傳輸開始前發現的失敗；瀏覽器消費 GET 時發生的失敗仍屬於瀏覽器下載失敗。持久化後端沒有逐 Session 原始工件時，使用者會收到端點現有的失敗；SQLite 支持保留為獨立工作。Session 首輪前的命令可用性屬於獨立工作。
+Header 操作與 `/export` 會下載同一個 ZIP，並顯示相同回饋。已執行命令保留在持久文字記錄中，且不建立模型輪次。預檢會報告流式傳輸開始前發現的失敗；瀏覽器消費 GET 時發生的失敗仍屬於瀏覽器下載失敗。持久化後端沒有逐 Session 原始工件時，使用者會收到端點現有的失敗；SQLite 支援保留為獨立工作。Session 首輪前的命令可用性屬於獨立工作。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-26-fsspec-style-fs-seam.md) | [简体中文](2026-06-26-fsspec-style-fs-seam.zh.md) | 繁體中文
+[English](2026-06-26-fsspec-style-fs-seam.md) | 繁體中文
 
 ## 問題
 
@@ -124,7 +124,7 @@ type FsWriteIntent =
 ## 後果
 
 - 新增第四個 fs 包和一個新的外掛程式層。這是有意為之：它是此前推遲的策略層，而非第二個抽象後端約定。
-- 直接使用 `ctx.fs` 會繞過策略：直接 `ctx.fs.readText` 不寄出 `fs/observed`，因此在默認策略下，後續 `edit` 會以 `FS_NOT_OBSERVED` 拒絕，直到透過 `read` 工具讀取該文件。這一失敗是顯式且有文件記錄的。
+- 直接使用 `ctx.fs` 會繞過策略：直接 `ctx.fs.readText` 不寄出 `fs/observed`，因此在預設策略下，後續 `edit` 會以 `FS_NOT_OBSERVED` 拒絕，直到透過 `read` 工具讀取該文件。這一失敗是顯式且有文件記錄的。
 - 大文件行視窗化從後端移至 `dsh-tool-fs` 中的 `read` 工具；文字解碼和二進位拒絕留在 `ctx.fs.streamText` 中，因此這只是視窗化邏輯的遷移，而非第二套文字 IO 實作。
 - 將 `editText` 保留在提供方約定上意味著每個後端都必須實作字面替換約定。這是有意為之：該操作不是純儲存，但過時守衛 + 字面匹配 + 原子重寫是必須保持在一起的單元，以確保正確的錯誤歸因和並行行為。該約定應保持窄且僅限文字，以便未來後端可以原生實作或透過全文件重寫實作。
 - 新鮮度允許在視窗化讀取後進行全文件 `write`。這比舊的檢視表檢查更弱，但避免了大文件無法編輯的問題；提示詞引導仍然不鼓勵盲目的全文件替換。

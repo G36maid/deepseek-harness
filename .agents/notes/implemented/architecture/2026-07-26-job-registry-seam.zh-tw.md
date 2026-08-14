@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-job-registry-seam.md) | [简体中文](2026-07-26-job-registry-seam.zh.md) | 繁體中文
+[English](2026-07-26-job-registry-seam.md) | 繁體中文
 
 ## 問題
 
@@ -16,13 +16,13 @@ Status: implemented
 - **`@deepseek-ai/dsh-jobs-local`（Service Provider）**——`LocalJobRegistry`，即行程內登錄檔：記憶體儲存、按 kind 劃分的 id 計數器、等待方簿記、`TASK_WAIT_TIMEOUT` deadline 程式碼、所有者清理 effect、強制失敗的拆除，以及預設值為 10 且可設定的准入策略。准入從同一組記錄中按確切 owner 派生 `running` 加 `stopping` 容量，並為無 owner 任務使用一個共享桶；它不新增公開計數或第二個狀態 owner。`dsh-timeout` 相依性與由 Schemastery 管理的 Service Provider 設定都位於此包；Service Definition 包不含任何提供方相依性。
 - **`@deepseek-ai/dsh-tool-jobs`（Consumer）**——保持不變；它注入 `'jobs'`，從不匯入提供方類型。
 
-各組合在原先載入 `dsh-jobs` 的位置改為載入 `dsh-jobs-local`：CLI（命令列介面）的 cordis.yml 設定項、`agent-spine-demo`、各測試 harness，以及工具目錄生成器的啟動流程。生產方的設定錯誤診斷資訊（「background jobs unavailable: load …」）點名 `dsh-jobs`——即聲明缺失的 `ctx.jobs` 服務的 Service Definition 包；Service Definition 包自身的 API（其 README 與直接掛載防線）會指向各 Service Provider，因此當另一個後端日後成為推薦默認時，生產方的訊息依舊正確。生產方、`JobKindMap` 聲明合併和控制器仍然只匯入 `@deepseek-ai/dsh-jobs`。
+各組合在原先載入 `dsh-jobs` 的位置改為載入 `dsh-jobs-local`：CLI（命令列介面）的 cordis.yml 設定項、`agent-spine-demo`、各測試 harness，以及工具目錄生成器的啟動流程。生產方的設定錯誤診斷資訊（「background jobs unavailable: load …」）點名 `dsh-jobs`——即聲明缺失的 `ctx.jobs` 服務的 Service Definition 包；Service Definition 包自身的 API（其 README 與直接掛載防線）會指向各 Service Provider，因此當另一個後端日後成為推薦預設時，生產方的訊息依舊正確。生產方、`JobKindMap` 聲明合併和控制器仍然只匯入 `@deepseek-ai/dsh-jobs`。
 
 該 seam 保持行程內約定語義不變：`JobStart.run()` 仍然傳入回呼和確切的 `Agent` 對象，因此持久化或跨行程後端在能滿足此 Service Definition 之前仍有設計工作要做（身份、重新啟動、所有權、觀察）。這次拆分把該項未來工作移出了每個 Consumer 的相依性圖；它並不預先設計後端。
 
 ## 曾考慮的替代方案
 
-**在第二個後端出現之前保持具體服務（維持現狀）。**這正是執行時期 Agent Note 當初的立場：在第二個 Service Provider 出現前抽取 Service Definition，可能固化錯誤的邊界。該方案落選，因為這條邊界已不再是臆測：九個服務方法及其語義自引入以來在每一次生產方整合中都保持穩定，它們正是 `dsh-tool-jobs` 與各生產方已經面向程式設計的那套介面，而且倉庫約定默認將可替換能力拆成三個包。剩餘風險（持久化後端可能需要變更約定）不因這次拆分而改變：無論拆分與否，這類變更都會落在 Service Definition 包裡；而若維持現狀，它們今天還會連帶攪動每個 Consumer 的提供方相依性。
+**在第二個後端出現之前保持具體服務（維持現狀）。**這正是執行時期 Agent Note 當初的立場：在第二個 Service Provider 出現前抽取 Service Definition，可能固化錯誤的邊界。該方案落選，因為這條邊界已不再是臆測：九個服務方法及其語義自引入以來在每一次生產方整合中都保持穩定，它們正是 `dsh-tool-jobs` 與各生產方已經面向程式設計的那套介面，而且倉庫約定預設將可替換能力拆成三個包。剩餘風險（持久化後端可能需要變更約定）不因這次拆分而改變：無論拆分與否，這類變更都會落在 Service Definition 包裡；而若維持現狀，它們今天還會連帶攪動每個 Consumer 的提供方相依性。
 
 **在單個包內僅抽取 Service Definition（在具體類旁匯出一個抽象類）。**否決，因為它在運作層面並未分離任何東西：Consumer 依然相依性攜帶 Service Provider 及其相依套件的那個包，而替換後端若不把本機 Service Provider 納入自身相依性圖，就仍然無法發布。在這裡，包邊界纔是獨立演進的單位。
 

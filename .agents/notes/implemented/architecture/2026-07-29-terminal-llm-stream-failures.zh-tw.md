@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-terminal-llm-stream-failures.md) | [简体中文](2026-07-29-terminal-llm-stream-failures.zh.md) | 繁體中文
+[English](2026-07-29-terminal-llm-stream-failures.md) | 繁體中文
 
 本說明僅取代[有界 LLM（大型語言模型）請求復原](2026-06-21-bounded-llm-request-recovery.md)與[呼叫後上下文溢位復原](2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md)中關於拋出錯誤身份和呼叫區域性 sidecar 的機制。上述說明繼續規定結構化失敗事實、重試策略、持久嘗試與壓縮（compaction）復原。
 
@@ -34,4 +34,4 @@ agent loop 只消費一種失敗表示。它不再使用分類 catch，而是直
 
 ## Consequences
 
-所有 `LlmRuntime.stream()` 消費端都透過一種帶類型的終止協議接收配接器執行失敗，而程式設計與生命週期失敗保留普通例外語義。復原放棄精確拋出對象身份，只暴露與原對象分離的提供方無關事實。流服務承擔略多的配接器處理工作，但消費端刪除了用於判斷哪個配接器拋出例外的 catch，也刪除了以流為鍵的元資料。準備完成的呼叫顯式攜帶策略，而完全由 middleware 提供服務的路由仍明確沒有策略。
+所有 `LlmRuntime.stream()` 消費端都透過一種帶類型的終止協定接收配接器執行失敗，而程式設計與生命週期失敗保留普通例外語義。復原放棄精確拋出對象身份，只暴露與原對象分離的提供方無關事實。流服務承擔略多的配接器處理工作，但消費端刪除了用於判斷哪個配接器拋出例外的 catch，也刪除了以流為鍵的元資料。準備完成的呼叫顯式攜帶策略，而完全由 middleware 提供服務的路由仍明確沒有策略。

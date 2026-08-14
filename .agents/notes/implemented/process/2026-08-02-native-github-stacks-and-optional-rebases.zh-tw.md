@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-native-github-stacks-and-optional-rebases.md) | [简体中文](2026-08-02-native-github-stacks-and-optional-rebases.zh.md) | 繁體中文
+[English](2026-08-02-native-github-stacks-and-optional-rebases.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 ## 決策
 
-同一倉庫內由兩個或更多個相互相依性的 PR 組成的每條鏈，在落地前都必須使用 GitHub 的官方 stack 對象。以即時 `PullRequest.stack` 和 `stackEntry.position` 欄位為權威依據。對於尚未形成官方堆疊且所有 PR 作者相同的鏈，系統使用 `gh stack link` 按自底向上的順序自動關聯；作者不一或作者資訊不可用時，必須取得使用者確認。缺少原生支持或跨 fork 的鏈會使流程硬性停止。如果現有成員屬於相互衝突的堆疊，或者官方順序與分支拓撲不一致，則在解散或重建任何堆疊之前都必須取得使用者指示。
+同一倉庫內由兩個或更多個相互相依性的 PR 組成的每條鏈，在落地前都必須使用 GitHub 的官方 stack 對象。以即時 `PullRequest.stack` 和 `stackEntry.position` 欄位為權威依據。對於尚未形成官方堆疊且所有 PR 作者相同的鏈，系統使用 `gh stack link` 按自底向上的順序自動關聯；作者不一或作者資訊不可用時，必須取得使用者確認。缺少原生支援或跨 fork 的鏈會使流程硬性停止。如果現有成員屬於相互衝突的堆疊，或者官方順序與分支拓撲不一致，則在解散或重建任何堆疊之前都必須取得使用者指示。
 
 「落地堆疊」透過 `gh stack merge <stack-number> --yes --merge` 合併整個官方堆疊。部分落地需要明確指定邊界 PR，並合併從底部到該 PR 的前綴。工作流程絕不回退到逐個執行 `gh pr merge` 和手動調整 base。原生直接合併要麼全部成功，要麼全部不合併；合併佇列可能分組處理所選 PR，因此只有每個所選 PR 都分別達到 `MERGED`，落地纔算完成。
 
@@ -22,7 +22,7 @@ merge-forward 和 rebase 都可以作為獨立 PR 與官方堆疊 PR 的歷史�
 
 ## 驗證
 
-[堆疊落地 skill（技能）](../../../skills/dsh-merging-stacked-prs/SKILL.md)驗證原生支持、同倉庫分支、即時作者資訊、官方成員關係與順序、合併範圍以及最終合併狀態。[堆疊評審指南](../../../../docs/cookbook/responding-to-pr-review-on-a-stack.md)讓修復留在引入問題的層，並涵蓋兩種用於傳播修復的歷史策略。[推送前工作流程](../../../skills/dsh-pre-push-checks/SKILL.md)負責 lease 保護和同步後立即驗證所得的證據。
+[堆疊落地 skill（技能）](../../../skills/dsh-merging-stacked-prs/SKILL.md)驗證原生支援、同倉庫分支、即時作者資訊、官方成員關係與順序、合併範圍以及最終合併狀態。[堆疊評審指南](../../../../docs/cookbook/responding-to-pr-review-on-a-stack.md)讓修復留在引入問題的層，並涵蓋兩種用於傳播修復的歷史策略。[推送前工作流程](../../../skills/dsh-pre-push-checks/SKILL.md)負責 lease 保護和同步後立即驗證所得的證據。
 
 ## 曾考慮的替代方案
 

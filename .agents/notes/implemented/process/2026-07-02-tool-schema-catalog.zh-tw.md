@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-02-tool-schema-catalog.md) | [简体中文](2026-07-02-tool-schema-catalog.zh.md) | 繁體中文
+[English](2026-07-02-tool-schema-catalog.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-目錄透過**啟動每個工具外掛程式並讀取其已註冊 schema** 來生成，而不是解析原始碼。`scripts/gen-tool-catalog.ts` 在全新的 Cordis `Context` 上掛載每個已發布工具包；該上下文還提供 `SystemPrompt`、`ToolRuntime` 以及外掛程式 `apply` 所讀取的注入服務。生成器呼叫 `ctx.tools.schemas()`——也就是傳送給模型的確切 `ToolSchema[]`——隨後 dispose（資源釋放）上下文，並為每個包渲染一個 `## <package>` 章節，每個工具附帶一個 ` ```json ` `parameters` 塊。它與 `gen-cordis-catalog` / `gen-module-graph` 的 CLI 形狀一致：默認 `--write` 重新生成；提交副本過時時 `--check` 失敗；輸出具有確定性（按清單排序，工具按名稱排序）。`verify-tool-catalog`（即 `--check`）在 `doc-sync` 內執行，因此相關文件變更和 CI 會執行同一項新鮮度檢查。
+目錄透過**啟動每個工具外掛程式並讀取其已註冊 schema** 來生成，而不是解析原始碼。`scripts/gen-tool-catalog.ts` 在全新的 Cordis `Context` 上掛載每個已發布工具包；該上下文還提供 `SystemPrompt`、`ToolRuntime` 以及外掛程式 `apply` 所讀取的注入服務。生成器呼叫 `ctx.tools.schemas()`——也就是傳送給模型的確切 `ToolSchema[]`——隨後 dispose（資源釋放）上下文，並為每個包渲染一個 `## <package>` 章節，每個工具附帶一個 ` ```json ` `parameters` 塊。它與 `gen-cordis-catalog` / `gen-module-graph` 的 CLI 形狀一致：預設 `--write` 重新生成；提交副本過時時 `--check` 失敗；輸出具有確定性（按清單排序，工具按名稱排序）。`verify-tool-catalog`（即 `--check`）在 `doc-sync` 內執行，因此相關文件變更和 CI 會執行同一項新鮮度檢查。
 
 ### 為何啟動而非解析（核心要點）
 
@@ -29,13 +29,13 @@ Cordis 目錄是純 TypeScript AST 遍歷，因為每個事件/服務名都是�
 
 ### 手動維護的啟動 manifest 是無法省去的策略
 
-檔案系統負責發現工具包清單，完整性守衛負責拒絕遺漏。`TOOL_PACKAGES` 仍然為每個包持有一份顯式的啟動配方，因為所需的 Service Provider 和設定屬於策略，不是能從目錄版面配置或注入名稱安全推斷的事實。
+檔案系統負責發現工具包清單，完整性守衛負責拒絕遺漏。`TOOL_PACKAGES` 仍然為每個包持有一份顯式的啟動配方，因為所需的 Service Provider 和設定屬於策略，不是能從目錄版面設定或注入名稱安全推斷的事實。
 
 ### 範圍
 
-`packages/*/tool-*` 下已發布的產品工具包，每個都使用預設配置啟動，包括 `dsh-tool-bash`（`bash`）、`dsh-tool-jobs`（`job_output`、`job_list`、`job_kill`）和 `dsh-tool-subagent`（`subagent`）。僅供示例使用的工具不在範圍內。
+`packages/*/tool-*` 下已發布的產品工具包，每個都使用預設設定啟動，包括 `dsh-tool-bash`（`bash`）、`dsh-tool-jobs`（`job_output`、`job_list`、`job_kill`）和 `dsh-tool-subagent`（`subagent`）。僅供示例使用的工具不在範圍內。
 
-目錄的單位是包，而非經過設定的每個工具實例。每個包以預設配置啟動一次；載入時的別名（如 `subagent_fork`）會註明，但不枚舉所有部署設定組合。部署清單覆蓋的是一個獨立且無界的範圍。
+目錄的單位是包，而非經過設定的每個工具實例。每個包以預設設定啟動一次；載入時的別名（如 `subagent_fork`）會註明，但不枚舉所有部署設定組合。部署清單覆蓋的是一個獨立且無界的範圍。
 
 ### 使用普通 `json` 圍欄
 
@@ -51,5 +51,5 @@ schema 塊使用 ` ```json `，而非自訂的 `ts` 系圍欄。`doc-typecheck` 
 
 - 目錄不會發生漂移：提交文件未反映的工具 schema 變化會使 `doc-sync` 和 CI 中的 `verify-tool-catalog` 失敗。新增的 `tool-*` 包若未加入 manifest，會直接使完整性守衛失敗。
 - 工具描述文字有唯一歸屬——原始碼中 `defineTool` 的 `description`——生成的條目質量取決於它，與 Cordis 目錄對事件 JSDoc 施加的強制力相同。
-- 生成器匯入並執行工作區包（這是倉庫中第一個這樣做的指令碼；其他指令碼只讀文字）。它透過根 `tsconfig` 的 `paths` 對映在 `tsx` 下執行，使用與演示和測試相同的未建置原始碼路徑，因此不需要建置步驟。
+- 生成器匯入並執行工作區包（這是倉庫中第一個這樣做的指令碼；其他指令碼只讀文字）。它透過根 `tsconfig` 的 `paths` 對映在 `tsx` 下執行，使用與示範和測試相同的未建置原始碼路徑，因此不需要建置步驟。
 - 未來某個工具背後新增一個能力 seam，意味著 manifest 中需要新增一條配方條目（聲明要掛載哪些 seam）。這正是上文指出的有意為之的手寫成本；僅在新增工具包時才需變更。

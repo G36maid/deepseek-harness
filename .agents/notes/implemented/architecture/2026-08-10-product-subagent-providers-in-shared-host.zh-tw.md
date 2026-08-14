@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-product-subagent-providers-in-shared-host.md) | [简体中文](2026-08-10-product-subagent-providers-in-shared-host.zh.md) | 繁體中文
+[English](2026-08-10-product-subagent-providers-in-shared-host.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 每個隨發行版交付的 Profile 都會透過 base 組合包的宿主平面，把固定的 `codex` 與 `claude-code` 提供方各載入一次。載入任一外掛程式只會註冊一個休眠後端；對應的 Codex 或 Claude 行程直到第一次實際委派呼叫時才啟動。Agent Preset 分別透過普通的 `dsh-tool-subagent` 行貢獻 `subagent_codex` 與 `subagent_claude_code`，因此一個 preset 可以不暴露任何工具、只暴露其中一個或同時暴露兩者，而無需更改提供方登錄檔。
 
-本決策僅取代提供方約定說明所記錄的、原先由使用者選擇啟用的組裝位置。該說明仍負責每個產品的協議、結果對映、取消、行程樹生命週期與證據層級。[Agent Preset 架構](2026-08-03-per-session-agent-presets.md)仍負責宿主與 agent 的劃分、preset 創作，以及改動隻影響新組裝工作階段的規則。
+本決策僅取代提供方約定說明所記錄的、原先由使用者選擇啟用的組裝位置。該說明仍負責每個產品的協定、結果對映、取消、行程樹生命週期與證據層級。[Agent Preset 架構](2026-08-03-per-session-agent-presets.md)仍負責宿主與 agent 的劃分、preset 創作，以及改動隻影響新組裝工作階段的規則。
 
 這些提供方使用宿主環境已經選定的產品。Codex 啟動 `codex`，該命令從 `PATH` 解析；Claude Code 透過共享的子行程執行世界解析 `claude`，並把確切路徑交給官方 SDK。載入 Profile 不會安裝產品、建立產品狀態、探測版本、測試身分驗證，也不會新增產品專屬設定。命令缺失和產品故障仍侷限於發生問題的那次委派。
 
@@ -26,7 +26,7 @@ base Loader 測試證明兩個提供方名稱都恰好註冊一次，而且 Prof
 
 ## 考慮過的替代方案
 
-**將產品提供方保留為 Profile 層的按需啟用項。** 這樣可縮小默認相依性閉包，但複製或由 agent 創作的 Preset 行無法直接使用，除非使用者還發現並編輯第二個組裝層。對於這些本來與其他工具無異的工具，通用 Preset 入口仍不完整。
+**將產品提供方保留為 Profile 層的按需啟用項。** 這樣可縮小預設相依性閉包，但複製或由 agent 創作的 Preset 行無法直接使用，除非使用者還發現並編輯第二個組裝層。對於這些本來與其他工具無異的工具，通用 Preset 入口仍不完整。
 
 **儲存全域性或按 Profile 設定的產品啟用開關。** 行程級開關會與 Preset 爭奪模型可見工具的責任歸屬，也無法表示兩個工作階段使用不同組合。可用性與身分驗證屬於部署事實，並非另一份需要持久化的產品狀態。
 

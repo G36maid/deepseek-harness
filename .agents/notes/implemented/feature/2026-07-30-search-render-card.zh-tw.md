@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-07-30-search-render-card.md) | [简体中文](2026-07-30-search-render-card.zh.md) | 繁體中文
+[English](2026-07-30-search-render-card.md) | 繁體中文
 
 ## 問題
 
-`grep` 與 `glob` 返回結構化的 canonical 值——`grep` 是扁平的 `{ matches: [{ path, lineNumber, line }] }`，`glob` 是 `{ paths: string[] }`——但每個 UI 只見過它們面向模型的渲染文字：`grep` 把匹配按文件頭分組、每行 `Line N:`，`glob` 列印換行連線的路徑清單，兩者在內聯上限（`grepMaxMatches`，默認 250；`globMaxResults`，默認 100）把後續結果落到 spill 文件時都追加一個 spill 腳註。想把搜尋結果渲染成可展開的按文件匹配組、或選填擇的路徑清單的 Web 前端，只能去重新解析那段文字。兩個工具都已聲明呼叫時的[渲染意圖](../architecture/2026-07-02-tool-render-intent-union.md)（`GenericCallView`，`kind: 'search'`），但沒有結果階段檢視表，所以已完成的呼叫回退到渲染原始文字的 generic 卡片。
+`grep` 與 `glob` 返回結構化的 canonical 值——`grep` 是扁平的 `{ matches: [{ path, lineNumber, line }] }`，`glob` 是 `{ paths: string[] }`——但每個 UI 只見過它們面向模型的渲染文字：`grep` 把匹配按文件頭分組、每行 `Line N:`，`glob` 列印換行連線的路徑清單，兩者在內聯上限（`grepMaxMatches`，預設 250；`globMaxResults`，預設 100）把後續結果落到 spill 文件時都追加一個 spill 腳註。想把搜尋結果渲染成可展開的按文件匹配組、或選填擇的路徑清單的 Web 前端，只能去重新解析那段文字。兩個工具都已聲明呼叫時的[渲染意圖](../architecture/2026-07-02-tool-render-intent-union.md)（`GenericCallView`，`kind: 'search'`），但沒有結果階段檢視表，所以已完成的呼叫回退到渲染原始文字的 generic 卡片。
 
-結構化 canonical 值不透過協議傳輸：只有面向模型的渲染文字、以及當工具聲明瞭 `output.presentationMeta` 時的一份 JSON 元資料，會經 `tool/result` 事件到達用戶端（[canonical-output 約定](../architecture/2026-07-20-canonical-tool-output-contract.md)）。因此攜帶結構化資料的結果時檢視表必須把資料投影進 `presentationMeta`，再在 `presentResult` 裡讀回——與 `write`/`edit` 的 diff 卡片走同一條路。
+結構化 canonical 值不透過協定傳輸：只有面向模型的渲染文字、以及當工具聲明瞭 `output.presentationMeta` 時的一份 JSON 元資料，會經 `tool/result` 事件到達用戶端（[canonical-output 約定](../architecture/2026-07-20-canonical-tool-output-contract.md)）。因此攜帶結構化資料的結果時檢視表必須把資料投影進 `presentationMeta`，再在 `presentResult` 裡讀回——與 `write`/`edit` 的 diff 卡片走同一條路。
 
 ## 決定
 
@@ -16,7 +16,7 @@ Status: implemented
 
 判別子是 `shape` 而非 `kind`，是刻意為之：同一個 presentation 模組已經給 `GenericCallView` 一個 `kind: ToolCallKind` 欄位，其取值恰好包含 `'search'`（圖示類別）。持有 `ToolCallView | ToolResultView` 的橋接層會看到兩個含義不同的 `kind` 欄位；結果變體用 `shape` 把兩者分開。
 
-用一個帶兩種形狀的檢視表而非兩張卡片，因為兩個工具是同一個視覺對象——一個搜尋結果——Web 消費端先在一個 `card` 值上分支，再在 `shape` 上分支決定行版面配置。判別式 `shape` 讓每個變體的欄位保持非選填（matches 檢視表總有 `files`，paths 檢視表總有 `paths`），而不是一個所有形狀相關欄位都選填的單一介面。
+用一個帶兩種形狀的檢視表而非兩張卡片，因為兩個工具是同一個視覺對象——一個搜尋結果——Web 消費端先在一個 `card` 值上分支，再在 `shape` 上分支決定行版面設定。判別式 `shape` 讓每個變體的欄位保持非選填（matches 檢視表總有 `files`，paths 檢視表總有 `paths`），而不是一個所有形狀相關欄位都選填的單一介面。
 
 該檢視表**不**攜帶結果文字。把面向模型的 `result.content` 附到檢視表上不會產生效果——消費端的回退路徑本就讀取原始 `tool/result` 內容——卻會把整段搜尋文字又序列化進持久化檢視表一遍。檢視表只承載結構化形狀；無 search 卡片的 UI 回退到原始結果內容。
 
@@ -24,7 +24,7 @@ Status: implemented
 
 `packages/fs/tool-fs-search/src/presentation.ts` 擁有投影與收窄。`grepSearchMeta`/`globSearchMeta` 把 canonical 值投影為每個工具聲明為 `output.presentationMeta` 的 `SearchMeta` 載荷；`presentGrepResult`/`presentGlobResult` 經 `searchViewFromMeta` 把 `result.meta` 讀回。它們消費與面向模型渲染相同的已保留結果——`search-core.ts` 裡的 `retainGrepMatches`/`retainGlobPaths` 只跑一次內聯上限與每行預覽預算，渲染與投影都取這份產出——所以文字與卡片對哪些結果倖存永不分歧，也沒有第二次保留計算。`total` 是搜尋找到的全部結果（截斷前）；`truncated` 在上限丟棄了結果時置位。這是截斷誠實點：模型看到的是被截斷的內聯結果加一個 spill 腳註，所以卡片不能把保留頁當作完整結果——UI 讀 `truncated`/`total` 顯示截斷指示，而非宣稱模型從未有過的完整性。
 
-**meta 有自己的位元組預算。** 內聯上限約束的是條目數，但一次寬泛搜尋保留下來的匹配（數百條長行）仍可序列化到數百 KB，而 `meta` 會隨工作階段日誌持久化並在每次請求時重發。部署的最終輸出預算（`dsh-spill-policy` 的 `maxInlineBytes`）只縮減結果的 `content`——`PostToolDecision` 沒有 `meta` 通道——所以投影自己負責把 `meta` 約束住。`capMetaBytes` 丟棄末尾的文件組／路徑，直到序列化 meta 裝進 `searchMetaMaxBytes`（設定，默認 64 KiB），並把結果標記 `truncated`。單個大到自身都裝不下的條目會被保留：不變數是可丟棄處一律有界，絕不產出隱藏了真實結果的空卡片。
+**meta 有自己的位元組預算。** 內聯上限約束的是條目數，但一次寬泛搜尋保留下來的匹配（數百條長行）仍可序列化到數百 KB，而 `meta` 會隨工作階段日誌持久化並在每次請求時重發。部署的最終輸出預算（`dsh-spill-policy` 的 `maxInlineBytes`）只縮減結果的 `content`——`PostToolDecision` 沒有 `meta` 通道——所以投影自己負責把 `meta` 約束住。`capMetaBytes` 丟棄末尾的文件組／路徑，直到序列化 meta 裝進 `searchMetaMaxBytes`（設定，預設 64 KiB），並把結果標記 `truncated`。單個大到自身都裝不下的條目會被保留：不變數是可丟棄處一律有界，絕不產出隱藏了真實結果的空卡片。
 
 `searchViewFromMeta` 防禦性地收窄不透明的 `meta`，對任何畸形或缺失載荷返回 `undefined`，使在較舊或手工編輯的重播日誌上執行的 presenter 回退到 generic 卡片而非拋錯。它確實接受零結果載荷（`files: []` / `paths: []`）為合法的空卡片——這是對作為參照的 `diffsFromMeta` 的刻意偏離（後者拒絕空 `diffs`），因為零匹配的 grep 是 UI 展示為「no matches」的合法結果，而非缺失的投影。`presentResult` 對失敗結果、對缺失 meta（巢狀 `run_code` 分發不計算 `presentationMeta`）、以及對另一工具的 meta 形狀（每個 presenter 收窄到自己的 `shape`）返回 `undefined`。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-markdown-cross-link-lint.md) | [简体中文](2026-06-18-markdown-cross-link-lint.zh.md) | 繁體中文
+[English](2026-06-18-markdown-cross-link-lint.md) | 繁體中文
 
 ## 問題
 
@@ -15,7 +15,7 @@ Status: implemented
 新增第四道 `doc-sync` 閘門 `verify-md-links`（`scripts/verify-md-links.ts`），風格與 `verify-md-wrap` 一致（tsx ESM、基於 AST、只驗證不生成）：
 
 - 使用 `mdast-util-from-markdown` + GFM 解析每個範圍內的 Markdown 文件，遍歷所有 `link`、`image`、`definition` 節點。
-- 僅當目標是**相對路徑**時才檢查。跳過帶協議的 URL（`https:`、`mailto:` 等）、協議相對路徑（`//host`）、根絕對路徑（`/path`，在檢出目錄中沒有穩定基準）以及純頁內錨點（`#section`）。剝除 `#fragment`/`?query`，相對於連結所在文件的目錄解析路徑，並斷言目標在磁碟上存在。
+- 僅當目標是**相對路徑**時才檢查。跳過帶協定的 URL（`https:`、`mailto:` 等）、協定相對路徑（`//host`）、根絕對路徑（`/path`，在檢出目錄中沒有穩定基準）以及純頁內錨點（`#section`）。剝除 `#fragment`/`?query`，相對於連結所在文件的目錄解析路徑，並斷言目標在磁碟上存在。
 - 只報告、不改寫；發現第一條死鏈即以非零狀態退出。
 
 檢查範圍與其他閘門一致，並額外包含 AGENTS.md 文件對以及 `.agents/skills/` 下倉庫自有的 agent skill（代理技能） Markdown（這些 skill 文件會交叉連結到 docs 目錄樹，因此本次重組也改寫了其中的連結）：`README.md`、`docs/**/*.md`、`packages/*/README.md`、`AGENTS.md`、`packages/AGENTS.md`、`.agents/skills/**/*.md`。系統按真實路徑去重（`CLAUDE.md` symlink 會解析到 AGENTS.md 文件）。該檢查接入 `doc-sync`，因此相關文件變更與 CI 執行同一套斷鏈檢查。

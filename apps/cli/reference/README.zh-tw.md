@@ -1,6 +1,6 @@
 # `dsh` CLI（命令列介面）行為參考
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 本參考定義 profile 啟動、web 別名、外掛程式管理和設定 dump 等命令模式。argv 由 [`src/args.ts`](../src/args.ts) 統一解析一次，[`src/bin.ts`](../src/bin.ts) 只會動態匯入選中的執行器。
 
@@ -48,7 +48,7 @@ dsh plugin --profile tui remove turtle-ui
 dsh --profile tui
 ```
 
-隨原始碼發布的 Git 託管外掛程式會在安裝期間透過 `prepare` 指令碼建置，而 pnpm ≥10 默認會阻止該指令碼，直到使用方明確允許。首次執行 `add` 會失敗，並顯示 pnpm 的 `allowBuilds` 提示；dsh 還會提示應修改該 profile 的 `pnpm-workspace.yaml`。將輸出的鍵複製到該文件後，重新執行命令即可。安裝已經建置好的 tarball 或本機 checkout 時，無需加入 `allowBuilds`。
+隨原始碼發布的 Git 託管外掛程式會在安裝期間透過 `prepare` 指令碼建置，而 pnpm ≥10 預設會阻止該指令碼，直到使用方明確允許。首次執行 `add` 會失敗，並顯示 pnpm 的 `allowBuilds` 提示；dsh 還會提示應修改該 profile 的 `pnpm-workspace.yaml`。將輸出的鍵複製到該文件後，重新執行命令即可。安裝已經建置好的 tarball 或本機 checkout 時，無需加入 `allowBuilds`。
 
 ## Web 別名
 
@@ -61,13 +61,13 @@ dsh web --dump-config
 dsh web --help
 ```
 
-生產 Web 執行器需要已建置的包和前端產物（`pnpm run build`）。默認服務地址是 `http://127.0.0.1:3080`。CLI 目前有意不支持 `--host 0.0.0.0`，並會以用法錯誤退出；`--trusted-host` 可新增 `/api` 瀏覽器信任圍欄接受的具名 authority。
+生產 Web 執行器需要已建置的包和前端產物（`pnpm run build`）。預設服務地址是 `http://127.0.0.1:3080`。CLI 目前有意不支援 `--host 0.0.0.0`，並會以用法錯誤退出；`--trusted-host` 可新增 `/api` 瀏覽器信任圍欄接受的具名 authority。
 
 行程關閉時，外掛程式樹最多有 5 秒完成 dispose。首次收到 `SIGINT` 或 `SIGTERM` 時會開始優雅排空：`SIGTERM` 是監督行程寄出的常規停止請求，在所有執行模式下都以 0 退出；`SIGINT` 則報告 130。第二次收到訊號時會立即強制退出。如果一次性執行在正常結束時已經卡在 dispose 階段，第一次按下 `Ctrl+C` 就會直接升級為強制退出，而不會被忽略。
 
-所有模式都將執行命令時所在的目錄作為默認 workspace 根目錄，以 65,536 位元組渲染預算載入適用的 `AGENTS.md` 或 `CLAUDE.md` 指令，並使用記憶體 SQLite 工作階段內容索引。每次啟動 profile 時，系統都會監視 profile 與 home 兩個 `cordis.patch.yml` 設定層的有效變更，並以交易方式重新應用；一次性執行模式透過有界關閉流程退出，該流程會先 dispose 監視器。
+所有模式都將執行命令時所在的目錄作為預設 workspace 根目錄，以 65,536 位元組渲染預算載入適用的 `AGENTS.md` 或 `CLAUDE.md` 指令，並使用記憶體 SQLite 工作階段內容索引。每次啟動 profile 時，系統都會監視 profile 與 home 兩個 `cordis.patch.yml` 設定層的有效變更，並以交易方式重新應用；一次性執行模式透過有界關閉流程退出，該流程會先 dispose 監視器。
 
-新工作階段默認使用 `workspace-write` 權限預設。Bash 和檔案系統修改僅限於工作階段 workspace 與平臺臨時根目錄；讀取、網路訪問和行程可見性不受限制。`DSH_PERMISSION_MODE` 更改行程後備值。General settings 中儲存的權限影響後續 Web 工作階段，不改變已打開的工作階段。
+新工作階段預設使用 `workspace-write` 權限預設。Bash 和檔案系統修改僅限於工作階段 workspace 與平臺臨時根目錄；讀取、網路訪問和行程可見性不受限制。`DSH_PERMISSION_MODE` 更改行程後備值。General settings 中儲存的權限影響後續 Web 工作階段，不改變已打開的工作階段。
 
 `DSH_TOOLS_MODE` 為行程選擇 `native`、`code` 或 `both`；其他值會導致啟動失敗。隨附的 `minimal` agent preset 會保留該部署的呈現方式，將完整系統提示詞固定為 `You are a helpful software engineer assistant.`，並且僅組合持久 `bash` 和 `str_replace_editor`。建立 Web 工作階段時請選擇極簡模式；該 agent 不包含任何其他提示詞段落或面向模型的外掛程式，而共享的瀏覽器、workspace、持久化、沙盒與權限宿主保持不變。
 
@@ -75,10 +75,10 @@ dsh web --help
 
 基礎組合包掛載原生 DeepSeek 配接器、settings 與憑據提供方、穩定的 `web_search` 和已停用的工作階段遙測。提供方憑據依次從繼承環境、`$DSH_HOME/.credentials.yaml`、呼叫目錄的 `.env` 和 `$DSH_HOME/.env` 解析；受管文件從不物化進 `process.env`，而兩個 `.env` 文件都是普通啟動環境層。搜尋使用 `DEEPSEEK_API_KEY` 並接受 `DEEPSEEK_SEARCH_BASE_URL`；只有 patch 層插入提供方並啟用 `web_fetch` 後，該工具纔可用。
 
-工作階段遙測默認留在本機。`DSH_TELEMETRY_MODE=FULL` 將每條已投影工作階段事件作為 OTLP/HTTP 日誌流式傳送，`DSH_TELEMETRY_MODE=FEEDBACK_ONLY` 則僅在記錄回饋時上傳工作階段日誌後綴。`DSH_TELEMETRY_OTLP_URL` 選擇其他 collector。任何非空的 `DSH_TELEMETRY_DISABLED` 都是具有最終效力的遙測強制關閉開關。隨附基礎設定沒有遙測脫敏規則，因此顯式啟用的匯出可能包含訊息文字、工具參數和結果，以及 workspace 路徑；相關部署決策見[預設關閉 Agent Note](../../../.agents/notes/implemented/feature/2026-08-10-telemetry-default-off.md)。
+工作階段遙測預設留在本機。`DSH_TELEMETRY_MODE=FULL` 將每條已投影工作階段事件作為 OTLP/HTTP 日誌流式傳送，`DSH_TELEMETRY_MODE=FEEDBACK_ONLY` 則僅在記錄回饋時上傳工作階段日誌後綴。`DSH_TELEMETRY_OTLP_URL` 選擇其他 collector。任何非空的 `DSH_TELEMETRY_DISABLED` 都是具有最終效力的遙測強制關閉開關。隨附基礎設定沒有遙測脫敏規則，因此顯式啟用的匯出可能包含訊息文字、工具參數和結果，以及 workspace 路徑；相關部署決策見[預設關閉 Agent Note](../../../.agents/notes/implemented/feature/2026-08-10-telemetry-default-off.md)。
 
-透過 `dsh plugin --profile <name> add <package-or-git-spec>` 安裝外部外掛程式組合包。安裝的包擁有其相依性，並貢獻其聲明的 `cordis.patch.yml` 層。CLI 還隨附 `@deepseek-ai/dsh-mcp-client` 作為供 patch 層使用的相依性，但默認不啟用 MCP 伺服器，因為每條伺服器命令都是 agent（代理）沙盒之外的受信任可執行程式碼。
+透過 `dsh plugin --profile <name> add <package-or-git-spec>` 安裝外部外掛程式組合包。安裝的包擁有其相依性，並貢獻其聲明的 `cordis.patch.yml` 層。CLI 還隨附 `@deepseek-ai/dsh-mcp-client` 作為供 patch 層使用的相依性，但預設不啟用 MCP 伺服器，因為每條伺服器命令都是 agent（代理）沙盒之外的受信任可執行程式碼。
 
 ## 原始碼執行
 
-請在倉庫根目錄中，於全新 checkout 之後及產物需要更新時單獨執行 `pnpm run build`，然後使用 `pnpm dsh <args...>`。`package.json` 中的指令碼不會建置，而是透過 `node --import tsx/esm` 啟動 `apps/cli/src/bin.ts`，並轉發所有參數。Typert Host 產物缺失時，profile 啟動會因不含建置指引的模組解析錯誤而失敗。這些 Host 產物存在後，如果前端或 Client plugin 組合包缺失，啟動會失敗並提示執行 `pnpm run build`。啟動器不會檢查產物是否為最新，因此已有的過時組合包可能繼續執行舊版瀏覽器程式碼，直至重新建置。該行程會繼承啟動環境；當支持環境代理的 Node 版本必須遵循 `HTTP_PROXY` 和 `HTTPS_PROXY` 時，請設定 `NODE_USE_ENV_PROXY=1`。安裝形式會直接啟動建置後的 `apps/cli/lib/bin.js`，不會重新建置倉庫。
+請在倉庫根目錄中，於全新 checkout 之後及產物需要更新時單獨執行 `pnpm run build`，然後使用 `pnpm dsh <args...>`。`package.json` 中的指令碼不會建置，而是透過 `node --import tsx/esm` 啟動 `apps/cli/src/bin.ts`，並轉發所有參數。Typert Host 產物缺失時，profile 啟動會因不含建置指引的模組解析錯誤而失敗。這些 Host 產物存在後，如果前端或 Client plugin 組合包缺失，啟動會失敗並提示執行 `pnpm run build`。啟動器不會檢查產物是否為最新，因此已有的過時組合包可能繼續執行舊版瀏覽器程式碼，直至重新建置。該行程會繼承啟動環境；當支援環境代理的 Node 版本必須遵循 `HTTP_PROXY` 和 `HTTPS_PROXY` 時，請設定 `NODE_USE_ENV_PROXY=1`。安裝形式會直接啟動建置後的 `apps/cli/lib/bin.js`，不會重新建置倉庫。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-deepseek-onboarding-credential-setup.md) | [简体中文](2026-07-30-deepseek-onboarding-credential-setup.zh.md) | 繁體中文
+[English](2026-07-30-deepseek-onboarding-credential-setup.md) | 繁體中文
 
 ## 問題
 
@@ -26,7 +26,7 @@ Status: implemented
 
 **把 API key 寫入提供方設定**：不予採用，因為字面量 secret 會進入設定變更路徑，而整個分節替換無法安全重建脫敏值。憑據儲存已經是產品 seam，並能立即寄出失效事件。
 
-**`llm-deepseek` 缺失時仍顯示浮層**：不予採用，因為瀏覽器導覽沒有任何受支持的操作可以掛載缺失的 Cordis 外掛程式。
+**`llm-deepseek` 缺失時仍顯示浮層**：不予採用，因為瀏覽器導覽沒有任何受支援的操作可以掛載缺失的 Cordis 外掛程式。
 
 ## 後果
 

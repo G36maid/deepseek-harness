@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-skill-filesystem
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 `ctx.skills` 登錄檔的本機檔案系統提供方。
 
@@ -28,7 +28,7 @@
 
 ## 發現
 
-默認根按該提供方的 rank 順序解析：
+預設根按該提供方的 rank 順序解析：
 
 | Rank | 來源 | 路徑 |
 |---|---|---|
@@ -52,9 +52,9 @@
 
 ## skill 格式
 
-skill 可以是單層目錄 bundle（`<name>/SKILL.md`），也可以是平鋪 Markdown 文件（`<name>.md`）。刻意不支持發現巢狀的 `**/SKILL.md`。Frontmatter 使用 `yaml` 包解析為開放的 YAML 對象；該提供方解析必填的 `name` 和 `description`，以及選填的 `whenToUse`、`metadata`、`disable-model-invocation` 和 `user-invocable`。名稱必須使用 kebab-case。
+skill 可以是單層目錄 bundle（`<name>/SKILL.md`），也可以是平鋪 Markdown 文件（`<name>.md`）。刻意不支援發現巢狀的 `**/SKILL.md`。Frontmatter 使用 `yaml` 包解析為開放的 YAML 對象；該提供方解析必填的 `name` 和 `description`，以及選填的 `whenToUse`、`metadata`、`disable-model-invocation` 和 `user-invocable`。名稱必須使用 kebab-case。
 
-這兩個呼叫欄位接受 YAML 布林值，以及不區分大小寫的 `true`/`false`、`yes`/`no`、`on`/`off` 和 `1`/`0`。`disable-model-invocation: true` 會從面向模型的目錄和 loader 中排除該 skill；`user-invocable: false` 會從面向使用者的命令中排除該 skill。每個省略的欄位都預設為允許對應介面呼叫；提供方始終輸出兩個正向內部策略值，即使兩個鍵都不存在也不例外。若使用駝峯拼寫或提供非布林呼叫值，系統會記錄警告並從發現結果中排除整個 skill，而不是隻丟棄該欄位或回退到寬鬆的預設值。呼叫策略校驗遵循失敗時默認拒絕原則，因為忽略無效資料可能會在已停用的介面上暴露 skill；類型錯誤的選填 `whenToUse` 和 `metadata` 值則會被省略，因為這兩個欄位目前都不授予呼叫權限。
+這兩個呼叫欄位接受 YAML 布林值，以及不區分大小寫的 `true`/`false`、`yes`/`no`、`on`/`off` 和 `1`/`0`。`disable-model-invocation: true` 會從面向模型的目錄和 loader 中排除該 skill；`user-invocable: false` 會從面向使用者的命令中排除該 skill。每個省略的欄位都預設為允許對應介面呼叫；提供方始終輸出兩個正向內部策略值，即使兩個鍵都不存在也不例外。若使用駝峯拼寫或提供非布林呼叫值，系統會記錄警告並從發現結果中排除整個 skill，而不是隻丟棄該欄位或回退到寬鬆的預設值。呼叫策略校驗遵循失敗時預設拒絕原則，因為忽略無效資料可能會在已停用的介面上暴露 skill；類型錯誤的選填 `whenToUse` 和 `metadata` 值則會被省略，因為這兩個欄位目前都不授予呼叫權限。
 
 目錄與正文具有獨立的生命週期。發現階段解析 frontmatter 以生成概述。每次 `skill(name)` 載入都會重新讀取並解析當前文件，因此正文編輯不需要 hash、修訂號、快取失效或主動通知模型。若在發現與載入之間更改 frontmatter 中的名稱，系統會拒絕過時名稱並使提供方失效；下一次目錄觀察會發布新名稱。
 
@@ -69,7 +69,7 @@ watcher 觸發的失效可促使上述消費端在現有請求歷史中追加替
 ## 已知限制與暫緩事項
 
 - **發現深度為一層**：只識別 `<root>/<name>/SKILL.md` 和 `<root>/<name>.md`；忽略巢狀 skill 樹和包 manifest（中繼資料清單）。
-- **項目範圍為最近 `.git` 祖先**：沒有該標記的工作區回退到提供的 cwd，不支持其他項目根標記或 monorepo 子項目選擇。
+- **項目範圍為最近 `.git` 祖先**：沒有該標記的工作區回退到提供的 cwd，不支援其他項目根標記或 monorepo 子項目選擇。
 - **格式錯誤的條目會隨警告消失**：模型目錄不會收到每個 skill 的診斷，無法區分缺失的 skill 與無效的 skill；意外 I/O 失敗則會保留最後一份可用目錄。
 - **缺失根觀察每次輪詢一個路徑段**：啟動時不存在的根會使用 `fs.watchFile` 按 `watchPollIntervalMs` 輪詢，直至 Chokidar 可以附加；這以有界偵測延遲換取跨 IDE、Git 和 shell 工作流程的可靠建立偵測。
-- **無正文修訂協議**：已載入的正文是普通的已保留工具歷史；後續文件編輯會影響後續呼叫，但既不會改寫舊結果，也不會通知正文已發生變化。
+- **無正文修訂協定**：已載入的正文是普通的已保留工具歷史；後續文件編輯會影響後續呼叫，但既不會改寫舊結果，也不會通知正文已發生變化。

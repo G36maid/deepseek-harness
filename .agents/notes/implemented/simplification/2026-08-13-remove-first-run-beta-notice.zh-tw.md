@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-13-remove-first-run-beta-notice.md) | [简体中文](2026-08-13-remove-first-run-beta-notice.zh.md) | 繁體中文
+[English](2026-08-13-remove-first-run-beta-notice.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ GUI 每次首啟都會先顯示佔滿視口的內測聲明：內部測試的定�
 
 ## 決策
 
-本決策當時把首啟聲明從組裝後的產品中整體移除，而不是改寫。`ui-settings-general` 不再註冊任何 `settings.onboarding` 步驟；聲明元件、確認 store、文案所有者文件和 locale 鍵均被刪除，Host 則保留 `ui-onboarding` namespace，使既有設定文件繼續有效。後續的[共用彈出視窗產品引導](../feature/2026-08-13-shared-modal-product-onboarding.md)在 `ui-settings-models` 中復原了一份新的簡潔測試階段聲明，複用該欄位與後端契約，但不會復原已移除的接管式版面配置或遙測說明。遙測的開啟仍是顯式的部署環境變數選擇，記錄在 [CLI reference README](../../../../apps/cli/reference/README.md) 中；復原後的聲明不涉及如何開啟遙測。
+本決策當時把首啟聲明從組裝後的產品中整體移除，而不是改寫。`ui-settings-general` 不再註冊任何 `settings.onboarding` 步驟；聲明元件、確認 store、文案所有者文件和 locale 鍵均被刪除，Host 則保留 `ui-onboarding` namespace，使既有設定文件繼續有效。後續的[共用彈出視窗產品引導](../feature/2026-08-13-shared-modal-product-onboarding.md)在 `ui-settings-models` 中復原了一份新的簡潔測試階段聲明，複用該欄位與後端契約，但不會復原已移除的接管式版面設定或遙測說明。遙測的開啟仍是顯式的部署環境變數選擇，記錄在 [CLI reference README](../../../../apps/cli/reference/README.md) 中；復原後的聲明不涉及如何開啟遙測。
 
 ## 曾考慮的替代方案
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-continuable-subagent-conversations.md) | [简体中文](2026-07-28-continuable-subagent-conversations.zh.md) | 繁體中文
+[English](2026-07-28-continuable-subagent-conversations.md) | 繁體中文
 
 本記錄取代[可繼續的後臺 subagent](../../implemented/feature/2026-07-21-continuable-background-subagents.md)中由 Task 支撐的繼續執行管理器。它保留[將 subagent 控制合併到 subagent 服務](../../implemented/simplification/2026-07-26-merge-subagent-control-service.md)確立的單一 `ctx.subagents` 服務，以及[以意圖命名的 subagent 繼續執行操作](../../implemented/simplification/2026-07-27-intent-named-subagent-continuation-operations.md)確立的 `followup` 操作。
 
@@ -125,7 +125,7 @@ activation-owner 作用域之所以存在，是因為普通 Cordis owner effect 
 
 權限來自確切的線上 Agent 工具上下文。准入後，`MessageSource` 和 `senderSessionId` 記錄誰提供了訊息；呼叫方不能用這些欄位取得權限。
 
-本版本只授權持久化 child 的直接 parent。管理器會在將 child 註冊到該 parent 的 `ownedChildren` 之前，於最終無 await 的 inbox 准入邊界根據確切的線上 parent Agent 檢查 `SessionHeader.parentSession`；冷復原還會在重建前執行一次更早的檢查，以便快速失敗。其他 Agent、祖先、宿主、團隊和工作流程仍被拒絕，直至有具體消費端證明另一種權限協議合理。
+本版本只授權持久化 child 的直接 parent。管理器會在將 child 註冊到該 parent 的 `ownedChildren` 之前，於最終無 await 的 inbox 准入邊界根據確切的線上 parent Agent 檢查 `SessionHeader.parentSession`；冷復原還會在重建前執行一次更早的檢查，以便快速失敗。其他 Agent、祖先、宿主、團隊和工作流程仍被拒絕，直至有具體消費端證明另一種權限協定合理。
 
 由 parent 發起的投遞要求 parent 在准入時線上，並透過所有權關係使其繼續線上。
 
@@ -139,11 +139,11 @@ activation-owner 作用域之所以存在，是因為普通 Cordis owner effect 
 
 只有實際寫入 child 工作階段日誌的訊息，才能在重建時保留提供它的來源；僅被 inbox 接受並不提供重新啟動保證。
 
-工作階段和描述符的持久化狀態可在重新啟動後保留。啟用狀態、Agent inbox 內容和所有權圖都是行程內狀態。行程崩潰可能丟失已被接受但仍留在 inbox、尚未寫入工作階段日誌的初始提示詞或 follow-up。工作階段和描述符可能保留，因此後續獲得授權的訊息仍可冷復原 child，但丟失的訊息不會自動重播。復原已接受但未完成或未寫入日誌的訊息需要持久化 inbox 協議，本提案不隱含該能力。
+工作階段和描述符的持久化狀態可在重新啟動後保留。啟用狀態、Agent inbox 內容和所有權圖都是行程內狀態。行程崩潰可能丟失已被接受但仍留在 inbox、尚未寫入工作階段日誌的初始提示詞或 follow-up。工作階段和描述符可能保留，因此後續獲得授權的訊息仍可冷復原 child，但丟失的訊息不會自動重播。復原已接受但未完成或未寫入日誌的訊息需要持久化 inbox 協定，本提案不隱含該能力。
 
 ### 範圍
 
-本版本覆蓋可繼續的行程內 child，一次性委派保持不變。遠端提供方必須具備單獨的啟用 handle，以及等價的認證控制與 child-first 完全靜止約定，才能支持同樣的行為。
+本版本覆蓋可繼續的行程內 child，一次性委派保持不變。遠端提供方必須具備單獨的啟用 handle，以及等價的認證控制與 child-first 完全靜止約定，才能支援同樣的行為。
 
 它不新增 host-user 繼續執行、subagent steering 操作、持久化郵箱、跨行程 lease、中斷 inbox 工作的自動重播、團隊權限、工作流程權限、公開駐留查詢、新的線上啟用數量或後代總數限制，以及執行時期快取；後來的[當前輪次中斷](2026-08-06-continuable-subagent-interrupt.md)在此生命週期之上補充了唯一的公開停止操作。現有委派深度策略保持不變。選填的 child 到 parent 報告是後續消費該生命週期的功能，不屬於基礎可繼續能力。
 
@@ -153,11 +153,11 @@ activation-owner 作用域之所以存在，是因為普通 Cordis owner effect 
 
 **每個 `next-turn` 建立一次啟用。** 這會復原獨立的結果與取消邊界，但需要在 Agent inbox 旁維護管理器 FIFO，還會使所保留的 Agent 跨越人為劃分的啟用邊界。每個駐留週期對應一次啟用更小，也直接跟隨 `AgentHandle` 生命週期。
 
-**等待期間 dispose Agent。** child 仍屬於上一個行程內所有權圖時重建 parent，需要持久化所有權與拆卸協議。只為尚未完成的所有權圖保留 `AgentHandle`，可以在不讓已結帳歷史駐留的前提下，保留 child-first 拆卸。
+**等待期間 dispose Agent。** child 仍屬於上一個行程內所有權圖時重建 parent，需要持久化所有權與拆卸協定。只為尚未完成的所有權圖保留 `AgentHandle`，可以在不讓已結帳歷史駐留的前提下，保留 child-first 拆卸。
 
 **讓提供方透過 Agent handle 建立、復原 child 或投遞訊息。** 初始提供方只持有 `prepareContinuable()` 及其分離式建立規格這一項差異：child 是全新啟動，還是帶有 parent 前綴。管理器必須透過私有 activation-owner 作用域自行呼叫 `ctx.agents.create()`，使該作用域成為每個 handle 的結構化所有者。持久化的行程內工作階段已經包含初始前綴及通用重建描述符，訊息投遞則屬於 Agent inbox。讓提供方持有任何後續 handle、`SubagentRun` 或訊息所有權，會讓提供方保留所有權，卻沒有已發布行為需要它。
 
-**將報告投遞納入基礎生命週期。** 可重複的 child 到 parent 報告與該生命週期相容，但靜默投遞還是喚醒投遞、確認、持久性和重試行為都是獨立的產品決策。後續的 report 包保持選填，並消費一個顯式的 child 設定掛鉤，因此可繼續駐留不會默認授予返回通道。
+**將報告投遞納入基礎生命週期。** 可重複的 child 到 parent 報告與該生命週期相容，但靜默投遞還是喚醒投遞、確認、持久性和重試行為都是獨立的產品決策。後續的 report 包保持選填，並消費一個顯式的 child 設定掛鉤，因此可繼續駐留不會預設授予返回通道。
 
 **將 `SessionHeader.parentSession` 視為線上所有權。** 持久化譜系不能證明已記錄的 parent 當前持有 child。線上 parent 的 `ownedChildren` 成員關係會記錄行程內關係，而不改變持久化 parent id。
 
@@ -207,7 +207,7 @@ activation-owner 作用域之所以存在，是因為普通 Cordis owner effect 
 
 在後代執行期間保留啟用，會按尚未完成所有權圖的規模消耗 Agent 資源。現有委派深度策略仍會限制巢狀層級，但本版本不新增線上啟用數量或後代總數限制；已結帳的歷史工作階段不保留 `AgentHandle`。
 
-行程內 inbox 和所有權圖無法協調兩個 harness 行程。允許多個行程並行訪問同一持久化儲存的部署，仍需要持久化 lease 和郵箱協議。
+行程內 inbox 和所有權圖無法協調兩個 harness 行程。允許多個行程並行訪問同一持久化儲存的部署，仍需要持久化 lease 和郵箱協定。
 
 未安裝選填 report 包時，完成 child 輪次既不會把內容傳送給歷史 parent，也不會喚醒它。安裝後，只有顯式呼叫 `report` 才會發送選中內容；靜默投遞不喚醒 parent，喚醒投遞則會排入一個後續輪次。無論如何，child 的詳細輸出都會保留在其持久化工作階段中。
 

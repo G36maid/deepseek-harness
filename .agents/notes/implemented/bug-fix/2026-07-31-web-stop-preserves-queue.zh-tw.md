@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-web-stop-preserves-queue.md) | [简体中文](2026-07-31-web-stop-preserves-queue.zh.md) | 繁體中文
+[English](2026-07-31-web-stop-preserves-queue.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Web 停止按鈕呼叫 `session.cancel`，後者對映到廣義 `agent.cancel({ 
 
 AgentLoop 不會啟動並行的替代輪次。它會關閉並 flush 被中斷的輪次，達到取消的完全靜止，然後透過現有 FIFO 驅動器認領下一個可喚醒的 queued 入隊項。該認領會發出 `agent/inbox/dequeue`，因此 Host 的權威 `session/queue` 快照會退役已認領行，並使剩餘隊尾保持可見。瀏覽器既不重發，也不提升任何行。忽略取消的工作會延遲這一交接，直到該工作結帳。
 
-該對映只更改 Web 用戶端使用的 Host `session.cancel` 端點。`Agent.cancel()` 默認約定仍為廣義取消，ACP 和 TUI 保留既有取消策略，`AgentHandle.dispose()` 在拆卸期間仍會清除待處理工作。移除 Queue 行仍是用於丟棄單個待處理入隊項的顯式 Web 操作。
+該對映只更改 Web 用戶端使用的 Host `session.cancel` 端點。`Agent.cancel()` 預設約定仍為廣義取消，ACP 和 TUI 保留既有取消策略，`AgentHandle.dispose()` 在拆卸期間仍會清除待處理工作。移除 Queue 行仍是用於丟棄單個待處理入隊項的顯式 Web 操作。
 
 ## 考慮過的替代方案
 
@@ -26,7 +26,7 @@ AgentLoop 不會啟動並行的替代輪次。它會關閉並 flush 被中斷的
 
 **被取消工作達到完全靜止之前啟動下一輪次。** 之所以否決：兩個輪次會並行修改同一工作階段日誌，並共享 Agent 擁有的資源。協作式取消會如實等待活動工作結帳。
 
-**為廣義取消與保留式取消新增協議選項。** 之所以否決：在 Web 產品提供獨立的「停止並清空 Queue」互動之前，不需要此選項。現有停止按鈕只有一項策略，而逐行刪除已提供當前的丟棄控制元件。
+**為廣義取消與保留式取消新增協定選項。** 之所以否決：在 Web 產品提供獨立的「停止並清空 Queue」互動之前，不需要此選項。現有停止按鈕只有一項策略，而逐行刪除已提供當前的丟棄控制元件。
 
 ## 驗證
 

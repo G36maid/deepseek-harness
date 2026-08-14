@@ -3,7 +3,7 @@
 
 # Fiber
 
-[English](fiber.md) | [简体中文](fiber.zh.md) | 繁體中文
+[English](fiber.md) | 繁體中文
 
 fiber 是一個已載入的外掛程式實例，包含其生命週期狀態、經過校驗的設定以及已註冊的作用。`ctx.fiber` 是當前 fiber，`ctx.effect()` 會將呼叫委託給它。
 
@@ -27,9 +27,9 @@ effect(execute: () => SyncEffect, label?: string): Disposable<Promise<void>>
 effect(execute: () => Effect, label?: string): AsyncDisposable<Promise<void>>
 ```
 
-在此 fiber 上註冊一個支持清理的作用。
+在此 fiber 上註冊一個支援清理的作用。
 
-`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose（資源釋放），則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支持的結果。
+`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose（資源釋放），則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支援的結果。
 
 - `execute`：作用主體；可接受的結構見 `Effect`。
 - `label`：在 `getEffects()` 診斷資訊中顯示的作用標籤。
@@ -183,9 +183,9 @@ effect(execute: () => SyncEffect, label?: string): Disposable<Promise<void>>
 effect(execute: () => Effect, label?: string): AsyncDisposable<Promise<void>>
 ```
 
-在此 fiber 上註冊一個支持清理的作用。
+在此 fiber 上註冊一個支援清理的作用。
 
-`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose，則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支持的結果。
+`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose，則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支援的結果。
 
 - `execute`：作用主體；可接受的結構見 `Effect`。
 - `label`：在 `getEffects()` 診斷資訊中顯示的作用標籤。
@@ -271,7 +271,7 @@ update(config: any, noSave = false)
 - `config`：新的原始設定；在任何內容重新啟動前進行校驗。
 - `noSave`：提示持久化掛鉤不要寫回此變更。
 
-**返回**更新 waterfall 的結果；默認的重新啟動操作返回一個 promise。
+**返回**更新 waterfall 的結果；預設的重新啟動操作返回一個 promise。
 
 [原始碼](../../vendor/cordis/src/fiber.ts#L736)
 

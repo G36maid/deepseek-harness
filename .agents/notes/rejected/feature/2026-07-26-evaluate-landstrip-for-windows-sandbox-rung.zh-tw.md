@@ -2,13 +2,13 @@
 
 Status: rejected — landstrip 未經實戰檢驗（駁回時問世僅數天，只有一名維護者，GitHub 星標約 48 個）；關係到安全不變數的相依性必須經過廣泛採用的驗證，因此 win32 層級維持自研啟動器的原計畫
 
-[English](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.md) | [简体中文](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh.md) | 繁體中文
+[English](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.md) | 繁體中文
 
 ## 問題
 
 [沙盒決策](../../implemented/feature/2026-07-06-sandbox.md)將 `PLATFORM_CHAINS.win32` 留空，並計畫用「AppContainer/受限權杖（restricted-token）家族的一個約束執行器，按 `node-addon-landlock-run` 範本從其獨立倉庫發布」來填充——一個估計約 1,500 行、需要自研編寫並維護的新倉庫（landlock-run 子樹約為 1,460 行 C／TS／指令碼／測試，外加文件與 CI）。
 
-自那份決策記錄寫成以來，出現了一個持續維護的第三方執行器：`@landstrip/landstrip`（npm 包，活躍開發中，Rust 核心，附帶按平臺預建置的 `optionalDependencies`）覆蓋 Linux 上的 Landlock + seccomp、macOS 上的 Seatbelt，以及 Windows 上的 AppContainer/受限使用者，支持 JSON／YAML 策略輸入和基於 trap-fd 的拒絕上報通道。它與 bwrap 一樣採用 exec 包裝方式，因此無需觸碰 Linux/macOS 層級即可契合鏈的 `confine(argv)` 形態。
+自那份決策記錄寫成以來，出現了一個持續維護的第三方執行器：`@landstrip/landstrip`（npm 包，活躍開發中，Rust 核心，附帶按平臺預建置的 `optionalDependencies`）覆蓋 Linux 上的 Landlock + seccomp、macOS 上的 Seatbelt，以及 Windows 上的 AppContainer/受限使用者，支援 JSON／YAML 策略輸入和基於 trap-fd 的拒絕上報通道。它與 bwrap 一樣採用 exec 包裝方式，因此無需觸碰 Linux/macOS 層級即可契合鏈的 `confine(argv)` 形態。
 
 ## 提案
 

@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-06-24-web-capability-seam.md) | [简体中文](2026-06-24-web-capability-seam.zh.md) | 繁體中文
+[English](2026-06-24-web-capability-seam.md) | 繁體中文
 
 ## 問題
 
-harness 需要面向模型的 web 工具，但不能將模型約定綁定到某一家廠商的 API 形狀上。搜尋是當前的壓力點：從一開始就同時支持 Exa 搜尋和 Perplexity 搜尋——兩種刻意不同的提供方形狀（Exa 返回扁平的 `results[]`，每項包含 `{title, url, highlights, publishedDate}`；Perplexity 返回一段生成式回答加引用清單）——正是用來證明歸一化的 web 約定並非只是映像檔某一家廠商。Fetch 是另一項獨立操作：匿名公開 HTTP(S) fetch 後端涉及傳輸、安全、重定向、解碼和大小限制等關注點，與提供方支撐的搜尋並不相同。
+harness 需要面向模型的 web 工具，但不能將模型約定綁定到某一家廠商的 API 形狀上。搜尋是當前的壓力點：從一開始就同時支援 Exa 搜尋和 Perplexity 搜尋——兩種刻意不同的提供方形狀（Exa 返回扁平的 `results[]`，每項包含 `{title, url, highlights, publishedDate}`；Perplexity 返回一段生成式回答加引用清單）——正是用來證明歸一化的 web 約定並非只是映像檔某一家廠商。Fetch 是另一項獨立操作：匿名公開 HTTP(S) fetch 後端涉及傳輸、安全、重定向、解碼和大小限制等關注點，與提供方支撐的搜尋並不相同。
 
 面向模型的 API 必須保持穩定，而後端可以更換。更換搜尋提供方不應改變模型發起查詢的方式；更換 fetch 實作不應改變模型請求 URL 的方式。反過來，提供方包也不應僅僅因為自己有額外的提供方特有旋鈕就暴露自己的面向模型工具 schema。
 
@@ -66,9 +66,9 @@ flowchart LR
   toolWeb -->|ctx.tools.register| webFetch["tool: web_fetch"]
 ```
 
-`@deepseek-ai/dsh-web` 僅相依性 Cordis 和底層 harness 支持。它聲明 `ctx.web`、提供方介面、請求/結果類型、提供方可用性約定和錯誤碼。它不匯入工具、agent（代理）、工作階段、LLM 或提供方包。
+`@deepseek-ai/dsh-web` 僅相依性 Cordis 和底層 harness 支援。它聲明 `ctx.web`、提供方介面、請求/結果類型、提供方可用性約定和錯誤碼。它不匯入工具、agent（代理）、工作階段、LLM 或提供方包。
 
-提供方包僅相依性 `dsh-web` 和 Cordis。它們擁有憑證、端點、協定格式對映、解析和 `WebError` 轉換，使用平臺 `fetch`。每個提供方注入共享服務並註冊後端；只有 `dsh-web` 擁有 `ctx.web` 鍵。提供方私有的協議形狀不會產生對 `ctx.llm` 或 Cordis HTTP 服務的相依性。
+提供方包僅相依性 `dsh-web` 和 Cordis。它們擁有憑證、端點、協定格式對映、解析和 `WebError` 轉換，使用平臺 `fetch`。每個提供方注入共享服務並註冊後端；只有 `dsh-web` 擁有 `ctx.web` 鍵。提供方私有的協定形狀不會產生對 `ctx.llm` 或 Cordis HTTP 服務的相依性。
 
 `@deepseek-ai/dsh-tool-web` 相依性 `@deepseek-ai/dsh-web`、`@deepseek-ai/dsh-tools`、`@deepseek-ai/dsh-system-prompt` 和 Cordis。它從不匯入具體的提供方包。
 
@@ -124,7 +124,7 @@ interface WebRuntime {
 | 未設定提供方 id，且該類別有多個可用提供方已註冊 | 以 `WEB_PROVIDER_AMBIGUOUS` 失敗，而非按註冊順序選擇 |
 | 未設定提供方 id，且有提供方存在但均不可用 | 以 `WEB_PROVIDER_UNAVAILABLE` 失敗 |
 
-「唯一提供方自動選擇」規則面向測試、演示和簡單部署。產品設定設定顯式提供方 id：
+「唯一提供方自動選擇」規則面向測試、示範和簡單部署。產品設定設定顯式提供方 id：
 
 ```yaml
 - id: web
@@ -159,13 +159,13 @@ interface WebRuntime {
 
 - `query`：必填字串。
 
-`max_results` 不暴露給模型。它是 `dsh-tool-web` 層的決策：工具設定結果上限——`searchMaxResults` 外掛程式設定，默認 `8`（與 OpenCode 的 Exa 預設值對齊），類似 `dsh-tool-fs` 的 `readLimit`——並作為 `WebSearchRequest` 上的 `maxResults` 傳給 seam。將其排除在模型 schema 之外意味著模型只需提問，產品控制返回多少上下文；該欄位日後可以提升為面向模型的參數而不破壞 seam。
+`max_results` 不暴露給模型。它是 `dsh-tool-web` 層的決策：工具設定結果上限——`searchMaxResults` 外掛程式設定，預設 `8`（與 OpenCode 的 Exa 預設值對齊），類似 `dsh-tool-fs` 的 `readLimit`——並作為 `WebSearchRequest` 上的 `maxResults` 傳給 seam。將其排除在模型 schema 之外意味著模型只需提問，產品控制返回多少上下文；該欄位日後可以提升為面向模型的參數而不破壞 seam。
 
 `maxResults` 沿工具 → seam → 提供方流動，上限在返迴路徑上強制執行：
 
 - `dsh-tool-web` 擁有該值並將其放在 `WebSearchRequest.maxResults` 上。
 - `ctx.web` 將請求原樣傳遞給選定的提供方。
-- 當提供方的 API 支持結果數量控制時（Exa 的 `numResults`），提供方在請求層應用 `maxResults`，作為成本/延遲最佳化。
+- 當提供方的 API 支援結果數量控制時（Exa 的 `numResults`），提供方在請求層應用 `maxResults`，作為成本/延遲最佳化。
 - `ctx.web` 在結果上強制執行上限：如果提供方返回的 source 數量超過 `maxResults`——因為其 API 沒有結果數量控制（Perplexity）或忽略了提示——seam 將 `sources[]` 截斷到 `maxResults` 並在返回前將 `WebSearchResult.truncated` 設為 `true`。這使上限成為面向模型層可以相依性的單一跨提供方保證，而非每個提供方都必須記得遵守的東西。
 
 seam 請求不攜帶提供方特有的控制——沒有 Perplexity 模型選擇、搜尋時效性、網域過濾器、Exa `livecrawl`、Exa `type`、區域提示、生成式回答預算或搜尋深度。只有當某個欄位具有提供方無關的語義，且工具 schema 和選定的提供方都能誠實地遵守時，才會新增。
@@ -193,7 +193,7 @@ interface WebSearchSource {
 
 `content` 是選填的提供方生成的回答文字、搜尋上下文或摘要。`sources[]` 是可移植的引用結構。source 必有 URL；title、snippet 和 `publishedAt` 選填，因為並非每個提供方都返回它們。`title` 不是必填：Perplexity 風格的引用可能只提供 URL，強制配接器編造標題會讓 seam 說謊。`dsh-tool-web` 渲染 `title ?? hostname(url)` 風格的回退標籤用於展示。`publishedAt` 是選填的發布/抓取時間戳，為 ISO-8601 字串——Exa 在每條結果上以 `publishedDate` 返回它，Perplexity 在搜尋結果上返回 `date`，因此它是真實的提供方資料而非派生值；seam 以字串形式傳遞，日期解析留給消費端。
 
-Exa 搜尋將提供方扁平 `results[]` 的每一項對映為 `WebSearchSource`：`url` ← `url`、`title` ← `title`、`snippet` ← 第一個 `highlights[]` 條目（沒有 highlight 的條目沒有可移植的 snippet，被丟棄）、`publishedAt` ← `publishedDate`。Exa 不返回提供方生成的回答，因此 `content` 省略。Perplexity 搜尋將 `choices[0].message.content` 對映為 `content`，並優先使用結構化的頂層 `search_results[]` 作為 `sources[]`——`url` ← `url`、`title` ← `title`、`snippet` ← `snippet`（常為空）、`publishedAt` ← `date`——僅在 `search_results` 缺失時回退到純 URL 的 `citations[]` 陣列（這些 source 只有 `url`）。如果提供方返回的結構化欄位少於 seam 支持的，配接器省略那些選填欄位。
+Exa 搜尋將提供方扁平 `results[]` 的每一項對映為 `WebSearchSource`：`url` ← `url`、`title` ← `title`、`snippet` ← 第一個 `highlights[]` 條目（沒有 highlight 的條目沒有可移植的 snippet，被丟棄）、`publishedAt` ← `publishedDate`。Exa 不返回提供方生成的回答，因此 `content` 省略。Perplexity 搜尋將 `choices[0].message.content` 對映為 `content`，並優先使用結構化的頂層 `search_results[]` 作為 `sources[]`——`url` ← `url`、`title` ← `title`、`snippet` ← `snippet`（常為空）、`publishedAt` ← `date`——僅在 `search_results` 缺失時回退到純 URL 的 `citations[]` 陣列（這些 source 只有 `url`）。如果提供方返回的結構化欄位少於 seam 支援的，配接器省略那些選填欄位。
 
 完整頁面取得仍是 `web_fetch(url)` 的職責。搜尋 snippet 是發現上下文，不是取得到的頁面正文。
 
@@ -207,7 +207,7 @@ seam 請求比 OpenCode 的面向模型工具更小：
 
 seam 請求刻意不包含逐呼叫逾時、`format`、`prompt` 或提供方特有的提取控制。取消透過直接的選填執行訊號實作，fetch 提供方擁有一個部署設定的逾時兜底。`format` 是對已取得資源的展示決策；`prompt` 是更高層的 LLM 摘要指令；Firecrawl、Exa、Tavily 或 Parallel 等提取 API 可能不暴露具體的 HTTP 回應。如果產品日後需要提供方支撐的頁面提取，那是一個獨立的 `web_extract` 能力或對本 seam 的刻意擴充——提取語義絕不透過將每個 HTTP 欄位設為選填來偷渡進 `web_fetch`。
 
-HTTP 狀態碼是已取得資源狀態的一部分，不自動構成工具失敗。透過網路成功取得到 `404` 或 `500` 回應時，會返回帶有狀態碼和有界解碼正文（當內容類型受支持時）的 `WebFetchResult`。`WebError` 用於無法安全取得或表示資源的失敗：無效或被阻斷的 URL、重定向策略違規、逾時、abort、回應過大、不支持的內容類型、提供方失敗或網路失敗。
+HTTP 狀態碼是已取得資源狀態的一部分，不自動構成工具失敗。透過網路成功取得到 `404` 或 `500` 回應時，會返回帶有狀態碼和有界解碼正文（當內容類型受支援時）的 `WebFetchResult`。`WebError` 用於無法安全取得或表示資源的失敗：無效或被阻斷的 URL、重定向策略違規、逾時、abort、回應過大、不支援的內容類型、提供方失敗或網路失敗。
 
 ```ts
 export interface WebFetchRequest {
@@ -248,7 +248,7 @@ SSRF/私有網路防護（阻斷私有、回環、鏈路本機、多播及其他
 
 `dsh-tool-web` 禁止枚舉提供方或直接呼叫提供方的 `available()`。它進入 seam 的唯一路徑是 `ctx.web.search()`/`ctx.web.fetch()`。這將提供方選擇保持在單一層；否則工具包可能判定某個提供方可用，而執行時解析出不同的狀態。
 
-工具註冊是最小化的穩定同步：外掛程式啟動時，`dsh-tool-web` 的 `Config`（`search?: boolean`、`fetch?: boolean`，均默認 `true`）啟用或停用每個 web 工具；已啟用的工具透過基於 effect 的登錄檔以 fiber 作用域的 disposer 註冊；任何工具都不會僅因其選定的提供方缺失、不可用或存在歧義而被 dispose；dispose `tool-web` fiber 時自動拆除其註冊。
+工具註冊是最小化的穩定同步：外掛程式啟動時，`dsh-tool-web` 的 `Config`（`search?: boolean`、`fetch?: boolean`，均預設 `true`）啟用或停用每個 web 工具；已啟用的工具透過基於 effect 的登錄檔以 fiber 作用域的 disposer 註冊；任何工具都不會僅因其選定的提供方缺失、不可用或存在歧義而被 dispose；dispose `tool-web` fiber 時自動拆除其註冊。
 
 提供方可用性變化影響執行結果和診斷資訊，而非面向模型的 schema 是否存在。如果產品完全不需要 web 工具，在設定中停用 `dsh-tool-web` 或單個 web 工具即可；如果需要 web 工具但後端設定有誤，模型在執行時看到結構化的工具錯誤。
 
@@ -280,7 +280,7 @@ SSRF/私有網路防護（阻斷私有、回環、鏈路本機、多播及其他
 
 ## 測試
 
-每一層在自己的邊界處固定：`dsh-web` 中的註冊/選擇/截斷/abort 約定與 `WebError` 碼；每個提供方基於錄制的 fixture（測試前置資料）的請求/回應對映（Perplexity fixture 包含純 URL 引用，以保持選填 source 欄位的誠實性），加上每個真實提供方的自跳過帶金鑰冒煙測試；`web-fetch-http` 中的真實本機 HTTP 行為；`dsh-tool-web` 中透過真實工具登錄檔的啟用驅動註冊、結構化執行錯誤和結果格式化。一個真實 Loader 冒煙測試守護兩種匯出形狀（[事後檢討（postmortem） 0001](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）：`dsh-web` 是默認匯出的服務，而提供方和 `tool-web` 是命名空間外掛程式，誤加 `export default` 會丟失 `inject`。
+每一層在自己的邊界處固定：`dsh-web` 中的註冊/選擇/截斷/abort 約定與 `WebError` 碼；每個提供方基於錄制的 fixture（測試前置資料）的請求/回應對映（Perplexity fixture 包含純 URL 引用，以保持選填 source 欄位的誠實性），加上每個真實提供方的自跳過帶金鑰冒煙測試；`web-fetch-http` 中的真實本機 HTTP 行為；`dsh-tool-web` 中透過真實工具登錄檔的啟用驅動註冊、結構化執行錯誤和結果格式化。一個真實 Loader 冒煙測試守護兩種匯出形狀（[事後檢討（postmortem） 0001](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）：`dsh-web` 是預設匯出的服務，而提供方和 `tool-web` 是命名空間外掛程式，誤加 `export default` 會丟失 `inject`。
 
 ## 曾考慮的替代方案
 

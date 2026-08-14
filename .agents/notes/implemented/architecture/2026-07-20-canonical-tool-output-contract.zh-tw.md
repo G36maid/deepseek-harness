@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-canonical-tool-output-contract.md) | [简体中文](2026-07-20-canonical-tool-output-contract.zh.md) | 繁體中文
+[English](2026-07-20-canonical-tool-output-contract.md) | 繁體中文
 
 ## 問題
 
@@ -22,7 +22,7 @@ output: {
 }
 ```
 
-`defineTool` 從統一的 `ValueSchemaSpec` 推導工具主體回傳值和兩個投影器的類型。原始定義和動態定義則提供編譯後的 `JsonSchemaNode` 形式。註冊時會拒絕缺失輸出聲明或採用不受支持的原始 schema 的定義，不提供相容舊式內容回傳值的路徑。
+`defineTool` 從統一的 `ValueSchemaSpec` 推導工具主體回傳值和兩個投影器的類型。原始定義和動態定義則提供編譯後的 `JsonSchemaNode` 形式。註冊時會拒絕缺失輸出聲明或採用不受支援的原始 schema 的定義，不提供相容舊式內容回傳值的路徑。
 
 每次成功分發時，登錄檔會將回傳值快照為無損 `JsonValue`，依據 `output.schema` 校驗並深度凍結，然後呼叫純渲染器；對於直接的外層呼叫，還會呼叫選填的元資料投影器。渲染器、投影器、schema 或無損 JSON 處理失敗都會被收斂為普通 `ToolOutputError` 結果。圍繞 `tools/execute` 的包裝層接收並返回規範的成功／失敗聯合；包裝層自行產生的成功結果會再次透過已解析工具的輸出聲明完成歸一化，而不會信任其獨立編寫的內容。每個規範結果都與建立它的不可變分發 token 綁定；因此，如果包裝層返回來自其他呼叫或工具的快取結果，系統會依據當前生效的輸出聲明重新執行歸一化，而不會繞過這一步。
 
@@ -62,7 +62,7 @@ type ToolExecutionResult =
 
 提供方和執行器的採集上限仍會實際限制規範值。僅用於格式化的限制歸 `render` 所有；例如，`glob` 和 `grep` 會在 `value` 中保留所有已採集項，而其 Native 投影會保留設定指定的第一頁，並盡力將其寫入 spill 文件。通用 spill 會前置註冊其 post-execute 監聽器，並讓該監聽器先向後委託，因此無論外掛程式載入順序如何，普通工具自有的非同步投影都會在通用位元組數上限處理之前完成。檔案系統變更工具根據 `args` 和規範的變更前／後值推導可重播的 diff 元資料，不再由工具主體返回 UI 狀態。
 
-MCP 橋接層透過 `McpResult<{...}> = { content: JsonValue[]; structuredContent? }` 保留協議內容區塊。當公佈的 `outputSchema` 屬於受支持的原始子集時，系統會強制校驗；不受支持的 schema 則回退為 `JsonValue`，而不會假裝已完成校驗。Native 渲染仍使用現有的 MCP 到 `ContentBlock` 投影，MCP `isError` 則會變為失敗的工具結果。
+MCP 橋接層透過 `McpResult<{...}> = { content: JsonValue[]; structuredContent? }` 保留協定內容區塊。當公佈的 `outputSchema` 屬於受支援的原始子集時，系統會強制校驗；不受支援的 schema 則回退為 `JsonValue`，而不會假裝已完成校驗。Native 渲染仍使用現有的 MCP 到 `ContentBlock` 投影，MCP `isError` 則會變為失敗的工具結果。
 
 ## 備選方案
 

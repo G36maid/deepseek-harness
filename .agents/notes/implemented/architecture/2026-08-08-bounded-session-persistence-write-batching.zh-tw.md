@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-bounded-session-persistence-write-batching.md) | [简体中文](2026-08-08-bounded-session-persistence-write-batching.zh.md) | 繁體中文
+[English](2026-08-08-bounded-session-persistence-write-batching.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 ### 量化基線
 
-倉庫 fixture（測試前置資料）讓邏輯資料量有了具體依據。對當前 [`goal-multi-turn-actions`](../../../../apps/web/tests/snapshots/goal-multi-turn-actions/session.jsonl) 中的打包行進行解碼，可得到 2,098 個事件，其中 2,017 個是區塊（96.1%）。這些區塊解包後的 JSONL 行共 332,647 位元組，佔全部事件 379,225 位元組的 87.7%；區塊打包則把倉庫中的已提交文件縮小到 89,176 位元組和 182 個儲存行，其中包括 23 個打包區塊行。[`permission-policy-context`](../../../../apps/web/tests/snapshots/permission-policy-context/session.jsonl) 可得到 813 個事件，其中 746 個是區塊（91.8%）；這些區塊解包後的 JSONL 行共 118,935 位元組，佔全部事件 184,821 位元組的 64.4%。其打包文件為 84,917 位元組，共 123 個儲存行，其中包括 14 個打包行。這些是納入版本控制的確定性 fixture，不代表生產工作負載分佈；但它們說明瞭刪除區塊為何會降低邏輯資料量，也說明現有打包行版面配置已經消除了大量 JSON 包裝開銷。
+倉庫 fixture（測試前置資料）讓邏輯資料量有了具體依據。對當前 [`goal-multi-turn-actions`](../../../../apps/web/tests/snapshots/goal-multi-turn-actions/session.jsonl) 中的打包行進行解碼，可得到 2,098 個事件，其中 2,017 個是區塊（96.1%）。這些區塊解包後的 JSONL 行共 332,647 位元組，佔全部事件 379,225 位元組的 87.7%；區塊打包則把倉庫中的已提交文件縮小到 89,176 位元組和 182 個儲存行，其中包括 23 個打包區塊行。[`permission-policy-context`](../../../../apps/web/tests/snapshots/permission-policy-context/session.jsonl) 可得到 813 個事件，其中 746 個是區塊（91.8%）；這些區塊解包後的 JSONL 行共 118,935 位元組，佔全部事件 184,821 位元組的 64.4%。其打包文件為 84,917 位元組，共 123 個儲存行，其中包括 14 個打包行。這些是納入版本控制的確定性 fixture，不代表生產工作負載分佈；但它們說明瞭刪除區塊為何會降低邏輯資料量，也說明現有打包行版面設定已經消除了大量 JSON 包裝開銷。
 
 SQLite 每個邏輯事件儲存一行，因此同樣的邏輯日誌會分別保留 2,098 和 813 個事件行；批次處理不會改變這些數量。JSONL 每個持久化追加批次會寫入一個 Zstandard 幀並執行一次 fsync，SQLite 每個批次會執行一次交易並遞增一次工作階段修訂版本。執行時期文件不記錄原有追加邊界，因此不能把 fixture 的儲存行數當作 fsync 或交易次數。
 

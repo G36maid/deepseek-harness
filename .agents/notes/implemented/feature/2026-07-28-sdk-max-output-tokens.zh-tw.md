@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-sdk-max-output-tokens.md) | [简体中文](2026-07-28-sdk-max-output-tokens.zh.md) | 繁體中文
+[English](2026-07-28-sdk-max-output-tokens.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Python 與 TypeScript SDK 可以選擇提供方和模型，卻無法限制對話
 
 ## 決策
 
-高層 SDK 公開一個選填的行程級輸出上限：Python 命名為 `max_tokens`，TypeScript 命名為 `maxTokens`，共享的 `initialize` 協議載荷使用 `maxTokens`。JSON-RPC 伺服器端拒絕任何不屬於正安全整數的值，並將透過校驗的上限與提供方／模型路由一同保存。
+高層 SDK 公開一個選填的行程級輸出上限：Python 命名為 `max_tokens`，TypeScript 命名為 `maxTokens`，共享的 `initialize` 協定載荷使用 `maxTokens`。JSON-RPC 伺服器端拒絕任何不屬於正安全整數的值，並將透過校驗的上限與提供方／模型路由一同保存。
 
 每個由 SDK 建立的根 Agent 都透過 `AgentOptions.maxTokens` 獲得該上限。agent loop（代理循環）將它放入初始 `LlmCallConfig`；最終呼叫準備會保留顯式值，或填入確切模型的配接器預設值，再將生效上限記錄到請求 header，並從該持久化 header 重建每次分派的對話請求。因此，省略 SDK 選項時會應用所選配接器或提供方路由的預設值。
 
@@ -30,4 +30,4 @@ Python 與 TypeScript SDK 可以選擇提供方和模型，卻無法限制對話
 
 SDK 呼叫方無需修改 Cordis 組合即可限制模型輸出，直接建立 Agent 也使用同一套經過校驗的 `AgentOptions` 約定。該上限在持久化請求 header 中可見，並以 `GenerateOptions.maxTokens` 到達提供方配接器；DeepSeek 序列化會將其對映為 `max_tokens`。
 
-一個 SDK 執行時期只有一個默認上限。需要不同上限的呼叫方應執行獨立的執行時期實例，或透過 agent options 顯式覆蓋某個行程內子級。達到上限時仍產生現有的 `max-tokens` 停止原因；將其對映為 `ok` 還是 `error` 仍由部署策略決定。
+一個 SDK 執行時期只有一個預設上限。需要不同上限的呼叫方應執行獨立的執行時期實例，或透過 agent options 顯式覆蓋某個行程內子級。達到上限時仍產生現有的 `max-tokens` 停止原因；將其對映為 `ok` 還是 `error` 仍由部署策略決定。

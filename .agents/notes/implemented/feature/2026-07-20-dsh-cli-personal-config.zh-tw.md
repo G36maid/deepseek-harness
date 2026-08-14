@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-dsh-cli-personal-config.md) | [简体中文](2026-07-20-dsh-cli-personal-config.zh.md) | 繁體中文
+[English](2026-07-20-dsh-cli-personal-config.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 兩個耦合的部分，與 `dsh web` PR（#443）提出的 `apps/` 裝配層對齊：
 
-**`dsh` CLI（命令列介面；`apps/cli`，npm 名 `@deepseek-ai/dsh`）。** `apps/*` 是位於 `packages/*` 庫之上的產品組裝層。一個 bin 負責分發默認互動式 TUI、`-p`/`--prompt` 無頭輪次和 `web` 介面。TUI 以呼叫目錄為 workspace，啟動 `examples/tui-agent/cordis.yml`（或 `--config` 指定的設定）。在原始碼檢出中，根目錄的 `pnpm dsh` 指令碼不執行建置，直接使用 tsx 的 ESM hook 執行同一入口；執行方式由[原始碼啟動決策](../architecture/2026-07-29-dsh-source-launch-tsx-esm.md)規定，產物生成由[原始碼啟動與建置分離決策](../simplification/2026-08-12-separate-source-launch-from-build.md)規定。
+**`dsh` CLI（命令列介面；`apps/cli`，npm 名 `@deepseek-ai/dsh`）。** `apps/*` 是位於 `packages/*` 庫之上的產品組裝層。一個 bin 負責分發預設互動式 TUI、`-p`/`--prompt` 無頭輪次和 `web` 介面。TUI 以呼叫目錄為 workspace，啟動 `examples/tui-agent/cordis.yml`（或 `--config` 指定的設定）。在原始碼檢出中，根目錄的 `pnpm dsh` 指令碼不執行建置，直接使用 tsx 的 ESM hook 執行同一入口；執行方式由[原始碼啟動決策](../architecture/2026-07-29-dsh-source-launch-tsx-esm.md)規定，產物生成由[原始碼啟動與建置分離決策](../simplification/2026-08-12-separate-source-launch-from-build.md)規定。
 
 **個人設定（`dsh-app-boot`）。** 個人 overlay 存放在 Harness home——`$DSH_HOME`，否則 `~/.dsh`——由共享的 [`resolveDshHome`](../architecture/2026-07-24-single-harness-home-resolver.md)（`@deepseek-ai/dsh-home-paths`）解析，與 skill（技能）、AGENTS.md 解析所依據的單一根目錄相同。dsh 的 TUI、Web 和無頭介面使用其中兩個選填文件；各示例 bin 仍然逐位元組按已提交的設定樹啟動：
 
@@ -28,9 +28,9 @@ TUI 和 Web 啟動後透過 Cordis HMR（熱模組替換）註冊確切的個人
 
 ## 考慮過的替代方案
 
-**另設一個 `bin/dsh` 包裝指令碼並由其佔用 `dsh` 名稱。** 否決，因為 `apps/cli` 是統一的產品 CLI，負責分發默認 TUI、無頭和 Web 介面。兩個相互競爭的入口會在 `$PATH` 和產品身份上衝突。
+**另設一個 `bin/dsh` 包裝指令碼並由其佔用 `dsh` 名稱。** 否決，因為 `apps/cli` 是統一的產品 CLI，負責分發預設 TUI、無頭和 Web 介面。兩個相互競爭的入口會在 `$PATH` 和產品身份上衝突。
 
-**pi 風格的類型化設定文件（`defaultProvider`/`defaultModel`/`providers`）。** 否決，選擇修補程式語義（產品負責人決策）：個人文件是疊加在隨倉庫提供的預設配置之上的 cordis overlay，而不是需要另行擁有和翻譯的第二套設定詞彙。
+**pi 風格的類型化設定文件（`defaultProvider`/`defaultModel`/`providers`）。** 否決，選擇修補程式語義（產品負責人決策）：個人文件是疊加在隨倉庫提供的預設設定之上的 cordis overlay，而不是需要另行擁有和翻譯的第二套設定詞彙。
 
 **個人完整 `cordis.yml` 去 include 請求的設定。** 否決：個人文件將不得不寫死葉子設定的路徑，而該路徑隨 checkout 變化；修補程式反轉了相依性方向，bin 仍然選擇設定樹，個人層只做修正。
 

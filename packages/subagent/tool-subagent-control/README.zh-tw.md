@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-subagent-control
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 選填的全域性具名 `send_message`、`interrupt_agent` 與 `list_agents` 工具是 `ctx.subagents` 之上的輕量配接器。綁定提供方的 `@deepseek-ai/dsh-tool-subagent` 實例會為每種傳輸註冊不同的委派工具；這個單獨載入的包只註冊一次共享控制工具，因此多個委派工具絕不會重複註冊全域性控制工具。根外掛程式註冊 `send_message` 與 `interrupt_agent`，且只要求 `subagents`；可單獨載入的 `./list-agents` 外掛程式註冊 `list_agents`，並將 `subagents` 與 `agents` 聲明為載入時相依性。其目錄讀取在呼叫時還要求工作階段儲存與投影登錄檔，但不要求任何查詢服務。部署可保留根外掛程式工具並省略清單工具。是否載入這些工具不會決定委派工具是否啟動可繼續工作。這些工具只負責父到子的方向；單獨安裝的 [`@deepseek-ai/dsh-tool-subagent-report`](../tool-subagent-report/README.md) 負責子到父的方向。
 
@@ -8,7 +8,7 @@
 
 `interrupt_agent(agent_id)` 將 `exec.agent` 作為 `ctx.subagents.interrupt()` 的確切線上 ancestor 授權傳入：目標可以是直接 child 或更深的後代，由服務——而不是本工具——依據目標 Activation 記錄的 lineage 校驗呼叫方。只有目標的當前輪次會停止（`keepInbox`）：已排隊的訊息保持暫停直到之後的 `send_message`，已發布的後代繼續執行，child 也仍可接受後續訊息。呼叫在停止請求被接受後立即返回，不等待目標完全靜止；目標不存在或已結帳是被接受的 no-op，而 self、sibling、過時與非 ancestor 呼叫方會成為出錯結果。
 
-`list_agents` 接受一個選填的 `scope` 參數，會從呼叫它的 agent 推導根 id，並且不使用 cursor，將服務目錄投影為可繼續 child。默認的 `children` scope 讀取 `ctx.subagents.listChildren()`；`descendants` 讀取 `ctx.subagents.listDescendants()`，其單份語料的遍歷會穿過普通工作階段與一次性 child，並按穩定 pre-order 以 `parent=<id> depth=<n>` 渲染保留下來的條目。`parent` 註釋是持久化直接 parent 工作階段 id，可能指向輸出中省略的普通工作階段。對於呼叫本工具的 agent，只有 depth-1 child 條目可作為 `send_message` 候選；更深的 child 條目只能作為 `interrupt_agent` 候選。狀態來自線上 Agent 登錄檔：`running`（driver 活躍）、`idle`（駐留但處於輪次之間，可能在等待它啟動的 agent）或 `ready`（僅存於儲存，表示可復原而非終態）。服務結果還包含由工作階段支撐的一次性 subagent，以供 UI 等消費端使用；但這些條目無法接受 `send_message`，因此會從這個模型工具中排除。diagnostic 仍然可見，並在 descendants scope 中帶有位置。持久化身份和模式來自每個子 agent 的描述符，訊息送達時的鑒權和 Activation 所有權檢查仍歸服務負責。
+`list_agents` 接受一個選填的 `scope` 參數，會從呼叫它的 agent 推導根 id，並且不使用 cursor，將服務目錄投影為可繼續 child。預設的 `children` scope 讀取 `ctx.subagents.listChildren()`；`descendants` 讀取 `ctx.subagents.listDescendants()`，其單份語料的遍歷會穿過普通工作階段與一次性 child，並按穩定 pre-order 以 `parent=<id> depth=<n>` 渲染保留下來的條目。`parent` 註釋是持久化直接 parent 工作階段 id，可能指向輸出中省略的普通工作階段。對於呼叫本工具的 agent，只有 depth-1 child 條目可作為 `send_message` 候選；更深的 child 條目只能作為 `interrupt_agent` 候選。狀態來自線上 Agent 登錄檔：`running`（driver 活躍）、`idle`（駐留但處於輪次之間，可能在等待它啟動的 agent）或 `ready`（僅存於儲存，表示可復原而非終態）。服務結果還包含由工作階段支撐的一次性 subagent，以供 UI 等消費端使用；但這些條目無法接受 `send_message`，因此會從這個模型工具中排除。diagnostic 仍然可見，並在 descendants scope 中帶有位置。持久化身份和模式來自每個子 agent 的描述符，訊息送達時的鑒權和 Activation 所有權檢查仍歸服務負責。
 
 ## 模型體驗
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-08-agent-scope-contexts.md) | [简体中文](2026-07-08-agent-scope-contexts.zh.md) | 繁體中文
+[English](2026-07-08-agent-scope-contexts.md) | 繁體中文
 
 ## 問題
 
@@ -51,7 +51,7 @@ flowchart LR
 
 透過普通外掛程式上下文進行的註冊是部署全域性的，隨該外掛程式一起 dispose。同一方法透過 `agent.ctx` 呼叫則貢獻給一個 agent，隨該 agent 的作用域一起 dispose。
 
-| 註冊來源 | 默認可見性 | 隨誰 dispose |
+| 註冊來源 | 預設可見性 | 隨誰 dispose |
 |---|---|---|
 | 普通外掛程式上下文 | 每個符合條件的 agent 檢視表 | 註冊外掛程式 |
 | `agent.ctx` | 僅該 agent 的檢視表 | agent 作用域 |
@@ -88,7 +88,7 @@ await handle.dispose()
 ctx.tools.get('review_summary', handle.agent)  // undefined: scope is gone
 ```
 
-setup 接收一個完整的受信 Cordis 上下文，因此可以組合普通外掛程式和服務。其約定僅限組合：不支持透過 cast 或內部登錄檔呼叫來驅動或發布正在建置中的 agent。
+setup 接收一個完整的受信 Cordis 上下文，因此可以組合普通外掛程式和服務。其約定僅限組合：不支援透過 cast 或內部登錄檔呼叫來驅動或發布正在建置中的 agent。
 
 ### 操作選擇檢視表
 
@@ -140,7 +140,7 @@ flowchart TB
 
 ## 安全與權限是非目標
 
-agent 作用域組合的是受信的同進程註冊。它不沙盒化外掛程式、不定義父到子的權限格、不在建立時凍結授權、也不保證子級不能做超出父級的事。
+agent 作用域組合的是受信的同行程註冊。它不沙盒化外掛程式、不定義父到子的權限格、不在建立時凍結授權、也不保證子級不能做超出父級的事。
 
 父級可以擁有一個可見工具比自身更廣的子級，因為生命週期所有權不贈予也不限制註冊。持有 Cordis 上下文的外掛程式同樣執行在同一行程中，可以直接呼叫可用服務。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-continuable-subagent-report-tool.md) | [简体中文](2026-07-30-continuable-subagent-report-tool.zh.md) | 繁體中文
+[English](2026-07-30-continuable-subagent-report-tool.md) | 繁體中文
 
 ## 問題
 
@@ -48,7 +48,7 @@ root、one-shot child、偽造對象、過時 Agent 和同 id 替換對象都以
 
 成功表示確切的線上 parent 已同步接受該訊息。空閒 parent 在接受靜默注入時已經完成追加，而暫存的靜默上下文只有到達正常日誌邊界後纔可重建。喚醒投遞包含一個 inbox 條目實例，其 id 與返回的穩定訊息 id 保持分離。
 
-首個版本不提供持久化郵箱、冪等鍵、投遞回執、重試協議或恰好一次保證。行程故障可能讓呼叫方無法確定結果，在結果未知時重試則可能重複報告。parent 不可用時，持久化 child transcript（文字記錄）仍是復原來源。
+首個版本不提供持久化郵箱、冪等鍵、投遞回執、重試協定或恰好一次保證。行程故障可能讓呼叫方無法確定結果，在結果未知時重試則可能重複報告。parent 不可用時，持久化 child transcript（文字記錄）仍是復原來源。
 
 ### 組合與生命週期
 
@@ -62,7 +62,7 @@ subagent seam 新增 `registerContinuableSetup(contribution): () => void`，由 
 
 ACP（Agent Client Protocol）快照 harness 新增 `waitForSubagentTurnEnd`，按與 `session.N.jsonl` 相同的順序選擇第 N 個已收集 child。它會等待一個包含請求 header 的已閉合 child 輪次，以防可繼續 child 早期播種描述符的輪次錯誤滿足該邊界。這樣，整體組裝的場景無需偽造 parent 可見訊號，就能等待 child 側報告。
 
-手寫快照會啟動一個可繼續 child，執行真實的作用域區域性 `report` 工具，觀察默認喚醒投遞所產生的那一個普通 parent 輪次，然後提交一條後續 parent 提示詞，使其消費封裝後的報告。它聲明 child pin `1`，因此本不屬於全域性的 `report` schema 與該 child 自身的提示詞會分別與 `tool-schemas.1.expected.json` 和 `system-prompt.1.expected.md` 比對，root 則繼續使用類別 pin。生成的工具目錄會另外鑄造一個 child 作用域，以收錄同一個作用域區域性 schema。
+手寫快照會啟動一個可繼續 child，執行真實的作用域區域性 `report` 工具，觀察預設喚醒投遞所產生的那一個普通 parent 輪次，然後提交一條後續 parent 提示詞，使其消費封裝後的報告。它聲明 child pin `1`，因此本不屬於全域性的 `report` schema 與該 child 自身的提示詞會分別與 `tool-schemas.1.expected.json` 和 `system-prompt.1.expected.md` 比對，root 則繼續使用類別 pin。生成的工具目錄會另外鑄造一個 child 作用域，以收錄同一個作用域區域性 schema。
 
 ## 曾考慮的替代方案
 
@@ -88,7 +88,7 @@ ACP（Agent Client Protocol）快照 harness 新增 `waitForSubagentTurnEnd`，�
 
 ### 持久化離線 parent 郵箱
 
-修改或冷復原不線上的 parent，需要一套新的持久化尋址、權限、衝突、確認和重播協議。要求直接 parent 線上，可以讓首個版本繼續使用現有 Agent 傳送路徑。
+修改或冷復原不線上的 parent，需要一套新的持久化尋址、權限、衝突、確認和重播協定。要求直接 parent 線上，可以讓首個版本繼續使用現有 Agent 傳送路徑。
 
 ### 重新引入 Task 或結果 promise
 
@@ -103,7 +103,7 @@ ACP（Agent Client Protocol）快照 harness 新增 `waitForSubagentTurnEnd`，�
 - 只有安裝 report 包貢獻時，可繼續行程內 child 才會恰好暴露一個作用域區域性 `report` schema；無關 Agent 永遠不會暴露該 schema。
 - 工具返回 parent 訊息的穩定 `MessageId`。靜默投遞沒有 `InboxItemId`；喚醒投遞會產生一個單獨的 inbox 條目實例。
 - 只有確切的駐留 child 才能報告，且只能報告給根據持久化譜系推導的確切線上直接 parent。服務不接受接收方參數，也不提供離線 fallback。
-- 喚醒投遞是校驗後的默認模式：它會恰好建立一個後續 FIFO 輪次，絕不 steering 已開始的輪次。靜默投遞則絕不會啟動 parent 請求。
+- 喚醒投遞是校驗後的預設模式：它會恰好建立一個後續 FIFO 輪次，絕不 steering 已開始的輪次。靜默投遞則絕不會啟動 parent 請求。
 - parent 接受後取消或 dispose child 不會撤回報告。接受前，child dispose、drain、parent 丟失或呼叫方取消都會拒絕操作。
 - 新建和復原的 Activation 都會在發布前組合當前設定貢獻。新授權等待下一個 Activation 才生效，而已駐留 child 的授權撤銷立即生效。
 - 單元覆蓋固定可見性、allow-list 行為、兩種投遞模式、穩定的訊息與傳送方身份、巢狀路由、無效傳送方、缺失的 parent、取消、drain、撤銷競爭，以及不存在 Task 或隱式最終報告。

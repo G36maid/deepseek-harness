@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-web-assistant-markdown.md) | [简体中文](2026-07-23-web-assistant-markdown.zh.md) | 繁體中文
+[English](2026-07-23-web-assistant-markdown.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ Web 對話透過工作階段事件、歷史重播與流式累積保留 assistant
 
 ## 不受信任輸出策略
 
-assistant 生成的連結目標地址僅限絕對 HTTP、HTTPS 與 mailto URL。HTTP(S) 連結會在新分頁標籤中打開，並帶有 `rel="noopener noreferrer"`；相對目標地址與其他協議會渲染為不可導覽的文字。Markdown 圖片遵循獨立的[遠端圖片策略](2026-07-30-web-remote-markdown-images.md)。由於管線中未引入 HTML 解析器，原始 HTML 仍是不會生效的源文字。Shiki 輸出是由圍欄文字生成的靜態 span 樹（不含指令碼或使用者 HTML）。
+assistant 生成的連結目標地址僅限絕對 HTTP、HTTPS 與 mailto URL。HTTP(S) 連結會在新分頁標籤中打開，並帶有 `rel="noopener noreferrer"`；相對目標地址與其他協定會渲染為不可導覽的文字。Markdown 圖片遵循獨立的[遠端圖片策略](2026-07-30-web-remote-markdown-images.md)。由於管線中未引入 HTML 解析器，原始 HTML 仍是不會生效的源文字。Shiki 輸出是由圍欄文字生成的靜態 span 樹（不含指令碼或使用者 HTML）。
 
 圍欄程式碼與 GFM 表格各自處理橫向溢位，因此較長內容無法撐寬對話欄。
 
@@ -42,4 +42,4 @@ assistant 生成的連結目標地址僅限絕對 HTTP、HTTPS 與 mailto URL。
 
 ## 後果
 
-assistant 回覆在流式輸出與重播期間都會一致地渲染為語義化 Markdown，而工具卡片、推理行、互動、使用者氣泡和宿主協議保持不變。每次累積更新後，流式輸出只重新解析不穩定的尾部；未完成的 Markdown 可能暫時改變尾部結構，但獨立的尾部會限定 React 失效範圍，最終事件也不會切換渲染器。URL 形態的行內程式碼會在不改變其可見字面文字的情況下變得可導覽，而採用不安全 scheme 或混有其他內容的程式碼仍不可互動。程式碼圍欄與工具及詳情表層共用同一外框與複製路徑。初始 Web shell 包含 Markdown 解析器、GFM 執行時期、KaTeX 與 shiki 允許清單；citation、anchor 和 thinking-small 表層仍暫緩。
+assistant 回覆在流式輸出與重播期間都會一致地渲染為語義化 Markdown，而工具卡片、推理行、互動、使用者氣泡和宿主協定保持不變。每次累積更新後，流式輸出只重新解析不穩定的尾部；未完成的 Markdown 可能暫時改變尾部結構，但獨立的尾部會限定 React 失效範圍，最終事件也不會切換渲染器。URL 形態的行內程式碼會在不改變其可見字面文字的情況下變得可導覽，而採用不安全 scheme 或混有其他內容的程式碼仍不可互動。程式碼圍欄與工具及詳情表層共用同一外框與複製路徑。初始 Web shell 包含 Markdown 解析器、GFM 執行時期、KaTeX 與 shiki 允許清單；citation、anchor 和 thinking-small 表層仍暫緩。

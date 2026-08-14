@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-04-prune-dead-core-spine-api.md) | [简体中文](2026-07-04-prune-dead-core-spine-api.zh.md) | 繁體中文
+[English](2026-07-04-prune-dead-core-spine-api.md) | 繁體中文
 
 ## 問題
 
@@ -15,7 +15,7 @@ Status: proposed
 | `SurfaceManager.invalidate()` | 只有其單元測試呼叫它；seeding 在惰性建立的 manager 存在之前就已完成，且工作階段從不替換其日誌引用。 | 刪除它及其不可能觸發的整體替換約定。 |
 | `ToolExecutionResult.callId` | 每個掛鉤已經接收不可變的 `ToolExecution`；迴圈和 ACP（Agent Client Protocol）透過呼叫/工作階段事件關聯。沒有消費端讀取這個重複的結果欄位。 | 移除該欄位、複製/不匹配守衛，以及證明該重複不可能不一致的測試。 |
 | `ReactLoopAgent` 根匯出 | 包外的命名匯入都是測試；生產程式碼面向 `Agent` 程式設計，透過 `ctx.agents` 建立/復原。 | 將返回類型和介面類型設為 `Agent`，將具體迴圈類改為包內部；保留有意設計的同步、僅設定的 `AgentLoop.create()` 路徑。 |
-| `workflow-worker-thread` 的 protocol/runtime/session 再匯出與命名的 `WorkerThreadWorkflowEngine` | 所有透過包名匯入的消費端都使用默認引擎；工作流程 Agent Note 已將 worker 協定格式（wire format）定義為私有。 | 保留默認外掛程式類/設定約定；移除重複的命名類匯出，將協議模組保持為原始碼私有。 |
+| `workflow-worker-thread` 的 protocol/runtime/session 再匯出與命名的 `WorkerThreadWorkflowEngine` | 所有透過包名匯入的消費端都使用預設引擎；工作流程 Agent Note 已將 worker 協定格式（wire format）定義為私有。 | 保留預設外掛程式類/設定約定；移除重複的命名類匯出，將協定模組保持為原始碼私有。 |
 | `code-runtime-worker` 的 protocol/bootstrap 再匯出 | 包外的生產/e2e 消費端使用 `WorkerThreadCodeRuntime` 和設定，而非 `BootstrapPort`、`PatchableStream` 或 worker 訊息/啟動類型。 | 保留執行時期類/設定約定，將其協定格式/bootstrap 詞彙改為原始碼私有。 |
 | ACP 的 `agentOptions` 根匯出 | 該輔助函式只有同文件和 ACP 測試消費端；唯一的包外生產消費端掛載的是外掛程式命名空間。 | 保留 `name`、`inject`、`Config`、`AcpConfig` 和 `apply`；將 `agentOptions` 改為原始碼私有，透過橋接層行為測試。 |
 | `providerWording` 與 `completedTurnPrefix` 根匯出 | 各有一個同包生產呼叫者；只有 balanced-prefix 輔助函式有一個同包白盒測試。 | 改為原始碼私有，測試提供方行為。 |
@@ -60,4 +60,4 @@ Status: proposed
 
 ## 風險
 
-大多數移除在編譯時可見但對執行時期無影響。上下文壓縮參數清理有意禁止工作階段/上下文不匹配，同時保留手動 region API。外部預發布嵌入者和現有模型編寫的 mount 可能匯入更少的輔助函式、傳遞更少的參數或接收更窄的結果形狀；這是有意的產品介面收縮，而非僅僅是生成 catalog 的清理。倉庫尚未發布，因此承載不受支持的接口才是更大的基礎成本。
+大多數移除在編譯時可見但對執行時期無影響。上下文壓縮參數清理有意禁止工作階段/上下文不匹配，同時保留手動 region API。外部預發布嵌入者和現有模型編寫的 mount 可能匯入更少的輔助函式、傳遞更少的參數或接收更窄的結果形狀；這是有意的產品介面收縮，而非僅僅是生成 catalog 的清理。倉庫尚未發布，因此承載不受支援的介面才是更大的基礎成本。

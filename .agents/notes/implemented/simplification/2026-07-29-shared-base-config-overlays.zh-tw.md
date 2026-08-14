@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-07-29-shared-base-config-overlays.md) | [简体中文](2026-07-29-shared-base-config-overlays.zh.md) | 繁體中文
+[English](2026-07-29-shared-base-config-overlays.md) | 繁體中文
 
 ## 問題
 
 `dsh` 交付了兩棵完整的設定樹，其中有 43 個共享設定項。`apps/cli/cordis.yml` 以 74 個平鋪設定項組合 web surface，而 TUI 啟動的是 `examples/tui-agent/cordis.yml`——其中單獨一行 `@deepseek-ai/dsh-tui-demo` 掛載了十二個外掛程式，並把它們的設定重新聲明為自己那份二十個鍵、僅作透傳的 `Config`。
 
-這兩份文件都名不副實。`examples/tui-agent` 並不是示例：`apps/cli/src/tui.ts` 把它硬編碼為產品的預設配置；它還擁有 TUI 的 PTY 冒煙測試、八個終端機快照場景，以及被 `cordis-agent` 葉節點 import 的 PTY harness。`dsh-tui-demo` 也不是 demo——它就是應用本身，由交付的二進位從 `packages/examples/` 中掛載。
+這兩份文件都名不副實。`examples/tui-agent` 並不是示例：`apps/cli/src/tui.ts` 把它硬編碼為產品的預設設定；它還擁有 TUI 的 PTY 冒煙測試、八個終端機快照場景，以及被 `cordis-agent` 葉節點 import 的 PTY harness。`dsh-tui-demo` 也不是 demo——它就是應用本身，由交付的二進位從 `packages/examples/` 中掛載。
 
 真正決定性的問題是重複。43 個共享設定項中，38 個逐位元組相同，5 個因各 surface 的正當理由而不同；因此每次能力改動都必須改兩處，而且可能無聲漂移。該組合包還反轉了一個預設值：`composeTuiApp` 讀取 `config.goals ?? {}`，於是交付的 TUI 掛載了 goals、`tool-goal`、`goal-round-driver` 和 `/goal`——儘管沒有任何設定鍵要求它們。
 
@@ -24,7 +24,7 @@ Status: implemented
 
 patch 會整體替換目標設定項的 `config` 而不合併。因此，取值因 surface 而異的設定項住在 overlay 中，絕不住在 base 裡，從而沒有任何設定項會被三層同時 patch。工作階段身份根本不能經由設定鍵傳遞——它遷移到了 `dsh-agent-loop` 的 `CONFIGURED_AGENT_IDENTITIES_KEY`，正如啟動器持有身份的記錄所述。
 
-`examples/tui-agent`、`examples/cordis-agent`、`examples/code-mode` 與 `packages/examples/tui-demo` 均被刪除。TUI 測試遷往 `apps/cli/tests/`，cordis 工具集的 e2e 遷入 `packages/extensions/tool-cordis/tests/`，受支持的 Code Mode demo 則保留為 `examples/acp-agent/code-mode.cordis.yml` 中的 ACP（Agent Client Protocol）overlay。
+`examples/tui-agent`、`examples/cordis-agent`、`examples/code-mode` 與 `packages/examples/tui-demo` 均被刪除。TUI 測試遷往 `apps/cli/tests/`，cordis 工具集的 e2e 遷入 `packages/extensions/tool-cordis/tests/`，受支援的 Code Mode demo 則保留為 `examples/acp-agent/code-mode.cordis.yml` 中的 ACP（Agent Client Protocol）overlay。
 
 ## 備選方案
 

@@ -1,8 +1,8 @@
 # @deepseek-ai/dsh-permission-presets
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
-透過 `ctx.permissionPresets`（[`PermissionPresetService`](src/index.ts)）提供面向使用者的權限預設。每個設定名稱都會將 `sandbox/mode` 與 `approval/policy` 組成一組；默認項為 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。UI 配接器可以將該表作為單個選擇器公開，而沙盒執行與審批仍分別消費各自的調節項。
+透過 `ctx.permissionPresets`（[`PermissionPresetService`](src/index.ts)）提供面向使用者的權限預設。每個設定名稱都會將 `sandbox/mode` 與 `approval/policy` 組成一組；預設項為 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。UI 配接器可以將該表作為單個選擇器公開，而沙盒執行與審批仍分別消費各自的調節項。
 
 `set(session, name)` 會先在僅寫日誌的 `permissionPresets/preset` 事件中記錄已變更的選擇，再僅對實際值發生變化的調節項呼叫 setter。選擇事件先於調節項事件，並在多個預設共享同一組取值時保留使用者意圖；淨變化為零的選擇不會追加任何內容。`current(events)` 優先返回仍與當前調節項匹配的已記錄選擇，其次返回表中第一個匹配項，否則返回 `custom`。用戶端可以把 `custom` 顯示為當前值，但不能選擇它。
 

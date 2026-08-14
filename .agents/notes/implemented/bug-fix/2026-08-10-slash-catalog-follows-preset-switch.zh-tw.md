@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-slash-catalog-follows-preset-switch.md) | [简体中文](2026-08-10-slash-catalog-follows-preset-switch.zh.md) | 繁體中文
+[English](2026-08-10-slash-catalog-follows-preset-switch.md) | 繁體中文
 
 ## 問題
 
@@ -24,7 +24,7 @@ preset 把決定 `/` 選單內容的那些行搬走了。Web 組裝停用了宿�
 
 **在用戶端自己的 `agentPresets.select` 回呼裡就地失效。** 改動最小，而且第一輪之後 preset 就鎖定，hero 上的 chip 是切換唯一可能的發起處。否決理由是失效邏輯會落在恰好發起 RPC 的那個介面上，而不是提交點：同一個空工作階段在第二個分頁標籤裡仍是過期選單，將來任何宿主側的重組也完全沒有訊號。
 
-**從既有的 `session/event` mux 幀派生用戶端事件。** 落帳事件本來就會送達每個已訂閱的用戶端，不需要新增協議類型。因面（face）分離而否決：把 `event.type` 收窄到 `agent-preset/selected` 需要 `SessionEventMap` 增補，而在 Client 程序裡載入它只有兩條路——引用 `dsh-agent-presets` 工程，那會把宿主的 `ctx.sessions` 合併拖進一個自己也發布同名服務的程序；或者用一次類型斷言繞過判別式。
+**從既有的 `session/event` mux 幀派生用戶端事件。** 落帳事件本來就會送達每個已訂閱的用戶端，不需要新增協定類型。因面（face）分離而否決：把 `event.type` 收窄到 `agent-preset/selected` 需要 `SessionEventMap` 增補，而在 Client 程序裡載入它只有兩條路——引用 `dsh-agent-presets` 工程，那會把宿主的 `ctx.sessions` 合併拖進一個自己也發布同名服務的程序；或者用一次類型斷言繞過判別式。
 
 **複用轉發的 `commands/change`。** 它是既有的目錄失效事件，但它是登錄檔級的、不帶工作階段、也與技能無關；用戶端會把每個工作階段的命令都重拉一遍，卻依然永遠刷不新技能目錄。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-credentials-yaml-and-user-environment-layer.md) | [简体中文](2026-08-04-credentials-yaml-and-user-environment-layer.zh.md) | 繁體中文
+[English](2026-08-04-credentials-yaml-and-user-environment-layer.md) | 繁體中文
 
 ## Problem
 
@@ -42,7 +42,7 @@ OPENAI_API_KEY: sk-…
 
 **`$DSH_HOME/.credentials.env`——第二個 dotenv 文件。** 否決：dotenv 適合環境層，卻無法表達「一份按憑據引用索引的受管文件」。它無法拒絕非字串或無法尋址的鍵，而且它的行編輯器本來就會拒絕無法加引號的值，留下可讀卻不可寫的條目。
 
-**給新文件加 `version` 欄位。** 否決：該格式只有一個受 schema 約束的字串 mapping，沒有需要判別的歷史變體。在未發布階段，直接修改結構並拒絕舊結構，好過提前承諾遷移協議。
+**給新文件加 `version` 欄位。** 否決：該格式只有一個受 schema 約束的字串 mapping，沒有需要判別的歷史變體。在未發布階段，直接修改結構並拒絕舊結構，好過提前承諾遷移協定。
 
 **首次執行時期把形似憑據的鍵從 `$DSH_HOME/.env` 遷出。** 否決：遷移程式碼會把短命格式變成長期維護面，而判斷一個未知文件裡哪些鍵是金鑰，恰恰是本次拆分要消除的歧義。舊文件繼續作為環境工作，這是誠實的結果，而不是靜默的結果。
 

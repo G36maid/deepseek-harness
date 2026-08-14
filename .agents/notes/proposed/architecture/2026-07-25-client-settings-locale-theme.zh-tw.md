@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-25-client-settings-locale-theme.md) | [简体中文](2026-07-25-client-settings-locale-theme.zh.md) | 繁體中文
+[English](2026-07-25-client-settings-locale-theme.md) | 繁體中文
 
 ## 問題
 
@@ -16,11 +16,11 @@ Sidebar 聲明 `sidebar.settings` single slot，`ui-settings` 佔用它並聲明
 
 Settings 入口是 sidebar Foot 的 Settings 行，點擊直接打開 1080×700 置中浮層（黑 24% 遮罩）；close 按鈕、點擊遮罩、ESC 均關閉。無任何中間選單形態。
 
-`@deepseek-ai/dsh-client-locale` 提供 `ctx.locale`，`ui-theme` 提供 `ctx.theme`。兩個服務都以 getter 讀取、setter 寫入並用 typed Cordis 變更事件發布不可變快照；服務自己持久化偏好（只存 id，無效值回退默認）。
+`@deepseek-ai/dsh-client-locale` 提供 `ctx.locale`，`ui-theme` 提供 `ctx.theme`。兩個服務都以 getter 讀取、setter 寫入並用 typed Cordis 變更事件發布不可變快照；服務自己持久化偏好（只存 id，無效值回退預設）。
 
 功能行的 apply 層各自訂閱自家變更事件（locale 訂 `locale/change`，ui-theme 訂 `theme/change`），把快照投影到該行註冊時聲明的 slot store。React 元件只讀 `useStore`、寫注入的 setter callback，不讀取 ctx 或服務。
 
-Theme 偏好三態：`light`、`dark`、`system`，默認 `system`（無持久化偏好或無效值時）。system 的解析屬主題領域：ThemeRuntime 持有 `prefers-color-scheme` matchMedia 監聽（環境感知，非 DOM 呈現），偏好為 system 且系統配色變化時重發快照；快照同時攜帶 `preference` 與解析後的 `active` 定義。
+Theme 偏好三態：`light`、`dark`、`system`，預設 `system`（無持久化偏好或無效值時）。system 的解析屬主題領域：ThemeRuntime 持有 `prefers-color-scheme` matchMedia 監聽（環境感知，非 DOM 呈現），偏好為 system 且系統配色變化時重發快照；快照同時攜帶 `preference` 與解析後的 `active` 定義。
 
 Theme 服務不操作 DOM。`ui-layout` 初始讀取 Theme getter，隨後訂閱 `theme/change`，由 Layout 持有的 presenter 按 `active` 更新 `body[data-ds-dark-theme]` 和主題 token；presenter 不感知 system，只消費已解析結果。
 

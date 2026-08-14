@@ -2,21 +2,21 @@
 
 Status: implemented
 
-[English](2026-07-30-web-browser-snapshot-ci-gate.md) | [简体中文](2026-07-30-web-browser-snapshot-ci-gate.zh.md) | 繁體中文
+[English](2026-07-30-web-browser-snapshot-ci-gate.md) | 繁體中文
 
 ## 問題
 
-[無金鑰 Web 瀏覽器 e2e 車道](2026-07-24-web-gui-browser-e2e-lane.md)只由本機 `pnpm run test:web` 執行，PR CI 不比較 `apps/web/tests/snapshots/**/*.expected.md`。因此，改變使用者可見 Web 輸出的 PR 可以在漏刷預期輸出時保持綠色；後來任意分支顯式執行 `DSH_SNAPSHOT=refresh`，都會替前序變更補帳並產生與本分支無關的 diff。普通本機執行已經默認使用只讀 replay，缺口是 PR 級的強制執行，而不是禁止 refresh 寫入。
+[無金鑰 Web 瀏覽器 e2e 車道](2026-07-24-web-gui-browser-e2e-lane.md)只由本機 `pnpm run test:web` 執行，PR CI 不比較 `apps/web/tests/snapshots/**/*.expected.md`。因此，改變使用者可見 Web 輸出的 PR 可以在漏刷預期輸出時保持綠色；後來任意分支顯式執行 `DSH_SNAPSHOT=refresh`，都會替前序變更補帳並產生與本分支無關的 diff。普通本機執行已經預設使用只讀 replay，缺口是 PR 級的強制執行，而不是禁止 refresh 寫入。
 
 ## 決策
 
 Linux PR 的 `node 24 / snapshots and artifacts` 必須執行完整 Web 瀏覽器 replay/compare。`scripts/run-gates.ts` 把 `test:web:built` 作為 `ci-consumers` 的一個 gate，並顯式注入 `DSH_SNAPSHOT=replay`；CI 永不以 `record` 或 `refresh` 模式執行，因此提交的 golden 與當前組裝應用不一致時測試直接失敗，不會在 runner 內靜默改寫後透過。
 
-消費端 job 在[消費端獨立建置](../process/2026-07-30-independent-ci-consumer-build.md)中負責唯一一次 Linux 建置，因此 `apps/web/dist` 和包的 `lib/` 目錄會保留在其工作區中，供瀏覽器套件使用。在託管執行器上，CI 按鎖定檔中的 Playwright 版本安裝 Chromium 及其系統相依性。在持久化故障切換 VM 上，映像檔負責預裝 Linux 系統套件，CI 只安裝 Chromium，避免每次執行都透過 `apt` 改動系統。託管的默認分支 Linux 序列 job 執行該套件，並生成以作業系統和鎖定檔為鍵的瀏覽器快取；PR 復原該快取，使必需路徑無需承擔壓縮和上傳開銷，並可在鎖定檔變化時按作業系統前綴回退。自託管熱備執行相同的比較，但不執行託管快取操作。
+消費端 job 在[消費端獨立建置](../process/2026-07-30-independent-ci-consumer-build.md)中負責唯一一次 Linux 建置，因此 `apps/web/dist` 和包的 `lib/` 目錄會保留在其工作區中，供瀏覽器套件使用。在託管執行器上，CI 按鎖定檔中的 Playwright 版本安裝 Chromium 及其系統相依性。在持久化故障切換 VM 上，映像檔負責預裝 Linux 系統套件，CI 只安裝 Chromium，避免每次執行都透過 `apt` 改動系統。託管的預設分支 Linux 序列 job 執行該套件，並生成以作業系統和鎖定檔為鍵的瀏覽器快取；PR 復原該快取，使必需路徑無需承擔壓縮和上傳開銷，並可在鎖定檔變化時按作業系統前綴回退。自託管熱備執行相同的比較，但不執行託管快取操作。
 
 本機 `pnpm run test:web` 仍先建置再執行完整的瀏覽器套件；`test:web:built` 是已有建置產物的執行入口。開發者只在確認使用者可見輸出有意變化後顯式執行 `DSH_SNAPSHOT=refresh pnpm run test:web`，評審每一處預期輸出 diff，再以 replay 模式複驗不再寫文件。
 
-對 PR 而言，閘門僅在 Linux 消費端 job 中執行：這些場景面向 POSIX，其他 PR job 不安裝 Chromium。託管和自託管的默認分支 Linux 序列聚合作業也包含該比較，而 macOS 和 Windows 序列 job 仍不使用瀏覽器。PR 的 `all checks passed` 已相依性消費端 job，因此瀏覽器比較失敗會阻止合併，無需新增 branch-protection check 名稱。
+對 PR 而言，閘門僅在 Linux 消費端 job 中執行：這些場景面向 POSIX，其他 PR job 不安裝 Chromium。託管和自託管的預設分支 Linux 序列聚合作業也包含該比較，而 macOS 和 Windows 序列 job 仍不使用瀏覽器。PR 的 `all checks passed` 已相依性消費端 job，因此瀏覽器比較失敗會阻止合併，無需新增 branch-protection check 名稱。
 
 一次自託管消費端執行中，`web-snapshot` 實測耗時 112.15 秒，完整消費端聚合實測耗時 114.97 秒。gate 調度器會在 `built-package-invariants` 成功後立即啟動它，並行執行彼此獨立的 gate，因此既不需要專用 job 逾時，也不需要手動制定 YAML 順序規則。
 

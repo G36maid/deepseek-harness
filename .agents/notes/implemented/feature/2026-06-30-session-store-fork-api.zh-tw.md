@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-30-session-store-fork-api.md) | [简体中文](2026-06-30-session-store-fork-api.zh.md) | 繁體中文
+[English](2026-06-30-session-store-fork-api.md) | 繁體中文
 
 ## 問題
 
@@ -38,7 +38,7 @@ Host 透過 agent（代理）登錄檔，以選定的種子和譜系建立子工
 
 **獨立的 `ctx.sessionFork` 服務。** 較早的一版迭代曾把它作為獨立服務交付；它過度套用了能力 seam 模式。程式碼沒有可替換的後端、沒有額外的事件面、沒有獨立的所有權生命週期，也沒有超出 `ctx.sessions.create({ seed, meta })` 的持久化行為。保留獨立包會迫使呼叫方為了在工作階段儲存原語之上執行一層策略而去發現並安裝第二個服務。
 
-**兩個函式：`snapshot()` 加 `fork()`。** 這保留了一個可複用的種子／元資料計算，但唯一支持的消費端會立即建立工作階段。它還使 API 看起來比使用者實際需要的具體操作更抽象。單一的 `fork()` 加顯式 `boundary` 使 API 保持直接，同時仍支持對先前時間點的 fork。
+**兩個函式：`snapshot()` 加 `fork()`。** 這保留了一個可複用的種子／元資料計算，但唯一支援的消費端會立即建立工作階段。它還使 API 看起來比使用者實際需要的具體操作更抽象。單一的 `fork()` 加顯式 `boundary` 使 API 保持直接，同時仍支援對先前時間點的 fork。
 
 **靜默裁剪未關閉輪次到最後一個已完成邊界。** 這對 `dsh-subagent-fork-in-process` 是正確的——委託通常在父輪次仍然打開時開始，子工作階段應只繼承已完成的前綴。但對常規的使用者／工作階段分支而言是錯誤的，因為它隱藏了請求的 fork 點實際上不是合法邊界這一事實，並且靜默丟棄了父輪次的尾部。
 
@@ -46,4 +46,4 @@ Host 透過 agent（代理）登錄檔，以選定的種子和譜系建立子工
 
 公開 API 保持精簡且易於發現：活躍工作階段分支是 `ctx.sessions` 的一部分，緊鄰 `create({ seed })`，而非一個獨立服務或一對兩步輔助函式。持久化繼續透過現有的 `session/created` 和 `session/flush` 行為運作：fork 出的子工作階段建立時便帶有種子事件，因此現有後端只需持久化該種子一次，並在 header 中保存 `parentSession`／`seedLength`。
 
-v1 範圍仍然排除 ACP（Agent Client Protocol） `session/fork`、對未載入的已持久化工作階段的 fork、面向模型的工具，以及 subagent 重構。如果未來新增 ACP 方法，應在具備協議與快照覆蓋後才聲明支持該能力；本 Agent Note 不新增任何 ACP 協議行為，因此不需要 ACP 快照。fork 子工作階段的重播仍由現有的[種子邊界測試 Agent Note](../testing/2026-06-22-fork-child-replay-seed-boundary.md) 覆蓋；store、Host、載體與用戶端的專項測試固定邊界和對帳約定，真實 Chromium 場景則固定組裝後的訊息操作與譜系樹。
+v1 範圍仍然排除 ACP（Agent Client Protocol） `session/fork`、對未載入的已持久化工作階段的 fork、面向模型的工具，以及 subagent 重構。如果未來新增 ACP 方法，應在具備協定與快照覆蓋後才聲明支援該能力；本 Agent Note 不新增任何 ACP 協定行為，因此不需要 ACP 快照。fork 子工作階段的重播仍由現有的[種子邊界測試 Agent Note](../testing/2026-06-22-fork-child-replay-seed-boundary.md) 覆蓋；store、Host、載體與用戶端的專項測試固定邊界和對帳約定，真實 Chromium 場景則固定組裝後的訊息操作與譜系樹。

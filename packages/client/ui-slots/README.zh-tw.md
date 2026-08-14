@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-slots
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 Slot 登錄檔純核心、slot 終端機設計：SlotMap 聲明合併、SlotCore 上唯一的 `register` 組合 API、四 share 元件 props 類型家族、store seat 類型家族，以及 renderer 安裝約定。只使用 React 類型；該包不相依性 React，也不相依性 Cordis。
 
@@ -32,4 +32,4 @@ store 家族（輸入 `defineStore` 規範／輸出 `StoreHandle<T, A>`）為 st
 ## 已知限制與暫緩事項
 
 - **`isLive` 會線性掃描所有記錄**：在 UI 外掛程式的註冊規模（數十項）下沒有問題；如果帳本變得頻繁訪問，再使用條目→記錄反向引用改進。
-- **`__renders` 幻象錨點在 `PropsRenderSlots` 上可見**：這是與類型鏈設計的 `__accepts` 相同且已接受的噪聲；泛型方法簽名在 key 聯合之間比較寬鬆，因此必須依靠逆變標記強制執行「元件 key 集合 ⊆ children 聲明」。
+- **`__renders` 幻象錨點在 `PropsRenderSlots` 上可見**：這是與類型鏈設計的 `__accepts` 相同且已接受的噪音；泛型方法簽名在 key 聯合之間比較寬鬆，因此必須依靠逆變標記強制執行「元件 key 集合 ⊆ children 聲明」。

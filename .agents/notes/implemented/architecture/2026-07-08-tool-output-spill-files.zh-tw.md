@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-08-tool-output-spill-files.md) | [简体中文](2026-07-08-tool-output-spill-files.zh.md) | 繁體中文
+[English](2026-07-08-tool-output-spill-files.md) | 繁體中文
 
 ## 問題
 
@@ -10,11 +10,11 @@ Status: implemented
 
 這項改動之前的行為並不一致。`dsh-bash-local` 已經會在記憶體尾部溢位時，把完整 stdout／stderr 流寫入私有的臨時 spill 文件；普通文字工具結果則仍以內聯形式返回，除非工具自行實作上限。[工具結果保留庫](2026-07-06-tool-result-retention-library.md)負責預覽機制，但不負責儲存，也不負責把這些機制應用於最終工具結果的執行管線策略。
 
-其形態與逾時策略設計一致：工具作者聲明規範值與 Native renderer（原生渲染器），由策略外掛程式在渲染後的內容上執行部署默認的上下文預算。工具仍可在提供方採集上限處提前 spill；由工具負責的展示 spill 可以保留已完整採集的規範值，而只替換展示內容。[規範工具輸出約定](2026-07-20-canonical-tool-output-contract.md)規定了這項區分。
+其形態與逾時策略設計一致：工具作者聲明規範值與 Native renderer（原生渲染器），由策略外掛程式在渲染後的內容上執行部署預設的上下文預算。工具仍可在提供方採集上限處提前 spill；由工具負責的展示 spill 可以保留已完整採集的規範值，而只替換展示內容。[規範工具輸出約定](2026-07-20-canonical-tool-output-contract.md)規定了這項區分。
 
 ## 決策
 
-在新的 `packages/spill/` 分組下增加一層輕量 spill 儲存 seam 和一個默認 spill 策略外掛程式：
+在新的 `packages/spill/` 分組下增加一層輕量 spill 儲存 seam 和一個預設 spill 策略外掛程式：
 
 | 包 | 角色 |
 |---|---|
@@ -70,7 +70,7 @@ interface Config {
 }
 ```
 
-省略 `maxInlineBytes` 時，外掛程式不會註冊任何內容，是真正的無操作。設定該值後，它會對最終的純文字工具結果應用默認策略：
+省略 `maxInlineBytes` 時，外掛程式不會註冊任何內容，是真正的無操作。設定該值後，它會對最終的純文字工具結果應用預設策略：
 
 1. 讓工具正常執行，透過 `next()` 委託，使下游監聽器先結帳結果。
 2. 僅當已接受的最終 `ContentBlock[]` 全部是純文字時，才將其展平；含任何非文字塊的結果保持不變。
@@ -135,7 +135,7 @@ ctx.tools.register(defineTool({
 
 - `@deepseek-ai/dsh-output-retention` 負責預覽機制（`TextRetainer`、`ItemRetainer` 和省略元資料）。
 - `@deepseek-ai/dsh-spill` 負責保存最終文字，並返回定位符與檢索提示。
-- `@deepseek-ai/dsh-spill-policy` 在工具管線中應用默認的最終結果策略，將前兩者組合起來。
+- `@deepseek-ai/dsh-spill-policy` 在工具管線中應用預設的最終結果策略，將前兩者組合起來。
 
 最終結果策略不能取代由工具負責的提前 spill。部分有用內容並不存在於最終 `ToolExecutionResult.content` 中：
 
@@ -172,11 +172,11 @@ ctx.tools.register(defineTool({
 
 ## 影響
 
-默認策略只能看見最終格式化文字。它無法保留已經由提供方限制的內部內容，也無法保留從未成為結果一部分的執行時期產物。第一版聚焦最終結果 spill 而不是提前 spill，因此可以接受這一限制；由工具負責的提前 spill 仍屬於後續工作。
+預設策略只能看見最終格式化文字。它無法保留已經由提供方限制的內部內容，也無法保留從未成為結果一部分的執行時期產物。第一版聚焦最終結果 spill 而不是提前 spill，因此可以接受這一限制；由工具負責的提前 spill 仍屬於後續工作。
 
 本機後端返回真實路徑，使 v1 保持簡單並符合已經驗證的 agent（代理）工具行為；seam 本身只承諾一個不透明定位符加檢索提示，所以遠端後端可以返回非文件定位符。
 
-本機後端的價值取決於現有 `read`／`grep` 工具能否檢查返回的本機路徑，即使 spill 目錄位於工作階段 cwd 之外。目前這一條件成立，因為檔案系統策略會記錄觀察結果並設定寫保護，但不會把讀取限制在工作區內。未來的工作區限制策略必須顯式允許本機 spill 路徑，或改用檢索提示指向受支持讀取器的非文件 spill 後端。
+本機後端的價值取決於現有 `read`／`grep` 工具能否檢查返回的本機路徑，即使 spill 目錄位於工作階段 cwd 之外。目前這一條件成立，因為檔案系統策略會記錄觀察結果並設定寫保護，但不會把讀取限制在工作區內。未來的工作區限制策略必須顯式允許本機 spill 路徑，或改用檢索提示指向受支援讀取器的非文件 spill 後端。
 
 **快照缺口。** 目前沒有 ACP 快照場景覆蓋 transcript（文字記錄）可見的 `web_fetch` spill 提示。ACP 快照 harness 在無金鑰環境中重播，無法訪問即時 web，而 `web_fetch` spill 需要一個真實的超上限 HTTP 正文；確定性場景需要一個預置的 loopback fetch 目標，但當前重播樹尚未接線（示例根本沒有載入 `tool-web`）。該行為改由 `dsh-tool-web` 針對 loopback server 的整合測試覆蓋。彌補該缺口屬於後續工作：把 `tool-web` 和預置 fetch 目標接入 ACP 示例，然後錄制 `web-fetch-spill` 場景。
 
@@ -184,7 +184,7 @@ ctx.tools.register(defineTool({
 
 ## 考慮過的替代方案
 
-**要求每個工具透過保留聲明選擇加入。** v1 不予採納，因為目標是實作類似 Claude Code 通用工具結果持久化的默認行為。只需一個 `maxInlineBytes` 部署設定項即可驗證該形態。
+**要求每個工具透過保留聲明選擇加入。** v1 不予採納，因為目標是實作類似 Claude Code 通用工具結果持久化的預設行為。只需一個 `maxInlineBytes` 部署設定項即可驗證該形態。
 
 **把 `tool-results` 建成寬泛的工具結果平臺。** 不予採納：寬泛的包名會誘使系統把保留策略、結果替換、預覽措辭、搜尋和提前 spill 合併進一個 seam。可共享的儲存部分更小：保存文字，並返回定位符與檢索提示。
 

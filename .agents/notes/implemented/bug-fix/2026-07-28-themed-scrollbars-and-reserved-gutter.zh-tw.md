@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-themed-scrollbars-and-reserved-gutter.md) | [简体中文](2026-07-28-themed-scrollbars-and-reserved-gutter.zh.md) | 繁體中文
+[English](2026-07-28-themed-scrollbars-and-reserved-gutter.md) | 繁體中文
 
 ## 問題
 
@@ -18,7 +18,7 @@ Status: implemented
 
 `scrollbar-width` 與 `scrollbar-color` 聲明在 `body, body *` 上，而不是隻在頂層聲明一次。繼承傳下去的是已經在 `body` 處代入完成的顏色值，因此後代元素重新綁定這層間接變數也無法改變自己的捲軸；逐元素重新聲明使每個元素按它自己看到的取值代入變數。`scrollbar-width` 本身就不是可繼承屬性，無論如何都需要逐元素聲明。`::-webkit-scrollbar*` 偽元素同樣不繼承，因此以不加限定的選擇器匹配。
 
-兩種渲染互斥，而這種互斥是被強制的，不是假定的。`scrollbar-width` 或 `scrollbar-color` 只要取非 `auto` 值，Chromium 與 Safari 就會丟棄該元素上的全部 `::-webkit-scrollbar*` 規則，`::-webkit-scrollbar-thumb:hover` 也在其中。因此無條件地同時聲明會讓 hover token 在任何地方都得不到渲染：實作了 hover 偽元素的引擎，恰恰就是被標準屬性靜音的那些，而 Firefox 沒有 hover 偽元素可作退路。於是標準屬性寫在 `@supports not selector(::-webkit-scrollbar)` 之內，該條件只在偽元素未被實作處為真，因此 Firefox 走標準屬性路徑，WebKit 系引擎走偽元素路徑。WebKit 規則不再反向加閘門：不實作這些偽元素的引擎會把它們當作未知選擇器丟棄，因此加閘門只是重述選擇器匹配本身已經做的事。對於舊到不支持 `selector()` 函式的引擎，該條件無效，從而求值為假並選中偽元素路徑——對於這條判斷下現實存在的 16.4 之前的 Safari，這正是正確的一側。
+兩種渲染互斥，而這種互斥是被強制的，不是假定的。`scrollbar-width` 或 `scrollbar-color` 只要取非 `auto` 值，Chromium 與 Safari 就會丟棄該元素上的全部 `::-webkit-scrollbar*` 規則，`::-webkit-scrollbar-thumb:hover` 也在其中。因此無條件地同時聲明會讓 hover token 在任何地方都得不到渲染：實作了 hover 偽元素的引擎，恰恰就是被標準屬性靜音的那些，而 Firefox 沒有 hover 偽元素可作退路。於是標準屬性寫在 `@supports not selector(::-webkit-scrollbar)` 之內，該條件只在偽元素未被實作處為真，因此 Firefox 走標準屬性路徑，WebKit 系引擎走偽元素路徑。WebKit 規則不再反向加閘門：不實作這些偽元素的引擎會把它們當作未知選擇器丟棄，因此加閘門只是重述選擇器匹配本身已經做的事。對於舊到不支援 `selector()` 函式的引擎，該條件無效，從而求值為假並選中偽元素路徑——對於這條判斷下現實存在的 16.4 之前的 Safari，這正是正確的一側。
 
 兩條路徑都讀取同一組間接變數 `--dsh-scrollbar-thumb` 與 `--dsh-scrollbar-thumb-hover`，它們在 `body` 上綁定到 l1（基礎表面）token。**這就是重新綁定約定，也是單看 CSS 無法得知的部分**：抬升表面在自己的容器上設定 `--dsh-scrollbar-thumb: var(--dsw-alias-scrollbar-bg-l2)` 與 `--dsh-scrollbar-thumb-hover: var(--dsw-alias-scrollbar-hover-l2)`，這一次重新綁定同時作用於標準屬性和 WebKit 偽元素。這組變數必須成對重新綁定；只改靜止態滑桿會讓 hover 狀態仍留在基礎表面的 token 上。這組變數另一個合法的目標是 `transparent`，它隨側邊欄捲軸[改為跟隨指針](../feature/2026-08-04-pointer-revealed-sidebar-scrollbars.md)一並引入；下文的閘門只接受這兩種目標。可由機械檢查發現的子集歸 `packages/client/ui-theme/tests/scrollbar-styles.client.spec.ts` 所有：任何既滾動又繪製抬升表面的樣式表都必須重新綁定，因此本 note 不再維護完整的表面清單。多數把這組變數聲明在抬升卡片上而非滾動的後代元素上，因為抬升層級屬於這個表面，而自訂屬性會繼承到真正滾動的那個子元素。
 
@@ -32,7 +32,7 @@ Status: implemented
 
 `.list` 聲明 `scrollbar-gutter: stable`，使捲軸位於行的旁邊而非行的上方。取 `stable` 而非 `auto`，因為 `auto` 只在清單確實溢位時才預留空位：那樣展開一個工作區分組時，所有行會在清單開始滾動的那一刻發生水準位移。`stable` 的預留是無條件的，行不會移動。
 
-面對覆蓋式捲軸——也就是這個症狀唯一存在的那種形態——空位聲明與樣式表裡的 `::-webkit-scrollbar` 寬度是共同必要的。在執行中的應用上實測：保留其中一條、從活的層疊中刪掉另一條，任意一次單獨刪除都會讓清單的條帶從 8 降到 0。空位聲明表述的是「要預留空間」，而偽元素寬度纔是讓 chromium 把捲軸視為佔據版面配置空間、而不是浮在內容之上的原因。因此對這個 bug 而言，本次變更的兩半都不是選填項，這也是兩半必須一起交付的第二個理由。
+面對覆蓋式捲軸——也就是這個症狀唯一存在的那種形態——空位聲明與樣式表裡的 `::-webkit-scrollbar` 寬度是共同必要的。在執行中的應用上實測：保留其中一條、從活的層疊中刪掉另一條，任意一次單獨刪除都會讓清單的條帶從 8 降到 0。空位聲明表述的是「要預留空間」，而偽元素寬度纔是讓 chromium 把捲軸視為佔據版面設定空間、而不是浮在內容之上的原因。因此對這個 bug 而言，本次變更的兩半都不是選填項，這也是兩半必須一起交付的第二個理由。
 
 ## 曾考慮的替代方案
 
@@ -46,7 +46,7 @@ Status: implemented
 
 **不加 `@supports` 閘門，無條件同時聲明標準屬性與偽元素。** 在 chromium 中於帶 `scrollbar-gutter: stable`（使條帶可觀測）的探針元素上實測：單獨一條 8px 的 `::-webkit-scrollbar` 預留出 30px 條帶（樣式表指定的寬度加上瀏覽器自帶的按鈕），而給同一元素加上 `scrollbar-width: thin` 後降到 `thin` 所預留的 10px——說明偽元素規則是被丟棄，而不是被合併。全部 `::-webkit-scrollbar-thumb:hover` 規則隨之失效，因此兩個 hover token 與四處抬升表面的 hover 重新綁定，在多數使用者實際使用的引擎上都是死程式碼。
 
-**給 WebKit 規則也加閘門，寫成 `@supports selector(::-webkit-scrollbar)`。** 讀起來對稱，但在一個方向上是錯的：它會對「實作了偽元素但不支持 `selector()`」的引擎隱藏這些規則，而那正是不加閘門時能被正確服務的 16.4 之前的 Safari。未知選擇器本就會被丟棄，因此這道閘門不提供任何能抵償該代價的保護。
+**給 WebKit 規則也加閘門，寫成 `@supports selector(::-webkit-scrollbar)`。** 讀起來對稱，但在一個方向上是錯的：它會對「實作了偽元素但不支援 `selector()`」的引擎隱藏這些規則，而那正是不加閘門時能被正確服務的 16.4 之前的 Safari。未知選擇器本就會被丟棄，因此這道閘門不提供任何能抵償該代價的保護。
 
 **改用內邊距而不是預留空位（給 `.list` 加右內邊距，或把 `.time` 向內移）。** 之所以否決：內邊距無論捲軸是否存在都生效，因此在常見的短清單情形下白白佔用橫向空間；而且它只修好一個容器，其餘每個滾動區域的內容仍然壓在捲軸之下。
 

@@ -1,6 +1,6 @@
 # 工作階段持久化
 
-[English](persistence.md) | [简体中文](persistence.zh.md) | 繁體中文
+[English](persistence.md) | 繁體中文
 
 事件日誌的**持久性 seam**。[session.md](session.md) 描述了記憶體中的 `Session`：僅附加的 `SessionEvent` 日誌即為真源。本頁描述如何使該日誌持久化：抽象的 `SessionPersistence` 服務、它的後端、flush 檢查點、當機復原，以及隨日誌一同儲存的元資料頭。日誌承載的事件詞彙在生成的[持久化日誌事件目錄](../persistence-catalog.md)中逐項列舉。
 
@@ -126,7 +126,7 @@ interface CreateSessionOptions {
 
 ## `SessionRawArtifact`——逐字儲存工件文字
 
-後端為單個工作階段自持的工件文字，與其持久化寫入的位元組逐字一致（按物理編碼解碼）。`readRaw` 返回它而不從解析後事件重建，因此後端特定的序列化（chunk 打包、鍵序、換行）得以保留。Consumer 須先檢查 `supportsRawArtifacts`：`false` 表示後端不提供此能力（如 SQLite），而 `readRaw(...) === undefined` 表示受支持的後端沒有該工作階段的已實體化工件。
+後端為單個工作階段自持的工件文字，與其持久化寫入的位元組逐字一致（按物理編碼解碼）。`readRaw` 返回它而不從解析後事件重建，因此後端特定的序列化（chunk 打包、鍵序、換行）得以保留。Consumer 須先檢查 `supportsRawArtifacts`：`false` 表示後端不提供此能力（如 SQLite），而 `readRaw(...) === undefined` 表示受支援的後端沒有該工作階段的已實體化工件。
 
 ```ts type-equiv
 /** A backend's own raw artifact text for one session, verbatim. */
@@ -230,9 +230,9 @@ interface SessionPersistenceSnapshot {
 
 ## 後端
 
-兩者都實作同一個抽象 `SessionPersistence`（在 `SessionEvent` 上執行 locate/create/append/prepare/load/inspect/readFrom/list/listSnapshots，觀察方法選填支持取消），並透過共享的 `runPersistenceContract` 套件：
+兩者都實作同一個抽象 `SessionPersistence`（在 `SessionEvent` 上執行 locate/create/append/prepare/load/inspect/readFrom/list/listSnapshots，觀察方法選填支援取消），並透過共享的 `runPersistenceContract` 套件：
 
-- **[dsh-session-persistence-jsonl](../../packages/session/session-persistence-jsonl)**——每個工作階段一份僅附加的邏輯 JSONL 日誌，默認儲存為帶 checksum 的連續 Zstandard frame，也可設定為原始行；支持崩潰安全的原子寫入、被中斷輪次的復原以及讀取/重播路徑。
+- **[dsh-session-persistence-jsonl](../../packages/session/session-persistence-jsonl)**——每個工作階段一份僅附加的邏輯 JSONL 日誌，預設儲存為帶 checksum 的連續 Zstandard frame，也可設定為原始行；支援崩潰安全的原子寫入、被中斷輪次的復原以及讀取/重播路徑。
 - **[dsh-session-persistence-sqlite](../../packages/session/session-persistence-sqlite)**：基於 `node:sqlite`，每個 `SessionEvent` 一行。行欄位 `(session_id, seq, type, time, data, source_event_seqs, surface_op)` 與事件 1:1 對映（包含選填的 surface 元資料），因此沒有需要保持同步的平行持久化 schema。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->

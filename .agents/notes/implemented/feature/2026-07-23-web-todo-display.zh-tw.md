@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-web-todo-display.md) | [简体中文](2026-07-23-web-todo-display.zh.md) | 繁體中文
+[English](2026-07-23-web-todo-display.md) | 繁體中文
 
 ## 問題
 
@@ -29,8 +29,8 @@ Status: implemented
 - **把 todo 寫入作為 surface 條目摺疊進 `nodes`**——重播的視窗會渲染每一份已被取代的清單；該事件被刻意設計成非 surface 類型。
 - **面板硬編碼進 `ConversationRoot`**——input-dock slot 出現之前的原始落點；dock 是本架構給「composer 上方常開橫條」安排的位置，硬編碼繞開了 slot 登錄檔的 disposal 與定序。
 - **面板放進 details 列**——details slot 單佔用且由選中驅動，生命週期不同於一條常開橫條。
-- **host 計算的檢視表（一個 todo `ToolEventView`）**——呈現屬於用戶端；協議已在事件載荷裡攜帶整份快照。
+- **host 計算的檢視表（一個 todo `ToolEventView`）**——呈現屬於用戶端；協定已在事件載荷裡攜帶整份快照。
 
 ## 後果
 
-重播正確性由一條程式碼路徑掌管：未來對視窗重建的任何改動都會自然保持 todos 一致；fx-alpha 第 71 輪的 fixture（測試前置資料）加上 `packages/client/ui-conversation/tests/todo-panel.client.spec.tsx` 固定整條鏈（行摘要與狀態、dock 面板內容、摺疊往返）。`todos` 是 `ConversationSnapshot` 的必填欄位，所以 spec 裡指令碼化的 fake 必須帶上它。自動化專用的 ACP 橋接刻意不做 todo 呈現；Web 各面渲染同一個事件，只新增一個協議欄位，不新增事件類型。這個由 host 提供的欄位正是冷載入重建的依據：history 尾頁附帶 `todos`——全量 log 上當前有效的計畫（其後沒有更晚 `turn/start` 的最近一次 `todo/write`），獨立於分頁視窗計算（與 view 配對同一種 backscan 姿勢）——因此重開會話時若計畫仍然有效且最後一次寫入落在視窗之前，計畫也照常復原；該值跨往前翻頁保留，之後的任何寫入照常覆蓋，更晚的 `turn/start` 會清空，而尾頁回應不帶投影時復位為空。
+重播正確性由一條程式碼路徑掌管：未來對視窗重建的任何改動都會自然保持 todos 一致；fx-alpha 第 71 輪的 fixture（測試前置資料）加上 `packages/client/ui-conversation/tests/todo-panel.client.spec.tsx` 固定整條鏈（行摘要與狀態、dock 面板內容、摺疊往返）。`todos` 是 `ConversationSnapshot` 的必填欄位，所以 spec 裡指令碼化的 fake 必須帶上它。自動化專用的 ACP 橋接刻意不做 todo 呈現；Web 各面渲染同一個事件，只新增一個協定欄位，不新增事件類型。這個由 host 提供的欄位正是冷載入重建的依據：history 尾頁附帶 `todos`——全量 log 上當前有效的計畫（其後沒有更晚 `turn/start` 的最近一次 `todo/write`），獨立於分頁視窗計算（與 view 配對同一種 backscan 姿勢）——因此重開會話時若計畫仍然有效且最後一次寫入落在視窗之前，計畫也照常復原；該值跨往前翻頁保留，之後的任何寫入照常覆蓋，更晚的 `turn/start` 會清空，而尾頁回應不帶投影時復位為空。

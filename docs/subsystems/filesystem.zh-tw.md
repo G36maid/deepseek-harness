@@ -1,10 +1,10 @@
 # 檔案系統
 
-[English](filesystem.md) | [简体中文](filesystem.zh.md) | 繁體中文
+[English](filesystem.md) | 繁體中文
 
 選填的檔案系統能力由四個部分組成：[dsh-fs](../../packages/fs/fs) 擁有 `ctx.fs` 以及帶選填守衛的原子文字操作；[dsh-fs-local](../../packages/fs/fs-local) 實作本機磁碟後端；[dsh-fs-observation-policy](../../packages/fs/fs-observation-policy) 記錄觀測到的存在或缺失狀態，並透過事件（而非服務）新增新鮮度規則；[dsh-tool-fs](../../packages/fs/tool-fs) 直接執行面向模型的 read/write/edit 呼叫並渲染視窗。它位於 agent loop（代理循環）主幹之外；替換後端不會改變策略或工具 schema。
 
-`dsh-fs-observation-policy` 是選填外掛程式。沒有該外掛程式時，`FileSystem` 服務定義、一個提供方和 `dsh-tool-fs` 消費端組成完整且不受約束的檔案系統 seam：`write` 無條件建立或覆蓋，`edit` 無條件替換字面文字。策略外掛程式透過裁決 `fs/*` waterfall（瀑布式事件）來改變這些操作。移除該外掛程式不會破壞工具，因為工具呼叫 `ctx.fs` 並分發事件，而不呼叫策略方法。載入了 `dsh-tool-fs` 的部署也應載入 `dsh-fs-observation-policy`，使默認行為為「先讀後寫/編輯」。
+`dsh-fs-observation-policy` 是選填外掛程式。沒有該外掛程式時，`FileSystem` 服務定義、一個提供方和 `dsh-tool-fs` 消費端組成完整且不受約束的檔案系統 seam：`write` 無條件建立或覆蓋，`edit` 無條件替換字面文字。策略外掛程式透過裁決 `fs/*` waterfall（瀑布式事件）來改變這些操作。移除該外掛程式不會破壞工具，因為工具呼叫 `ctx.fs` 並分發事件，而不呼叫策略方法。載入了 `dsh-tool-fs` 的部署也應載入 `dsh-fs-observation-policy`，使預設行為為「先讀後寫/編輯」。
 
 提供方原始碼：[`packages/fs/fs/src/types.ts`](../../packages/fs/fs/src/types.ts) 與 [`packages/fs/fs/src/index.ts`](../../packages/fs/fs/src/index.ts)。策略原始碼：[`packages/fs/fs-observation-policy/src/types.ts`](../../packages/fs/fs-observation-policy/src/types.ts)。讀取渲染原始碼：[`packages/fs/tool-fs/src/read-render.ts`](../../packages/fs/tool-fs/src/read-render.ts)。
 
@@ -182,7 +182,7 @@ interface FsEditOutcome {
 
 `dsh-fs` 擁有三個事件，由工具分發、策略外掛程式監聽，使事件寄出方（`dsh-tool-fs`）與監聽方（`dsh-fs-observation-policy`）共享詞彙，而事件寄出方無需相依性策略外掛程式。它們只攜帶 `dsh-fs` 詞彙加一個不透明的 `object` actor，不含面向模型的概念，也不含 agent/工作階段所有者結構。
 
-`fs/write-intent` 與 `fs/edit-intent` 是**單槽決策 waterfall**：工具分發時附帶一個默認 thunk（返回 `undefined`，即裸提供方），監聽方完全決策而不呼叫 `next()`。該 slot 按註冊順序先到先得——由策略外掛程式佔據是部署約定，而非強制不變式。`fs/observed` 是一個即發即棄的記錄事件，攜帶 `FsObservation`：存在於某個版本，或確認缺失。該事件透過普通 `ctx.emit` 分發；其監聽方必須是同步的、僅產生副作用，因為工具不會捕獲該 emit 拋出的例外——拋出例外的監聽方可能取代讀取操作原本待返回的錯誤，或使工具在變更已經成功後返回 `isError` 結果。下方生成的 [cordis surface](#cordis-surface) 展示確切簽名。
+`fs/write-intent` 與 `fs/edit-intent` 是**單槽決策 waterfall**：工具分發時附帶一個預設 thunk（返回 `undefined`，即裸提供方），監聽方完全決策而不呼叫 `next()`。該 slot 按註冊順序先到先得——由策略外掛程式佔據是部署約定，而非強制不變式。`fs/observed` 是一個即發即棄的記錄事件，攜帶 `FsObservation`：存在於某個版本，或確認缺失。該事件透過普通 `ctx.emit` 分發；其監聽方必須是同步的、僅產生副作用，因為工具不會捕獲該 emit 拋出的例外——拋出例外的監聽方可能取代讀取操作原本待返回的錯誤，或使工具在變更已經成功後返回 `isError` 結果。下方生成的 [cordis surface](#cordis-surface) 展示確切簽名。
 
 ```ts type-equiv
 /**

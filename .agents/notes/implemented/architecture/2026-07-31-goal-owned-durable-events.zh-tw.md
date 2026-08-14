@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-goal-owned-durable-events.md) | [简体中文](2026-07-31-goal-owned-durable-events.zh.md) | 繁體中文
+[English](2026-07-31-goal-owned-durable-events.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Goal 領域需要持久狀態，但不需要擁有待處理的模型輸入。繼
 
 `GoalMessageSource` 只標識已准入且為正數的繼續執行 Round。匹配的 `user/message` 會推進 `roundsStarted`；普通使用者訊息與 inbox splice 事件不會改變 goal 狀態。Goal 包不會插入、領取、移除或檢查 inbox 訊息。`@deepseek-ai/dsh-goal-round-driver` 仍透過公開 inbox 生命週期負責排隊和跟蹤自己的繼續執行提示詞。
 
-啟用態仍只存在於行程中。服務在快取觀察事件時，將同步追加的事件序號與所請求的啟用狀態關聯；重播或外部追加的變更默認處於 disarmed 狀態。工作階段日誌仍是唯一的持久權威。
+啟用態仍只存在於行程中。服務在快取觀察事件時，將同步追加的事件序號與所請求的啟用狀態關聯；重播或外部追加的變更預設處於 disarmed 狀態。工作階段日誌仍是唯一的持久權威。
 
 該領域不會自動把每次變更投影為模型輸入。Goal 工具返回當前狀態；真正調度工作時，繼續執行提示詞包含目標描述與 Round 狀態。未來如果需要始終可見的 goal 上下文，應由獨立上下文外掛程式擁有其 inbox 訊息，而不是把它作為持久化副作用。
 

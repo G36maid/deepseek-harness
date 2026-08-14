@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-multi-select-custom-answer-composition.md) | [简体中文](2026-07-30-multi-select-custom-answer-composition.zh.md) | 繁體中文
+[English](2026-07-30-multi-select-custom-answer-composition.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 對於 `multiSelect: true` 的問題，一個回答項可以同時包含非空 `selected` 陣列與非空 `custom` 文字。無論使用者先選擇選項還是先輸入自訂文字，Web 草稿都會保留兩個值；TUI 在選項與自訂模式之間切換時會保留待提交的自訂文字，並在任一模式提交時將其與已勾選的標籤一同投影；Web 宿主則在應用現有的 id、標籤、唯一性、批次和非空文字校驗後接受組合回應。
 
-單選題和無選項問題仍保持互斥語義：自訂文字會覆蓋任何已選中的選項。結果形狀仍為 `{ id, selected, custom? }`，因此協議或工具輸出 schema 均無需變更。
+單選題和無選項問題仍保持互斥語義：自訂文字會覆蓋任何已選中的選項。結果形狀仍為 `{ id, selected, custom? }`，因此協定或工具輸出 schema 均無需變更。
 
 ## 考慮過的替代方案
 

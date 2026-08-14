@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-05-dynamic-workflows.md) | [简体中文](2026-07-05-dynamic-workflows.zh.md) | 繁體中文
+[English](2026-07-05-dynamic-workflows.md) | 繁體中文
 
 ## 問題
 
@@ -14,9 +14,9 @@ harness 可以透過 `dsh-tool-subagent` 將一個任務委派給一個子 agent
 
 ### 指令碼約定（相容 Claude Code）
 
-一次工作流程呼叫包含 JSON `meta`（`name`、`description`，以及選填的 `whenToUse`/`phases`）和一段支持頂層 `await` 並返回 JSON 值的 JavaScript `script` 正文。元資料作為資料校驗，從不被執行。正文接收 `agent(prompt, options)`、`parallel(thunks)`、`pipeline(items, ...stages)`、`phase(title)`、`log(message)` 和 `args`。管線各階段接收 `(prev, item, index)`，階段之間無屏障；失敗的子 agent 和普通階段錯誤將受影響的 item 結帳為 `null` 並跳過其剩餘階段。Claude Code 的確定性限制隨日誌機制一並延後實作，因此相容的指令碼正文在將 meta 頭移入參數後可以使用時鐘和隨機數。
+一次工作流程呼叫包含 JSON `meta`（`name`、`description`，以及選填的 `whenToUse`/`phases`）和一段支援頂層 `await` 並返回 JSON 值的 JavaScript `script` 正文。元資料作為資料校驗，從不被執行。正文接收 `agent(prompt, options)`、`parallel(thunks)`、`pipeline(items, ...stages)`、`phase(title)`、`log(message)` 和 `args`。管線各階段接收 `(prev, item, index)`，階段之間無屏障；失敗的子 agent 和普通階段錯誤將受影響的 item 結帳為 `null` 並跳過其剩餘階段。Claude Code 的確定性限制隨日誌機制一並延後實作，因此相容的指令碼正文在將 meta 頭移入參數後可以使用時鐘和隨機數。
 
-與 CC 有一處刻意的嚴格性差異：掛鉤誤用——未知或延遲的選項（`effort`/`isolation`/`agentType`）、格式錯誤的參數、超出支持子集的 schema、觸發上限、seam 啟動失敗——會拋出帶 `fatal: true` 的 `WorkflowError`，組合器會重新拋出 fatal 錯誤而非將 item 置為 null。如果不這樣做，一個拼錯的選項會悄然變成一個與子 agent 失敗無法區分的 `null`——這正是本倉庫禁止的「被接受後被忽略」的失敗模式。另有一處新增：工具的 `args` 參數是一個 JSON 對象（裸清單被包裝為一個欄位），使協定格式（wire format）保持誠實。
+與 CC 有一處刻意的嚴格性差異：掛鉤誤用——未知或延遲的選項（`effort`/`isolation`/`agentType`）、格式錯誤的參數、超出支援子集的 schema、觸發上限、seam 啟動失敗——會拋出帶 `fatal: true` 的 `WorkflowError`，組合器會重新拋出 fatal 錯誤而非將 item 置為 null。如果不這樣做，一個拼錯的選項會悄然變成一個與子 agent 失敗無法區分的 `null`——這正是本倉庫禁止的「被接受後被忽略」的失敗模式。另有一處新增：工具的 `args` 參數是一個 JSON 對象（裸清單被包裝為一個欄位），使協定格式（wire format）保持誠實。
 
 ### seam（dsh-workflow）
 
@@ -28,7 +28,7 @@ harness 可以透過 `dsh-tool-subagent` 將一個任務委派給一個子 agent
 
 **為何選擇 `node:worker_threads`**：每次執行獲得一個非池化的 worker。vm 上下文限定了文件中說明的指令碼 API，而訊息埠 RPC 將 `agent()` 橋接到宿主側的子迴圈。worker 防止指令碼的同步工作阻塞宿主，提供序列化邊界，並允許取消後強制終止。`isolated-vm` 因其維護狀態和部署要求被否決。
 
-宿主在發布前校驗元資料並解析正文。私有枚舉鍵 payload 對映定義協定格式；待啟動記錄、已發布子記錄、單一取消訊號、worker 死亡回收、結果優先級與 dispose（資源釋放）時的完全靜止，在此協議上保持 subagent run 約定。這些競態演算法由 [agent 作用域執行時期設計 Agent Note](../architecture/2026-07-12-agent-scope-runtime-design.md#workflow-children-are-pending-starts-or-published-records) 定義。
+宿主在發布前校驗元資料並解析正文。私有枚舉鍵 payload 對映定義協定格式；待啟動記錄、已發布子記錄、單一取消訊號、worker 死亡回收、結果優先級與 dispose（資源釋放）時的完全靜止，在此協定上保持 subagent run 約定。這些競態演算法由 [agent 作用域執行時期設計 Agent Note](../architecture/2026-07-12-agent-scope-runtime-design.md#workflow-children-are-pending-starts-or-published-records) 定義。
 
 引擎暴露一條行程內 `MessageChannel` 測試路徑，因為主行程 V8 覆蓋率無法觀測 worker 執行。
 
@@ -48,7 +48,7 @@ harness 可以透過 `dsh-tool-subagent` 將一個任務委派給一個子 agent
 
 輸出 schema 使一次 schema 有效的已提交捕獲成為子 agent 成功完成的必要條件。作用域執行時期呈現捕獲工具和指令，僅提交成功的最終結果（包括 SDK 呼叫時外層 `run_code` 的結果），在捕獲變為 pending 後拒絕後續副作用，並在提交後不再進行模型步驟即停止子 agent。校驗失敗仍是可重試的工具錯誤；沒有已提交捕獲的正常完成以錯誤結帳。
 
-`ObjectJsonSchema` 是 `dsh-tools` 統一且可強制執行的原始 JSON Schema 子集所提供的對象根消費端檢視表；不支持的關鍵字會明確報錯，因為該協議資料會逐字成為捕獲工具的 parameters。[統一 JSON 值 schema Agent Note](../architecture/2026-07-20-unified-json-value-schema-dsl.md)定義詞彙與校驗語義，[agent 作用域執行時期設計 Agent Note](../architecture/2026-07-12-agent-scope-runtime-design.md#structured-output-commits-only-authoritative-outcomes)則定義組裝、提交、守衛和終止停止演算法。
+`ObjectJsonSchema` 是 `dsh-tools` 統一且可強制執行的原始 JSON Schema 子集所提供的對象根消費端檢視表；不支援的關鍵字會明確報錯，因為該協定資料會逐字成為捕獲工具的 parameters。[統一 JSON 值 schema Agent Note](../architecture/2026-07-20-unified-json-value-schema-dsl.md)定義詞彙與校驗語義，[agent 作用域執行時期設計 Agent Note](../architecture/2026-07-12-agent-scope-runtime-design.md#structured-output-commits-only-authoritative-outcomes)則定義組裝、提交、守衛和終止停止演算法。
 
 ## 測試
 
@@ -68,11 +68,11 @@ worker 側邏輯透過行程內 `MessageChannel` 執行，使 V8 覆蓋率能夠
 
 - **宿主側的惡意值防護**（無 trap 代理拒絕、從不呼叫訪問器的描述符遍歷、realm 側預渲染拋出值、realm 建置的 promise/array/error 克隆加結構化 fatal 識別）：否決。每項防禦針對的都是信任前提所接受的作者，而執行緒的序列化邊界已經從構造上保證跨 realm 值的處理對所有輸入都有確定結果。
 - **行程內 `node:vm` 執行**：機械上最簡——無 RPC、無執行緒——但 `start()` 會在指令碼的初始同步切片期間阻塞呼叫方，第一個 await 之後的同步自旋無法在行程內終止（vm `timeout` 僅覆蓋第一個切片），且 `dispose()` 只能在宿主迴圈上放棄一個未 settle 的指令碼。worker 執行緒引擎保持相同的 vm 上下文指令碼 API，同時解除宿主阻塞並使終止成為現實。
-- **後臺執行作為默認**（CC 的形態）：延遲。前臺同步與 `dsh-tool-subagent` 的當前形態一致，後臺語義應在 bash、subagent 和工作流程之間統一設計一次，而非逐工具設計。
+- **後臺執行作為預設**（CC 的形態）：延遲。前臺同步與 `dsh-tool-subagent` 的當前形態一致，後臺語義應在 bash、subagent 和工作流程之間統一設計一次，而非逐工具設計。
 - **工作流程層為 `agent({schema})` 做 JSON 解析**：在一個消費端重複 seam 關注點，而 seam 的能力標志仍不誠實地為 `false`。
 - **Meta 嵌入指令碼中作為 `export const meta = {...}`**（CC 的確切格式）：保持指令碼自包含且 CC 指令碼可直接使用，但取得 meta 需要在宿主上執行模型編寫的文字。即使一個空的限時 vm 上下文也無法約束指令碼控制的 getter（當宿主讀取結果對象時）。JSON 參數消除了掃描器、執行和宿主自旋漏洞；代價是 CC 指令碼的 meta 頭必須移入參數（正文保持可直接使用）。
-- **`ValueSchemaSpec` 作為 `outputSchema` 協議類型**：面向作者的形式如今具有等價詞彙，但工作流程提供的是來自其他 realm 的原始 JSON Schema 資料；將這類執行時期資料假裝成可信的作者聲明，會跳過原始 schema 斷言邊界。
-- **schema 對象庫（zod 或本倉庫的 schemastery）用於結構化輸出子集**：schema 是協議資料——純 JSON，跨越 `agent({schema})` 中的 vm realm 邊界並逐字落入強制工具的 parameters——正是活 schema 對象無法存在的位置；在執行時期消費原始 JSON Schema 需要在其上加一個第三方轉接器（zod core 只輸出 JSON Schema，不能反向），且會在 schemastery 的設定角色旁邊放置第二種 schema 語言。
+- **`ValueSchemaSpec` 作為 `outputSchema` 協定類型**：面向作者的形式如今具有等價詞彙，但工作流程提供的是來自其他 realm 的原始 JSON Schema 資料；將這類執行時期資料假裝成可信的作者聲明，會跳過原始 schema 斷言邊界。
+- **schema 對象庫（zod 或本倉庫的 schemastery）用於結構化輸出子集**：schema 是協定資料——純 JSON，跨越 `agent({schema})` 中的 vm realm 邊界並逐字落入強制工具的 parameters——正是活 schema 對象無法存在的位置；在執行時期消費原始 JSON Schema 需要在其上加一個第三方轉接器（zod core 只輸出 JSON Schema，不能反向），且會在 schemastery 的設定角色旁邊放置第二種 schema 語言。
 - **ajv 用於值校驗**：它校驗完整 JSON Schema，因此子集門控——模組的真正要點，因為每個被接受的關鍵字都必須是 harness 強制執行的——無論如何仍需手寫；它透過 `new Function` 編譯校驗器；且它將成為 dsh-tools 的第一個執行時期相依性，僅為替換約 70 行的值遍歷器，而帶路徑且逐一報告所有違規的錯誤報告無論如何都是自訂的。
 - **提供方 JSON 模式代替捕獲工具**：它保證 JSON 有效，但不保證其符合 schema，且它與工具呼叫的互動不明確。捕獲工具保留了輪次內的校驗重試。提供方側的嚴格工具 schema 後續可以在不改變本設計的情況下收窄接受的子集。
 

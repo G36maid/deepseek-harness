@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-pwsh-tool-bash-parity.md) | [简体中文](2026-08-02-pwsh-tool-bash-parity.zh.md) | 繁體中文
+[English](2026-08-02-pwsh-tool-bash-parity.md) | 繁體中文
 
 ## 問題
 
@@ -33,4 +33,4 @@ Status: implemented
 - `@deepseek-ai/dsh-shell-env` 成為新的交付包；`dsh-tool-bash` 的 `dshHome` 設定遷往那裡，因此掛載 shell 工具的組合也必須掛載 `shell-env`（主幹組合包已如此）。
 - Windows 專屬語義（CRLF 歸一化、強制終止 exit-1/signal-null、僅 POSIX 的自訊號）一如既往由測試釘住。
 - pwsh 工具的逐文件覆蓋率閘門由可指令碼化的 fake 執行器套件（`tests/tools.spec.ts`）承擔；真實 pwsh 的整合與 Loader 組合套件在無 `pwsh` 的宿主自跳過，與 bash 套件的分工一致。
-- 路線圖提案的 parity 階段已交付；terminal 卡呈現階段隨 [pwsh UI 呈現與 bash 對齊](2026-08-05-pwsh-ui-bash-parity.md) 決策交付（TUI 本身已移除），剩餘階段是 Windows 默認組合。
+- 路線圖提案的 parity 階段已交付；terminal 卡呈現階段隨 [pwsh UI 呈現與 bash 對齊](2026-08-05-pwsh-ui-bash-parity.md) 決策交付（TUI 本身已移除），剩餘階段是 Windows 預設組合。

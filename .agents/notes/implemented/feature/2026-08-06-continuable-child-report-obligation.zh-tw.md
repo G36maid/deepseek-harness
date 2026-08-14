@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-06-continuable-child-report-obligation.md) | [简体中文](2026-08-06-continuable-child-report-obligation.zh.md) | 繁體中文
+[English](2026-08-06-continuable-child-report-obligation.md) | 繁體中文
 
 ## 問題
 
-可繼續後臺 child 擁有自己的 Session，因此它寫在那裡的任何內容都不會到達啟動它的 agent。[report 工具](2026-07-30-continuable-subagent-report-tool.md)為該 child 提供了一條返回通道，卻把它呈現為若干選項之一：schema 裡寫著「可呼叫零次或多次」，child 的提示詞中沒有任何地方要求它呼叫該工具，而已採納的默認調度（`quiet`）會把報告加入已停駐 parent 的下一次請求，卻不喚醒它。
+可繼續後臺 child 擁有自己的 Session，因此它寫在那裡的任何內容都不會到達啟動它的 agent。[report 工具](2026-07-30-continuable-subagent-report-tool.md)為該 child 提供了一條返回通道，卻把它呈現為若干選項之一：schema 裡寫著「可呼叫零次或多次」，child 的提示詞中沒有任何地方要求它呼叫該工具，而已採納的預設調度（`quiet`）會把報告加入已停駐 parent 的下一次請求，卻不喚醒它。
 
 這些選擇單獨看都站得住腳。合在一起，它們讓這條返回通道無法作為委派契約使用。一個完成工作、把答案寫進自己 transcript（文字記錄）隨後停止的 child，會讓 parent 一無所獲；而確實上報了的 child，面對的是一個已經停駐、要等到別的事件把它喚醒才會讀到報告的 parent。外部回饋中的 parent 忙輪詢 `list_agents`、反覆向已結帳 child 傳送訊息、以及放棄 `subagent` 改用 `workflow`，都可歸結為同一處缺失的保證。
 
@@ -33,7 +33,7 @@ Status: implemented
 
 ### 快照覆蓋
 
-整體組裝的 ACP `subagent-report` 場景現在演練隨附的默認行為：child 上報，停駐的 parent 就該報告執行一個普通輪次，隨後的提示詞仍能從持久化日誌中把報告讀回來。由於該 child 的作用域現在組合出類別 pin 無法描述的提示詞，快照 harness 新增了 `pinsChildSystemPrompts`，它與既有 `pinsChildToolSchemas` 完全對稱：把一個 child fixture 的提示詞移入 `system-prompt.<n>.expected.md`，其餘請求 header 欄位仍歸類別 pin 所有，要求 sidecar 恰好在聲明時存在，並拒絕與該類別 pin 完全相同的 sidecar，使冗餘副本無法悄悄漂移。
+整體組裝的 ACP `subagent-report` 場景現在演練隨附的預設行為：child 上報，停駐的 parent 就該報告執行一個普通輪次，隨後的提示詞仍能從持久化日誌中把報告讀回來。由於該 child 的作用域現在組合出類別 pin 無法描述的提示詞，快照 harness 新增了 `pinsChildSystemPrompts`，它與既有 `pinsChildToolSchemas` 完全對稱：把一個 child fixture 的提示詞移入 `system-prompt.<n>.expected.md`，其餘請求 header 欄位仍歸類別 pin 所有，要求 sidecar 恰好在聲明時存在，並拒絕與該類別 pin 完全相同的 sidecar，使冗餘副本無法悄悄漂移。
 
 ## 備選方案
 
@@ -48,13 +48,13 @@ Status: implemented
 ## 後果
 
 - 載入本包後，每個可繼續行程內 child 的每次請求都會多出一個提示詞 section 和一段更長的 `report` 描述；其他任何 Agent 的請求都不變。
-- 默認部署會為每條被接受的報告喚醒 parent 一次。頻繁上報的巢狀樹會消耗額外的 parent 輪次；`quiet` 是有文件記載的退路。
+- 預設部署會為每條被接受的報告喚醒 parent 一次。頻繁上報的巢狀樹會消耗額外的 parent 輪次；`quiet` 是有文件記載的退路。
 - `installReportTool` 需要 child 作用域中的 `ctx.systemPrompt`，因此本包在 `inject` 中聲明 `systemPrompt`，從而在載入時失敗，而不是等到下一次 child 物化時。
 - 單元覆蓋固定了新預設值、兩處關鍵指令措辭、該 section 相對 parent 與同級均僅限 child 的作用域，以及兩項註冊在安裝回滾或撤銷時的清理。
 - 三個帶可繼續 child 的整體組裝 ACP 場景透過新的 sidecar 逐字固定完整的 child 提示詞；今後任何對 child 作用域 section 的改動都會讓這些場景失敗，而不是悄悄透過。
 
 ### 已接受的風險
 
-默認喚醒會在深層樹中放大模型工作量。部署透過 `reportDelivery` 掌握該取捨，且放大幅度以每條被接受報告一個輪次為界。
+預設喚醒會在深層樹中放大模型工作量。部署透過 `reportDelivery` 掌握該取捨，且放大幅度以每條被接受報告一個輪次為界。
 
 child 仍可能不上報就結束，本次改動無法偵測這一點。只有執行時期自己的[結帳記帳](2026-08-06-manager-owned-subagent-settlement-delivery.md)才能補上這一情形。

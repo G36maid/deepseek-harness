@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-bash-persistent
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 模型可見的 `bash(command)`，底層複用一個按所有者隔離的 `ctx.terminals` shell。該包擁有工具約定和 shell 複用；PTY 後端與沙盒策略由部署選擇。
 
@@ -47,4 +47,4 @@
 
 - 工具需要擁有它的 Agent 和真實 PTY 後端。
 - 顯式 `exit` 與逾時會丟棄 shell 狀態。取消同樣會重設 shell 並丟棄結果，即使已經能觀察到完整狀態標記也是如此；下次呼叫建立新 shell。
-- 網路訪問、套件映像檔等環境事實應寫入設定的 `description`，而非包默認描述。
+- 網路訪問、套件映像檔等環境事實應寫入設定的 `description`，而非包預設描述。

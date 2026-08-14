@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-client-locale-full-rollout.md) | [简体中文](2026-07-30-client-locale-full-rollout.zh.md) | 繁體中文
+[English](2026-07-30-client-locale-full-rollout.md) | 繁體中文
 
 ## Problem
 
@@ -42,4 +42,4 @@ typed locale 標準席位（`locale:` 註冊聲明 → 框架注入強類型 `t`
 - 語言切換全 UI 即時刷新且零重註冊；新包接入 = 字典 + declare-merge + `locale: NS` 三步，無手寫膠水。
 - 代價：list label 的消費端必須知道 `resolveSlotLabel`（裸讀 `options.label` 現在可能拿到函式）；類型上 `SlotLabel` 已擋住多數誤用。
 - ui-primitives 的中文預設值在英文語言下依舊是中文，**直到消費端傳入 labels**——未遷移的 JsonTree 消費端（ui-trajectory）顯示其英文預設值，恰好符合其整包英文現狀。
-- e2e 英文釘死意味著 zh 默認態主要靠包級元件測試與 settings 語言切換用例覆蓋，瀏覽器 e2e 不再驗證 zh 文案。
+- e2e 英文釘死意味著 zh 預設態主要靠包級元件測試與 settings 語言切換用例覆蓋，瀏覽器 e2e 不再驗證 zh 文案。

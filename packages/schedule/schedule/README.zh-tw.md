@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-schedule
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 `dsh-schedule` 為未來建立的 live 根 agent（代理）提供 3 個工作階段範圍內的工具，用於管理持久提醒。版本 1 接受正的安全整數 `after_seconds` 延時、顯式絕對時間 `at` 目標，以及至少 5 分鐘的固定速率 `every_seconds` 間隔。工作階段事件日誌擁有提醒狀態；timer、工具值和模型 follow-up 都是該日誌的可丟棄投影。
 
@@ -111,7 +111,7 @@ reminders_json: <JSON.stringify(reminders)>
 - **僅限工作階段本機交付**：提醒只有在原工作階段 live 時才能準時執行；cold 工作階段不會收到外部通知，只有復原後才會處理 overdue 記錄。
 - **活動驅動的重試**：到期 preflight 被拒絕或 framing／入隊失敗被收容後，記錄仍保持活動，但不會啟動私有重試 timer；後續 Agent 活動或成功的 Schedule preflight 會觸發重新計算。
 - **顯式本機時區**：`at` 絕不會匯入瀏覽器上下文；呼叫方必須把自然語言轉換為帶偏移量的 RFC 3339 字串，或帶 `time_zone` 的本機對象。
-- **固定間隔，而非日曆規則**：`every_seconds` 與建立錨點對齊，且執行頻率不能高於每 5 分鐘一次；協議不包含日曆表達式或 Cron 表達式。
+- **固定間隔，而非日曆規則**：`every_seconds` 與建立錨點對齊，且執行頻率不能高於每 5 分鐘一次；協定不包含日曆表達式或 Cron 表達式。
 - **只追趕最新一次**：逾期 Every 記錄只貢獻其最新一個到期發生時點，因此 Schedule 絕不會重播因錯過間隔而形成的積壓。
 - **存在狹窄的崩潰重複視窗**：同步 follow-up 獲得准入後、dispatch 檢查點完成前發生崩潰，可能使提醒重複；此包不承諾模型完成、使用者確認或副作用恰好執行一次。
 - **載入順序邊界**：外掛程式不會掃描或接管載入時已經 live 的 Agent。

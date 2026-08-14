@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-approval-panel-command-cap.md) | [简体中文](2026-07-30-approval-panel-command-cap.zh.md) | 繁體中文
+[English](2026-07-30-approval-panel-command-cap.md) | 繁體中文
 
 ## 問題
 
@@ -45,7 +45,7 @@ Status: implemented
 
 要復現按鈕跑到螢幕外，需要的是比滾動視口更高的卡片，而不只是一張很高的卡片。composer 容器為 `position: sticky; bottom: 0`，因此在滾動視口尚能容納卡片時它會一直吸附在視口底部，按鈕仍然可見——在 900x1000 下，未設上限的卡片喫掉了整個 transcript，卻仍把操作按鈕行留在螢幕內。只有當卡片長過滾動視口，sticky 纔再也無法守住底邊，按鈕行隨之沉入視口下方。
 
-幾何斷言塊與 golden 僅在重播模式下執行，這樣錄制模式才能走到寫入 fixture（測試前置資料）那一步，而不是在版面配置檢查處中斷。
+幾何斷言塊與 golden 僅在重播模式下執行，這樣錄制模式才能走到寫入 fixture（測試前置資料）那一步，而不是在版面設定檢查處中斷。
 
 該場景只保留一份 golden——等待中的面板；回應之後的狀態改為對世界作斷言（決策結果、越權命令寫出的那個文件、`DONE`、面板消失、輸入框重新可用）。一份「已回應 transcript」的 golden 立不住：第一次被拒絕的嘗試渲染的是作業系統自己的拒絕文字，而這段文字因平臺而異（macOS 為 `bash: notes.txt: Operation not permitted`，Linux 為 `bash: line 1: notes.txt: Read-only file system`）。任何 transcript 中含有被沙盒拒絕命令的場景都會繼承這一點，因此這類拒絕只能進斷言，絕不能進 golden。
 

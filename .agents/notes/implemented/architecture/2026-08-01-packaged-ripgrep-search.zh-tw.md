@@ -2,25 +2,25 @@
 
 Status: implemented
 
-[English](2026-08-01-packaged-ripgrep-search.md) | [简体中文](2026-08-01-packaged-ripgrep-search.zh.md) | 繁體中文
+[English](2026-08-01-packaged-ripgrep-search.md) | 繁體中文
 
 > 取代 [bash 承載的 grep/glob 發現工具](../../archived/feature/2026-07-09-bash-backed-grep-glob-discovery.md)：v1 決策中明確延期的方案——直接 spawn ripgrep——現在成為實際交付的實作。
 
 ## 問題
 
-`glob`/`grep` 工具經由 bash 執行器 seam 執行，這使系統 `rg` 安裝成為宿主相依性。Windows 和容器映像檔的 `PATH` 默認沒有 `rg`，工具在那裡會靜默消失；部署方只能從載入期探針警告裡發現這一點。bash seam 還迫使整個模型可見參數面經過一個 shell 引號工具，因為工具與 ripgrep 之間隔著一層 shell——[bash 承載決策](../../archived/feature/2026-07-09-bash-backed-grep-glob-discovery.md) 把這種耦合記為 v1 的取捨，並把直接 spawn 列為 shell 字串域一旦被證明過於敏感時的合理後續。它確實被證明瞭：每個模型值都要經受 POSIX 單引號轉義，探針要在測試裡指令碼化，執行器自身的逾時分類還與協作式工具逾時策略已有的職責重複。
+`glob`/`grep` 工具經由 bash 執行器 seam 執行，這使系統 `rg` 安裝成為宿主相依性。Windows 和容器映像檔的 `PATH` 預設沒有 `rg`，工具在那裡會靜默消失；部署方只能從載入期探針警告裡發現這一點。bash seam 還迫使整個模型可見參數面經過一個 shell 引號工具，因為工具與 ripgrep 之間隔著一層 shell——[bash 承載決策](../../archived/feature/2026-07-09-bash-backed-grep-glob-discovery.md) 把這種耦合記為 v1 的取捨，並把直接 spawn 列為 shell 字串域一旦被證明過於敏感時的合理後續。它確實被證明瞭：每個模型值都要經受 POSIX 單引號轉義，探針要在測試裡指令碼化，執行器自身的逾時分類還與協作式工具逾時策略已有的職責重複。
 
 ## 決策
 
-`@deepseek-ai/dsh-tool-fs-search` 現在執行 PACKAGED（打包的）ripgrep 二進位（`@vscode/ripgrep`，一個 npm 相依性，其選填平臺包隨附二進位），經由 `ctx.subprocess` seam：`runRipgrep()` 以純 argv 向量 spawn `rgPath`，向量前綴 `--no-config`，配以 collect 模式 stdout/stderr、`graceMs` 與轉發的 `exec.signal`。`rgPath` 在首次呼叫時懶解析（行程內 memoize）：`@vscode/ripgrep` 在模組求值階段解析其平臺包，靜態匯入會把平臺包缺失/損壞（`--omit=optional`、安裝不全）變成 Loader 組合載入失敗——這正是本次改動要消除的載入期失敗模式。不再有 shell 層，執行路徑上的 shell 引號邊界隨之消失；`singleQuote` 工具與其 shell spawn 測試一並刪除。原始流使用 seam 的診斷尾部 collect 形態（無 spill 文件——工具從不讀取原始 spill 路徑；lossy stdout 讀取以 `SEARCH_RAW_OUTPUT_OVERFLOW` 失敗）。終止寬限與 stderr 尾部預算成為經校驗的 `Config` 欄位（`graceMs` 默認 3000，`stderrMaxBytes` 默認 64 KiB），不再繼承自 bash-local 的設定。註冊變為無條件——載入期 `command -v rg` 探針與條件註冊決策被刪除，連同那條 "rg not found" 警告。本包注入 `tools`、`systemPrompt` 與 `subprocess`。
+`@deepseek-ai/dsh-tool-fs-search` 現在執行 PACKAGED（打包的）ripgrep 二進位（`@vscode/ripgrep`，一個 npm 相依性，其選填平臺包隨附二進位），經由 `ctx.subprocess` seam：`runRipgrep()` 以純 argv 向量 spawn `rgPath`，向量前綴 `--no-config`，配以 collect 模式 stdout/stderr、`graceMs` 與轉發的 `exec.signal`。`rgPath` 在首次呼叫時懶解析（行程內 memoize）：`@vscode/ripgrep` 在模組求值階段解析其平臺包，靜態匯入會把平臺包缺失/損壞（`--omit=optional`、安裝不全）變成 Loader 組合載入失敗——這正是本次改動要消除的載入期失敗模式。不再有 shell 層，執行路徑上的 shell 引號邊界隨之消失；`singleQuote` 工具與其 shell spawn 測試一並刪除。原始流使用 seam 的診斷尾部 collect 形態（無 spill 文件——工具從不讀取原始 spill 路徑；lossy stdout 讀取以 `SEARCH_RAW_OUTPUT_OVERFLOW` 失敗）。終止寬限與 stderr 尾部預算成為經校驗的 `Config` 欄位（`graceMs` 預設 3000，`stderrMaxBytes` 預設 64 KiB），不再繼承自 bash-local 的設定。註冊變為無條件——載入期 `command -v rg` 探針與條件註冊決策被刪除，連同那條 "rg not found" 警告。本包注入 `tools`、`systemPrompt` 與 `subprocess`。
 
-退出語義仍由工具擁有：退出碼 0 為有結果的成功，1 為成功的空搜尋，其餘歸入既有 `SEARCH_*` 詞彙（無效模式、啟動失敗、訊號殺死、原始輸出溢位）。逾時是掛在工具定義上的協作式工具呼叫預算：`@deepseek-ai/dsh-tool-call-timeout-policy` 中止 `exec.signal`，subprocess seam 的終止升級提供硬終止，工具報告 `SEARCH_ABORTED`。工作目錄為工作階段 header cwd（存在時），否則為 `process.cwd()`——不再有執行器設定可供默認化，因此回退由工具自己擁有。
+退出語義仍由工具擁有：退出碼 0 為有結果的成功，1 為成功的空搜尋，其餘歸入既有 `SEARCH_*` 詞彙（無效模式、啟動失敗、訊號殺死、原始輸出溢位）。逾時是掛在工具定義上的協作式工具呼叫預算：`@deepseek-ai/dsh-tool-call-timeout-policy` 中止 `exec.signal`，subprocess seam 的終止升級提供硬終止，工具報告 `SEARCH_ABORTED`。工作目錄為工作階段 header cwd（存在時），否則為 `process.cwd()`——不再有執行器設定可供預設化，因此回退由工具自己擁有。
 
 `fs-glob-sampling` ACP（Agent Client Protocol）快照場景改為執行真實的打包二進位，作用於一個用固定 mtime 釘住 `--sort=modified` 順序的預制工作區，取代 PATH 注入的 `rg` 替身（僅 POSIX：展示路徑攜帶 `/` 分隔符，工作階段日誌比較無法歸一化）。
 
 ## 備選方案
 
-**保留 bash seam 與探針，僅把 `rg` 記為必需宿主相依性。** 否決：宿主相依性正是本次改動要消除的失敗模式，而讓發現工具支持 Windows 正是此舉的目的；寫進文件的相依性仍是相依性。
+**保留 bash seam 與探針，僅把 `rg` 記為必需宿主相依性。** 否決：宿主相依性正是本次改動要消除的失敗模式，而讓發現工具支援 Windows 正是此舉的目的；寫進文件的相依性仍是相依性。
 
 **讓 `rgPath` 可注入（設定欄位或環境變數覆蓋），讓測試與快照繼續使用替身二進位。** 否決：這會新增一個只有測試掛鉤會消費的公開部署面，而真實二進位本身具有足夠的確定性——透過 fixture（測試前置資料）的 mtime 即可直接釘住；打包二進位就是部署形態，測試應當拿它來測。
 

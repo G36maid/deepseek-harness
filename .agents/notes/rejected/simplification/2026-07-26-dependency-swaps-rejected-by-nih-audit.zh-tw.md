@@ -2,7 +2,7 @@
 
 Status: rejected — 下列每一項替換在證據上都未達到淨簡化門檻；記錄在案，以免這輪普查日後從零重來
 
-[English](2026-07-26-dependency-swaps-rejected-by-nih-audit.md) | [简体中文](2026-07-26-dependency-swaps-rejected-by-nih-audit.zh.md) | 繁體中文
+[English](2026-07-26-dependency-swaps-rejected-by-nih-audit.md) | 繁體中文
 
 ## 問題
 
@@ -12,11 +12,11 @@ Status: rejected — 下列每一項替換在證據上都未達到淨簡化門�
 
 採納下列相依性替換。已否決——逐項證據見下；未來針對任何一項的提案都必須勝過其記錄在案的理由，而不能只是重新援引政策。
 
-**協議與解析：**
+**協定與解析：**
 
-- **以 `vscode-jsonrpc` 承擔 LSP 基礎協議的分幀/關聯**（`lsp-stdio`）：可替換的核心只佔 src 約 1,800 行中的約 255 行；該包無法表達已設定的 `maxMessageBytes` 入站大小上限（要復原它就得重建被刪掉的分幀程式碼），反轉了取消寬限期的拆除語義（`raceAbort` 立即 reject 再拆除；vscode-jsonrpc 讓 promise 保持掛起），會在真實伺服器輸出的 header 前 stdout 橫幅上報錯，而且在這個全面採用 ESM 的倉庫裡它是 CJS。[LSP seam 決策](../../implemented/architecture/2026-07-15-lsp-capability-seam.md)把 JSON-RPC 的所有權劃給 `dsh-lsp-stdio`；本次審計正是對該決策當時缺失的這項相依性權衡的明文記錄。
-- **以 `vscode-languageserver-types` 承擔 lsp-stdio 的協議類型子集**：約 80 行類型加約 45 行守衛，但上游守衛在兩個方向上都與本倉庫不一致（接受本倉庫必須拒絕的 `uri: undefined`；強制要求本倉庫容忍缺失的 `targetRange`），而且 initialize 結果的形狀住在 `vscode-languageserver-protocol` 裡，會把 `vscode-jsonrpc` 拖成執行時期相依性——為 80 行嚴格貼合規範的程式碼付出約 1 MB。
-- **以 `json-rpc-2.0` 替換 `dsh-sdk-jsonrpc-server`**：可刪除的關聯/分發程式碼確實存在（約 100–130 行），但 NDJSON 協定格式（wire format）必須與手寫的 Python SDK 用戶端逐位一致，該包只有單一維護者，且 [GUI RPC 決策](../../implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md)已把這個包當作凍結的窄介面面對待。`vscode-jsonrpc` 更不合適（Content-Length 分幀、該協議並不具備的取消詞彙）。
+- **以 `vscode-jsonrpc` 承擔 LSP 基礎協定的分幀/關聯**（`lsp-stdio`）：可替換的核心只佔 src 約 1,800 行中的約 255 行；該包無法表達已設定的 `maxMessageBytes` 入站大小上限（要復原它就得重建被刪掉的分幀程式碼），反轉了取消寬限期的拆除語義（`raceAbort` 立即 reject 再拆除；vscode-jsonrpc 讓 promise 保持掛起），會在真實伺服器輸出的 header 前 stdout 橫幅上報錯，而且在這個全面採用 ESM 的倉庫裡它是 CJS。[LSP seam 決策](../../implemented/architecture/2026-07-15-lsp-capability-seam.md)把 JSON-RPC 的所有權劃給 `dsh-lsp-stdio`；本次審計正是對該決策當時缺失的這項相依性權衡的明文記錄。
+- **以 `vscode-languageserver-types` 承擔 lsp-stdio 的協定類型子集**：約 80 行類型加約 45 行守衛，但上游守衛在兩個方向上都與本倉庫不一致（接受本倉庫必須拒絕的 `uri: undefined`；強制要求本倉庫容忍缺失的 `targetRange`），而且 initialize 結果的形狀住在 `vscode-languageserver-protocol` 裡，會把 `vscode-jsonrpc` 拖成執行時期相依性——為 80 行嚴格貼合規範的程式碼付出約 1 MB。
+- **以 `json-rpc-2.0` 替換 `dsh-sdk-jsonrpc-server`**：可刪除的關聯/分發程式碼確實存在（約 100–130 行），但 NDJSON 協定格式（wire format）必須與手寫的 Python SDK 用戶端逐位一致，該包只有單一維護者，且 [GUI RPC 決策](../../implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md)已把這個包當作凍結的窄介面面對待。`vscode-jsonrpc` 更不合適（Content-Length 分幀、該協定並不具備的取消詞彙）。
 - **以 `jsonrpcclient` 承擔 Python SDK 用戶端**：v4 只做訊息的構造/解析——約 20 行——而真正要緊的 500 行（子行程生命週期、執行緒化讀取器、id 關聯、雙向的伺服器端角色應答）全都保留；該庫處於低維護模式。
 - **以 `eventsource-parser` 替換 apiproxy 的 `readSse`**：可刪除的分幀只有約 15 行，線路兩端都在倉庫內，規範符合性無關緊要，而且這會給一個瀏覽器安全的包新增相依性。（對比[已歸檔的 llm-deepseek 相依性決策](../../archived/simplification/2026-07-26-eventsource-parser-for-deepseek-sse.md)：那裡線路對面是真實的提供方。）
 
@@ -39,7 +39,7 @@ Status: rejected — 下列每一項替換在證據上都未達到淨簡化門�
 
 **檔案系統、子行程與終端機：**
 
-- **以 `write-file-atomic` 承擔 fs-local/storage-json 的原子寫**：這些包缺少私有 0700 暫存目錄、Win32 DACL 複製/`ReplaceFileW`、AbortSignal 支持和父目錄 fsync——每一項都正是手寫實作的意義所在。koffi Win32 綁定本身由 [Windows 持久發布決策](../../implemented/architecture/2026-07-05-windows-jsonl-durable-publish.md)提供依據。
+- **以 `write-file-atomic` 承擔 fs-local/storage-json 的原子寫**：這些包缺少私有 0700 暫存目錄、Win32 DACL 複製/`ReplaceFileW`、AbortSignal 支援和父目錄 fsync——每一項都正是手寫實作的意義所在。koffi Win32 綁定本身由 [Windows 持久發布決策](../../implemented/architecture/2026-07-05-windows-jsonl-durable-publish.md)提供依據。
 - **以 `fzstd`/原生 zstd 包承擔 JSONL 幀掃描**：`node:zlib` 內建的 zstd 已經負責壓縮（[zstd 決策](../../implemented/architecture/2026-07-19-zstandard-jsonl-session-logs.md)，其中明確否決了外部原生相依性）；剩下的 `scanZstdFrames` 為撕裂尾部修復*不做解壓縮*地定位 RFC 8878 幀邊界，沒有任何包公開這項能力。
 - **以 `picomatch`/`tinyglobby`/`ignore` 承擔 fs 搜尋**：根本不存在 glob 引擎——依照 [bash 承載的發現工具決策](../../archived/feature/2026-07-09-bash-backed-grep-glob-discovery.md)，兩個發現類工具都透過 shell 呼叫 ripgrep。
 - **以 `istextorbinary`/`chardet` 承擔文字偵測**：手寫實作是約 15 行的 NUL 取樣加 fatal 模式的 `TextDecoder`；啟發式包體量更大，還會改變模型能讀到哪些文件（模型可見的 `FS_NOT_TEXT` 漂移）。

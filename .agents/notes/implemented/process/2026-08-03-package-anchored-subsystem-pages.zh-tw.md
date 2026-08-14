@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-package-anchored-subsystem-pages.md) | [简体中文](2026-08-03-package-anchored-subsystem-pages.zh.md) | 繁體中文
+[English](2026-08-03-package-anchored-subsystem-pages.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-每個 `docs/subsystems/` 頁面錨定到聲明其詞彙的包或包分組，頁面歸屬跟隨倉庫版面配置：[core.md](../../../../docs/subsystems/core.md) 是 `packages/core` 的頁面（建立與所有權、`Agent` 控制代碼及其投遞/取消/攔截約定、指向該組專屬頁面的連結），[llm-streaming.md](../../../../docs/subsystems/llm-streaming.md) 完整涵蓋 `packages/llm`，依此類推。全倉通用類型模式（`…Map → 派生联合`、品牌化 id）保留在 core.md 一個明確標注的收尾小節中，而不是與包內容交錯。這在*頁面範圍界定規則*的意義上取代了主幹-vs-seam 規則；存活下來的放置啟發式更簡單：類型記錄在其聲明包對應的頁面，相關實作機制仍集中記錄在其所屬頁面。
+每個 `docs/subsystems/` 頁面錨定到聲明其詞彙的包或包分組，頁面歸屬跟隨倉庫版面設定：[core.md](../../../../docs/subsystems/core.md) 是 `packages/core` 的頁面（建立與所有權、`Agent` 控制代碼及其投遞/取消/攔截約定、指向該組專屬頁面的連結），[llm-streaming.md](../../../../docs/subsystems/llm-streaming.md) 完整涵蓋 `packages/llm`，依此類推。全倉通用類型模式（`…Map → 派生联合`、品牌化 id）保留在 core.md 一個明確標注的收尾小節中，而不是與包內容交錯。這在*頁面範圍界定規則*的意義上取代了主幹-vs-seam 規則；存活下來的放置啟發式更簡單：類型記錄在其聲明包對應的頁面，相關實作機制仍集中記錄在其所屬頁面。
 
 生成簽名引用的每個類型都必須能在目錄中某處解析：agent 所有權詞彙從生成器的 `TYPE_LINK_EXEMPTIONS` 移入 `LINK_MAP → core.md`，因此豁免只留給確實僅用於服務內部或來自 vendored 程式碼的類型結構。每個貼上的聲明只有一個家（`SessionEvent` 位於 [session.md](../../../../docs/subsystems/session.md)；core.md 概括並連結）。
 
@@ -20,7 +20,7 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**保留主幹-vs-子系統界定規則。**它逐類型回答「這個類型是核心嗎？」，這正是首頁積累了四個包的類型、卻缺失 `packages/core/agent` 一半公開介面的原因。按倉庫版面配置進行預測的方案勝出。
+**保留主幹-vs-子系統界定規則。**它逐類型回答「這個類型是核心嗎？」，這正是首頁積累了四個包的類型、卻缺失 `packages/core/agent` 一半公開介面的原因。按倉庫版面設定進行預測的方案勝出。
 
 **扁平的單文件目錄。**在[原目錄 Agent Note](2026-06-20-core-data-structures-catalog.md) 中已被否決；成長到四十一頁證實了該結論。
 

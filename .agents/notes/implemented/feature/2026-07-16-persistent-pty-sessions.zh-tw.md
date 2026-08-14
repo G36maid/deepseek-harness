@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-16-persistent-pty-sessions.md) | [简体中文](2026-07-16-persistent-pty-sessions.zh.md) | 繁體中文
+[English](2026-07-16-persistent-pty-sessions.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ harness 可以執行前臺與後臺命令、編輯文件和委派工作，但無
 
 選填的 `packages/terminal/` 能力家族提供由 agent（代理）擁有、持久化且面向行式互動的 PTY 工作階段。它遵循倉庫的 [能力模式](../../implemented/architecture/2026-06-13-capability-seams.md)，與現有命令和檔案系統工具並存，並且不修改 `agent-loop`。
 
-當前實作在 Linux 和 macOS 上支持互動式 shell 與行式 REPL。全屏終端機應用、按鍵序列、BEL 觸發的控制流、行程丟失後的工作階段復原以及跨 agent 共享工作階段都明確推遲。
+當前實作在 Linux 和 macOS 上支援互動式 shell 與行式 REPL。全屏終端機應用、按鍵序列、BEL 觸發的控制流、行程丟失後的工作階段復原以及跨 agent 共享工作階段都明確推遲。
 
 ### 包拓撲
 
@@ -60,7 +60,7 @@ agent scope dispose（資源釋放）時先撤銷註冊，再等待全部所屬 
 
 UI 渲染約定精確且不攜帶位置資訊。`terminal_send` 只為前臺傳送使用 terminal 呼叫卡片和結果卡片；後臺形式使用通用 `execute` 卡片。`terminal_open`、`terminal_read`、`terminal_signal`、`terminal_close` 和 `terminal_list` 分別使用通用 `execute`、`read`、`execute`、`delete` 和 `read` 卡片。所有 PTY 工具都不寄出 `locations`。
 
-`terminal_send({ sessionId, text, submit?, run_in_background? })` 將 `text` 視為 UTF-8 位元組，並由工具實作在解析階段把 `submit` 默認成 `true`。`submit` 為 true 時先寫入文字，再寫入平臺 Enter 序列；為 false 時只寫文字，使控制字元和 REPL 片段無需隱藏的內容啟發式即可傳送。取消會在向真實前臺行程組傳送訊號前將排隊輸入標記為已取消，因此即使非同步的寫入前檢查隨後才結帳，該輸入也無法執行。被取消的傳送會保留其預留，直至非同步前臺訊號傳送結帳，因此後續傳送不會成為該訊號的目標。`enableRunInBackground` 預設為 true；設為 false 時，schema 中會移除 `run_in_background`，呼叫方即使強行把這個未聲明參數傳入執行流程，也會被拒絕。
+`terminal_send({ sessionId, text, submit?, run_in_background? })` 將 `text` 視為 UTF-8 位元組，並由工具實作在解析階段把 `submit` 預設成 `true`。`submit` 為 true 時先寫入文字，再寫入平臺 Enter 序列；為 false 時只寫文字，使控制字元和 REPL 片段無需隱藏的內容啟發式即可傳送。取消會在向真實前臺行程組傳送訊號前將排隊輸入標記為已取消，因此即使非同步的寫入前檢查隨後才結帳，該輸入也無法執行。被取消的傳送會保留其預留，直至非同步前臺訊號傳送結帳，因此後續傳送不會成為該訊號的目標。`enableRunInBackground` 預設為 true；設為 false 時，schema 中會移除 `run_in_background`，呼叫方即使強行把這個未聲明參數傳入執行流程，也會被拒絕。
 
 前臺傳送返回有界的渲染增量和兩個獨立事實：`waitReason`（`stdin_read | inferred_idle | timeout | session_exit`）與 `sessionStatus`（`running`，或攜帶退出碼或訊號的 `exited`）。`session_exit` 指 PTY 頂層 shell 行程退出，不指由 shell 消費狀態的任意前臺命令。timeout 從不意味著行程已經退出。`dsh-tool-terminal.maxResultBytes` 預設為 262144；低於 64 的值會被拒絕，以確保建立確認保留登錄檔簽發的 id；每個單文字 UTF-8 結果在加入規範化的工具或管線錯誤、等待、工作階段、分頁、截斷、通用 task 狀態包裝、策略拒絕或短路以及 post-execute 替換或阻斷後，仍受該值限制；終端機定義自有的末端 `finalizeContent` callback 會原樣保留策略刻意返回的結構化多塊內容。渲染器會為後綴預留空間並保持程式碼點邊界，而不會把後端載荷上限當作面向模型結果的最終上限。
 
@@ -74,7 +74,7 @@ UI 渲染約定精確且不攜帶位置資訊。`terminal_send` 只為前臺傳�
 
 本機後端先識別受控 bash 啟動時寄出的私有 OSC prompt marker，並且只有在最近一個 marker 後的可列印尾部與受控 `PS1` 完全相等時才聲明 prompt 就緒；除此之外，它還執行 3 個有界 fallback 層級。在 data callback 之間保留該尾部，可以適配 marker 與 prompt 被分開交付的情況；如果回顯的輸入或輸出跟在延遲到達的先前 prompt 之後，要求尾部完全相等會拒絕該 prompt，使其無法完成當前 send。marker 在輸出到達模型前被移除，使兩個平臺上的普通 shell 命令都無需固定等待靜默閾值。尚未發布的 startup 不會把零輸出靜默視為就緒；timeout 會拒絕 spawn。若呼叫方取消在 startup 期間勝出，後端會關閉私有工作階段並原樣拋出 `AbortSignal.reason`；尚不可觀察的前臺 PGID 不會再用尋找錯誤覆蓋取消原因。所有時間參數都是經校驗的設定欄位：`pollIntervalMs`、`exactProbeAfterMs`、`idleSilenceMs`、`handoffGraceMs` 和 `timeoutMs`。
 
-在 Linux 上，檢查器從 `/proc/<shellPid>/stat` 讀取 shell 的終端機前臺 PGID，枚舉該行程組中的每個行程與執行緒，並檢查它們當前的 syscall。Tier 1 只有觀察到 stdin 等待才返回正結果：直接 `read(0)`、獲準讀取且含 fd 0 的 `select`/`pselect6` 或 `poll`/`ppoll` 參數，或者含 fd 0 的 epoll interest list。終端機輸入前就已存在的等待並不代表寫入後就緒：必須先觀察到同一 PGID 脫離該等待，之後再次進入等待才能使該次 send 完成；前臺 PGID 發生變化則構成新的證據。無法讀取的行程記憶體和未識別的 syscall 都是 miss，絕不作為正向猜測。架構表只包含對應 Linux UAPI 定義的 syscall number；不支持的架構跳過 Tier 1。
+在 Linux 上，檢查器從 `/proc/<shellPid>/stat` 讀取 shell 的終端機前臺 PGID，枚舉該行程組中的每個行程與執行緒，並檢查它們當前的 syscall。Tier 1 只有觀察到 stdin 等待才返回正結果：直接 `read(0)`、獲準讀取且含 fd 0 的 `select`/`pselect6` 或 `poll`/`ppoll` 參數，或者含 fd 0 的 epoll interest list。終端機輸入前就已存在的等待並不代表寫入後就緒：必須先觀察到同一 PGID 脫離該等待，之後再次進入等待才能使該次 send 完成；前臺 PGID 發生變化則構成新的證據。無法讀取的行程記憶體和未識別的 syscall 都是 miss，絕不作為正向猜測。架構表只包含對應 Linux UAPI 定義的 syscall number；不支援的架構跳過 Tier 1。
 
 macOS 沒有精確 syscall 層。任何前臺行程組輸出靜默都會返回 `inferred_idle`，包括 Python 和 `gdb`；從 `ps` 推導的終端機 PGID 只用於傳送訊號，不作為「只有 shell 才能 idle」的證明。純行程檢查邏輯可注入，並在 Linux 上經過單元測試，同時由 macOS CI job 驅動真實 PTY 和行程表路徑。
 
@@ -130,11 +130,11 @@ plugins:
 
 ### 推遲的工作
 
-- 全屏 TUI 支持、命名按鍵序列、BEL 中斷、終端機 resize 工具和 alternate-screen 快照需要另行驗證面向模型的約定。
+- 全屏 TUI 支援、命名按鍵序列、BEL 中斷、終端機 resize 工具和 alternate-screen 快照需要另行驗證面向模型的約定。
 - 聲明式 per-agent 啟動需要 agent-setup 組合點；仍然禁止外掛程式載入期全域性工作階段。
-- harness 行程丟失後的工作階段復原需要行程外 owner 和版本化協議。
+- harness 行程丟失後的工作階段復原需要行程外 owner 和版本化協定。
 - 網路出口策略與外部副作用回滾超出 PTY 範圍，繼續作為獨立安全工作。
-- Windows/ConPTY 支持需要具備 Windows 原生行程所有權與訊號語義的後端。
+- Windows/ConPTY 支援需要具備 Windows 原生行程所有權與訊號語義的後端。
 
 ## 備選方案
 
@@ -142,7 +142,7 @@ plugins:
 
 **給 `bash` 增加持久模式。**拒絕。按就緒而不是行程退出返回、跨呼叫保留行程樹、暴露互動式 stdin 會形成不同的所有權和失敗約定。
 
-**要求從 `node-pty` 取得原生 master fd。**拒絕。它的公共 API 不暴露 master fd。本機子行程終端機配接器改為從受支持的 OS 行程元資料推導前臺組與子孫行程，並把不可讀元資料視為 detector miss。
+**要求從 `node-pty` 取得原生 master fd。**拒絕。它的公共 API 不暴露 master fd。本機子行程終端機配接器改為從受支援的 OS 行程元資料推導前臺組與子孫行程，並把不可讀元資料視為 detector miss。
 
 **向根 PID 所屬 POSIX 工作階段的全部成員傳送訊號。**拒絕。`node-pty` 可能暴露屬於啟動器工作階段的 helper PID，因此按 SID 清理可能向無關的 harness 或桌面行程傳送訊號。帶 PID 啟動身份校驗的子孫行程樹範圍更窄，其安全邊界由結構保證。
 
@@ -157,8 +157,8 @@ plugins:
 ## 驗證
 
 - 逐文件覆蓋測試鎖定了 owner 隔離、並行預留、寫入前檢查期間的取消、未發布 spawn 的取消與等待式 teardown、沙盒模式變更拒絕、可重試的生命週期清理、就緒層級、對寫入前 stdin 等待與延遲到達的先前 prompt 的拒絕、設定化交接寬限把 idle fallback 頂過一次輪詢以及低於 `pollIntervalMs` 時的拒絕、sanitizer carry state、完整 UTF-8 結果上限、task 整合、schema 和精確 render intent。
-- 子行程 fixture（測試前置資料）覆蓋非 leader 與非主線程的 stdin 等待、殭屍行程完全靜止、不可讀行程狀態、受支持的 syscall 表、不支持的架構和誤報拒絕；同一單元測試套件透過注入覆蓋 macOS 檢查器邏輯。
-- 真實 `node-pty` 與 PTY 消費端測試共同在受支持宿主上覆蓋 shell 狀態、共享沙盒策略、環境清洗、raw mode 前臺 `SIGINT`、忽略 `SIGTERM` 的後代行程，以及 dispose 返回後立即完全靜止。
+- 子行程 fixture（測試前置資料）覆蓋非 leader 與非主線程的 stdin 等待、殭屍行程完全靜止、不可讀行程狀態、受支援的 syscall 表、不支援的架構和誤報拒絕；同一單元測試套件透過注入覆蓋 macOS 檢查器邏輯。
+- 真實 `node-pty` 與 PTY 消費端測試共同在受支援宿主上覆蓋 shell 狀態、共享沙盒策略、環境清洗、raw mode 前臺 `SIGINT`、忽略 `SIGTERM` 的後代行程，以及 dispose 返回後立即完全靜止。
 - Loader 驅動的 `cordis.yml` 測試掛載真實三包組合。ACP 與 headless 快照透過 opt-in overlay 固定 6 個 schema、有界結果和錯誤；TUI 快照固定 terminal 與 generic 卡片展示。
 - 包約定、架構圖、子系統頁面、生成目錄和 website API 描述同一個已發布介面。
 
@@ -178,4 +178,4 @@ plugins:
 
 **行程丟失會銷毀終端機狀態。**行程內工作階段無法跨 harness crash 或 restart 存活，原始 scrollback 也不持久化。重要工作必須提交到文件或其他持久系統。
 
-**`node-pty` 是 `dsh-subprocess-local` 的原生相依性。**安裝、支持的 Node 版本、prebuild 可用性和平臺行為都需要在每個支持 OS 上執行建置產物冒煙測試。
+**`node-pty` 是 `dsh-subprocess-local` 的原生相依性。**安裝、支援的 Node 版本、prebuild 可用性和平臺行為都需要在每個支援 OS 上執行建置產物冒煙測試。

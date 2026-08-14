@@ -1,10 +1,10 @@
 # @deepseek-ai/dsh-tool-lsp
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 面向模型的 **`lsp` 工具**，基於 `ctx.lsp`：一個只讀工具，透過四種操作執行精確程式碼導覽。它擁有模型 schema、提示詞指引、坐標轉換、結果限制與格式化，以及 UI 呈現；不匯入任何提供方。
 
-Namespace 外掛程式（`name`／`inject`／`Config`／`apply`，無默認匯出）。注入 `tools`、`lsp` 和 `systemPrompt`。
+Namespace 外掛程式（`name`／`inject`／`Config`／`apply`，無預設匯出）。注入 `tools`、`lsp` 和 `systemPrompt`。
 
 ## 工具
 
@@ -86,5 +86,5 @@ Use search/read for ordinary navigation. Use lsp when textual matches are ambigu
 
 ## 已知限制與暫緩事項
 
-- **UTF-16 遊標坐標**：列坐標與協議精確一致，但模型難以在非 BMP 字元周圍計數；未落在符號上的位置可能返回空結果，因此提示詞解釋了該約定，但不鼓勵廣泛使用 LSP（見 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-07-15-lsp-capability-seam.md)）。
-- **不承諾跨伺服器完整性**：受支持的伺服器仍可能根據索引就緒情況返回空或部分結果；該工具不承諾跨語言或伺服器的完整性。
+- **UTF-16 遊標坐標**：列坐標與協定精確一致，但模型難以在非 BMP 字元周圍計數；未落在符號上的位置可能返回空結果，因此提示詞解釋了該約定，但不鼓勵廣泛使用 LSP（見 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-07-15-lsp-capability-seam.md)）。
+- **不承諾跨伺服器完整性**：受支援的伺服器仍可能根據索引就緒情況返回空或部分結果；該工具不承諾跨語言或伺服器的完整性。

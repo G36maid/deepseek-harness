@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-08-11-remove-empty-experimental-package-group.md) | [简体中文](2026-08-11-remove-empty-experimental-package-group.zh.md) | 繁體中文
+[English](2026-08-11-remove-empty-experimental-package-group.md) | 繁體中文
 
 ## 問題
 
 包層級結構預留 `packages/experimental/` 用於原型和內部專用外掛程式，但從未有包使用該分組。這個空分組新增了放置、相依性、提升和發布規則，卻沒有需要這些規則的現有包或發布機制。
 
-原分組旨在讓團隊基於真實外掛程式圖共享原型，同時不暗示產品會提供支持。這項需求將來可能出現，但在具體包出現前，不足以支持一個永久的倉庫類別。
+原分組旨在讓團隊基於真實外掛程式圖共享原型，同時不暗示產品會提供支援。這項需求將來可能出現，但在具體包出現前，不足以支援一個永久的倉庫類別。
 
 ## 決策
 

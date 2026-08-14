@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-bash
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 模型側 `bash` 工具，註冊在 `ctx.shell` 執行器 seam 上。前臺執行始終位於該 seam 之後；後臺行程控制代碼會註冊到通用 `ctx.jobs` 執行時期，並透過 `job_output`、`job_list` 和 `job_kill` 控制；這些工具由 `@deepseek-ai/dsh-tool-jobs` 提供。
 
@@ -80,15 +80,15 @@ Check the [exit code: N] marker on every bash result; investigate failures befor
 
 #### 模型看到的內容
 
-模型會看到生成的 [`bash` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-bash)。僅當此生產方啟用 `run_in_background` 時，該欄位才會出現；僅當已掛載執行器聲明支持沙盒時，`sandbox_permissions` 和 `justification` 才會出現。Agent 作用域的工具限制可以移除該 agent 的定義。
+模型會看到生成的 [`bash` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-bash)。僅當此生產方啟用 `run_in_background` 時，該欄位才會出現；僅當已掛載執行器聲明支援沙盒時，`sandbox_permissions` 和 `justification` 才會出現。Agent 作用域的工具限制可以移除該 agent 的定義。
 
 #### Token 影響
 
-工具可見的每個請求都會產生固定 schema 開銷；沙盒支持會增加升權欄位及其條件說明段落。
+工具可見的每個請求都會產生固定 schema 開銷；沙盒支援會增加升權欄位及其條件說明段落。
 
 #### KV Cache 影響
 
-只要可見性、後臺支持和執行器沙盒能力保持不變，前綴即可穩定複用。限制、設定或執行器發生變化時，可能從首個變化的工具定義開始使複用失效。
+只要可見性、後臺支援和執行器沙盒能力保持不變，前綴即可穩定複用。限制、設定或執行器發生變化時，可能從首個變化的工具定義開始使複用失效。
 
 ### 前臺結果
 

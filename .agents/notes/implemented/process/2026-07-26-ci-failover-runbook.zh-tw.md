@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-ci-failover-runbook.md) | [简体中文](2026-07-26-ci-failover-runbook.zh.md) | 繁體中文
+[English](2026-07-26-ci-failover-runbook.md) | 繁體中文
 
 ## 問題
 
@@ -24,7 +24,7 @@ Status: implemented
 
 #### Windows 池
 
-`dsh-win-ci`：公司內部 Windows CI 伺服器（一臺 96 核 / 580 GB 機器）上 32 個常駐執行器實例（計畫任務 `GH-Runner-01`…`GH-Runner-32`）。標籤：`[self-hosted, dsh-win-ci, windows]`。映像檔必須預裝 Node 24、pnpm、Git（Git Bash 在 `PATH` 上，即 `C:\Program Files\Git\bin`——`bash` 工具按名稱 spawn `bash`）、PowerShell 7，並為符號連結支持啟用開發人員模式。切換前先看 `serial / windows (self-hosted standby)` 最近一次執行：綠色熱備驗證該池能端到端執行 `check:ci:windows-complete`。
+`dsh-win-ci`：公司內部 Windows CI 伺服器（一臺 96 核 / 580 GB 機器）上 32 個常駐執行器實例（計畫任務 `GH-Runner-01`…`GH-Runner-32`）。標籤：`[self-hosted, dsh-win-ci, windows]`。映像檔必須預裝 Node 24、pnpm、Git（Git Bash 在 `PATH` 上，即 `C:\Program Files\Git\bin`——`bash` 工具按名稱 spawn `bash`）、PowerShell 7，並為符號連結支援啟用開發人員模式。切換前先看 `serial / windows (self-hosted standby)` 最近一次執行：綠色熱備驗證該池能端到端執行 `check:ci:windows-complete`。
 
 ### 切換步驟（任何具備寫權限的協作者，約 1 分鐘，無需合併）
 

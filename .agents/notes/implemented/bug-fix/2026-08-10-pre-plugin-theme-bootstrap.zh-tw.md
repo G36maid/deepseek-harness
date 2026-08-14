@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-pre-plugin-theme-bootstrap.md) | [简体中文](2026-08-10-pre-plugin-theme-bootstrap.zh.md) | 繁體中文
+[English](2026-08-10-pre-plugin-theme-bootstrap.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Web 殼在瀏覽器側外掛程式樹啟用前呈現 `Loading plugins…`。主�
 
 ui-theme 的主機側透過 `ctx.webServer.tapIndex()` 轉換每份 index HTML，在 `<body>` 起始標籤後緊接一段同步內聯指令碼。該轉換透過選填的 `httpServer` 注入註冊，因此不含該服務的組合仍會啟用 ui-theme，但不會安裝轉換。HTML 解析器執行該指令碼時，body 已存在，而殼的模組指令碼與 React 根節點尚未執行。
 
-settings provider 存在時，主機側會註冊 [`ui-theme.preference` settings 分節](2026-08-06-host-backed-web-preferences.md)。它為每份 index 回應把經過 schema 校驗的內建偏好嵌入內聯指令碼；不存在 settings provider 或有效註冊時則嵌入預設值 `system`。瀏覽器透過 `prefers-color-scheme` 解析 `system`，不支持 `matchMedia` 時回退為淺色。指令碼只寫 ThemePresenter 後續擁有的兩項 DOM 狀態：`document.documentElement.style.colorScheme` 與 `body[data-ds-dark-theme]`。
+settings provider 存在時，主機側會註冊 [`ui-theme.preference` settings 分節](2026-08-06-host-backed-web-preferences.md)。它為每份 index 回應把經過 schema 校驗的內建偏好嵌入內聯指令碼；不存在 settings provider 或有效註冊時則嵌入預設值 `system`。瀏覽器透過 `prefers-color-scheme` 解析 `system`，不支援 `matchMedia` 時回退為淺色。指令碼只寫 ThemePresenter 後續擁有的兩項 DOM 狀態：`document.documentElement.style.colorScheme` 與 `body[data-ds-dark-theme]`。
 
 引導邏輯只認識內建的 `light`、`dark`、`system` 語義，不註冊監聽器，也不解析第三方主題或 token 覆蓋。瀏覽器側外掛程式樹啟用後，ThemeRuntime 仍是主題狀態的權威來源，ThemePresenter 會把完整解析結果重新寫入同一組 DOM 狀態並負責後續更新與釋放。
 
@@ -34,4 +34,4 @@ ui-theme 的單元測試覆蓋不含任一選填 Host 服務時的啟用、指�
 
 ## 後果
 
-載入頁首幀與持久化內建偏好一致；未組合 settings provider 時則默認採用系統偏好。index 轉換會為每份回應讀取 Host settings，而內聯指令碼只包含選定的內建值與 `system` 解析邏輯。內建偏好語義或 ThemePresenter DOM 欄位變化時，必須同時更新指令碼與 ThemeRuntime。自訂主題仍會在瀏覽器外掛程式啟用後才完整應用；載入期間，頁面使用該主題解析後的淺色或深色基礎調色板。
+載入頁首幀與持久化內建偏好一致；未組合 settings provider 時則預設採用系統偏好。index 轉換會為每份回應讀取 Host settings，而內聯指令碼只包含選定的內建值與 `system` 解析邏輯。內建偏好語義或 ThemePresenter DOM 欄位變化時，必須同時更新指令碼與 ThemeRuntime。自訂主題仍會在瀏覽器外掛程式啟用後才完整應用；載入期間，頁面使用該主題解析後的淺色或深色基礎調色板。

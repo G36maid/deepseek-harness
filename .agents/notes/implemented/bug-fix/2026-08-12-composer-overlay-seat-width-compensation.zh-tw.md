@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-composer-overlay-seat-width-compensation.md) | [简体中文](2026-08-12-composer-overlay-seat-width-compensation.zh.md) | 繁體中文
+[English](2026-08-12-composer-overlay-seat-width-compensation.md) | 繁體中文
 
 ## 問題
 
@@ -36,4 +36,4 @@ trajectory 表格讓這個代價顯形：整行分隔線在面板右邊緣前 8p
 
 ## 測試
 
-`apps/web/tests/composer-tab-geometry.e2e.ts` 仍斷言輸入卡在分頁標籤間保持位置，並新增斷言拆分：Chat 滾動容器保持 `scrollbar-gutter: stable` 與非零槽寬，覆蓋分支解析為 `auto` 且槽寬為零。控制級聯隨機制改變：現在移除座位的 `right` 補償（而非移除該分支上 Chat 從未有過的槽），測得同樣的 4px 位移，證明相等的矩形並非從未到達版面配置的分頁標籤切換。提交的 golden 記錄兩種狀態。
+`apps/web/tests/composer-tab-geometry.e2e.ts` 仍斷言輸入卡在分頁標籤間保持位置，並新增斷言拆分：Chat 滾動容器保持 `scrollbar-gutter: stable` 與非零槽寬，覆蓋分支解析為 `auto` 且槽寬為零。控制級聯隨機制改變：現在移除座位的 `right` 補償（而非移除該分支上 Chat 從未有過的槽），測得同樣的 4px 位移，證明相等的矩形並非從未到達版面設定的分頁標籤切換。提交的 golden 記錄兩種狀態。

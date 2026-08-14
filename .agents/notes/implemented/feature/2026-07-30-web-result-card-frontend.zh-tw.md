@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-result-card-frontend.md) | [简体中文](2026-07-30-web-result-card-frontend.zh.md) | 繁體中文
+[English](2026-07-30-web-result-card-frontend.md) | 繁體中文
 
 ## Problem
 
@@ -14,7 +14,7 @@ Status: implemented
 
 一個元件繪製兩種 kind,由 `kind` 判別。`search` 把 answer 作為 markdown 顯示在引用清單上方;每個 source 是一個安全外鏈,以其標題為標籤,provider 未給標題時以其主機名為標籤,下方是 snippet 與發布日期,工具截斷清單時顯示 `来源列表已截断` 提示。`fetch` 顯示一個緊湊摘要:帶連結的最終 URL、其 HTTP 狀態、以及 `内容已截断` 提示。用一個元件而非兩個,因為兩者都是渲染為同一卡片族的 web 檢索 —— 這正是約定把它們放在一個 `card` 標籤下、用 `kind` 判別的原因。
 
-**連結的安全性沿用 MarkdownText 對不受信任的 assistant 連結所用 allowlist 的 http(s) 子集。** MarkdownText 還允許 `mailto:`，此處刻意排除，因為檢索 URL 絕不會是郵件地址。一個 source 或 fetch URL 僅當其協議為 `http:` 或 `https:` 時才成為可導覽錨點，帶 `target="_blank"` 和 `rel="noopener noreferrer"`；`javascript:`/`data:`/`file:`/`mailto:` URL 或無法解析的字串渲染為純文字、無 href。web 工具返回的 result content 是模型創作的,未經驗證抵達本元件,因此像 assistant markdown 一樣被當作不受信任處理。標籤從標題回退到主機名再回退到原始 URL,因此即便標題缺失且 URL 無法解析,source 也總能讀作某個東西。
+**連結的安全性沿用 MarkdownText 對不受信任的 assistant 連結所用 allowlist 的 http(s) 子集。** MarkdownText 還允許 `mailto:`，此處刻意排除，因為檢索 URL 絕不會是郵件地址。一個 source 或 fetch URL 僅當其協定為 `http:` 或 `https:` 時才成為可導覽錨點，帶 `target="_blank"` 和 `rel="noopener noreferrer"`；`javascript:`/`data:`/`file:`/`mailto:` URL 或無法解析的字串渲染為純文字、無 href。web 工具返回的 result content 是模型創作的,未經驗證抵達本元件,因此像 assistant markdown 一樣被當作不受信任處理。標籤從標題回退到主機名再回退到原始 URL,因此即便標題缺失且 URL 無法解析,source 也總能讀作某個東西。
 
 **幾何映像檔 CodeBlock/TerminalBlock**（12px 圓角、code-block 表面、16px 垂直外邊距）,使 web 卡片與它們讀作一家。整份 source 清單渲染在單個 `<ol>` 裡,由 `max-height: 320px` 與 `overflow-y: auto` 約束,因此高於該值的清單在原地縱向滾動,而不是把卡片撐高（[來源滾動](2026-08-03-web-search-source-scroll.md)）。source 清單是散文而非按列對齊的輸出,所以它正常換行,而不像終端機卡片的輸出那樣橫向滾動 —— 這是與 TerminalBlock 唯一刻意的分歧。
 
@@ -32,7 +32,7 @@ Status: implemented
 
 **重解析模型可見的渲染文字,而非消費結構化檢視表。** 因約定筆記給出的同一理由拒絕:`web_search` 的渲染把每個 source 的欄位壓縮成一行自由文字、以標題或主機名為標籤,所以重解析無法復原 `{url, title?, snippet?, publishedAt?}`。結構化的 `resultView` 是唯一忠實來源,這正是後端約定新增它的原因。
 
-**不加協議 allowlist 直接渲染裸錨點。** 拒絕:URL 在此展示邊界處是模型創作、未經驗證的,所以未過濾的 href 會讓 `javascript:` URL 在點擊時執行。該 allowlist 是 MarkdownText allowlist（它還允許 `mailto:`）的 http(s) 子集,因此不受信任的檢索連結無論在何處渲染都行為相同。
+**不加協定 allowlist 直接渲染裸錨點。** 拒絕:URL 在此展示邊界處是模型創作、未經驗證的,所以未過濾的 href 會讓 `javascript:` URL 在點擊時執行。該 allowlist 是 MarkdownText allowlist（它還允許 `mailto:`）的 http(s) 子集,因此不受信任的檢索連結無論在何處渲染都行為相同。
 
 ## Testing
 

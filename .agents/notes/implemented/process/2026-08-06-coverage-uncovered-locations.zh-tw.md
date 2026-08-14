@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-coverage-uncovered-locations.md) | [简体中文](2026-08-06-coverage-uncovered-locations.zh.md) | 繁體中文
+[English](2026-08-06-coverage-uncovered-locations.md) | 繁體中文
 
 ## 問題
 
@@ -21,7 +21,7 @@ per-file 100% 覆蓋率閘門失敗時，vitest 只輸出文件級錯誤行（`E
 - 隱式分支臂（如缺少 else 的情況）可能不帶位置，reporter 會回退到分支自身的 span，保證記錄仍可點擊；分支記錄標注類型與 `path k/n`。
 - 同文件內記錄按行、列排序；不設條數上限。
 
-配套兩處：根 `package.json` 增補 devDependency `istanbul-lib-report`（pnpm 嚴格版面配置下 `scripts/` 摸不到巢狀相依性）；`knip.json` 根 workspace 的 entry/project 通配增加 `scripts/**/*.cjs`，使該文件及其相依性對 hygiene 閘門可見。
+配套兩處：根 `package.json` 增補 devDependency `istanbul-lib-report`（pnpm 嚴格版面設定下 `scripts/` 摸不到巢狀相依性）；`knip.json` 根 workspace 的 entry/project 通配增加 `scripts/**/*.cjs`，使該文件及其相依性對 hygiene 閘門可見。
 
 CJS 是被迫的形態，也是 ESM-everywhere 紀律的一個有據例外：istanbul 在 tsx/Vite 管線之外用裸 `require()` 裝載自訂 reporter，TypeScript 無法參與；`require(esm)` 返回的命名空間對象也過不了它的 `new Cons(cfg)` 構造，CommonJS 是唯一可靠形態。
 

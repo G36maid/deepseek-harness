@@ -1,8 +1,8 @@
-# Agent Note: 在 bash seam 上支持 stdin 與額外 env
+# Agent Note: 在 bash seam 上支援 stdin 與額外 env
 
 Status: implemented
 
-[English](2026-06-30-bash-stdin-env-trusted-plugin-api.md) | [简体中文](2026-06-30-bash-stdin-env-trusted-plugin-api.zh.md) | 繁體中文
+[English](2026-06-30-bash-stdin-env-trusted-plugin-api.md) | 繁體中文
 
 ## 問題
 
@@ -26,7 +26,7 @@ Status: implemented
 
 ## 曾考慮的替代方案
 
-**可設定的環境祕密擦除。** 否決，屬於推測性需求。受信呼叫方可以在擦除之後顯式提供所需值，無需削弱默認的環境保護。
+**可設定的環境祕密擦除。** 否決，屬於推測性需求。受信呼叫方可以在擦除之後顯式提供所需值，無需削弱預設的環境保護。
 
 ## 後果
 

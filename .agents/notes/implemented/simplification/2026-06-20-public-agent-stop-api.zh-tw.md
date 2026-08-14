@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-06-20-public-agent-stop-api.md) | [简体中文](2026-06-20-public-agent-stop-api.zh.md) | 繁體中文
+[English](2026-06-20-public-agent-stop-api.md) | 繁體中文
 
 ## 問題
 
-公共 `Agent` handle 暴露了兩種相互重疊的運送中工作停止方式：僅針對步驟的 `abort()` 和感知佇列的 `cancel()`。前者保留已排隊輸入，後者原本只暴露廣義默認行為，該行為會清除已排隊和 steering（中途引導）工作，同時中止活動輪次。`cancel(cause, { keepInbox: true })` 現在無需暴露私有輪次 holder 即可覆蓋生產環境的 Web 停止策略；ACP（Agent Client Protocol）保留廣義取消，生命週期擁有者則透過 `AgentHandle.dispose()` 拆除 agent（代理）。沒有生產呼叫方需要一個裸的、僅針對步驟的 abort。
+公共 `Agent` handle 暴露了兩種相互重疊的運送中工作停止方式：僅針對步驟的 `abort()` 和感知佇列的 `cancel()`。前者保留已排隊輸入，後者原本只暴露廣義預設行為，該行為會清除已排隊和 steering（中途引導）工作，同時中止活動輪次。`cancel(cause, { keepInbox: true })` 現在無需暴露私有輪次 holder 即可覆蓋生產環境的 Web 停止策略；ACP（Agent Client Protocol）保留廣義取消，生命週期擁有者則透過 `AgentHandle.dispose()` 拆除 agent（代理）。沒有生產呼叫方需要一個裸的、僅針對步驟的 abort。
 
-行為差異確實存在，但實際交付的程式碼不需要獨立的更窄動詞。AgentLoop 為整個輪次擁有一個私有取消 holder。`cancel(cause, options?)` 攜帶顯式且類型化的 `user` 或 `parent` 原因；其廣義默認行為丟棄待處理輸入，`keepInbox` 則為後續輪次保留待處理工作。dispose（資源釋放）仍是單獨的生命週期中斷。完整的歸屬與傳播約定位於[顯式輪次取消 Agent Note](../architecture/2026-07-16-explicit-turn-cancellation.md)。
+行為差異確實存在，但實際交付的程式碼不需要獨立的更窄動詞。AgentLoop 為整個輪次擁有一個私有取消 holder。`cancel(cause, options?)` 攜帶顯式且類型化的 `user` 或 `parent` 原因；其廣義預設行為丟棄待處理輸入，`keepInbox` 則為後續輪次保留待處理工作。dispose（資源釋放）仍是單獨的生命週期中斷。完整的歸屬與傳播約定位於[顯式輪次取消 Agent Note](../architecture/2026-07-16-explicit-turn-cancellation.md)。
 
 多餘的公開介面使迴圈承載了一個本質上屬於內部拆卸的公開動詞。帶選項的 `cancel()` 可以表達呼叫方策略，而無需暴露第二個 holder 形態的操作。
 
@@ -26,7 +26,7 @@ Status: implemented
 
 ## 驗證
 
-`Agent` 不再暴露公開的 `abort()`，而 `cancel()`、`whenIdle()` 和 `steer()` 保留；ACP 取消呼叫廣義 `cancel()`，Web 停止呼叫 `cancel(..., { keepInbox: true })`，拆卸則透過 handle 的 dispose 等待完全靜止。`whenIdle()` 在完全靜止時為非所有者觀測者 resolve；測試套件覆蓋取消和 dispose 這兩條受支持的停止路徑。
+`Agent` 不再暴露公開的 `abort()`，而 `cancel()`、`whenIdle()` 和 `steer()` 保留；ACP 取消呼叫廣義 `cancel()`，Web 停止呼叫 `cancel(..., { keepInbox: true })`，拆卸則透過 handle 的 dispose 等待完全靜止。`whenIdle()` 在完全靜止時為非所有者觀測者 resolve；測試套件覆蓋取消和 dispose 這兩條受支援的停止路徑。
 
 ## 後果
 

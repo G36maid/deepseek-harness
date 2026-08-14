@@ -2,17 +2,17 @@
 
 Status: implemented
 
-[English](2026-07-31-claimed-pre-step-inbox-lifecycle.md) | [简体中文](2026-07-31-claimed-pre-step-inbox-lifecycle.zh.md) | 繁體中文
+[English](2026-07-31-claimed-pre-step-inbox-lifecycle.md) | 繁體中文
 
 ## 問題
 
 迴圈此前把一個步驟邊界拆成提示詞準備、提示詞准入與序列步驟掛鉤。准入結果可以保留或丟棄已領取輸入，即時佇列事件還攜帶了與持久 inbox 狀態重複的資料結構。外掛程式不得不在修改 inbox、改寫已提交批次與直接追加工作階段歷史之間選擇，而觀察方無法相依性一套明確順序。
 
-單次出現專屬的 inbox 包裝層也重複了每個 `UserMessage` 已有的標識。它把插入、編輯、領取、取消、重連投影與步驟進入合併成一套協議，但僅附加工作階段本就擁有持久佇列投影。
+單次出現專屬的 inbox 包裝層也重複了每個 `UserMessage` 已有的標識。它把插入、編輯、領取、取消、重連投影與步驟進入合併成一套協定，但僅附加工作階段本就擁有持久佇列投影。
 
 ## 決策
 
-每個擬議步驟之前，`Inbox.claim(target)` 會原子移除完整批次：全部 `next-step` 訊息，以及輪次邊界上的一條 `next-turn` 訊息。在首次邊界，迴圈會先提交 `turn/start`，使領取及其唯一一次 `agent/pre-step` 決策擁有持久輪次歸屬。領取會記錄規範化、不帶 outcome 的純刪除 `agent/inbox/spliced`。隨後，迴圈針對每條已領取消息寄出一次 `agent/inbox/claimed { message, turn }`，並用該獨佔批次與 `{ turn, step, signal }` 等待 waterfall（瀑布式事件）。
+每個擬議步驟之前，`Inbox.claim(target)` 會原子移除完整批次：全部 `next-step` 訊息，以及輪次邊界上的一條 `next-turn` 訊息。在首次邊界，迴圈會先提交 `turn/start`，使領取及其唯一一次 `agent/pre-step` 決策擁有持久輪次歸屬。領取會記錄規範化、不帶 outcome 的純刪除 `agent/inbox/spliced`。隨後，迴圈針對每條已領取訊息寄出一次 `agent/inbox/claimed { message, turn }`，並用該獨佔批次與 `{ turn, step, signal }` 等待 waterfall（瀑布式事件）。
 
 `PreStepDecision` 為 `{ kind: 'reject' } | { kind: 'enter'; messages: UserMessage[] }`。reject 不會打開步驟，會讓已領取批次保持已刪除，並將輪次關閉為 blocked，且不產生任何步驟事件。空的 enter、取消以及 `step/start` 前的失敗同樣會關閉一個邊界平衡的無步驟輪次。enter 提供在 `step/start` 後以 `user/message` 追加的完整批次。包裝 `next()` 的監聽器會保留下游變更，除非有意替換，因此全部訊息改寫只在最終回傳值中一次性結帳。系統不再存在 `agent/prompt-prepare`、`agent/prompt-submit` 或 `agent/step` 擴充點。
 
@@ -38,4 +38,4 @@ agent loop（代理循環）覆蓋固定先 `turn/start`、再領取、後 pre-s
 
 ## 後果
 
-迴圈在每個步驟前只有一個需等待的決策，對輸入也只有一次所有權轉移。已領取消息不會隱式返回 inbox；後續插入保持獨立。即時事件與其他 inbox 通知保持對稱，但不映像檔持久元資料；外掛程式可以顯式選擇精確的當前步驟改寫，或普通的後續 inbox 投遞。
+迴圈在每個步驟前只有一個需等待的決策，對輸入也只有一次所有權轉移。已領取訊息不會隱式返回 inbox；後續插入保持獨立。即時事件與其他 inbox 通知保持對稱，但不映像檔持久元資料；外掛程式可以顯式選擇精確的當前步驟改寫，或普通的後續 inbox 投遞。

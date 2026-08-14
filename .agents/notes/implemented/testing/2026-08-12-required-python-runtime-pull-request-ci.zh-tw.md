@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-required-python-runtime-pull-request-ci.md) | [简体中文](2026-08-12-required-python-runtime-pull-request-ci.zh.md) | 繁體中文
+[English](2026-08-12-required-python-runtime-pull-request-ci.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ exe 快照會在比較前規範化不透明的工作階段、訊息、subagent �
 
 **每個Pull Request都執行完整原生矩陣。** 這會在三個作業中重複平臺無關的完整輪次與快照行為，並讓每項改動都消耗 ARM64 Linux 和 macOS 容量。Python 發布工作流程在需要全部三個產物的環節保留這部分證據。
 
-**針對開發用 Node 載體執行快照。** 這可以捕獲協議與事件投影漂移，但不能證明 pkg 組裝、部署後的執行時期閉包、原生 addon 暫存、wheel 套件建置、精確相依性版本與乾淨安裝。必需的 Linux exe 路徑直接覆蓋發布路徑。
+**針對開發用 Node 載體執行快照。** 這可以捕獲協定與事件投影漂移，但不能證明 pkg 組裝、部署後的執行時期閉包、原生 addon 暫存、wheel 套件建置、精確相依性版本與乾淨安裝。必需的 Linux exe 路徑直接覆蓋發布路徑。
 
 **透過路徑過濾或標籤選擇該作業。** Python 行為相依性 `python/` 之外共享的 agent、工作階段、工作流程、subagent、外掛程式載入與打包程式碼。不完整的相依性過濾會再次造成延遲發現，標籤則會讓證據保持選填。
 

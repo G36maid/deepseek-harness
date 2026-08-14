@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-user-questions
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 使用者互動 Service Definition。它定義 `ctx.userQuestions`，供面向模型的工具或權限外掛程式在需要暫停工作並詢問人類決定時使用。
 
@@ -42,5 +42,5 @@
 
 ## 已知限制與暫緩事項
 
-- **每個上下文只能有一個提供方**：不支持路由或扇出到多個 UI；第二次註冊會拋出 `DUPLICATE_PROVIDER`，未註冊任何提供方時，`ask()` 會拋出 `NO_PROVIDER`，而不會降級。
+- **每個上下文只能有一個提供方**：不支援路由或扇出到多個 UI；第二次註冊會拋出 `DUPLICATE_PROVIDER`，未註冊任何提供方時，`ask()` 會拋出 `NO_PROVIDER`，而不會降級。
 - **詞彙僅包含問題表單形態**：可供選擇的選項加選填的自訂文字；更豐富的互動形態（文件選擇器、diff 預覽確認）尚無 seam 詞彙。

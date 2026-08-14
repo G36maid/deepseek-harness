@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-client-conversation-node-assembly.md) | [简体中文](2026-08-09-client-conversation-node-assembly.zh.md) | 繁體中文
+[English](2026-08-09-client-conversation-node-assembly.md) | 繁體中文
 
 ## 問題
 
@@ -53,7 +53,7 @@ Assembler 使用 `conversationContextKey(kind, id)` 組合無碰撞 key；不同
 
 這項限制使單條 Event 的路由成本只隨已註冊 Definition 數量成長。Assembler 不會為了判斷一條 update 屬於誰而遍歷該 Definition 的歷史 Context。
 
-start、result、resource、checkpoint 及業務自有終止 Event 必須攜帶或可直接推導同一 ID。若單個 Event 不能算出 ID，生產 Event 的協議負責補足關聯欄位，Client 不透過“最近一個未完成對象”猜測。
+start、result、resource、checkpoint 及業務自有終止 Event 必須攜帶或可直接推導同一 ID。若單個 Event 不能算出 ID，生產 Event 的協定負責補足關聯欄位，Client 不透過“最近一個未完成對象”猜測。
 
 `role` 描述 State 生命週期，不描述可見性。start 可以立即生成 terminal Node；update 也可以在 start 尚未載入時先進入 pending Context。
 
@@ -201,7 +201,7 @@ Assembler 還把 reference-stable timeline 交給 View Builder。業務不重複
 
 缺 start 的 Context 不是錯誤。它是等待 older 頁補齊的 pending 聚合容器；是否提前可見由該 Definition 的 `buildViewNode()` 決定。
 
-若當前頁中的同 ID update 在日誌順序上真的早於 start，而不是僅僅先被載入，補齊 start 後 replay 會報協議錯誤。到達順序可以反向，業務日誌順序不能反向。
+若當前頁中的同 ID update 在日誌順序上真的早於 start，而不是僅僅先被載入，補齊 start 後 replay 會報協定錯誤。到達順序可以反向，業務日誌順序不能反向。
 
 ### 新 older 分頁的 prepend
 
@@ -275,16 +275,16 @@ Chat `order` 的結構性變化仍可能重排當前可見 key；純 data 更新
 | 業務 | `publication()` | Chat 產物 | 歷史分頁與執行時期行為 |
 |---|---|---|---|
 | Inbox | `none` | 不生成 Node | prepend 補前序 splice 時沿 Reader 鏈重算瞬間態 |
-| Message | 默認 immediate | `user`、`steering` 或 `context` | window gap 修復可讓同一 message key 重新分類 |
+| Message | 預設 immediate | `user`、`steering` 或 `context` | window gap 修復可讓同一 message key 重新分類 |
 | Assistant | chunk 為 RAF，final immediate，純 usage/finish 為 none | 同 key `assistant-step`，狀態為 running/settled/interrupted | 缺 `step/start` 可先用 Matches fallback；Location close 生成中斷表現 |
-| Tool | 默認 immediate | 一個遞迴 `tool-call` root，包含全部 `subCalls` | result-only 歷史視窗可 fallback；running→settled 保持 key |
-| Command | 默認 immediate | 普通 `command` 或整合 `manual-compaction` | checkpoint 到達可改變 anchor，但不改變 Context key |
-| Compaction | 默認 immediate | `compaction` marker | checkpoint 可先展示，older 補 start 後正序 replay |
-| Retry | 默認 immediate | 一個 `model-retry` Node 內含 attempts | 多次 retry 更新同一 key；Location close 把最後 scheduled 表現為 cancelled |
-| Turn Error | 默認 immediate | `turn-error` visible/hidden | 缺 start 可從 error end fallback；Retry 到達後保留 key 並隱藏 |
+| Tool | 預設 immediate | 一個遞迴 `tool-call` root，包含全部 `subCalls` | result-only 歷史視窗可 fallback；running→settled 保持 key |
+| Command | 預設 immediate | 普通 `command` 或整合 `manual-compaction` | checkpoint 到達可改變 anchor，但不改變 Context key |
+| Compaction | 預設 immediate | `compaction` marker | checkpoint 可先展示，older 補 start 後正序 replay |
+| Retry | 預設 immediate | 一個 `model-retry` Node 內含 attempts | 多次 retry 更新同一 key；Location close 把最後 scheduled 表現為 cancelled |
+| Turn Error | 預設 immediate | `turn-error` visible/hidden | 缺 start 可從 error end fallback；Retry 到達後保留 key 並隱藏 |
 | Turn Tail | 僅 `turn/end` immediate，其餘 none | 獨立 `turn-tail` footer | 從 Step Assistant data 計算 closing/metrics，並透過同 turn Matches 決定 anchor |
-| Deliverables | 默認 immediate | 不生成 Node | Tool 結帳增量更新所屬 Turn data，Turn Tail 擴充槽讀取 produced files |
-| Fallback | 默認 immediate | `unknown` JSON row | 只兜底 append surface，普通業務已認領但暫不可見時不會重複生成 |
+| Deliverables | 預設 immediate | 不生成 Node | Tool 結帳增量更新所屬 Turn data，Turn Tail 擴充槽讀取 produced files |
+| Fallback | 預設 immediate | `unknown` JSON row | 只兜底 append surface，普通業務已認領但暫不可見時不會重複生成 |
 
 Inbox 展示了“每條 Event 都是一個 start-only 瞬間態 Context”，不是所有業務都需要 start/update 配對。它透過 Reader 與前一個同 kind Context 形成連續 fold，而非給整個 Inbox 人工製造生命週期 ID。
 
@@ -355,7 +355,7 @@ Conversation tests 覆蓋全部內建 Chat Definition、Assistant Step data、Tu
 
 Slot type/runtime tests 固定父註冊必須提供聲明的 common inject、`hookContext` 類型、不同 Node context 的 Hook 隔離、factory/Hook identity 穩定，以及無關 Session publication 不重渲染業務 renderer。原 entry-owned Observable Hook 測試繼續固定未使用 contextual factory 的路徑。
 
-Assembled Web snapshot、GUI 和瀏覽器場景覆蓋真實 plugin graph。瀏覽器證據比較 Assistant streaming→settled、Bash running→settled 以及 Code Mode root + nested subcalls 與 master 的版面配置。
+Assembled Web snapshot、GUI 和瀏覽器場景覆蓋真實 plugin graph。瀏覽器證據比較 Assistant streaming→settled、Bash running→settled 以及 Code Mode root + nested subcalls 與 master 的版面設定。
 
 歷史鏈路驗證同時覆蓋完整 replace、非重疊 prepend、重疊 seq 去重、空頁 `hasMore` 收斂和 live append。相同 Event 視窗透過不同攝入路徑得到相同業務 State 與最終 Node。
 
@@ -373,7 +373,7 @@ Assembled Web snapshot、GUI 和瀏覽器場景覆蓋真實 plugin graph。瀏�
 
 **為歷史反掃定義逆向 State fold。** 拒絕：每個業務都要維護互為逆運算的兩套邏輯，刪除、非可逆聚合和跨 Context 相依性很難保持一致。統一 Matches 後從 start 正序 replay 只有一套業務語義。
 
-**把 Inbox 做成引擎一級公民或一個視窗級 Context。** 拒絕：Inbox 是普通業務狀態，不應汙染通用引擎；逐 splice 瞬間態加嚴格前序 Reader 同時支持 prepend、append 和 Message 查詢。
+**把 Inbox 做成引擎一級公民或一個視窗級 Context。** 拒絕：Inbox 是普通業務狀態，不應汙染通用引擎；逐 splice 瞬間態加嚴格前序 Reader 同時支援 prepend、append 和 Message 查詢。
 
 **給跨業務查詢註冊特化 query method。** 拒絕：消費者仍要相依性提供方 API，新增關係會擴張中心介面。Reader 暴露指定 kind 的只讀前序 Context，由提供方寫好 State、消費者讀懂 State。
 

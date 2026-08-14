@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-background-first-continuable-delegation.md) | [简体中文](2026-08-11-background-first-continuable-delegation.zh.md) | 繁體中文
+[English](2026-08-11-background-first-continuable-delegation.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ child 作用域的 `report` 提示詞要求傳送自包含的最終報告，而[
 
 ## 決策
 
-`tool-subagent` 根據選定的生命週期策略解析省略的 `run_in_background`。`backgroundMode: continuable` 會把省略解析為後臺並立即返回持久化 child id；顯式傳入 `false` 會選擇前臺並等待結果。`backgroundMode: one-shot` 保留前臺默認行為，因為它的後臺輸出仍需透過 Task 收集。`enableRunInBackground: false` 仍會省略該參數、拒絕強制傳入的 `true` 並在前景執行。系統不增加第二個默認選擇設定。
+`tool-subagent` 根據選定的生命週期策略解析省略的 `run_in_background`。`backgroundMode: continuable` 會把省略解析為後臺並立即返回持久化 child id；顯式傳入 `false` 會選擇前臺並等待結果。`backgroundMode: one-shot` 保留前臺預設行為，因為它的後臺輸出仍需透過 Task 收集。`enableRunInBackground: false` 仍會省略該參數、拒絕強制傳入的 `true` 並在前景執行。系統不增加第二個預設選擇設定。
 
 面向模型的文字按位置劃分職責：
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-web-background-job-display.md) | [简体中文](2026-08-08-web-background-job-display.zh.md) | 繁體中文
+[English](2026-08-08-web-background-job-display.md) | 繁體中文
 
 ## 問題
 
@@ -44,7 +44,7 @@ export interface JobView {
 
 `JobId` 取自不相依性 cordis 的 [`@deepseek-ai/dsh-jobs/brand`](../../../../packages/jobs/jobs/src/brand.ts) 葉子——與 `api/subagents.ts` 已經在用的 `@deepseek-ai/dsh-llm/brand` 匯入是同一種安排，因為 `dsh-jobs` 根出口會牽到 `dsh-agent`，即便只作類型也無法被用戶端程序觸及。和本倉庫其他每一個非根子路徑一樣，它帶有顯式的 `tsconfig.base.json` `paths` 條目；沒有這一條，Typert 分析器會把該 specifier 解析到 `lib/types/` 並判定該引用未被匯出。
 
-線路上的 `kind` 是 `string` 而非 `JobKind`。kind 對映由生產者外掛程式按聲明合併擴充，用戶端建置無法枚舉這個閉集；遇到無法識別的 kind，呈現層走一條有文件的默認分支。
+線路上的 `kind` 是 `string` 而非 `JobKind`。kind 對映由生產者外掛程式按聲明合併擴充，用戶端建置無法枚舉這個閉集；遇到無法識別的 kind，呈現層走一條有文件的預設分支。
 
 `JobSnapshot` 的三個欄位被刻意省去：`ownerSession`（幀的 `sessionId` 已經帶了）、`reported`（內部的通知投遞位，對使用者無意義），以及 `outputLimitBytes`（生產者擁有的模型呈現策略）。
 
@@ -103,7 +103,7 @@ abstract onJobsChanged(listener: JobsChangedListener): () => void
 
 **訊號幀加 RPC 拉取，即 subagent 目錄的形狀。** 推一個無 payload 的 `jobs-changed` 訊號，防抖後用一元 RPC 重讀權威狀態。subagent 目錄就是這麼做的，代價在 [`SessionManager`](../../../../packages/client/runtime/src/client/sessions/manager.ts) 裡一覽無餘：`catalogInflight` 做單飛行、`catalogStale` 在成員幀落於請求中途時補一次尾拉、`updateCatalogActivity` 既就地打修補程式又往運送中請求裡寫一份好讓比幀更舊的回應被覆蓋、`parentAvailableOverride` 重放一個過期的 `false`，還有重連時逐一重拉每個打開的目錄。這套裝置之所以存在，是因為目錄的權威被劈成兩半——持久血緣來自投影，活躍度是回應時刻的取樣——而任務沒有持久的那一半，不該繼承這份複雜度。它還恰好在輸出那一期最在意的時刻失效：任務結帳，輸出流立即關閉，狀態卻要等防抖加一次往返纔到，那段視窗裡 UI 顯示一個流已死的執行中任務。
 
-**只在彈層打開時輪詢，不改 seam。** 最省事，也是唯一不碰 `JobRegistry` 的選項。它無法在不常駐輪詢的前提下支持觸發器上的常駐計數，而後面兩期反正都需要一條真正的變更訂閱，所以它省下一週又還回去。
+**只在彈層打開時輪詢，不改 seam。** 最省事，也是唯一不碰 `JobRegistry` 的選項。它無法在不常駐輪詢的前提下支援觸發器上的常駐計數，而後面兩期反正都需要一條真正的變更訂閱，所以它省下一週又還回去。
 
 **基於持久任務事件的 session-projection 單元。** 投影單元在已提交的工作階段事件上摺疊，所以這條路要先讓任務生命週期變持久——`job/started` … `job/settled` 作為一對獨立的開合括號，由最後一個 [`session/end-seed`](../../../../packages/core/session/src/types.ts) 把未配對的開括號標為死歷史，與 compaction 括號已有的做法完全一致。它在用戶端確實更省：`dsh-tool-todo` 用十五行的單元展示了整套模式，而現成的 `session/projection` 幀、history-tail 塊和持久化 checkpoint 快取本可以承載這批資料，無需新線路面、無需載體訂閱、無需 manager 狀態。否決它，是因為這要拿一次持久格式變更去換一個瀏覽器清單，而且它並不能延伸到最需要它的那一期：[`spill/`](../../../../packages/spill/README.md) 的存在正是為了讓超大工具輸出留在日誌之外，所以流式任務輸出無論如何都不能騎在持久事件上。如果持久任務歷史將來憑自身價值站得住，本設計不阻擋重新考慮它。
 
@@ -127,10 +127,10 @@ abstract onJobsChanged(listener: JobsChangedListener): () => void
 
 **UI 的集合不等於登錄檔的集合。** header 顯示的是「一個工作階段能看到什麼」，所以別的工作階段擁有的任務在這裡永遠不出現，儘管登錄檔裡有它；而由於登錄檔是行程本機的，一次重新啟動會清空所有清單，transcript 裡那些啟動它們的 `run_in_background` 卡片卻還在。無主任務是反過來的情形：它們會進入每一個工作階段的清單，正如 `list(caller)` 對每個呼叫方都報告它們。
 
-**終態行會堆積。** 登錄檔把已結帳任務留到 owner 銷毀，所以一個跑了很多後臺命令的長工作階段會積出長清單。如果真的成為抱怨，給終態尾巴加上限是呈現層改動而非協議改動。
+**終態行會堆積。** 登錄檔把已結帳任務留到 owner 銷毀，所以一個跑了很多後臺命令的長工作階段會積出長清單。如果真的成為抱怨，給終態尾巴加上限是呈現層改動而非協定改動。
 
 **`stopping` 今天幾乎不可達。** 只有模型的 `job_kill` 會產生它，所以這個狀態會被渲染但在人類中斷落地之前很少見到。現在就納入聯合類型，是因為把它留在外面會讓那一期變成一次線路變更。
 
-**一個執行中的 subagent 有兩個入口。** 這是刻意接受的，且被限制在一次性後臺委派這一種情況。如果實際用起來讀著像噪聲，修法是呈現層的——可以讓目錄行引用那個任務，而不是讓任務清單隱藏這個 kind。
+**一個執行中的 subagent 有兩個入口。** 這是刻意接受的，且被限制在一次性後臺委派這一種情況。如果實際用起來讀著像噪音，修法是呈現層的——可以讓目錄行引用那個任務，而不是讓任務清單隱藏這個 kind。
 
 **新增非根子路徑必須補 `paths` 條目。** `@deepseek-ai/dsh-jobs/brand` 得先登記進 `tsconfig.base.json`，Typert 分析器才會接受該引用。它的故障表現是一條來自遠離改動處的生成器的、令人困惑的「not exported by」錯誤，所以這個條目是新增子路徑的組成部分，而不是最佳化。

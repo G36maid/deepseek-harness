@@ -2,11 +2,11 @@
 
 Status: proposed
 
-[English](2026-08-08-semantic-composer-chain-phases.md) | [简体中文](2026-08-08-semantic-composer-chain-phases.zh.md) | 繁體中文
+[English](2026-08-08-semantic-composer-chain-phases.md) | 繁體中文
 
 ## 問題
 
-瀏覽器的 `conversation.composer` 鏈先按一個全域性數值 `priority` 對所有候選項排序，再選出第一個返回匹配項的選擇器。問題採用默認優先級 `0`，審批採用 `1`，一次性或父級不可用時使用的只讀 subagent composer 採用 `-10`。因此，選中一次性 subagent 歷史記錄後，即使其下方有等待應答的問題或審批，介面仍可能顯示只讀說明。
+瀏覽器的 `conversation.composer` 鏈先按一個全域性數值 `priority` 對所有候選項排序，再選出第一個返回匹配項的選擇器。問題採用預設優先級 `0`，審批採用 `1`，一次性或父級不可用時使用的只讀 subagent composer 採用 `-10`。因此，選中一次性 subagent 歷史記錄後，即使其下方有等待應答的問題或審批，介面仍可能顯示只讀說明。
 
 該缺陷並非某個數值有誤。當前鏈用同一個標量作出兩項不同的決策：候選項究竟用於解決現有互動，還是用於限制發起新工作；以及如何確定同一語義類別內各候選項的區域性優先順序。任何數值修復都會保留這種隱式耦合，讓後續註冊方可以再次引入同一缺陷。
 

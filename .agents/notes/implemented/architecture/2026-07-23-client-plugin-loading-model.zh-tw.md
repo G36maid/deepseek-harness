@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-client-plugin-loading-model.md) | [简体中文](2026-07-23-client-plugin-loading-model.zh.md) | 繁體中文
+[English](2026-07-23-client-plugin-loading-model.md) | 繁體中文
 
 > 範圍：瀏覽器側的外掛程式裝載機件——什麼是外掛程式、程式碼怎麼到達、熱重新載入如何搭在這套模型上。裝載鏈歸本篇所有；[Web 用戶端架構筆記](2026-07-19-gui-web-client-architecture.md) 在裝載問題上以本篇為準，繼續擁有 slot、資料對象層與 React 面。
 
@@ -86,7 +86,7 @@ vendored Loader 經其 `internal` 約定消費模組系統——唯一呼叫點�
 
 熱重新載入是一項組合決策：web 組合包無條件掛載 `client-hmr` 行（一個常規的外掛程式包），其 node 半帶來 bundle 監視與 SSE（Server-Sent Events）通道；沒有重建 watcher 改寫用戶端 bundle 時鏈路保持空閒。不應暴露它的組合可以停用該行。
 
-重建好的 bundle 怎麼變成重載訊號？hmr 的 node 半自己觀察——沒有建置器來通知它。它從 `ctx.clientModules.clientPath(id)` 讀取圖上各行的 bundle 路徑，由 HMR 自持的單個定時器對當前圖上的每一行做 stat 輪詢。新增圖行時，順序固定為先同步取得 stat 基線，再立即呼叫 `clientModuleHost.rebuilt(id)`：在模組 host 算出圖雜湊之後、取得基線之前發生的寫入會被這次立即重雜湊捕獲；取得基線之後發生的寫入則會留下 stat 差異，供下一次輪詢捕獲。這避開了 `fs.watchFile`：它以非同步首次 stat 建立基線，可能把構造期間的重建靜默吸收進基線。監視集合的成員隨 `onGraphChanged` 更新；消失的行撤下監視，輪詢時缺失的 bundle 則讓對應行保持標髒狀態，文件重現時即使元資料相同也強制重雜湊。mtime/size 變化或行處於標髒狀態時，`clientModuleHost.rebuilt(id)` 是重雜湊的唯一入口；當 `rev` 真的變了，node 半纔在 `GET /plugins/events` 上廣播 `rebuilt` 幀——這是一條系統級 SSE 通道，連線即發全量圖，變更時發 `rebuilt` 幀，僅供呈現的 wire，永不進工作階段日誌。輪詢是刻意選擇：inotify 在 weka 網路掛載上不觸發，建置側監視器需要 `--poll` 也是同一原因；輪詢間隔是一個經校驗的設定欄位（默認 500ms），dispose（資源釋放）會清掉那一個定時器。重建 bundle 則是任意一個 tsdown watch 行程的事——`scripts/dev-web.ts` 仍作為 watch 建置入口保留，其包清單在啟動時掃描 `packages/*/*/package.json` 按 dsh.client 發現——建置器與 host 共享零協議。寫一半的 bundle 被撕裂讀取會自愈：寫入完成期間 stat 持續變化，下一個輪詢節拍會再次重雜湊並廣播最終的 rev。
+重建好的 bundle 怎麼變成重載訊號？hmr 的 node 半自己觀察——沒有建置器來通知它。它從 `ctx.clientModules.clientPath(id)` 讀取圖上各行的 bundle 路徑，由 HMR 自持的單個定時器對當前圖上的每一行做 stat 輪詢。新增圖行時，順序固定為先同步取得 stat 基線，再立即呼叫 `clientModuleHost.rebuilt(id)`：在模組 host 算出圖雜湊之後、取得基線之前發生的寫入會被這次立即重雜湊捕獲；取得基線之後發生的寫入則會留下 stat 差異，供下一次輪詢捕獲。這避開了 `fs.watchFile`：它以非同步首次 stat 建立基線，可能把構造期間的重建靜默吸收進基線。監視集合的成員隨 `onGraphChanged` 更新；消失的行撤下監視，輪詢時缺失的 bundle 則讓對應行保持標髒狀態，文件重現時即使元資料相同也強制重雜湊。mtime/size 變化或行處於標髒狀態時，`clientModuleHost.rebuilt(id)` 是重雜湊的唯一入口；當 `rev` 真的變了，node 半纔在 `GET /plugins/events` 上廣播 `rebuilt` 幀——這是一條系統級 SSE 通道，連線即發全量圖，變更時發 `rebuilt` 幀，僅供呈現的 wire，永不進工作階段日誌。輪詢是刻意選擇：inotify 在 weka 網路掛載上不觸發，建置側監視器需要 `--poll` 也是同一原因；輪詢間隔是一個經校驗的設定欄位（預設 500ms），dispose（資源釋放）會清掉那一個定時器。重建 bundle 則是任意一個 tsdown watch 行程的事——`scripts/dev-web.ts` 仍作為 watch 建置入口保留，其包清單在啟動時掃描 `packages/*/*/package.json` 按 dsh.client 發現——建置器與 host 共享零協定。寫一半的 bundle 被撕裂讀取會自愈：寫入完成期間 stat 持續變化，下一個輪詢節拍會再次重雜湊並廣播最終的 rev。
 
 瀏覽器側，驅動外掛程式每幀重載一個外掛程式，序列執行：
 
@@ -100,7 +100,7 @@ vendored Loader 經其 `internal` 約定消費模組系統——唯一呼叫點�
 
 每個外掛程式都共享同一套語義；`immediately` 行的重載與 lazy 行分毫不差。相依性級聯不花一行 client 程式碼：fiber 的啟用紀元串接著它各服務提供方的 uid，因此換掉提供方的 fiber，每個相依性方都會經 cordis 本身重新裝載。重載 connection 或 runtime 會級聯整個 UI——正確，雖然重。
 
-支持邊界，如實陳述。重載粒度刻意做粗：全新 fiber、全新元件、React 狀態丟失、資料層不動——react-refresh 級的狀態保留與「重執行 bundle 即重跑工廠」相衝突，屬刻意不做。普通包（react 家族、殼核心、尚未升格的庫）不是 entry：改它們意味著殼重建加整頁刷新。v1 不做回滾：import 失敗讓 entry 失去 fiber，下一個 rebuilt 幀從頭重試；apply 失敗留下 FAILED fiber 交給狀態投影；兩者都大聲記錄。自我重載可行——運送中的重載在舊 bundle 的閉包裡跑完，新的 apply 再開一條新 SSE 通道——但空窗期到達的幀會丟失，下次重建會再次通知。一處已知的僅限 dev 競態：rebuilt 幀與仍運送中的 boot 到達重疊時共享那次到達的任務，可能物化重建前的位元組；下一幀自愈。
+支援邊界，如實陳述。重載粒度刻意做粗：全新 fiber、全新元件、React 狀態丟失、資料層不動——react-refresh 級的狀態保留與「重執行 bundle 即重跑工廠」相衝突，屬刻意不做。普通包（react 家族、殼核心、尚未升格的庫）不是 entry：改它們意味著殼重建加整頁刷新。v1 不做回滾：import 失敗讓 entry 失去 fiber，下一個 rebuilt 幀從頭重試；apply 失敗留下 FAILED fiber 交給狀態投影；兩者都大聲記錄。自我重載可行——運送中的重載在舊 bundle 的閉包裡跑完，新的 apply 再開一條新 SSE 通道——但空窗期到達的幀會丟失，下次重建會再次通知。一處已知的僅限 dev 競態：rebuilt 幀與仍運送中的 boot 到達重疊時共享那次到達的任務，可能物化重建前的位元組；下一幀自愈。
 
 ## 包盤點（現狀 → 長期）
 
@@ -135,9 +135,9 @@ wire 兩側跑著同一份治理實作；瀏覽器特有層只包含一套模組
 | 兩軸分類體系（entry × 到達），基礎設施包不帶 dsh.client | 抹掉了 manifest 相依性邊（inject 洩漏給組合方）、把外掛程式形態拆成兩種、讓純度閘門對一半外掛程式失明 |
 | 繼續把手寫 loader 演化成治理器 | 重新實作 vendored Loader 已擁有的 entry/fiber 生命週期；HMR 將與 host 側毫無共享骨架 |
 | 在瀏覽器複用 `@cordisjs/plugin-hmr` | 約 80% 在解決瀏覽器沒有的問題（fs 監聽、深度圖著色、Node 的雙快取）；只按形狀抄用其重載骨架 |
-| 模組聯邦（module federation） | 獨立建置的遠端 bundle 恰是 vite 聯邦不支持的形態 |
+| 模組聯邦（module federation） | 獨立建置的遠端 bundle 恰是 vite 聯邦不支援的形態 |
 | import map | 早已排除；DI require 表是終局機制 |
 | 現在就徹底 ctx 化（react 與庫全走服務，不設模組表） | 模組軸上的極端形態；擱置——升級法則讓包一次一個地走向它 |
 | 凍結表 + 到達即實例化 | 要求按到達時刻排序；lazy CJS 登記讓遞迴 `require` 自行定序，且與樸素拉取器的階段拆分相合 |
 | fetch 回應文字後注入內聯 `<script>` | 模組系統必須緩衝整份原始碼並維護 fetch/execute 兩條路徑；動態原始碼執行也切斷瀏覽器網路資源、sourcemap 與 profile 的原生關聯 |
-| 建置器推送重建通道（編排器在 `onSuccess` 裡 POST `/plugins/rebuilt`） | 把重載耦合到一個欽定的建置器行程和第二套 wire 協議；webserver 本就握有每個 bundle 路徑，stat 輪詢（每次 stat 變化即重雜湊）已兜住當年為推送辯護的撕裂寫競態 |
+| 建置器推送重建通道（編排器在 `onSuccess` 裡 POST `/plugins/rebuilt`） | 把重載耦合到一個欽定的建置器行程和第二套 wire 協定；webserver 本就握有每個 bundle 路徑，stat 輪詢（每次 stat 變化即重雜湊）已兜住當年為推送辯護的撕裂寫競態 |

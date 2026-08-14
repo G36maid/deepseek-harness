@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-24-domain-kv-storage-and-workspace.md) | [简体中文](2026-07-24-domain-kv-storage-and-workspace.zh.md) | 繁體中文
+[English](2026-07-24-domain-kv-storage-and-workspace.md) | 繁體中文
 
 ## 問題
 
@@ -39,13 +39,13 @@ host 側唯一的持久化面是 session 事件日誌（`packages/session/sessio
 
 **多後端同時掛載**；域→後端的選擇是 `dsh-domain` 的設定（見下），不是全域性二選一。disposer 語義 = 從表中摘名；後端自身的 close 由後端包的 effect 閉包負責，順序先摘名後 close。
 
-一個後端是一個**介質 owner**（一棵文件樹 root / 一個 db 文件），透過**資料形狀 facet** 暴露原語——本期只有 `kv`；session 遷移期加 `log`（見遷移節）。facet 是選填成員，缺席即該後端不支持該形狀，解析時 fail loud。`kv` facet 的原語面：`open(descriptor)`（descriptor = 名字/版本/表名清單/有無 global，名字與表名限 `^[a-z][a-z0-9_]*$` 兼作檔名與 SQL 表名段）返回 unit，unit 提供 `loadAll` / `putRecord` / `deleteRecord`（缺 key 為 no-op）/ `setGlobal` / `close`（冪等）；值對後端是不透明 JSON。規範正文（含逐方法 JSDoc）在 `packages/storage/storage/src/backend.ts`。
+一個後端是一個**介質 owner**（一棵文件樹 root / 一個 db 文件），透過**資料形狀 facet** 暴露原語——本期只有 `kv`；session 遷移期加 `log`（見遷移節）。facet 是選填成員，缺席即該後端不支援該形狀，解析時 fail loud。`kv` facet 的原語面：`open(descriptor)`（descriptor = 名字/版本/表名清單/有無 global，名字與表名限 `^[a-z][a-z0-9_]*$` 兼作檔名與 SQL 表名段）返回 unit，unit 提供 `loadAll` / `putRecord` / `deleteRecord`（缺 key 為 no-op）/ `setGlobal` / `close`（冪等）；值對後端是不透明 JSON。規範正文（含逐方法 JSDoc）在 `packages/storage/storage/src/backend.ts`。
 
 後端約定（共享約定測試逐條斷言，兩後端同套件）：
 
 1. `open` 對不存在的介質建立（懶物化允許：可延遲到首寫，但 `loadAll` 立即可用返回空表）；對已存在介質載入。
 2. 介質上版本 ≠ descriptor.version → `StorageError('version-mismatch')`，不遷移不重建。
-3. 持久性：寫原語 resolve 後進程崩潰再 open，`loadAll` 必須反映該寫入。
+3. 持久性：寫原語 resolve 後行程崩潰再 open，`loadAll` 必須反映該寫入。
 4. 後端不承諾 unit 內寫並行序——**呼叫方負責序列**；後端只保證單次呼叫原子（JSON 整文件替換 / SQLite 單語句）。
 5. `deleteRecord` 冪等；`putRecord` 覆寫。
 6. 任意字串 key / 任意 JSON 值安全（key 不進檔案路徑，結構性質）。
@@ -55,9 +55,9 @@ host 側唯一的持久化面是 session 事件日誌（`packages/session/sessio
 
 ### `dsh-storage-json`
 
-Config 僅 `root`（必填無默認，schemastery）；apply 在 `ctx.effect()` 裡註冊後端 `json`，disposer 先摘名再 `backend.close()`。
+Config 僅 `root`（必填無預設，schemastery）；apply 在 `ctx.effect()` 裡註冊後端 `json`，disposer 先摘名再 `backend.close()`。
 
-- 版面配置 `<root>/<unitName>.json`，一 unit 一文件；目錄 0o700、文件 0o600。
+- 版面設定 `<root>/<unitName>.json`，一 unit 一文件；目錄 0o700、文件 0o600。
 - 檔案格式（版本戳在頭，文件即當前淨值，`JSON.stringify(…, null, 2)` 肉眼可讀——這是該後端的存在理由）：
 
 ```json
@@ -73,10 +73,10 @@ Config 僅 `root`（必填無默認，schemastery）；apply 在 `ctx.effect()` 
 
 ### `dsh-storage-sqlite`
 
-Config 為 `path`（必填，`':memory:'` 允許）+ `journalMode`（枚舉，默認 `wal`）；apply 同 json，註冊後端 `sqlite`。
+Config 為 `path`（必填，`':memory:'` 允許）+ `journalMode`（枚舉，預設 `wal`）；apply 同 json，註冊後端 `sqlite`。
 
 - `node:sqlite` `DatabaseSync`；打開序列照抄 session-persistence-sqlite：mkdir 0o700 → 不存在則 `open(path,'wx',0o600)` 獨佔建文件 → `PRAGMA foreign_keys=ON` → journal_mode → 版本檢查 → 建表。
-- 物理版面配置版本 `STORAGE_SQLITE_SCHEMA_VERSION = 1` 存 `PRAGMA user_version`：0 → 蓋章；≠ → `version-mismatch`。
+- 物理版面設定版本 `STORAGE_SQLITE_SCHEMA_VERSION = 1` 存 `PRAGMA user_version`：0 → 蓋章；≠ → `version-mismatch`。
 - DDL（全 STRICT；表名由受限字元集拼接加 `u_` 前綴，杜絕外部輸入進 DDL）：
 
 ```sql
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS "u_<unit>_<table>" (
 
 ```ts ignore-check
 export const Config = z.object({
-  backend: z.string().required(),                // 默认后端名，必填
+  backend: z.string().required(),                // 預設後端名，必填
   routes: z.dict(z.string()).default({}),        // per-domain 覆盖：{ workspace: 'sqlite' }
 })
 
@@ -186,7 +186,7 @@ export abstract class SessionPersistence extends Service {
 | 檢查（按序） | 不滿足時 |
 | --- | --- |
 | 目標（遞迴時含整棵子樹）無一在 `ctx.sessions` 執行 | throw，什麼都不刪；呼叫方先 cancel 再刪，持久層不反向牽動執行時期 |
-| 非遞迴時目標無後代（後代 = `parentSessionId` 傳遞閉包，由 `list()` header 求得） | throw：默認只能刪葉子，`recursive: true` 顯式遞迴 |
+| 非遞迴時目標無後代（後代 = `parentSessionId` 傳遞閉包，由 `list()` header 求得） | throw：預設只能刪葉子，`recursive: true` 顯式遞迴 |
 | 遞迴序自底向上（葉→根） | ——中途崩潰只留"子樹刪一半、祖先在"，重跑收斂，任何時刻無懸空 parent |
 | 級聯中某 id 已不在盤上 | 跳過（冪等續刪）；其餘錯誤中止 |
 
@@ -236,12 +236,12 @@ export class WorkspaceRegistry extends Service {
   get(id: WorkspaceId): Workspace | undefined
   list(): Workspace[]
   resolveByPath(path: string): Promise<Workspace | undefined> // 同 realpath 口径，故 async
-  delete(id: WorkspaceId): Promise<boolean>      // 只删注册记录；目录与 session 日志保留
+  delete(id: WorkspaceId): Promise<boolean>      // 只删注册记录；目錄与 session 日志保留
 }
 ```
 
 - **path 規範**：落盤值 = `fs.realpath(输入)`（尾斜槓、`..`、符號連結全解析）；唯一性 = 規範化後字串相等（符號連結指向同一目錄算撞）。目錄不存在時 create 直接 reject（realpath 失敗——workspace 必須指向存在目錄；"Create new = 建目錄"是上層互動，先 mkdir 再 create）。attach 校驗的 session cwd 同口徑。cwd 單值 + path 唯一 ⇒ 一個 session 結構上最多歸屬一個 workspace，雙重記帳寫側不可能。
-- **title**：顯示名，默認 `basename(path)`，可改，允許重複。歸屬不用 cwd 派生兜底——cwd 表達不了排序，歸屬是 workspace 側事實；headless 直開的 session 不屬於任何 workspace。
+- **title**：顯示名，預設 `basename(path)`，可改，允許重複。歸屬不用 cwd 派生兜底——cwd 表達不了排序，歸屬是 workspace 側事實；headless 直開的 session 不屬於任何 workspace。
 - 消費端只見 `Workspace` 介面，`WorkspaceEntity` 不出包（單實作不預拆 seam）；實體按 id 唯一（登錄檔快取），記錄快照寫後原地換新，外部只見 getter；所有寫收斂到實體內 `mutate(fn)` → `table.update`，`updatedAt` 在 mutate 內統一刷。領域對象不過 RPC，下期 wire 層把記錄投影成 zod wire schema。
 - **Session 刪除仍屬未來工作。** 後續的 [Workspace 註冊記錄刪除決策](../../implemented/feature/2026-07-27-workspace-registration-deletion.md)已將 `ctx.workspaceRegistry.delete(id)` 作為僅刪除元資料、保留 Session 與日誌的操作交付。遞迴刪除 Session、執行中檢查和崩潰重跑收斂屬於獨立的 `session.delete` 能力。
 

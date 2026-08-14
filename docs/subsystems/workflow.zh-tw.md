@@ -1,6 +1,6 @@
 # 工作流程
 
-[English](workflow.md) | [简体中文](workflow.zh.md) | 繁體中文
+[English](workflow.md) | 繁體中文
 
 工作流程 seam 允許 agent（代理）執行由模型編寫、會啟動 subagent 的編排指令碼。與 [subagent](subagent.md) 一樣，它是**一項選填能力**，不屬於 agent loop，因此其類型和操作記錄在此處，而非 [core.md](core.md)。與 bash 一樣，每個上下文只允許一個引擎實作提供 `ctx.workflowEngine`；沒有命名提供方登錄檔（第二個引擎透過外掛程式設定替換第一個，而不與它同時執行）。
 
@@ -123,7 +123,7 @@ interface WorkflowRun {
 
 頂層 `dsh-tool-workflow` 消費端把展示事實投影到呼叫它的父 Session，同時不改變執行所有權。執行接受後寫 `tool-workflow/run-start`，以 `runId + seq` 配對成員開始與結束，並且只在結果已取得且 dispose 完全靜止後寫 `tool-workflow/run-end`。巢狀 transport 呼叫不寫記錄。第一次 append 失敗會停用本執行後續寫入，因此日誌保持為空或合法連續前綴，工具結果不變。
 
-`dsh-tool-workflow/invariant` 會在即時提交前和 Session 載入時校驗同一協議：每個執行只有一個 start，成員序號為正且唯一，成員 end 必須配對，仍有開放成員時不能結束執行，執行結束後不能繼續更新。日誌尾部缺少成員 end 或 run end 是有效的中斷證據，不是損壞。
+`dsh-tool-workflow/invariant` 會在即時提交前和 Session 載入時校驗同一協定：每個執行只有一個 start，成員序號為正且唯一，成員 end 必須配對，仍有開放成員時不能結束執行，執行結束後不能繼續更新。日誌尾部缺少成員 end 或 run end 是有效的中斷證據，不是損壞。
 
 `dsh-client-ui-workflow-run` 透過 Conversation Node 引擎把四類事件摺疊為一個 `workflow-run` Chat 節點，以 run-start 序號錨定在原工作流程工具節點之後。階段組只來自真正開始過的成員，並保留精確字串，包括欄位預設與 `''` 的區別。Location 關閉時，缺失終點會顯示為已中斷。[介面包 README](../../packages/client/ui-workflow-run/README.md)負責定義 disclosure、狀態與同父本機導覽行為。
 

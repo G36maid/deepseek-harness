@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-workspace-ui-product-flow.md) | [简体中文](2026-07-25-workspace-ui-product-flow.zh.md) | 繁體中文
+[English](2026-07-25-workspace-ui-product-flow.md) | 繁體中文
 
 ## Problem
 
@@ -38,7 +38,7 @@ Workspace domain 以 durable marker 區分「從未初始化」和「已初始�
 - 前端 Session 建立時預分配 SessionId，並在對象內持有 Intent target 與 `pendingPrompt`；Host `session.create` 成功後仍是同一個 Session 對象。
 - 前端 Workspace 在 materialize 前沒有 WorkspaceId，並在對象內持有 create input、phase 與 error；Host `workspace.create` 成功後同一個 Workspace 對象 adopt 返回的 view。
 - `SessionManager` 與 `WorkspaceManager` 負責對象索引、Host 基線和增量合併；對象是 Intent 與 Host view 的唯一狀態源。
-- `SessionRuntime` 提供 Session 對象、真實 selection、scope 與清單投影；`WorkspaceRuntime` 相依性 `SessionRuntime`，負責默認 Workspace、跨對象 New Session 動線和 Workspace materialize。
+- `SessionRuntime` 提供 Session 對象、真實 selection、scope 與清單投影；`WorkspaceRuntime` 相依性 `SessionRuntime`，負責預設 Workspace、跨對象 New Session 動線和 Workspace materialize。
 
 頁面至多有一個前端 Session Intent 和一個僅在零 Workspace 狀態下配套的 Workspace Intent。Intent 只存在於當前頁面，刷新後消失；真實 Session selection 可以持久復原。選擇真實 Session 或啟動另一個 Session Intent 會放棄舊 Intent 的自動傳送資格，但已經由 Host 發布的 Session 和已經接受的訊息不會回滾。
 
@@ -46,9 +46,9 @@ Session 自己持有首條輸入並驅動一條內部管線：必要時以預分
 
 ### 使用者動線
 
-應用首次進入時等待 Workspace 與 Session 兩份基線 ready。仍有效的真實 Session selection 被復原；否則進入 New Session，並固定選擇一次最近 Workspace。最近 Workspace 取其成員 Session 的最大 `updatedAt`，空 Workspace 回退到 `createdAt`；該派生只決定默認目標，不改變 Host Workspace 順序，也不會在後續 hydration 時二次改選。
+應用首次進入時等待 Workspace 與 Session 兩份基線 ready。仍有效的真實 Session selection 被復原；否則進入 New Session，並固定選擇一次最近 Workspace。最近 Workspace 取其成員 Session 的最大 `updatedAt`，空 Workspace 回退到 `createdAt`；該派生只決定預設目標，不改變 Host Workspace 順序，也不會在後續 hydration 時二次改選。
 
-完全沒有 Workspace 時，頁面建立默認名為 `workspace` 的前端 Workspace 對象和指向它的前端 Session。兩者不寫 Host，composer 始終可輸入；首次傳送才依次 materialize Workspace、attach Session、傳送訊息。
+完全沒有 Workspace 時，頁面建立預設名為 `workspace` 的前端 Workspace 對象和指向它的前端 Session。兩者不寫 Host，composer 始終可輸入；首次傳送才依次 materialize Workspace、attach Session、傳送訊息。
 
 頂部 New Session、Workspace 行內加號和 Workspace picker 最終都呼叫同一 New Session 動作：顯式 Workspace id 直接成為目標，未指定時先使用當前 Session 所屬 Workspace，再使用最近 Workspace；沒有真實 Workspace 時進入空白 New Session 頁面。Workspace picker 的單一 Add workspace 動作（見[單一路徑 Note](../simplification/2026-07-31-one-route-to-add-a-workspace.md)；本決策做出時是 Use an existing folder 與按名稱建立兩個動作）會在使用者確認目錄時立即建立真實 Workspace，再將前端 Session 的目標改為該 Workspace；即使使用者不傳送訊息，顯式建立的空 Workspace 也保留。
 
@@ -70,7 +70,7 @@ RPC 回應丟失、Host frame 先於 completion 和 completion 先於 Host frame
 
 Workspace 組使用 Host 返回的持久順序。Bootstrap 一次性確定歷史順序，顯式建立的新 Workspace 放在首位，`workspace.insertBefore` 則持久應用使用者拖拽順序；Session 活躍不會移動 Workspace 組。
 
-Host 記帳保持手動的 `Workspace.sessionIds` 順序：新 attach 的 Session 放在首位，活動不會改動該順序。分組瀏覽器可以改選瀏覽器本機的最近更新檢視表；當 Session 的 `updatedAt` 增大時該檢視表會把它移到首位，同時仍允許手動調整。每個打開的 Workspace 默認顯示五條 Session，使用者可臨時展開其餘條目。持久 Workspace 重排序和瀏覽器本機 Session 順序見 [Workspace 側邊欄順序與摺疊](2026-08-11-workspace-sidebar-order-and-folding.md)。
+Host 記帳保持手動的 `Workspace.sessionIds` 順序：新 attach 的 Session 放在首位，活動不會改動該順序。分組瀏覽器可以改選瀏覽器本機的最近更新檢視表；當 Session 的 `updatedAt` 增大時該檢視表會把它移到首位，同時仍允許手動調整。每個打開的 Workspace 預設顯示五條 Session，使用者可臨時展開其餘條目。持久 Workspace 重排序和瀏覽器本機 Session 順序見 [Workspace 側邊欄順序與摺疊](2026-08-11-workspace-sidebar-order-and-folding.md)。
 
 當前空白 Session 會顯示為一條「New session」行，但不顯示數量、時間標籤或行選單；其他空白 Session 保持隱藏，並可由對應 Workspace 複用。搜尋會排除空白行。
 
@@ -80,7 +80,7 @@ Host 記帳保持手動的 `Workspace.sessionIds` 順序：新 attach 的 Sessio
 
 ### React 與 slot 邊界
 
-React 元件只消費 `useSessions`、`useWorkspaces` 與 session-scoped 掛鉤，不擁有實體生命週期。Zustand store 只保留版面配置、當前 view、普通真實 Session 的 composer 文字和其他純呈現狀態；Session/Workspace Intent、materialize phase、錯誤和保留的提示詞位於 React-free 執行時期對象層。
+React 元件只消費 `useSessions`、`useWorkspaces` 與 session-scoped 掛鉤，不擁有實體生命週期。Zustand store 只保留版面設定、當前 view、普通真實 Session 的 composer 文字和其他純呈現狀態；Session/Workspace Intent、materialize phase、錯誤和保留的提示詞位於 React-free 執行時期對象層。
 
 Sidebar 與 conversation empty hero 透過 slot 獲得標準化動作：`startSession`、`updateSessionPrompt`、`sendSession`、`open` 與 `toggleSidebar`。Workspace picker 複用同一組件與 `createWorkspace` 動作；owner 只提供 popover 開關、錨點和選中回呼。呈現層不直接傳送 `host/workspace-changed`，Host 事件只由 Host mutation 與流配接器產生。
 
@@ -106,7 +106,7 @@ Sidebar 與 conversation empty hero 透過 slot 獲得標準化動作：`startSe
 - 前端 Session 與 Workspace 在 materialize 前後保持對象身份，輸入、錯誤、焦點和 sidebar 投影始終來自對象層。
 - 首發按 Workspace、Session、提示詞順序推進，各成功階段不回滾，輸入在提示詞被接受前不丟失，建立重試使用同一 SessionId。
 - Workspace list 只讀取 header 完成一次可重入 bootstrap；已初始化的空登錄檔重新啟動不重複初始化，成員讀取同時校驗索引與 canonical cwd。
-- 初始默認目標只在兩份基線 ready 後確定一次；Workspace 組不因 hydration 或 Session 活躍重排，顯式 Workspace 拖拽順序在重連後仍然保持。
+- 初始預設目標只在兩份基線 ready 後確定一次；Workspace 組不因 hydration 或 Session 活躍重排，顯式 Workspace 拖拽順序在重連後仍然保持。
 - 當前空白 Session 可顯示為唯一的 New Session 行，同時不暴露其他可複用空白工作階段，也不顯示 Session 數量。
 - UI 與 Host 會將 canonical path 不同但 basename 相同的目錄接納為獨立 Workspace，而顯式的重新命名操作會拒絕重複顯示名；cwd-only Session、無效歷史 cwd 和未 attach Session 保持 Ungrouped。
 - 經確認的 Workspace 刪除只移除註冊記錄，保留當前 Session、目錄、文件和工作階段日誌，並在刷新後保持該狀態；包級測試固定一元回應／幀／基線競態和失敗回滾行為。

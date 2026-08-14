@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-09-explicit-schedule-time-zone.md) | [简体中文](2026-08-09-explicit-schedule-time-zone.zh.md) | 繁體中文
+[English](2026-08-09-explicit-schedule-time-zone.md) | 繁體中文
 
 ## 問題
 
-隱式本機 `at` 輸入把瀏覽器事實變成了共享產品狀態。在 Session 建立時捕獲默認時區，需要增加新的 Session header、create／resume／fork 衝突規則、JSONL metadata、SQLite migration、client 建立 plumbing、Host 比較，以及與 time-context 標記耦合的 Schedule 邏輯。隨後，旅行、並行 tab、缺失 provenance 和舊 Session 都需要一套確認協議，僅僅為了判斷省略欄位是否安全。
+隱式本機 `at` 輸入把瀏覽器事實變成了共享產品狀態。在 Session 建立時捕獲預設時區，需要增加新的 Session header、create／resume／fork 衝突規則、JSONL metadata、SQLite migration、client 建立 plumbing、Host 比較，以及與 time-context 標記耦合的 Schedule 邏輯。隨後，旅行、並行 tab、缺失 provenance 和舊 Session 都需要一套確認協定，僅僅為了判斷省略欄位是否安全。
 
 大部分複雜度都位於 Schedule 之外。模型在呼叫工具前已經解釋自然語言，因此持久 Session 預設值只是重複了一個假設，並沒有強化絕對時間邊界。
 

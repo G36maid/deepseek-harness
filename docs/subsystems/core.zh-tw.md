@@ -1,6 +1,6 @@
 # 核心
 
-[English](core.md) | [简体中文](core.zh.md) | 繁體中文
+[English](core.md) | 繁體中文
 
 **核心**子系統即 [`packages/core`](../../packages/core/README.md)，包含每個組合都會啟動的包：事件溯源的工作階段日誌、系統提示詞組裝、工具登錄檔、agent（代理）類型，以及驅動它們的具體迴圈。本頁說明 `agent`/`agent-loop` 這對包所聲明的內容：agent 如何被建立與擁有，以及 `Agent` 控制代碼的投遞、取消與攔截約定；本頁還說明每個子系統都遵循的兩個類型模式。該組的專屬頁面與目錄其餘部分見[子系統 README](README.md)。
 
@@ -17,7 +17,7 @@
 | `agent-loop/` | 實作公開 `Agent` 約定的具體 driver（`ctx.agentLoop`） | 本頁 |
 | `scope/` | 登錄檔與迴圈用於建置按 agent 作用域的註冊原語 | [scope.md](scope.md) |
 
-`scope/` 是這裡唯一的非服務包：一個零相依性程式庫（`createScope`/`scopeOf`/`scopeTarget`），在模組圖中位於 `session/` 與 `system-prompt/` 之下，正是為了讓它們消費它而不形成環。`agent-loop` 是公開 `Agent` 約定的唯一具體實作，放在這裡因為它是 harness 的默認產品迴圈；它在 `ctx.agents.withInitiator()` 內執行每個 driver。擴充外掛程式相依性 `agent`——包括需要發起 Agent 時——而絕不直接相依性 `agent-loop`，因此迴圈保持可替換。把這條主幹接成可執行 agent 的默認組合是 [`examples/agent-spine-demo`](../../packages/examples/agent-spine-demo/README.md)。
+`scope/` 是這裡唯一的非服務包：一個零相依性程式庫（`createScope`/`scopeOf`/`scopeTarget`），在模組圖中位於 `session/` 與 `system-prompt/` 之下，正是為了讓它們消費它而不形成環。`agent-loop` 是公開 `Agent` 約定的唯一具體實作，放在這裡因為它是 harness 的預設產品迴圈；它在 `ctx.agents.withInitiator()` 內執行每個 driver。擴充外掛程式相依性 `agent`——包括需要發起 Agent 時——而絕不直接相依性 `agent-loop`，因此迴圈保持可替換。把這條主幹接成可執行 agent 的預設組合是 [`examples/agent-spine-demo`](../../packages/examples/agent-spine-demo/README.md)。
 
 <a id="creation-and-ownership"></a>
 
@@ -170,7 +170,7 @@ interface AgentOptions {
 }
 ```
 
-在 `agent/request` 之後，分發要求 `provider` 與 `model` 都存在。提供 `maxTokens` 時，它必須是正安全整數，並限制每次對話模型請求的輸出；省略時，系統會在寫入請求 header 前填入確切模型的配接器預設值，否則提供方行為保持不變。agent 作用域的 `deployment:persona` 提示詞段落可以遮蔽全域性默認 persona。
+在 `agent/request` 之後，分發要求 `provider` 與 `model` 都存在。提供 `maxTokens` 時，它必須是正安全整數，並限制每次對話模型請求的輸出；省略時，系統會在寫入請求 header 前填入確切模型的配接器預設值，否則提供方行為保持不變。agent 作用域的 `deployment:persona` 提示詞段落可以遮蔽全域性預設 persona。
 
 inbox 即投遞詞彙——agent 以持久投影形式擁有的兩條有序待處理訊息清單：
 
@@ -204,7 +204,7 @@ type AgentCancelCause =
   | { readonly kind: 'disposed' }
 ```
 
-cause 是由 TypeScript 強制約束的同進程輸入。活躍的取消持有者會將它複製到僅執行時期的 `AbortSignal.reason`；signal 不授予協作監聽器任何分類權限。持久 `turn/end` 保留粗粒度 `{ kind: 'aborted' }` 結果；若需記錄誰請求了取消，應使用單獨的持久事件，而不是讓終態結果承擔額外含義。
+cause 是由 TypeScript 強制約束的同行程輸入。活躍的取消持有者會將它複製到僅執行時期的 `AbortSignal.reason`；signal 不授予協作監聽器任何分類權限。持久 `turn/end` 保留粗粒度 `{ kind: 'aborted' }` 結果；若需記錄誰請求了取消，應使用單獨的持久事件，而不是讓終態結果承擔額外含義。
 
 [事件分類](../architecture.md#events)負責 `agent/*` 生命週期、檢查點與 waterfall（瀑布式事件）約定。輪次和步驟邊界是持久工作階段事件，而不是 agent emit。
 
@@ -222,7 +222,7 @@ pre-step 決策使用與持久 user-role 輸入相同、帶標識的 `UserMessag
 
 `agent/pre-step` 接收一個 payload，攜帶獨佔的已領取批次（`messages`）、擬進入步驟的坐標（`turn`、`step`）與當前輪次的取消 `signal`。首次提案在已打開的輪次內、任何步驟開始前執行；工具 continuation 可以在步驟之間提交空的已領取批次：
 
-它返回 `PreStepDecision`。reject 不會打開步驟。enter 提供在 `step/start` 後追加的完整訊息批次；最終決策省略的已領取消息保持已刪除，而領取後插入的輸入仍留待後續處理：
+它返回 `PreStepDecision`。reject 不會打開步驟。enter 提供在 `step/start` 後追加的完整訊息批次；最終決策省略的已領取訊息保持已刪除，而領取後插入的輸入仍留待後續處理：
 
 ```ts type-equiv
 /** Whether and with which messages the loop enters a proposed step. */
@@ -231,7 +231,7 @@ type PreStepDecision =
   | { kind: 'enter'; messages: UserMessage[] }
 ```
 
-`agent/request-error` 在失敗的模型步驟關閉之後、其輪次關閉之前執行。listener 可以在失敗輪次的 signal 仍然存活時修復持久狀態或 await 策略工作。處理該錯誤的 listener 返回 `{ kind: 'retry' }` 且不呼叫 `next()`；默認的 `undefined` 會讓失敗保持終態。
+`agent/request-error` 在失敗的模型步驟關閉之後、其輪次關閉之前執行。listener 可以在失敗輪次的 signal 仍然存活時修復持久狀態或 await 策略工作。處理該錯誤的 listener 返回 `{ kind: 'retry' }` 且不呼叫 `next()`；預設的 `undefined` 會讓失敗保持終態。
 
 ```ts type-equiv
 /** Action returned by a listener that owns model-request recovery. */
@@ -297,7 +297,7 @@ declare module '@deepseek-ai/dsh-llm' {
 | `TurnEndReasonMap` | dsh-session | `TurnEndReason` | [session.md](session.md) |
 | `SessionEventMap` | dsh-session | `SessionEvent` | [session.md](session.md) |
 
-消費端最常 `switch` 的兩個大型判別聯合類型是：**`StreamChunk`**（流式協議）和 **`SessionEvent`**（日誌條目）。按倉庫約定，對標籤做 `switch`——不要鏈式 `if`——這樣每個分支都能窄化類型，拼錯的標籤會編譯失敗。
+消費端最常 `switch` 的兩個大型判別聯合類型是：**`StreamChunk`**（流式協定）和 **`SessionEvent`**（日誌條目）。按倉庫約定，對標籤做 `switch`——不要鏈式 `if`——這樣每個分支都能窄化類型，拼錯的標籤會編譯失敗。
 
 <a id="branded-ids"></a>
 

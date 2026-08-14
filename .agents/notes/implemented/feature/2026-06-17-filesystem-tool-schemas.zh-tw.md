@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-17-filesystem-tool-schemas.md) | [简体中文](2026-06-17-filesystem-tool-schemas.zh.md) | 繁體中文
+[English](2026-06-17-filesystem-tool-schemas.md) | 繁體中文
 
 ## 問題
 
@@ -16,9 +16,9 @@ Status: implemented
 
 | 工具 | 我們的 schema | Claude Code | OpenCode | 說明 |
 |---|---|---|---|---|
-| `read` | `read(file_path, offset?, limit?)` | `Read(file_path, offset?, limit?, pages?)` | `read(filePath, offset?, limit?)` | 僅支持文件；`offset` 從 1 開始；首版不支持圖片、PDF 或多模態內容。 |
-| `write` | `write(file_path, content)` | `Write(file_path, content)` | `write(content, filePath)` | 建立或覆蓋 UTF-8 文字。在默認 fs-observation-policy 下，更新現有文件前必須先觀測；建立新文件則不需要。 |
-| `edit` | `edit(file_path, old_string, new_string, replace_all?)` | `Edit(file_path, old_string, new_string, replace_all?)` | `edit(filePath, oldString, newString, replaceAll?)` | 字面字串替換；默認要求唯一匹配；在默認 fs-observation-policy 下必須先觀測（任意視窗讀取均算作觀測）。 |
+| `read` | `read(file_path, offset?, limit?)` | `Read(file_path, offset?, limit?, pages?)` | `read(filePath, offset?, limit?)` | 僅支援文件；`offset` 從 1 開始；首版不支援圖片、PDF 或多模態內容。 |
+| `write` | `write(file_path, content)` | `Write(file_path, content)` | `write(content, filePath)` | 建立或覆蓋 UTF-8 文字。在預設 fs-observation-policy 下，更新現有文件前必須先觀測；建立新文件則不需要。 |
+| `edit` | `edit(file_path, old_string, new_string, replace_all?)` | `Edit(file_path, old_string, new_string, replace_all?)` | `edit(filePath, oldString, newString, replaceAll?)` | 字面字串替換；預設要求唯一匹配；在預設 fs-observation-policy 下必須先觀測（任意視窗讀取均算作觀測）。 |
 
 schema 使用 snake_case 欄位名（`file_path`、`old_string`、`new_string`、`replace_all`），與 Claude Code 及現有 DeepSeek Harness 工具 schema 示例保持一致。消費端包將這些面向模型的名稱轉換為 `ctx.fs` 呼叫和 `fs/*` 事件分發。
 
@@ -49,7 +49,7 @@ schema 使用 snake_case 欄位名（`file_path`、`old_string`、`new_string`�
 - `file_path: string`——必填。要寫入的路徑，由 `ctx.fs` 解析。
 - `content: string`——必填。要寫入的完整 UTF-8 文字內容。
 
-在默認 fs-observation-policy 下，使用 `write` 更新已有文件需要同一執行上下文先前對該文件有過一次觀測（read/write/edit）；`dsh-fs-observation-policy` 外掛程式將觀測到的版本作為 `fs/write-intent` 上的過時版本防護提供。建立新文件不需要先前觀測。如果策略外掛程式不存在，`write` 是由裸提供方無條件執行的建立或覆蓋操作。
+在預設 fs-observation-policy 下，使用 `write` 更新已有文件需要同一執行上下文先前對該文件有過一次觀測（read/write/edit）；`dsh-fs-observation-policy` 外掛程式將觀測到的版本作為 `fs/write-intent` 上的過時版本防護提供。建立新文件不需要先前觀測。如果策略外掛程式不存在，`write` 是由裸提供方無條件執行的建立或覆蓋操作。
 
 schema 不將 `expected_hash`、`expected_version` 或 `create_only` 作為面向模型的參數暴露。過時版本檢查由後端產生的版本和策略外掛程式的觀測狀態驅動，而非要求模型透過 schema 複製版本權杖。
 
@@ -72,9 +72,9 @@ schema 不將 `expected_hash`、`expected_version` 或 `create_only` 作為面�
 
 首次實作曾將 `ContentBlock[]` 格式化邏輯放在 `execute` 中。[規範工具輸出約定](../architecture/2026-07-20-canonical-tool-output-contract.md)如今將 `ctx.fs` 的結果事實保留為工具經校驗的值，並透過 `output.render` 派生相同的模型文字；文件狀態的記錄/刷新仍歸 `ctx.fs` 所有。
 
-默認原生投影：
+預設原生投影：
 
-| 工具 | `tool-fs` 使用的結構化 `ctx.fs` 結果 | 默認模型投影 |
+| 工具 | `tool-fs` 使用的結構化 `ctx.fs` 結果 | 預設模型投影 |
 |---|---|---|
 | `read` | 返回的行、返回行數、總行數、目標顯示路徑、文件版本、部分檢視表標記 | 帶行號的文字及分頁頁腳 |
 | `write` | 建立/更新操作、目標顯示路徑、新文件版本 | 簡潔的建立/更新成功文字 |

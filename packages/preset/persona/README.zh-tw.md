@@ -1,6 +1,6 @@
 # dsh-persona
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 把 agent（代理）人設做成一個可組裝的行：它既可以遮蔽部署級人設，也可以擁有完整系統提示詞。
 
@@ -26,7 +26,7 @@
 
 #### What the model sees
 
-位於 order 0 的 `deployment:persona` 段落，緊隨 harness 身份開場白之後，攜帶本行設定的 `text`，其中的提示詞變數已解析。對於其 preset 掛載了本行的 agent，它會替換部署所設定的任何人設。在完整模式下，模型只會看到這個渲染後的段落作為系統提示詞。Runtime context 默認保持啟用。停用後，新建 agent 不會收到來自沙盒策略、批准策略、委派或其他 system-prompt 上下文提供方的 runtime-context 快照。
+位於 order 0 的 `deployment:persona` 段落，緊隨 harness 身份開場白之後，攜帶本行設定的 `text`，其中的提示詞變數已解析。對於其 preset 掛載了本行的 agent，它會替換部署所設定的任何人設。在完整模式下，模型只會看到這個渲染後的段落作為系統提示詞。Runtime context 預設保持啟用。停用後，新建 agent 不會收到來自沙盒策略、批准策略、委派或其他 system-prompt 上下文提供方的 runtime-context 快照。
 
 #### Token effect
 
@@ -38,4 +38,4 @@
 
 ## 已知限制與暫緩事項
 
-- **不支持全域性掛載** —— 提示詞登錄檔擁有未加 scope 的人設槽位，因此本行只能從帶 scope 的組裝中使用。要改變部署級人設，應在 `system-prompt` 行自身的設定中修改。
+- **不支援全域性掛載** —— 提示詞登錄檔擁有未加 scope 的人設槽位，因此本行只能從帶 scope 的組裝中使用。要改變部署級人設，應在 `system-prompt` 行自身的設定中修改。

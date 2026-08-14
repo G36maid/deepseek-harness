@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-native-workspace-directory-picker.md) | [简体中文](2026-07-27-native-workspace-directory-picker.zh.md) | 繁體中文
+[English](2026-07-27-native-workspace-directory-picker.md) | 繁體中文
 
 ## 問題
 
@@ -25,12 +25,12 @@ Status: implemented
 
 ## 宿主邊界
 
-只有來自回環Socket、且攜帶同源瀏覽器元資料的請求才能呼叫原生對話框 RPC。該 RPC 不使用默認的 30 秒請求逾時，因為系統對話框可能無限期保持打開；呼叫方中止或連線中止仍會傳遞至平臺行程。
+只有來自回環Socket、且攜帶同源瀏覽器元資料的請求才能呼叫原生對話框 RPC。該 RPC 不使用預設的 30 秒請求逾時，因為系統對話框可能無限期保持打開；呼叫方中止或連線中止仍會傳遞至平臺行程。
 
 平臺配接器不經 shell 打開對話框——POSIX 上 spawn 原生工具，Windows 上進行行程內 COM 互動：
 
 - macOS：`osascript` 和系統資料夾選擇器。
-- Windows：koffi `IFileOpenDialog` 子行程，使用宿主接受的最佳執行緒 DPI 感知（可用時為 per-monitor-v2；不支持 PMv2 的主機級聯到 per-monitor 或 system-aware）（見[行程內對話框 Note](2026-08-02-win32-in-process-folder-dialog.md)）；該層無回退——失敗原樣上報（見[PowerShell 鏈刪除](../simplification/2026-08-04-drop-windows-powershell-picker-fallback.md)）。
+- Windows：koffi `IFileOpenDialog` 子行程，使用宿主接受的最佳執行緒 DPI 感知（可用時為 per-monitor-v2；不支援 PMv2 的主機級聯到 per-monitor 或 system-aware）（見[行程內對話框 Note](2026-08-02-win32-in-process-folder-dialog.md)）；該層無回退——失敗原樣上報（見[PowerShell 鏈刪除](../simplification/2026-08-04-drop-windows-powershell-picker-fallback.md)）。
 - Linux：使用 `zenity`；Zenity 不可用時回退到 `kdialog`。
 
 ## 考慮過的替代方案
@@ -47,5 +47,5 @@ Status: implemented
 
 ## 風險
 
-- Linux 桌面環境可能不提供任何一種受支持的選擇器。GUI 會報告這項限制，而不會回退到要求使用者輸入路徑。
-- 在受支持的本機載體之外，瀏覽器元資料可能有所不同。對於無法證明其滿足所需本機同源上下文的請求，該端點會按設計拒絕。
+- Linux 桌面環境可能不提供任何一種受支援的選擇器。GUI 會報告這項限制，而不會回退到要求使用者輸入路徑。
+- 在受支援的本機載體之外，瀏覽器元資料可能有所不同。對於無法證明其滿足所需本機同源上下文的請求，該端點會按設計拒絕。

@@ -1,6 +1,6 @@
 # 事後檢討（postmortem） 0002：檔案系統快照工具被永久停用
 
-[English](0002-js-expression-disabled-filesystem-tools.md) | [简体中文](0002-js-expression-disabled-filesystem-tools.zh.md) | 繁體中文
+[English](0002-js-expression-disabled-filesystem-tools.md) | 繁體中文
 
 狀態：已解決
 
@@ -10,7 +10,7 @@ ACP（Agent Client Protocol）示例試圖透過 `disabled: !!js ...` 有條件�
 
 ## 概述
 
-默認的 ACP 組合有意只啟用 bash，因為其沙盒無法約束行程內的檔案系統提供方。檔案系統快照場景仍然需要 `read`、`write` 和 `edit`，因此這些外掛程式被放在默認的 `cordis.yml` 中，並附帶一個 `disabled` 表達式，意圖僅在全權限啟動和快照模式下啟用它們。
+預設的 ACP 組合有意只啟用 bash，因為其沙盒無法約束行程內的檔案系統提供方。檔案系統快照場景仍然需要 `read`、`write` 和 `edit`，因此這些外掛程式被放在預設的 `cordis.yml` 中，並附帶一個 `disabled` 表達式，意圖僅在全權限啟動和快照模式下啟用它們。
 
 Cordis Include 將每個 `!!js` 標量解析為一個表達式對象。Loader 遞迴地對外掛程式的 `config` 進行插值，但直接讀取 `disabled` 等設定項元資料。因此每個檔案系統設定項看到的都是一個 truthy 對象，在所有模式下均保持停用。
 
@@ -18,7 +18,7 @@ Cordis Include 將每個 `!!js` 標量解析為一個表達式對象。Loader �
 
 七個檔案系統場景和一個混合工作區編輯場景呼叫了登錄檔中不存在的工具。其結構化工作階段日誌攜帶 `ToolNotFoundError`（code 為 `UNKNOWN_TOOL`），stdout 渲染出通用的失敗工具卡片。快照套件透過了，因為結構化工作階段日誌和 stdout 渲染出的通用失敗工具卡片均與刷新後的 fixture（測試前置資料）匹配；它證明的是回歸的確定性重播，而非檔案系統行為的正確性。
 
-實際執行的受限默認模式並未獲得意外的檔案系統訪問權限。草率地直接修復插值反而會帶來這一風險：權限預設在執行時期更新 bash 沙盒和審批狀態，但無法掛載、解除安裝或約束檔案系統棧。
+實際執行的受限預設模式並未獲得意外的檔案系統訪問權限。草率地直接修復插值反而會帶來這一風險：權限預設在執行時期更新 bash 沙盒和審批狀態，但無法掛載、解除安裝或約束檔案系統棧。
 
 ## 時間線
 
@@ -31,7 +31,7 @@ Cordis Include 將每個 `!!js` 標量解析為一個表達式對象。Loader �
 
 實作時假設 `!!js` 適用於整個 Loader 設定項。實際只有 `entry.options.config` 使用它：`Entry._resolveConfig()` 對該欄位進行插值，而 `Entry.disabled` 直接測試 `entry.options.disabled`，不經過插值。YAML 標籤在文法上合法，因此載入過程不產生任何診斷資訊。
 
-快照框架將任何確定性的 transcript（文字記錄）視為有效行為。Header pin 驗證了組合後的工具 schema，但檔案系統場景共享來自默認組合的 pin，因此未獨立證明其所需工具已註冊。刷新在任何語義斷言拒絕缺失工具之前，就已重寫了預期的 stdout 和工作階段日誌。
+快照框架將任何確定性的 transcript（文字記錄）視為有效行為。Header pin 驗證了組合後的工具 schema，但檔案系統場景共享來自預設組合的 pin，因此未獨立證明其所需工具已註冊。刷新在任何語義斷言拒絕缺失工具之前，就已重寫了預期的 stdout 和工作階段日誌。
 
 ## 已新增的防護措施
 

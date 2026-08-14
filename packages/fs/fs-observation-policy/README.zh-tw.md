@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs-observation-policy
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 **fs-observation-policy 外掛程式**：它記錄觀測到的存在或缺失狀態，並在 `ctx.fs` 提供方約定（[`@deepseek-ai/dsh-fs`](../fs)）之上增加編輯前讀取和帶防護的寫入/編輯；它透過 `fs/*` 事件閘門參與，**不是**透過方法服務。該外掛程式**不**註冊 `ctx.fsPolicy` 服務，也沒有公開的 `read`/`write`/`edit`/`resolve` 方法。它是檔案系統棧的政策層：不是可替換 seam，而是不應位於 `FileSystem` 提供方基類上的政策。
 
@@ -43,7 +43,7 @@ await ctx.plugin(FsPolicy)
 
 ## 單 slot、先到者勝
 
-`fs/write-intent`/`fs/edit-intent` slot 只容納一個決策器；本外掛程式會完整決策，不呼叫 `next()`。slot 按註冊順序先到者勝；由本外掛程式擁有 slot 只是默認部署約定，不是事件強制的不變式（更早註冊或透過 `prepend` 註冊的決策器會勝出）。這不是可組合的授權鏈；分層權限/審計/沙盒攔截屬於 `tools/execute`。
+`fs/write-intent`/`fs/edit-intent` slot 只容納一個決策器；本外掛程式會完整決策，不呼叫 `next()`。slot 按註冊順序先到者勝；由本外掛程式擁有 slot 只是預設部署約定，不是事件強制的不變式（更早註冊或透過 `prepend` 註冊的決策器會勝出）。這不是可組合的授權鏈；分層權限/審計/沙盒攔截屬於 `tools/execute`。
 
 ## 不與方法耦合
 

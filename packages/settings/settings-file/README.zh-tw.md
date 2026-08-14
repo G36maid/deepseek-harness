@@ -1,19 +1,19 @@
 # @deepseek-ai/dsh-settings-file
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 基於文件的設定提供方。一個 YAML 或 JSON 文件承載全部 namespace 分節；外部編輯經 `ctx.settings` 熱發布，`update()` 在寫鎖下先重讀文件再原子寫回，保留使用者的 YAML 註釋、當前未載入外掛程式所擁有的分節，以及任何本行程尚未觀察到的磁碟變更。
 
 ## 設定
 
-| 欄位 | 含義 | 默認 |
+| 欄位 | 含義 | 預設 |
 |---|---|---|
 | `path` | 設定文件路徑；擴充名決定格式（`.yaml`/`.yml`/`.json`） | harness home 下的 `settings.yaml` |
 | `dshHome` | `path` 省略時使用的 harness home | `$DSH_HOME` 或 `~/.dsh` |
 | `watch` | 監聽文件並熱發布外部編輯 | `true` |
 | `debounceMs` | watcher 寫入穩定視窗（毫秒） | `100` |
 
-預設值解析是一步顯式的 `resolveSpec(config)`；不支持的擴充名在載入時報錯。
+預設值解析是一步顯式的 `resolveSpec(config)`；不支援的擴充名在載入時報錯。
 
 ## 行為
 

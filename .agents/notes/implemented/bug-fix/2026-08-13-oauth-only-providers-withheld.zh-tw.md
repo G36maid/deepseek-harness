@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-08-13-oauth-only-providers-withheld.md) | [简体中文](2026-08-13-oauth-only-providers-withheld.zh.md) | 繁體中文
+[English](2026-08-13-oauth-only-providers-withheld.md) | 繁體中文
 
 ## 問題
 
 模型設定頁把 `openai-codex` 當作普通 pi-ai 路由提供出來，配的還是每個 pi-ai 提供方共用的那句佔位文案：填入 API 金鑰，或留空使用環境認證。照此設定後傳送訊息，本輪以 `Provider is not configured: openai-codex` 失敗，並被配接器歸入兜底的 `PI_AI_ERROR`。
 
-佔位文案所邀請的那種設定姿態在這條路由上不可能工作。pi-ai 的 `resolveProviderAuth` 抵達 OAuth 提供方只有一條路徑——集合的 `CredentialStore` 裡已經存著的憑據——對它沒有任何 ambient 回退；而 `openai-codex` 正是已安裝 catalog 中唯一隻聲明 `auth.oauth`、沒有 `auth.apiKey` 的提供方。`PiAiAdapter.current()` 以不帶參數的 `createModels()` 構造集合，於是用的是 pi-ai 默認的 `InMemoryCredentialStore`：每次啟動都是空的，每次設定變更產生新快照時又重建一份。本倉庫沒有任何位置呼叫 `Models.login()`；pi-ai 庫這一半也不會去讀 Codex 自己的 `~/.codex/auth.json`——它的 OAuth 模組是一套 PKCE 登入流程，憑據由*宿主*應用持久化，這正是 pi CLI 提供、而本配接器沒有提供的東西。
+佔位文案所邀請的那種設定姿態在這條路由上不可能工作。pi-ai 的 `resolveProviderAuth` 抵達 OAuth 提供方只有一條路徑——集合的 `CredentialStore` 裡已經存著的憑據——對它沒有任何 ambient 回退；而 `openai-codex` 正是已安裝 catalog 中唯一隻聲明 `auth.oauth`、沒有 `auth.apiKey` 的提供方。`PiAiAdapter.current()` 以不帶參數的 `createModels()` 構造集合，於是用的是 pi-ai 預設的 `InMemoryCredentialStore`：每次啟動都是空的，每次設定變更產生新快照時又重建一份。本倉庫沒有任何位置呼叫 `Models.login()`；pi-ai 庫這一半也不會去讀 Codex 自己的 `~/.codex/auth.json`——它的 OAuth 模組是一套 PKCE 登入流程，憑據由*宿主*應用持久化，這正是 pi CLI 提供、而本配接器沒有提供的東西。
 
 於是頁面用自己佔位文案所描述的「留空」姿態，提供了一個根本沒有「留空」姿態的提供方——而失敗資訊指向的是設定鍵，不是缺失的能力。唯一能讓這條路由完成認證的，是把一個 ChatGPT OAuth token 粘進金鑰框，那既不是這個提供所描述的用法，也會過期且這裡沒有任何環節會去刷新它。
 

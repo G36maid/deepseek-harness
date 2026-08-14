@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-15-agent-initiator-scope.md) | [简体中文](2026-07-15-agent-initiator-scope.zh.md) | 繁體中文
+[English](2026-07-15-agent-initiator-scope.md) | 繁體中文
 
 ## 問題
 
@@ -20,11 +20,11 @@ harness 中存在兩種有用但不同的上下文概念。Cordis `Context` 負�
 
 因此，並行驅動使用彼此獨立的儲存。子驅動的非同步延續攜帶子 Agent；`withInitiator()` 返回後，呼叫方立即復原之前的儲存，而活動執行計數仍持續跟蹤返回的 Promise，直到其結束。建立、持久化載入和尚未發布的 `setup(agentCtx)` 位於子驅動邊界之外：由父 Agent 發起的建立使用父身份，而 `agentCtx.agent` 顯式標識子 Agent。
 
-隱式身份不會取代顯式約定。`ToolExecution.agent`、`AssembleContext.agent`、`GenerateOptions.sessionId`、任務歸屬、父子請求、`ctx.agent`、`agentCtx.agent`、審批與 hook 主體、`cwd` 選擇、取消、worker 和行程訊息、持久化記錄及協議身份都保持顯式傳遞。遠端邊界會把所需身份寫入類型化請求，因為 ALS 只在行程內有效。
+隱式身份不會取代顯式約定。`ToolExecution.agent`、`AssembleContext.agent`、`GenerateOptions.sessionId`、任務歸屬、父子請求、`ctx.agent`、`agentCtx.agent`、審批與 hook 主體、`cwd` 選擇、取消、worker 和行程訊息、持久化記錄及協定身份都保持顯式傳遞。遠端邊界會把所需身份寫入類型化請求，因為 ALS 只在行程內有效。
 
 `AgentRegistry` 管理一個有序的發起方生命週期。teardown 會先拒絕新邊界；移除 `ctx.agents` 後，AgentLoop 等注入方開始排空，登錄檔隨後等待活動的返回 Promise 邊界，最後呼叫 `AsyncLocalStorage.disable()`。如果某個邊界繼承的非同步呼叫鏈啟動所屬 Cordis fiber 的解除安裝，私有執行標記譜系會從排空範圍中釋放該巢狀邊界鏈，從而避免 teardown 等待自身完成，同時繼續排空無關邊界。在普通排空期間，進行中程式碼可透過保留的服務引用繼續呼叫 `currentInitiator()` 和 `requireInitiator()`；dispose（資源釋放）後，發起方方法會拋出 `agent initiator scope is disposed`。根 Context dispose 可能並行啟動同級 fiber 的 teardown，因此除 Cordis 相依性順序外仍必須統計活動邊界。
 
-發起方作用域不負責管理脫離返回鏈的工作：登錄檔排空只跟蹤 `withInitiator()` 或 `withoutInitiator()` 返回的 Promise。邊界內建立的非同步資源會繼承其儲存，直到自身結束或 ALS 被停用；所屬 seam 必須顯式停止未納入返回 Promise 的工作。Agent 所屬的前臺工作會把完整生命週期納入回傳值，並保留顯式取消約定。無關的定時器、佇列和部署基礎設施在 `withoutInitiator(operation)` 下啟動；佇列、worker、行程和協議邊界必須序列化身份，不能期待 ALS 傳播。
+發起方作用域不負責管理脫離返回鏈的工作：登錄檔排空只跟蹤 `withInitiator()` 或 `withoutInitiator()` 返回的 Promise。邊界內建立的非同步資源會繼承其儲存，直到自身結束或 ALS 被停用；所屬 seam 必須顯式停止未納入返回 Promise 的工作。Agent 所屬的前臺工作會把完整生命週期納入回傳值，並保留顯式取消約定。無關的定時器、佇列和部署基礎設施在 `withoutInitiator(operation)` 下啟動；佇列、worker、行程和協定邊界必須序列化身份，不能期待 ALS 傳播。
 
 宿主感知的傳輸層可以從 `ctx.agents.requireInitiator().session.id` 推導由部署方擁有的 `X-Harness-Session-Id` 等請求標頭；模型可見 schema 和參數中不包含該請求標頭。本決策不讓現有生產 MCP 或 Web 傳輸層採用此請求標頭。測試替身傳輸層用於證明可信邊界，而不會把宿主路由策略分配給現有的提供方無關 seam。
 
@@ -32,13 +32,13 @@ harness 中存在兩種有用但不同的上下文概念。Cordis `Context` 負�
 
 ## 驗證
 
-Agent 服務測試鎖定選填與必需讀取、同步值及跨 realm Promise 的精確身份、內建 Promise 結束狀態觀察、並行、巢狀及清空邊界、同步拋錯或 Promise 拒絕後的復原、普通與重入排空順序及保留引用的錯誤。AgentLoop 整合測試鎖定並行與巢狀驅動、無 Agent 呼叫、AgentRegistry 重新啟動、根 Context 銷毀，以及包內私有的迴圈和工具調度透過隱式尋找完成。組合、模組圖、建置及執行時期閉包檢查確保默認組合包、SDK 主幹、Python 執行時期閉包及直接 AgentLoop harness 透過 `ctx.agents` 完成接線，無需其他提供方。
+Agent 服務測試鎖定選填與必需讀取、同步值及跨 realm Promise 的精確身份、內建 Promise 結束狀態觀察、並行、巢狀及清空邊界、同步拋錯或 Promise 拒絕後的復原、普通與重入排空順序及保留引用的錯誤。AgentLoop 整合測試鎖定並行與巢狀驅動、無 Agent 呼叫、AgentRegistry 重新啟動、根 Context 銷毀，以及包內私有的迴圈和工具調度透過隱式尋找完成。組合、模組圖、建置及執行時期閉包檢查確保預設組合包、SDK 主幹、Python 執行時期閉包及直接 AgentLoop harness 透過 `ctx.agents` 完成接線，無需其他提供方。
 
 測試替身形式的宿主感知傳輸層在內部推導 `X-Harness-Session-Id`，並驗證工具 schema 與日誌中記錄的參數都不包含身份欄位。服務有意不排空邊界操作所返回 Promise 之外的非同步工作；這類工作仍由所屬方的顯式停止約定管理。
 
 ## 考慮過的替代方案
 
-**在每個函式中傳遞 Agent。** 公開、worker、行程、持久化和協議邊界繼續顯式傳遞，但要求每個行程內私有輔助函式都攜帶 Agent 只會造成重複轉發，不會提高可信度。ALS 僅限於這些顯式邊界內部的非同步呼叫鏈。
+**在每個函式中傳遞 Agent。** 公開、worker、行程、持久化和協定邊界繼續顯式傳遞，但要求每個行程內私有輔助函式都攜帶 Agent 只會造成重複轉發，不會提高可信度。ALS 僅限於這些顯式邊界內部的非同步呼叫鏈。
 
 **讓 `ctx.agent` 變成動態值。** `ctx.agent` 已經表示與 Agent 作用域 Cordis 上下文靜態關聯的 Agent。改變根上下文的含義會混合註冊作用域與執行作用域，並讓並行行為變得意外。
 

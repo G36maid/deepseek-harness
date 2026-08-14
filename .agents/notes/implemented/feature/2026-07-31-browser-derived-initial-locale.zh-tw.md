@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-browser-derived-initial-locale.md) | [简体中文](2026-07-31-browser-derived-initial-locale.zh.md) | 繁體中文
+[English](2026-07-31-browser-derived-initial-locale.md) | 繁體中文
 
 ## Problem
 
@@ -25,7 +25,7 @@ Status: implemented
 - **`Intl.DateTimeFormat().resolvedOptions().locale` 或單讀 `navigator.language`**：兩者都把使用者的有序偏好清單塌縮成一個標籤，於是 `['de', 'en', 'zh']` 的讀者拿到的是 zh 而非 en。清單恰恰是瀏覽器這份聲明裡最值得讀的部分。
 - **首次啟動即持久化探測結果**：那會把探測變成一次性事件，讓一次過時的首訪凌駕於此後改變的瀏覽器語言之上，也摧毀了整個解析順序所相依性的區分——儲存值將不再意味著「使用者選了它」。
 - **完整的 BCP 47 協商（`Intl.LocaleMatcher` 式尋找、地區與文字權重）**：在只提供兩個語言互異的 locale 時，主子標籤匹配就是正確答案的全部；協商層只會帶來無行為支撐、也無從測試的表面積。
-- **為默認 locale 增加一個 Cordis 設定鍵**：此處部署之間並無差異——回落值是產品對「完全沒有訊號」給出的答案，不是旋鈕。倉庫策略把 `Config` 欄位留給有當前消費端、且隨部署變化的選擇。
+- **為預設 locale 增加一個 Cordis 設定鍵**：此處部署之間並無差異——回落值是產品對「完全沒有訊號」給出的答案，不是旋鈕。倉庫策略把 `Config` 欄位留給有當前消費端、且隨部署變化的選擇。
 - **讓 e2e 車道的中文場景繼續釘儲存項（`dsh.locale=zh`）**：那會讓套件保持綠色，卻抹掉瀏覽器推導路徑在組裝後應用中唯一的執行處；改釘瀏覽器語言才能端到端地演練新的解析過程。
 
 ## Consequences

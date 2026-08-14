@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-fs
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 **面向模型的檔案系統工具**（`read`、`read_image`、`write`、`edit`）及其**執行器**。這是檔案系統棧的消費端層：擁有工具名稱、JSON Schema、參數校驗、提示詞段、**讀取視窗邏輯**和結果格式化。它**直接**透過 `ctx.fs` 提供方約定（[`@deepseek-ai/dsh-fs`](../fs)）讀取／寫入／編輯。新鮮度／觀察策略由獨立外掛程式（[`@deepseek-ai/dsh-fs-observation-policy`](../fs-observation-policy)）透過 `fs/*` 事件閘門貢獻；工具不與其方法耦合。使用施加沙盒限制的提供方時，逐工作階段執行需要共享沙盒策略服務，工具還會為檔案系統變更提供升權路徑。
 
@@ -22,7 +22,7 @@ await ctx.plugin(ToolFs)                                  // this package — re
 
 | 鍵 | 預設值 | 含義 |
 |---|---|---|
-| `readLimit` | `2000` | 一次 `read` 呼叫返回的默認和最大行數（工具 schema 將其聲明為 `limit` 預設值）。 |
+| `readLimit` | `2000` | 一次 `read` 呼叫返回的預設和最大行數（工具 schema 將其聲明為 `limit` 預設值）。 |
 | `readMaxLineLength` | `2000` | 每行截斷前保留的字元數（後綴會說明上限）。 |
 | `readMaxBytes` | `51200` | 一次 `read` 呼叫所選行的位元組上限；溢位時以「已達上限」footer 結束視窗。 |
 | `readStreamMinSize` | `10485760` | 大於等於該大小或大小未知的文件採用流式讀取，而不是整體載入到記憶體。 |
@@ -49,7 +49,7 @@ await ctx.plugin(ToolFs)                                  // this package — re
 - **write**：呼叫 `ctx.waterfall('fs/write-intent', target, exec, () => undefined)` 取得選填防護，然後呼叫 `ctx.fs.writeText(target, content, intent)`，再發出 `fs/observed`。（0 次 stat。）
 - **edit**：呼叫 `ctx.waterfall('fs/edit-intent', target, exec, () => undefined)` 取得選填防護，然後呼叫 `ctx.fs.editText(target, edit, intent)`，再發出 `fs/observed`。（0 次 stat。）
 
-工具在每次分派中把 `exec`（工具執行上下文）作為不透明 `actor` 傳入。默認 thunk 返回 `undefined`（不受約束的裸提供方）。載入 `@deepseek-ai/dsh-fs-observation-policy` 後，它會佔用單個決策槽：返回 `createIfAbsent`/`replaceIfVersion`/`{ version }` 或拋出 `FS_NOT_OBSERVED`，並在 `fs/observed` 時記錄。後端錯誤（`FsError`）和拋出的 `FS_NOT_OBSERVED` 會流經 `ToolRuntime.execute()`，變成 `isError` 工具結果，並附帶 `{ name, code }`。
+工具在每次分派中把 `exec`（工具執行上下文）作為不透明 `actor` 傳入。預設 thunk 返回 `undefined`（不受約束的裸提供方）。載入 `@deepseek-ai/dsh-fs-observation-policy` 後，它會佔用單個決策槽：返回 `createIfAbsent`/`replaceIfVersion`/`{ version }` 或拋出 `FS_NOT_OBSERVED`，並在 `fs/observed` 時記錄。後端錯誤（`FsError`）和拋出的 `FS_NOT_OBSERVED` 會流經 `ToolRuntime.execute()`，變成 `isError` 工具結果，並附帶 `{ name, code }`。
 
 當 `ctx.fs.sandboxMode` 表明提供方施加沙盒限制時，write/edit 會公開 `sandbox_permissions` 與 `justification`，並透過 `ctx.approval` 處理獲批後的重試。策略歸屬方會貢獻與具體能力無關的常駐策略；工具結果仍保留針對具體操作的拒絕與重試引導。
 
@@ -155,7 +155,7 @@ Use the edit tool for targeted changes to existing UTF-8 text files. It replaces
 
 #### 模型看到的內容
 
-失敗會規範化為 `Error: <message>`。本包穩定的校驗和讀取消息是 `file_path must be a non-empty string`、`limit must be less than or equal to <max>`、`old_string must be a non-empty string`、`old_string and new_string must differ`、`cannot read "<path>": not found`、`cannot read "<path>": not a regular file`、`offset <offset> is out of range for "<path>" (<total> lines)`、`cannot read "<path>": read_image only accepts PNG/JPEG/WebP/GIF paths`、`cannot read "<path>" as an image: model "<model>" does not declare image input; switch to an image-capable model to read images`，以及類型不匹配的修復訊息 `cannot read "<path>": the <ext> extension declares <type>, but the bytes use a different image format; rename the file to match its actual format if it is PNG/JPEG/WebP/GIF, or convert it to one of those formats`；提供方和策略範本在各自包的 README 中逐字列出。防護變更失敗還會在訊息中攜帶復原指令，由本包面向模型的錯誤包裝追加：`FS_STALE_VERSION` 追加 `— re-read the file, then retry`，`FS_NOT_OBSERVED` 追加 `— read the file, then retry`；結構化錯誤碼保持不變。該次重新讀取確認缺失後，edit 會報告 `FS_NOT_FOUND`，而不會重複過時復原指令；write 則使用帶防護的建立。
+失敗會規範化為 `Error: <message>`。本包穩定的校驗和讀取訊息是 `file_path must be a non-empty string`、`limit must be less than or equal to <max>`、`old_string must be a non-empty string`、`old_string and new_string must differ`、`cannot read "<path>": not found`、`cannot read "<path>": not a regular file`、`offset <offset> is out of range for "<path>" (<total> lines)`、`cannot read "<path>": read_image only accepts PNG/JPEG/WebP/GIF paths`、`cannot read "<path>" as an image: model "<model>" does not declare image input; switch to an image-capable model to read images`，以及類型不匹配的修復訊息 `cannot read "<path>": the <ext> extension declares <type>, but the bytes use a different image format; rename the file to match its actual format if it is PNG/JPEG/WebP/GIF, or convert it to one of those formats`；提供方和策略範本在各自包的 README 中逐字列出。防護變更失敗還會在訊息中攜帶復原指令，由本包面向模型的錯誤包裝追加：`FS_STALE_VERSION` 追加 `— re-read the file, then retry`，`FS_NOT_OBSERVED` 追加 `— read the file, then retry`；結構化錯誤碼保持不變。該次重新讀取確認缺失後，edit 會報告 `FS_NOT_FOUND`，而不會重複過時復原指令；write 則使用帶防護的建立。
 
 #### Token 影響
 

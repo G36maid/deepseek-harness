@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-31-telemetry-anonymous-user-id.md) | [简体中文](2026-07-31-telemetry-anonymous-user-id.zh.md) | 繁體中文
+[English](2026-07-31-telemetry-anonymous-user-id.md) | 繁體中文
 
 ## 問題
 
-session telemetry 已默認掛載（[默認掛載 Note](2026-07-31-web-telemetry-default-mount.md)），但 OTel Resource 只有 `service.name`/`service.version`，沒有任何使用者級標識——接收端無法按使用者聚合、無法數活躍使用者。此前唯一相關口徑是一條未實作的「hostname/本機 IP 雜湊派生 user.id」裁定。需要給 OTel 迴流一個語義乾淨的匿名使用者身份。
+session telemetry 已預設掛載（[預設掛載 Note](2026-07-31-web-telemetry-default-mount.md)），但 OTel Resource 只有 `service.name`/`service.version`，沒有任何使用者級標識——接收端無法按使用者聚合、無法數活躍使用者。此前唯一相關口徑是一條未實作的「hostname/本機 IP 雜湊派生 user.id」裁定。需要給 OTel 迴流一個語義乾淨的匿名使用者身份。
 
 ## 決策
 
@@ -40,4 +40,4 @@ session telemetry 已默認掛載（[默認掛載 Note](2026-07-31-web-telemetry
 - 一個 `$DSH_HOME` 在 OTel 迴流中是一個穩定使用者；不同 home 在構造上就是不同使用者，無跨 home 關聯機制。
 - OTel 迴流、`/feedback` 與直連 DeepSeek 請求共享 `.anonymous-user-id`。
 - 刪除 `.anonymous-user-id` 即重設身份（下次啟動生效）；home 不可寫時每行程各自持有一個記憶體 id 直至復原可寫。
-- [默認掛載 Note](2026-07-31-web-telemetry-default-mount.md) 的身份 follow-up 中「匿名使用者 id」項由本決定關閉；hostname/surface 維度與脫敏規則、usage-metrics track 仍是待辦。
+- [預設掛載 Note](2026-07-31-web-telemetry-default-mount.md) 的身份 follow-up 中「匿名使用者 id」項由本決定關閉；hostname/surface 維度與脫敏規則、usage-metrics track 仍是待辦。

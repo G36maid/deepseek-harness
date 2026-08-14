@@ -1,6 +1,6 @@
 # dsh-system-prompt
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 系統提示詞組裝登錄檔。外掛程式可以貢獻有序段、工具 schema 和具名變數。迴圈在每個步驟組裝一次，並將結果渲染為完整的模型提示詞。此外掛程式擁有靜態 harness 身份和全域性部署 persona；agent（代理）作用域的 persona 會遮蔽全域性預設值。
 
@@ -28,7 +28,7 @@
 
 ### 即時事件
 
-普通段以 `system-prompt/assemble` 的返回結果為準；complete 段則會在 waterfall 之後作為最終提示詞約束生效。替換條目的監聽器必須保留任何已啟用的 Code Mode 或結構化輸出協議。篩選需要在呈現、尋找與執行之間保持一致時，應使用 [`ToolRuntime.restrict()`](../tools/README.md)。登錄檔變更通知不經過篩選。[system-prompt.md](../../../docs/subsystems/system-prompt.md#cordis-surface) 的生成區塊擁有事件簽名和分發約定。
+普通段以 `system-prompt/assemble` 的返回結果為準；complete 段則會在 waterfall 之後作為最終提示詞約束生效。替換條目的監聽器必須保留任何已啟用的 Code Mode 或結構化輸出協定。篩選需要在呈現、尋找與執行之間保持一致時，應使用 [`ToolRuntime.restrict()`](../tools/README.md)。登錄檔變更通知不經過篩選。[system-prompt.md](../../../docs/subsystems/system-prompt.md#cordis-surface) 的生成區塊擁有事件簽名和分發約定。
 
 ### 關鍵類型
 

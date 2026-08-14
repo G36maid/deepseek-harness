@@ -4,13 +4,13 @@ Status: implemented
 
 > 路徑更新（2026-07-22，外掛程式體系重構）：本文三層理念與黃金路徑方法仍為現行；家搬了——對象層 spec 現居 `packages/client/runtime/tests/`（原 web-runtime）、wire spec 現居 `packages/client/connection/tests/`，`web-ui` 覆蓋豁免隨包消亡（元件 spec 為各 `packages/client/*/tests/` 的 jsdom 套件）。元件 spec 形態遵循 [slot 體系標準](../architecture/2026-07-22-slot-type-chain-implementation.md)：props 直喂——store 份額來自 `createXXXStore().create()`（真引擎，獲認可的無額外機制路徑），框架掛鉤用普通樁；無渲染機制、不掛載提供方。slot 歸屬/登錄檔語義歸 2 層地界（`runtime` + `ui-slots` 套件），不歸元件 spec。
 
-[English](2026-07-20-gui-testing-system.md) | [简体中文](2026-07-20-gui-testing-system.zh.md) | 繁體中文
+[English](2026-07-20-gui-testing-system.md) | 繁體中文
 
 > 分工線：本篇只講 GUI（`packages/{client,host}/*` + `apps/web`）特有的測試結構；全倉測試政策（分層原則、with-key 政策、真實實作優先、REAL-composition）見 [docs/testing.md](../../../../docs/testing.md)，不在此複述。
 
 ## Problem
 
-GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境（Node host、資料協議層、瀏覽器對象層、React/DOM），單一車道的測試給不了有效訊號。需要對各環節都進行有效測試，並具備全鏈路測試的基礎能力。
+GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境（Node host、資料協定層、瀏覽器對象層、React/DOM），單一車道的測試給不了有效訊號。需要對各環節都進行有效測試，並具備全鏈路測試的基礎能力。
 
 ## Decision
 
@@ -18,7 +18,7 @@ GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境�
 
 | 層 | 被測物 | 關鍵手段 | 文件落點 |
 |---|---|---|---|
-| 1 協議同構層 | `AbstractApiClient` + `toFetchHandler`（雙向資料/rpcId/ZOD 類型/SSE（Server-Sent Events）流/合批/逾時） | **同構點全鏈**：`InProcessApiClient(toFetchHandler(脚本化 impl))` 不過網路但真跑 wire 序列化——零瀏覽器、純 node env | `packages/host/apiproxy/tests/client-handler.spec.ts` |
+| 1 協定同構層 | `AbstractApiClient` + `toFetchHandler`（雙向資料/rpcId/ZOD 類型/SSE（Server-Sent Events）流/合批/逾時） | **同構點全鏈**：`InProcessApiClient(toFetchHandler(脚本化 impl))` 不過網路但真跑 wire 序列化——零瀏覽器、純 node env | `packages/host/apiproxy/tests/client-handler.spec.ts` |
 | 2 對象層編排 | `Session`/`SessionManager`/`ConnectionController`（狀態機與時序：縫合/去重/翻頁/樂觀清稿/pendingBuffers/重連/退避） | **「事件序列進→快照出」黃金路徑**：可程式設計假體 + deferred 控時序 + fake timers 控退避 | `packages/client/{runtime,connection}/tests/` |
 | 3 組裝呈現層 | 建置產物 × 真實 client loader 與外掛程式組合 | 歸應用所有的語義快照會在 jsdom 下啟動全部 8 個已建置的 client 外掛程式，以確定性方式驅動跨外掛程式狀態變化；另有最簡 Playwright 冒煙測試負責驗證真實瀏覽器/承載層邊界，真 host 用例在無金鑰時自行跳過；無金鑰瀏覽器 e2e 車道會停用交付設定中的模型配接器行，並透過 `dsh-llm-replay` 在真實行程內 web 組裝中重播錄制的工作階段 fixture（測試前置資料），與工作階段區 aria 預期輸出比對（[web e2e 車道](../testing/2026-07-24-web-gui-browser-e2e-lane.md)、[必需 CI 閘門](../testing/2026-07-30-web-browser-snapshot-ci-gate.md)） | `apps/web/tests/*.snapshot.ts`、`apps/web/tests/smoke-{fixture,real}.e2e.ts`、`apps/web/tests/{replay-round-trip,seeded-history}.e2e.ts` |
 
@@ -47,7 +47,7 @@ GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境�
 
 ## Consequences
 
-各車道各測各層：改動任意 GUI 原始碼後都能獲得秒級 `test:gui` 回饋，wire/對象層語義在 Node 環境中進行毫秒級斷言，基於建置後組合的快照固定確定性的使用者可見投影，瀏覽器負責接線與承載層驗收。層間紀律仍由評審負責，而 Linux CI 透過機器閘門確保瀏覽器預期輸出的新鮮度。每個新的應用快照都必須避開不穩定的版面配置或時鐘輸出。
+各車道各測各層：改動任意 GUI 原始碼後都能獲得秒級 `test:gui` 回饋，wire/對象層語義在 Node 環境中進行毫秒級斷言，基於建置後組合的快照固定確定性的使用者可見投影，瀏覽器負責接線與承載層驗收。層間紀律仍由評審負責，而 Linux CI 透過機器閘門確保瀏覽器預期輸出的新鮮度。每個新的應用快照都必須避開不穩定的版面設定或時鐘輸出。
 
 ## Alternatives considered
 
@@ -55,6 +55,6 @@ GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境�
 |---|---|
 | 單一 e2e（全走瀏覽器） | 瀏覽器起步秒級×N 倍慢+時序不可控；wire/對象層不變數在 node env 可毫秒級全斷言 |
 | verify 指令碼遷 vitest | 有序指令碼共享瀏覽器工作階段，拆 case 要麼形式化（sequential+共享 page）要麼重走前置×N；PASS/FAIL 流式輸出正是 agent（代理）定位介面 |
-| 測試複用 FixtureApiClient | 演示指令碼走真實時鐘，測試需要 deferred 手控時序——用途正交，硬複用把測試綁死在演示節奏上 |
+| 測試複用 FixtureApiClient | 示範指令碼走真實時鐘，測試需要 deferred 手控時序——用途正交，硬複用把測試綁死在示範節奏上 |
 | GUI 包獨立 vitest config（曾設計 vitest.gui.config.ts） | 包級 tests/ 本就被根 include 掃到，`vitest run packages/client packages/host` 路徑過濾即窄迴圈——零新 config |
 | 掛鉤/元件層暫緩單測 | jsdom 仍是覆蓋率主線，因為它能快速驗證逐文件元件行為；必需的瀏覽器重播閘門在組裝層與之互補，而非取代它（[CI 閘門決策](../testing/2026-07-30-web-browser-snapshot-ci-gate.md)） |

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-skill-catalog-hot-refresh.md) | [简体中文](2026-07-27-skill-catalog-hot-refresh.zh.md) | 繁體中文
+[English](2026-07-27-skill-catalog-hot-refresh.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ skill（技能）摘要是模型的路由輸入，但本機 skill 可在工作�
 
 skill 服務將目錄成員關係與指令正文載入分離。`ctx.skills.snapshot()` 返回摘要及一個完整性位。`ctx.skills.registerProvider(factory)` 會向同步工廠提供一項註冊作用域內的 `{ signal, invalidate }` 控制能力：`invalidate()` 只會將該精確活動註冊標記為髒，並丟棄已完成目錄快取；註冊失敗或釋放時，訊號會中止。提供方返回的陣列是完整發現的簡寫形式；顯式的不完整觀測可以保留可讀候選項供直接載入，但不能快取，也不能作為面向模型消費端的權威結果。在發現期間，如果提供方或執行時期 generation 發生變化，系統會重試一次；如果這次重試也被後續修訂取代，則最新候選項會作為不完整且不快取的觀測返回。資源釋放或替換後的延遲失效操作不會執行任何操作，因為該能力已被撤銷。
 
-`@deepseek-ai/dsh-skill-filesystem` 直接相依性 Chokidar，並觀察與目錄相關的宿主路徑。已有根目錄會監視其直屬 skill bundle 目錄、平鋪的 Markdown 條目和直屬 `SKILL.md` 條目文件。新增、移除和目錄變更會使成員關係失效；文件變更還支持刷新 frontmatter 中的 `name` 和 `description`。bundle 內更深層的資源文件會被忽略。同一微任務批次中的事件會合並為一次失效。項目 watcher 使用有界集合，並按最久未觀察順序淘汰。
+`@deepseek-ai/dsh-skill-filesystem` 直接相依性 Chokidar，並觀察與目錄相關的宿主路徑。已有根目錄會監視其直屬 skill bundle 目錄、平鋪的 Markdown 條目和直屬 `SKILL.md` 條目文件。新增、移除和目錄變更會使成員關係失效；文件變更還支援刷新 frontmatter 中的 `name` 和 `description`。bundle 內更深層的資源文件會被忽略。同一微任務批次中的事件會合並為一次失效。項目 watcher 使用有界集合，並按最久未觀察順序淘汰。
 
 系統從缺失根目錄最近的現有祖先開始，使用 `fs.watchFile` 每次跟進一層缺失路徑片段；真實根目錄出現後，再交給 Chokidar。每次發現操作都會在掃描前重新探測所保留的根目錄／祖先模式。即使子項移除在根目錄 `unlinkDir` 事件之前就觸發失效並行布權威空目錄，或者該事件根本沒有到達，這項獨立探測也會在刪除後重新建立祖先觀察。Chokidar 設定公開原生事件或輪詢模式、寫入穩定性、輪詢間隔、符號連結跟隨選項和項目 watcher 容量。第一方 `write` 和 `edit` 工具觀察會同步使相關提供方失效，因此下一個模型步驟無需等待宿主事件投遞，就能看到自身改動。watcher 啟動或執行失敗會被記錄並觸發重試；發現過程仍會返回可讀候選項供直接載入，但會報告不完整觀測。資源銷毀會關閉 watcher，並忽略延遲回呼。
 

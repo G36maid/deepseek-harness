@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-loader-entry-disabled-interpolation.md) | [简体中文](2026-08-11-loader-entry-disabled-interpolation.zh.md) | 繁體中文
+[English](2026-08-11-loader-entry-disabled-interpolation.md) | 繁體中文
 
 ## 問題
 
@@ -22,4 +22,4 @@ Loader 插值條目 `disabled` 欄位（`vendor/loader/src/config/entry.ts`）�
 
 ## 後果
 
-行可以按平臺或環境門控自身；錯誤的表達式在啟動時響亮失敗。其餘元資料欄位保持字面值，閘門繼續拒絕那裡的表達式——`disabled` 上的 postmortem-0002 隱患以「求值」而非「禁止」關閉。Windows shell 棧的切換從啟動器注入的 patch 層移到 base bundle 自身的行上：win32 掛載受限 pwsh 棧，POSIX 攜帶被停用的 pwsh 行，同一份 patch 文件服務兩種陣容——[Windows 默認 pwsh](../feature/2026-08-01-windows-pwsh-default.md) note 的層機制已被取代。shell 工具行遵循與其他預設聲明行相同的 one-plane 規則：web-app overlay 停用 host 面的 `tool-bash`/`tool-pwsh` 行，預設以互逆的平臺門控聲明兩者，因此任一宿主的每個工作階段都可以按預設丟棄或替換 shell 工具。`minimal` 預設缺失的 win32 PTY 棧是預設元資料的後續工作。
+行可以按平臺或環境門控自身；錯誤的表達式在啟動時響亮失敗。其餘元資料欄位保持字面值，閘門繼續拒絕那裡的表達式——`disabled` 上的 postmortem-0002 隱患以「求值」而非「禁止」關閉。Windows shell 棧的切換從啟動器注入的 patch 層移到 base bundle 自身的行上：win32 掛載受限 pwsh 棧，POSIX 攜帶被停用的 pwsh 行，同一份 patch 文件服務兩種陣容——[Windows 預設 pwsh](../feature/2026-08-01-windows-pwsh-default.md) note 的層機制已被取代。shell 工具行遵循與其他預設聲明行相同的 one-plane 規則：web-app overlay 停用 host 面的 `tool-bash`/`tool-pwsh` 行，預設以互逆的平臺門控聲明兩者，因此任一宿主的每個工作階段都可以按預設丟棄或替換 shell 工具。`minimal` 預設缺失的 win32 PTY 棧是預設元資料的後續工作。

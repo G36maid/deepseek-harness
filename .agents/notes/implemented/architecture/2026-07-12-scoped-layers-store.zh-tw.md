@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-12-scoped-layers-store.md) | [简体中文](2026-07-12-scoped-layers-store.zh.md) | 繁體中文
+[English](2026-07-12-scoped-layers-store.md) | 繁體中文
 
 ## 問題
 
-agent（代理）作用域機制（[決策](2026-07-08-agent-scope-contexts.md)、[執行時期設計](2026-07-12-agent-scope-runtime-design.md)）讓支持作用域的登錄檔反覆呈現同一種形態：一個全域性註冊層，加上一個與具體 agent 精確對應的層。七個註冊門面都採用這一形態：`tools.register`、`tools.restrict` 和 `tools.guard`（位於 `dsh-tools`）；`SystemPrompt.section`、`SystemPrompt.tools` 和 `SystemPrompt.variable`（位於 `dsh-system-prompt`）；以及 `CommandRuntime.register`（位於 `dsh-commands`）。
+agent（代理）作用域機制（[決策](2026-07-08-agent-scope-contexts.md)、[執行時期設計](2026-07-12-agent-scope-runtime-design.md)）讓支援作用域的登錄檔反覆呈現同一種形態：一個全域性註冊層，加上一個與具體 agent 精確對應的層。七個註冊門面都採用這一形態：`tools.register`、`tools.restrict` 和 `tools.guard`（位於 `dsh-tools`）；`SystemPrompt.section`、`SystemPrompt.tools` 和 `SystemPrompt.variable`（位於 `dsh-system-prompt`）；以及 `CommandRuntime.register`（位於 `dsh-commands`）。
 
 如果沒有共享原語，每個門面都要圍繞自己的領域狀態重複相同的生命週期編排：從呼叫方上下文匯出可見性，按需建立專屬容器，把屬主綁定到同一個 Cordis fiber，先裝入 undo 再通知觀察者，原樣返回 Cordis 的 disposer，並回收空的專屬狀態。各自分離的對映與集合類型也會讓服務缺少一個表示某個 scope 完整貢獻的對象。
 
@@ -88,7 +88,7 @@ export class AnonymousEntries<V> {
 
 `dsh-commands` 定義一個單表層，其中包含 `NamedEntries<RegisteredCommand>`。生效檢視表使用 `merge()`；`CommandRuntime` 則保留對定義的規範化與凍結處理、精確重名診斷、經過排序的不可變描述符、直接執行、HMR（熱模組替換）清理，以及對各個 `commands/change` 觀察者分別隔離失敗的行為。
 
-七個門面都把校驗與診斷留在所屬登錄檔中，並繼續返回 Cordis 的原始 disposer。遷移既不改變公開登錄檔行為，也不改變模型可見或人類可見的輸出，以及協議、持久化或設定層面的可見輸出。
+七個門面都把校驗與診斷留在所屬登錄檔中，並繼續返回 Cordis 的原始 disposer。遷移既不改變公開登錄檔行為，也不改變模型可見或人類可見的輸出，以及協定、持久化或設定層面的可見輸出。
 
 ## 備選方案
 
@@ -110,13 +110,13 @@ export class AnonymousEntries<V> {
 
 ## 後果
 
-- 支持作用域的登錄檔各自透過一個聚合層表達狀態，並複用相同的構造、屬主、回滾、通知和回收編排。各登錄檔仍各自保有領域特有的校驗、診斷、過濾、求值和觀察者策略。
+- 支援作用域的登錄檔各自透過一個聚合層表達狀態，並複用相同的構造、屬主、回滾、通知和回收編排。各登錄檔仍各自保有領域特有的校驗、診斷、過濾、求值和觀察者策略。
 - 公開讀取介面保持狹窄：直接遍歷條目表可保留顯式的活語義，`merge()` 是唯一共享的物化遮蔽操作。異構的 `ScopeLayer` 不具備整層 `values()` 約定。
 - helper 刻意保持同步。未來的登記若需要非同步 setup 或多份分別擁有屬主的 undo，必須先明確屬主與 settlement 邊界，再拓寬這項約定。
 - action 必須在保留貢獻前拋錯，或者為自己保留的一切返回 undo；helper 無法修復超出這項約定的變更。提供的條目操作是原子的，遷移後的登錄檔會在插入前執行可能失敗的校驗。
 - 專屬層會一直保持已分配狀態，直到其聚合內的所有表都為空。因此，銷毀一個門面不會丟棄同一 scope 擁有的其他貢獻。
 - 四個公開符號構成一項可複用的包約定。將 `EntryValues` 保持為內部介面，並把消費端策略留在 helper 之外，可以限制相容性範圍。
-- 遷移不改變任何公開登錄檔行為，也不改變模型、人類、協議、持久化、設定或相依性圖層面的任何輸出。
+- 遷移不改變任何公開登錄檔行為，也不改變模型、人類、協定、持久化、設定或相依性圖層面的任何輸出。
 
 ## 驗證
 

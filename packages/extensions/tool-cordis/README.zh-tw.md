@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-cordis
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 自引用 Cordis 工具集：五個面向模型的工具，操作當前 DSH 行程中的即時執行時期。登錄檔、vm 沙盒與瀏覽器廣播屬於 [`@deepseek-ai/dsh-cordis-host-runner`](../cordis-host-runner/README.md)（`ctx.dynamic`），本工具集註入它——只裝這些工具而不裝 runner 的組合永遠不會啟用它們。沙盒語義、動態包生命週期與組合及既定決策詳見[工具集 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md)。
 
@@ -8,7 +8,7 @@
 
 兩組配對動詞，外加只讀報告。
 
-- `cordis_inspect`：當前行程執行時期的只讀報告，包括服務、全部存活外掛程式 fiber、已註冊工具、本工作階段的動態包、反射支持的 `api`／`events` 參考，以及瀏覽器半可以向其貢獻 UI 的編譯期 `client` 槽面。精確的 `name` 配合 `what: "api"`、`what: "events"` 或 `what: "client"` 可縮窄報告，並附上完整約定。
+- `cordis_inspect`：當前行程執行時期的只讀報告，包括服務、全部存活外掛程式 fiber、已註冊工具、本工作階段的動態包、反射支援的 `api`／`events` 參考，以及瀏覽器半可以向其貢獻 UI 的編譯期 `client` 槽面。精確的 `name` 配合 `what: "api"`、`what: "events"` 或 `what: "client"` 可縮窄報告，並附上完整約定。
 - `cordis_define`：在文法預檢兩個半之後登記一個包（`name`、`purpose`，以及 host 半 `code` 和／或瀏覽器半 `client`）。此時不執行任何東西；使用者會在工作階段裡看到它的卡片和一個啟動控制元件。鑄出的 `dyn-<n>` 標識同時進入結果 value **與**持久的呈現元資料，卡片正是靠後者在 replay 中尋址執行動詞。
 - `cordis_run`：在沙盒中求值 host 半，並把瀏覽器半投遞給每個打開的網頁。對已在執行的包再次執行不會失敗，而是重新投遞當前版本——這正是被刷新過的頁面把包取回來的方式。
 - `cordis_stop`：把 host 半 dispose 到完全靜止，並從各頁面撤回瀏覽器半；定義存續，可以再次執行。
@@ -47,11 +47,11 @@
 
 ## 渲染
 
-每個工具都渲染 `generic` 卡片（`read`／`execute`／`delete`）；`cordis_define` 以 `rawInput` 攜帶提交的兩個半，並用標籤與用途作為卡片標題。presenter 是 args 的純函式，結果保留默認文字渲染。Web 用戶端註冊自己的 keyed `cordis_define` 行（`@deepseek-ai/dsh-client-ui-cordis`），從呼叫參數與結果元資料裡取標籤、用途和鑄出的標識；沒有該註冊的介面則退回到這張 generic 卡片。
+每個工具都渲染 `generic` 卡片（`read`／`execute`／`delete`）；`cordis_define` 以 `rawInput` 攜帶提交的兩個半，並用標籤與用途作為卡片標題。presenter 是 args 的純函式，結果保留預設文字渲染。Web 用戶端註冊自己的 keyed `cordis_define` 行（`@deepseek-ai/dsh-client-ui-cordis`），從呼叫參數與結果元資料裡取標籤、用途和鑄出的標識；沒有該註冊的介面則退回到這張 generic 卡片。
 
 ## 匯出形式
 
-Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無默認匯出（[docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。它注入 `tools` 與 `dynamicCordisRunner`。
+Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無預設匯出（[docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。它注入 `tools` 與 `dynamicCordisRunner`。
 
 ## 模型體驗
 
@@ -77,7 +77,7 @@ Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無默認匯
 
 #### Token 影響
 
-檢查輸出與提交的包程式碼取決於資料，並在壓縮（compaction）前重複傳送；生命週期確認文字很短。`client` 區段的體量由出廠槽數量決定（每座位兩行），每座位細節按需索取，因此默認報告隨槽面成長，而不是隨其文件量成長。
+檢查輸出與提交的包程式碼取決於資料，並在壓縮（compaction）前重複傳送；生命週期確認文字很短。`client` 區段的體量由出廠槽數量決定（每座位兩行），每座位細節按需索取，因此預設報告隨槽面成長，而不是隨其文件量成長。
 
 #### KV Cache 影響
 
@@ -100,5 +100,5 @@ Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無默認匯
 ## 已知限制與暫緩事項
 
 - **沙盒只用於約束誠實程式碼，並非安全邊界**：可以訪問沙盒全域性變數上的 host realm helper，因此包程式碼可以觸達 Node；載入該外掛程式時，應當像授予 bash 工具一樣慎重（見 § 信任立場）。
-- **`ctx` façade 不公開 `effect()`**：包程式碼無法註冊訂製 disposer；`on`／`provide`／`tools.register` 是受支持的清理路徑。
+- **`ctx` façade 不公開 `effect()`**：包程式碼無法註冊訂製 disposer；`on`／`provide`／`tools.register` 是受支援的清理路徑。
 - **vm 與確認視窗這兩個邊界屬於 runner**：見它的[已知限制](../cordis-host-runner/README.md#known-limitations-and-deferred-work)；async 的 host 半主體可逃出 `vmTimeoutMs`。

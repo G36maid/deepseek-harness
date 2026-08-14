@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-shared-persistence-write-coordinator.md) | [简体中文](2026-06-18-shared-persistence-write-coordinator.zh.md) | 繁體中文
+[English](2026-06-18-shared-persistence-write-coordinator.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Status: implemented
 
 將一個後端無關的 `PersistenceCoordinator` 提取到 `dsh-session-persistence` 中。協調器統一擁有編排邏輯；每個第一方後端組合一個協調器實例（`new PersistenceCoordinator(ctx, this)`），實作一個小型 `PersistenceBackend` 掛鉤介面，並將其有狀態的公開方法（`create`/`append`/`prepare`/`load`/`inspect`/`readFrom`）委託給協調器。由後端擁有的元資料與修訂版本列舉會繞過協調器。
 
-組合，而非繼承。協調器是後端持有的具體類，不是後端繼承的基類。協調器讓非常規後端與繼承層級作鬥爭的風險由此規避：後端只暴露掛鉤，無法觸及協調器的私有編排狀態。第三方後端仍然可以完全不使用協調器、直接實作抽象服務，包括不可變邏輯檢查，以及透過 `load` 實作的默認準備回退。
+組合，而非繼承。協調器是後端持有的具體類，不是後端繼承的基類。協調器讓非常規後端與繼承層級作鬥爭的風險由此規避：後端只暴露掛鉤，無法觸及協調器的私有編排狀態。第三方後端仍然可以完全不使用協調器、直接實作抽象服務，包括不可變邏輯檢查，以及透過 `load` 實作的預設準備回退。
 
 協調器為每個存活的 `Session` 實例持有一個生命週期條目：初始化，加上一個包私有寫入控制器，後者負責待處理事件、固定批次處理截止時間、活躍寫入、失敗保留和共享 flush 屏障。每個 `session/event` 都進入這條有界寫入路徑，`session/flush` 則繞過等待以觀察完全靜止。控制器歸並由 [flush 控制器簡化](../simplification/2026-07-23-collapse-persistence-flush-state.md)定義；調度節奏由[有界批次處理決策](2026-08-08-bounded-session-persistence-write-batching.md)定義。
 

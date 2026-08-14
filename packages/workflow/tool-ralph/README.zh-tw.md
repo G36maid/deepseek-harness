@@ -1,12 +1,12 @@
 # @deepseek-ai/dsh-tool-ralph
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 面向模型的 `ralph` 工具執行固定的前臺工作流程，把一個不可變目標依次交給多個全新子 agent（代理）。它展示如何把專用編排策略實作為基於 [`ctx.workflowEngine`](../workflow/README.md) 和 [`ctx.subagents`](../../subagent/subagent/README.md) 的普通外掛程式：不會向 `agent-loop` 新增 Ralph 模式或全新 agent loop（代理循環），同工作階段的[目標領域](../../goal/goal/README.md)也保持獨立。策略和暫緩事項由 [Ralph Agent Note（agent 決策記錄）](../../../.agents/notes/implemented/feature/2026-07-19-fresh-agent-ralph-workflow-tool.md)負責。
 
 ## 契約
 
-`ralph({ objective, maxRounds? })` 會等待整個執行完成。部署設定中的 `maxRounds` 既是預設值，也是呼叫覆蓋值的上限。每個 Ralph Round 透過 `subagentProvider` 啟動一個子 agent；該提供方必須存在、支持結構化輸出，並報告 `inheritsParentContext: false`。已設定的提供方以 `WorkflowStartRequest.subagentProvider` 傳遞，使固定指令碼無法檢查或更改路由，普通的模型編寫 `workflow` 工具也不會因此獲得提供方選擇器。解析後的 Round 上限還會作為 `WorkflowStartRequest.maxTotalAgents` 傳遞，使固定迴圈與引擎的子 agent 總數後備上限協同；Ralph 上限超過引擎部署上限時，引擎會在發布執行前拒絕。
+`ralph({ objective, maxRounds? })` 會等待整個執行完成。部署設定中的 `maxRounds` 既是預設值，也是呼叫覆蓋值的上限。每個 Ralph Round 透過 `subagentProvider` 啟動一個子 agent；該提供方必須存在、支援結構化輸出，並報告 `inheritsParentContext: false`。已設定的提供方以 `WorkflowStartRequest.subagentProvider` 傳遞，使固定指令碼無法檢查或更改路由，普通的模型編寫 `workflow` 工具也不會因此獲得提供方選擇器。解析後的 Round 上限還會作為 `WorkflowStartRequest.maxTotalAgents` 傳遞，使固定迴圈與引擎的子 agent 總數後備上限協同；Ralph 上限超過引擎部署上限時，引擎會在發布執行前拒絕。
 
 每個子 agent 只接收不可變目標、當前 Ralph Round 及其上限、一條「共享工作區是權威狀態」指令，以及上一個結構化交接內容。工作區是長期記憶；不會把父級對話或先前子 agent 工作階段作為初始內容。報告包含 `status: continue | complete | blocked`、非空摘要、證據、後續步驟和阻塞文字。固定工作流程內部及消費端邊界都會校驗特定狀態的語義和序列化後的 `maxHandoffChars` 上限。無效、缺失或過大的報告會使工作流程失敗，而不會被截斷或誤認為上限耗盡。
 
@@ -86,7 +86,7 @@ Use the ralph tool ONLY when the direct human explicitly asks for a Ralph loop o
 ## 已知限制與暫緩事項
 
 - **完成由 worker 自行聲明**：沒有獨立的評估器或驗證器判斷目標是否實際完成；評估器策略及評估器驅動的延續均暫緩處理。
-- **僅支持前臺**：沒有 job id、後臺收集、行程復原檢查點、調度器或基於掛鐘時間的啟動策略。
+- **僅支援前臺**：沒有 job id、後臺收集、行程復原檢查點、調度器或基於掛鐘時間的啟動策略。
 - **工作區是唯一的跨 Round 長期記憶**：一份有界報告作為顯式交接內容，每個子 agent 結束後，未提交的對話推理都會消失。
 - **一個 Round 對應一個全新子 agent**：Round 內沒有扇出、模型/提供方切換、fork 上下文或由模型呼叫選擇的提供方。
 - **普通子 agent 失敗會終止執行**：固定指令碼報告失敗的 Round 和上一次成功交接，但不會重試；致命的工作流程基礎設施失敗可能在該狀態返回前結束。

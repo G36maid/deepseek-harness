@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-commands
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 由外掛程式負責、供互動式 UI 配接器使用的面向使用者命令登錄檔。[外掛程式命令註冊 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-plugin-command-registration.md)定義了其邊界與分發約定。
 
@@ -16,7 +16,7 @@
 
 ## 組合
 
-隨產品交付的 `dsh` 基礎組合會掛載此服務，Web 用戶端透過它分派命令。無 UI 的演示主幹和 ACP（Agent Client Protocol）自動化不提供命令配接器。自訂互動式組合與命令生產方會顯式掛載 `@deepseek-ai/dsh-commands`。
+隨產品交付的 `dsh` 基礎組合會掛載此服務，Web 用戶端透過它分派命令。無 UI 的示範主幹和 ACP（Agent Client Protocol）自動化不提供命令配接器。自訂互動式組合與命令生產方會顯式掛載 `@deepseek-ai/dsh-commands`。
 
 ## 模型體驗
 
@@ -36,5 +36,5 @@
 
 ## 已知限制與暫緩事項
 
-- **僅支持非結構化文字輸入**：表單、補全 schema 和類型化參數仍由各命令自行解析。
+- **僅支援非結構化文字輸入**：表單、補全 schema 和類型化參數仍由各命令自行解析。
 - **副作用採用協作式取消**：中止後，分發會停止等待；處理器必須遵循訊號，才能停止已經進入外部系統的工作。

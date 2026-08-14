@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-feedback-gated-session-telemetry.md) | [简体中文](2026-08-05-feedback-gated-session-telemetry.zh.md) | 繁體中文
+[English](2026-08-05-feedback-gated-session-telemetry.md) | 繁體中文
 
 ## 問題
 
@@ -32,4 +32,4 @@ Status: implemented
 
 ## 後果
 
-`FULL` 作為顯式啟用模式保留原有的原始碼與協議行為。`FEEDBACK_ONLY` 在回饋前不增加遙測自有的逐事件緩衝；直接服務呼叫與非權威回饋事件均不上傳任何內容，且回饋前發生崩潰時，該前綴也不上傳任何內容。重播使用記錄回饋時掛載的脫敏策略，並排除權威日誌中不存在的運維記錄。因此，僅回饋的流既不攜帶 `agent-error` 記錄，也不攜帶 `shutdown` 記錄，而缺少 shutdown 不是崩潰訊號。每個後續回饋都會捕獲從上一個邊界起累積的後綴。`DISABLED` 可省略 `exporter.url`，不執行任何上報工作，並僅在權威工作階段日誌中保留回饋。
+`FULL` 作為顯式啟用模式保留原有的原始碼與協定行為。`FEEDBACK_ONLY` 在回饋前不增加遙測自有的逐事件緩衝；直接服務呼叫與非權威回饋事件均不上傳任何內容，且回饋前發生崩潰時，該前綴也不上傳任何內容。重播使用記錄回饋時掛載的脫敏策略，並排除權威日誌中不存在的運維記錄。因此，僅回饋的流既不攜帶 `agent-error` 記錄，也不攜帶 `shutdown` 記錄，而缺少 shutdown 不是崩潰訊號。每個後續回饋都會捕獲從上一個邊界起累積的後綴。`DISABLED` 可省略 `exporter.url`，不執行任何上報工作，並僅在權威工作階段日誌中保留回饋。

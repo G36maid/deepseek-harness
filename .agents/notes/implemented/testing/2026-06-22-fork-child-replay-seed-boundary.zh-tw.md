@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-22-fork-child-replay-seed-boundary.md) | [简体中文](2026-06-22-fork-child-replay-seed-boundary.zh.md) | 繁體中文
+[English](2026-06-22-fork-child-replay-seed-boundary.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ subagent 指令碼由 [`deriveReplayScript`](../../../../packages/test-support/l
 
 **fork** 子工作階段不同。fork 後端用*父日誌的一段平衡的已完成輪次前綴*（[`dsh-subagent-in-process-driver`](../../../../packages/subagent/subagent-in-process-driver)）來播種子工作階段，而該 seed 會成為子工作階段持久化的 `log`（`Session` 構造函式將 seed 複製進 `this.log`）。因此 fork 子工作階段的 `.jsonl` 以**父工作階段**的事件開頭——包括父工作階段的 `assistant/chunk` 事件——之後纔是子工作階段自身的輪次。
 
-從 fork 子工作階段的完整日誌推導指令碼，會把**父工作階段**的已錄制回應當作**子工作階段**的模型呼叫來回放：實際執行的 fork 子工作階段第一次呼叫 `stream()` 時，會收到父工作階段的第一段區塊序列而非自身的。當時已錄制的場景全部是 spawn，所以這從未觸發——但 fork 快照會靜默地錯誤路由，恰好屬於快照層存在的意義所要捕獲的那類 bug。
+從 fork 子工作階段的完整日誌推導指令碼，會把**父工作階段**的已錄制回應當作**子工作階段**的模型呼叫來重播：實際執行的 fork 子工作階段第一次呼叫 `stream()` 時，會收到父工作階段的第一段區塊序列而非自身的。當時已錄制的場景全部是 spawn，所以這從未觸發——但 fork 快照會靜默地錯誤路由，恰好屬於快照層存在的意義所要捕獲的那類 bug。
 
 ## 決策
 
@@ -29,7 +29,7 @@ subagent 指令碼由 [`deriveReplayScript`](../../../../packages/test-support/l
 - **JSONL**：header 行上的 `seedLength` 欄位（`toHeaderLine`/`fromHeaderLine`）。
 - **SQLite**：`sessions` 表上的 `seed_length` 列。
 
-包含 `seed_length`、`source_event_seqs` 和 `surface_op` 的 SQLite 版面配置為 schema version 4。更早的 version 3 版面配置存在歧義，因此在預發布策略下，所有非當前 `user_version` 均直接拒絕，不做遷移。
+包含 `seed_length`、`source_event_seqs` 和 `surface_op` 的 SQLite 版面設定為 schema version 4。更早的 version 3 版面設定存在歧義，因此在預發布策略下，所有非當前 `user_version` 均直接拒絕，不做遷移。
 
 ### 3. 重播從邊界之後推導子工作階段指令碼
 
@@ -40,7 +40,7 @@ subagent 指令碼由 [`deriveReplayScript`](../../../../packages/test-support/l
 ## 曾考慮的替代方案
 
 - **在 `llm-replay` 中啟發式推導邊界**（播種前綴是連續的父事件，止於子工作階段第一條 `user/message` 之前的最後一個 `turn/end`）。否決：在測試 harness 中用脆弱的啟發式重新推導一個生產者已經知道的事實。在源頭（fork 後端）持久化邊界，是「在包邊界處顯式優於隱式」這條規則跨越持久化邊界的應用——子工作階段 fixture（測試前置資料）的讀取者永遠不需要重建繼承在哪裡結束。
-- **固定格式版本而不遞增**（事件日誌使用的 `SESSION_FORMAT_VERSION = 0`「不穩定」姿態）。對 SQLite *表*版面配置否決：`SCHEMA_VERSION` 是單調遞增並拒絕舊版的旋鈕（數量不多、可枚舉且值得區分的一組修訂），與事件詞彙的 `version` 不同。新增列正是它所版本化的那種破壞性表變更，因此需要遞增。
+- **固定格式版本而不遞增**（事件日誌使用的 `SESSION_FORMAT_VERSION = 0`「不穩定」姿態）。對 SQLite *表*版面設定否決：`SCHEMA_VERSION` 是單調遞增並拒絕舊版的旋鈕（數量不多、可枚舉且值得區分的一組修訂），與事件詞彙的 `version` 不同。新增列正是它所版本化的那種破壞性表變更，因此需要遞增。
 
 ## 後果
 

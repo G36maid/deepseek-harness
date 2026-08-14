@@ -1,8 +1,8 @@
-# Agent Note: dsh web 組合默認掛載工作階段遙測（OTel 上報）
+# Agent Note: dsh web 組合預設掛載工作階段遙測（OTel 上報）
 
 Status: implemented
 
-[English](2026-07-31-web-telemetry-default-mount.md) | [简体中文](2026-07-31-web-telemetry-default-mount.zh.md) | 繁體中文
+[English](2026-07-31-web-telemetry-default-mount.md) | 繁體中文
 
 ## 問題
 
@@ -15,7 +15,7 @@ Status: implemented
 | 決策項 | 取值 | 理由 |
 |---|---|---|
 | 掛載面 | `packages/bundle/base/cordis.patch.yml` | 每個載入共享基礎組合包的 profile 都使用同一個能力設定行 |
-| 共享模式 | `DSH_TELEMETRY_MODE`，默認 `DISABLED`；顯式設定 `FULL` 或 `FEEDBACK_ONLY` 即啟用 | 新 profile 不寄出遙測網路請求，內部部署仍可使用兩種上傳策略 |
+| 共享模式 | `DSH_TELEMETRY_MODE`，預設 `DISABLED`；顯式設定 `FULL` 或 `FEEDBACK_ONLY` 即啟用 | 新 profile 不寄出遙測網路請求，內部部署仍可使用兩種上傳策略 |
 | endpoint | `DSH_TELEMETRY_OTLP_URL`，預設 `https://harness-telemetry.deepseeksvc.com/v1/logs` | 內部 collector；env 覆蓋供本機/聯調 |
 | 硬性退出 | `DSH_TELEMETRY_DISABLED` 非空（含 `0`/`false`）即停用該設定行 | 啟動器 patch 在載入期傳輸校驗之前生效，並覆蓋所有已設定模式 |
 | 上報節奏 | 上傳模式中為 `processor.scheduledDelayMillis: 10000`（10s/批） | 在工作階段執行期間流式上報，而非僅在退出時上報；崩潰至多丟失最後一個尚未匯出間隔內的資料 |
@@ -28,7 +28,7 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**默認不掛載，部署方自行新增設定行。** 不採用：掛載的 `DISABLED` 模式會保留本機回饋警告，並為所有 profile 提供同一個 patch 目標，同時不授權任何上傳。
+**預設不掛載，部署方自行新增設定行。** 不採用：掛載的 `DISABLED` 模式會保留本機回饋警告，並為所有 profile 提供同一個 patch 目標，同時不授權任何上傳。
 
 **開關做成 config 欄位而非 env patch。** 不可行：cordis 行沒有 config 層的 disable 語義，且 `exporter.url` 校驗在外掛程式構造期 fail-loud，開關必須在 Loader 之前生效——AppCLIEntry patch 層是唯一落點。
 
@@ -38,4 +38,4 @@ Status: implemented
 
 - 開發者執行沒有遙測設定的 `dsh web` 時，不會發出遙測網路請求。內部部署需設定 `DSH_TELEMETRY_MODE`，並可讓 `DSH_TELEMETRY_OTLP_URL` 指向其他 collector。
 - **沒有掛載任何脫敏規則**：顯式啟用的匯出即原始捕獲副本（使用者/助手訊息全文、工具參數與工具結果、系統提示詞、`session.cwd` 本機路徑）。跨信任邊界前必須先掛載 `session-telemetry/record` 規則；脫敏規則、其餘身份 Resource 屬性和使用情況指標仍是獨立的部署工作。匿名 user id 由[匿名 user id Note](2026-07-31-telemetry-anonymous-user-id.md)交付。
-- 測試載具默認將資料留在本機；顯式啟用上傳模式的測試提供自己的 collector 和模式。
+- 測試載具預設將資料留在本機；顯式啟用上傳模式的測試提供自己的 collector 和模式。

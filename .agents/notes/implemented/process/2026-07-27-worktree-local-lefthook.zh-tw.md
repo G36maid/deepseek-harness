@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-27-worktree-local-lefthook.md) | [简体中文](2026-07-27-worktree-local-lefthook.zh.md) | 繁體中文
+[English](2026-07-27-worktree-local-lefthook.md) | 繁體中文
 
 ## 問題
 
-每次執行 `pnpm install` 都會執行根目錄的 [`postinstall`](../../../../package.json)，其中的 [`install-lefthook.mjs`](../../../../scripts/install-lefthook.mjs) 會呼叫 `lefthook install --force`。若無額外設定，關聯的 Git worktree 共用同一倉庫的默認掛鉤目錄，因此在任一 worktree 中安裝都可能改寫其他所有 worktree 使用的掛鉤。
+每次執行 `pnpm install` 都會執行根目錄的 [`postinstall`](../../../../package.json)，其中的 [`install-lefthook.mjs`](../../../../scripts/install-lefthook.mjs) 會呼叫 `lefthook install --force`。若無額外設定，關聯的 Git worktree 共用同一倉庫的預設掛鉤目錄，因此在任一 worktree 中安裝都可能改寫其他所有 worktree 使用的掛鉤。
 
 Lefthook 生成的掛鉤會優先使用安裝時從對應 worktree 記錄的絕對二進位檔案路徑，之後才嘗試當前 worktree 的回退路徑。因此，共享掛鉤會一直執行另一個 worktree 固定版本的二進位檔案，直到該 worktree 消失；並行安裝還會寫入同一組文件。
 

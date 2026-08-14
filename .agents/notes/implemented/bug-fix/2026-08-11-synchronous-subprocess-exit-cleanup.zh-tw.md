@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-synchronous-subprocess-exit-cleanup.md) | [简体中文](2026-08-11-synchronous-subprocess-exit-cleanup.zh.md) | 繁體中文
+[English](2026-08-11-synchronous-subprocess-exit-cleanup.md) | 繁體中文
 
 ## Problem
 
@@ -25,12 +25,12 @@ Status: implemented
 | 宿主路徑 | 本機 provider動作 | 完成證據 |
 | --- | --- | --- |
 | 正常 Cordis dispose | 協作式終止、有界升級，並等待普通／terminal清理 | dispose結帳前，每個自有 handle均達到完全靜止 |
-| `process.exit()`、默認未捕獲例外或默認未處理 rejection | 對服務當前存活集合發送同步最終訊號 | 宿主退出後的外部觀察 |
-| 未安裝 handler 時由 `SIGTERM`、`SIGINT` 或 `SIGHUP` 默認終止；`SIGKILL`；fatal OOM；`process.abort()`；native crash；或斷電 | 行程內操作無法執行 | 必須由外部 supervisor、容器或 OS 所有權負責；應用安裝執行 dispose 或呼叫 `process.exit()` 的訊號 handler 時除外 |
+| `process.exit()`、預設未捕獲例外或預設未處理 rejection | 對服務當前存活集合發送同步最終訊號 | 宿主退出後的外部觀察 |
+| 未安裝 handler 時由 `SIGTERM`、`SIGINT` 或 `SIGHUP` 預設終止；`SIGKILL`；fatal OOM；`process.abort()`；native crash；或斷電 | 行程內操作無法執行 | 必須由外部 supervisor、容器或 OS 所有權負責；應用安裝執行 dispose 或呼叫 `process.exit()` 的訊號 handler 時除外 |
 
 ## Verification
 
-父測試透過倉庫 source launcher啟動隔離的 TypeScript宿主，等待精確 root與後代行程身份可觀察後，再允許宿主進入各條致命路徑。直接退出、默認未捕獲例外和默認未處理 rejection覆蓋忽略 TERM的普通行程樹；直接退出還覆蓋真實 terminal root與後代。父測試斷言原始宿主退出類別，並等待所有已記錄行程消失；失敗清理只針對已記錄身份或已記錄的 Windows行程樹。
+父測試透過倉庫 source launcher啟動隔離的 TypeScript宿主，等待精確 root與後代行程身份可觀察後，再允許宿主進入各條致命路徑。直接退出、預設未捕獲例外和預設未處理 rejection覆蓋忽略 TERM的普通行程樹；直接退出還覆蓋真實 terminal root與後代。父測試斷言原始宿主退出類別，並等待所有已記錄行程消失；失敗清理只針對已記錄身份或已記錄的 Windows行程樹。
 
 單元證據固定同步 POSIX行程組與 Windows taskkill投遞、PTY root終止前後的 terminal掃描、重複最終清理、逐目標失敗包含、正常 TERM到 KILL dispose、dispose等待期間保留存活集合，以及 dispose後移除 listener。
 

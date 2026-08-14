@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-17-ts-build-config.md) | [简体中文](2026-06-17-ts-build-config.zh.md) | 繁體中文
+[English](2026-06-17-ts-build-config.md) | 繁體中文
 
 > 根項目拓撲由一個 solution 根文件統轄兩個 aggregate program；見 [solution 根文件 Agent Note](2026-07-22-tsconfig-solution-root-two-aggregates.md)。Host 生成 Remote 約定後再編譯 Client 的當前命令順序見 [API Remotes 建置 Agent Note](2026-08-08-api-remotes-generated-contract-build.md)。本文確定的 tsc-first 職責保持不變。
 
@@ -69,7 +69,7 @@ tsx scripts/clean.ts
 
 - **繼續使用 `tsdown`/oxc 作為 TypeScript 轉接器**：oxc 的轉換行為與 `tsc` 不同（裝飾器轉換有差異、打包 JS 與逐文件輸出不同），且其打包 `.d.ts` 與 Cordis 內部的相對模組增強結構衝突。
 - **用一個根目錄嚴格程序覆蓋包、vendor、示例、測試和指令碼**：vendor 原始碼在根目錄嚴格標志下會觸發不屬於本項目所有權範圍的類型錯誤；帶有逐項目嚴格度的 project references 纔是可行的邊界。
-- **每次建置前都執行清理**：即使工作區版面配置沒有變化，這也會丟棄 `tsc` 和打包器擁有的增量狀態。
+- **每次建置前都執行清理**：即使工作區版面設定沒有變化，這也會丟棄 `tsc` 和打包器擁有的增量狀態。
 - **刪除所有包級 `node_modules`**：有效的包相依性連結不會導致工作區發現失敗，而刪除這些連結會使建置清理變成重新安裝相依性。
 
 ## 後果

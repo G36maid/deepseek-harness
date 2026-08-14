@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-explicit-tool-order.md) | [简体中文](2026-07-06-explicit-tool-order.zh.md) | 繁體中文
+[English](2026-07-06-explicit-tool-order.md) | 繁體中文
 
 ## 問題
 
@@ -48,4 +48,4 @@ Status: implemented
 
 ## 測試
 
-系統提示詞測試覆蓋：字典序默認順序、清單/rest 位置、提供方順序無關性、共享名稱、無效清單、未知或保留名稱、waterfall 前的權威清單，以及監聽器新增的工具不被重新排序的規則。Loop 測試鎖定：在不同註冊順序下，已記錄與已分發的順序一致、設定透過 agent-core 和兩個 app 轉發、請求經過深度凍結，以及在設定了未知名稱時的平衡輪次失敗（無步驟、無 header、無配接器呼叫）。快照重播僅在固定的 `text-turn` header 中保留完整的權威清單；其他 fixture 繼續使用 `{{tools}}`。
+系統提示詞測試覆蓋：字典序預設順序、清單/rest 位置、提供方順序無關性、共享名稱、無效清單、未知或保留名稱、waterfall 前的權威清單，以及監聽器新增的工具不被重新排序的規則。Loop 測試鎖定：在不同註冊順序下，已記錄與已分發的順序一致、設定透過 agent-core 和兩個 app 轉發、請求經過深度凍結，以及在設定了未知名稱時的平衡輪次失敗（無步驟、無 header、無配接器呼叫）。快照重播僅在固定的 `text-turn` header 中保留完整的權威清單；其他 fixture 繼續使用 `{{tools}}`。

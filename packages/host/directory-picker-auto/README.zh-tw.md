@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker-auto
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 [目錄選擇 seam](../directory-picker/README.md) 的**自適應選擇器**：一個只有 node 半側的外掛程式，在啟動時一次性判定宿主處境，並把匹配的雙面後端——[`-native`](../directory-picker-native/README.md) 或 [`-browse`](../directory-picker-browse/README.md)——作為真實的 Loader 條目掛進記憶體根樹（絕不持久化到設定檔；根樹的 `write()` 是 no-op）。由於後端以普通條目的形式到達，其 browser half 被 client 模組表發現的方式與設定行完全相同，因此對判定出的選擇，seam 的“一行同時換兩面”不變式依然成立。解除安裝該選擇器會再次移除該條目，連同兩面一起解除安裝。
 
@@ -18,4 +18,4 @@
 
 - **探測是從啟動上下文推斷操作者位置，而任何啟動側訊號都無法證明這一點**——從 SSH 啟動中脫離的 tmux 工作階段會丟失 `SSH_*` 標記；Aqua 工作階段之外的 Darwin 行程仍被算作有顯示；在工作站本機啟動、之後經 `ssh -L` 訪問時，請求會從 `127.0.0.1` 到達，系統會判定 `native`，並把選擇器彈在無人值守的工作站上。錯誤的 `native` 選擇會退化為後端既有的可重試失敗對話框，而對這類部署，直接組合 `-browse` 即選擇安全的互動。
 - **Linux 選擇器探查只讀 `PATH`**——以其他途徑可用的 zenity／kdialog（shell 別名、未裝在 PATH 上）仍判定為 `browse`；把任一二進位裝到 `PATH` 上，下次啟動即復原 `native` 資格。
-- **僅在啟動時判定**——一次判定服務本次啟動的所有用戶端；按連線自適應（同一臺伺服器，本機瀏覽器用 native、遠端瀏覽器用 browse）需要按用戶端的能力對象以及 seam 有意刪除的協議通告，等到出現同時服務兩種形態的部署再做。
+- **僅在啟動時判定**——一次判定服務本次啟動的所有用戶端；按連線自適應（同一臺伺服器，本機瀏覽器用 native、遠端瀏覽器用 browse）需要按用戶端的能力對象以及 seam 有意刪除的協定通告，等到出現同時服務兩種形態的部署再做。

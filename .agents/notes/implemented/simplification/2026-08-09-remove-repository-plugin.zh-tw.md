@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-remove-repository-plugin.md) | [简体中文](2026-08-09-remove-repository-plugin.zh.md) | 繁體中文
+[English](2026-08-09-remove-repository-plugin.md) | 繁體中文
 
 ## 問題
 
@@ -18,13 +18,13 @@ DeepSeek Harness 只保留一種獨立的外部外掛程式分發路徑：可安
 
 組合包直接組合現有歸屬方。提供 skill 的組合包掛載 `@deepseek-ai/dsh-skill-filesystem`；提供 MCP 伺服器的組合包掛載 `@deepseek-ai/dsh-mcp-client`；原生行為則掛載普通的已編譯 Cordis 外掛程式。這些包繼續保有各自的校驗、生命週期、註冊和 teardown 契約。根據預發布相容政策，不保留針對 `.dsh-plugin` 的相容解析器或遷移機制。
 
-本說明整合了已移除的 repository 快取、靜態格式、純設定整合、由 npm 支持的準備流程和受信任程式碼入口決策。其原始動機保留於此：獨立使用者需要由套件管理員負責的外部組合方式；Git 和 npm 相依性可以執行受信任的生命週期程式碼；靜態 skill 與 MCP 貢獻應複用現有歸屬方；來源標識應位於 profile 的相依性說明符和鎖定檔中。相應實作特有的包裝層、快取 generation 和準備協議不再約束產品。
+本說明整合了已移除的 repository 快取、靜態格式、純設定整合、由 npm 支援的準備流程和受信任程式碼入口決策。其原始動機保留於此：獨立使用者需要由套件管理員負責的外部組合方式；Git 和 npm 相依性可以執行受信任的生命週期程式碼；靜態 skill 與 MCP 貢獻應複用現有歸屬方；來源標識應位於 profile 的相依性說明符和鎖定檔中。相應實作特有的包裝層、快取 generation 和準備協定不再約束產品。
 
 ## 曾考慮的替代方案
 
 **保留 repository 外掛程式，將其作為組合包的便利包裝層。** 不予採納，因為這會為同一個包保留兩條安裝命令、兩種 manifest 格式，以及兩套失敗／快取標識。如果一層便利包裝不能傳遞普通的外掛程式設定，其能力仍然不及它所包裝的機制。
 
-**讓 repository 包裝層載入組合包 patch。** 不予採納，因為 repository 快取和準備協議仍會重複 profile 相依性安裝。組合包已經可以透過 pnpm 接受 npm、Git、file 和 link 說明符。
+**讓 repository 包裝層載入組合包 patch。** 不予採納，因為 repository 快取和準備協定仍會重複 profile 相依性安裝。組合包已經可以透過 pnpm 接受 npm、Git、file 和 link 說明符。
 
 **為未來可能出現的消費端保留通用 Loader repository 快取。** 不予採納，因為在移除相關包後，它已無當前消費端，卻仍讓一個 vendor 中與瀏覽器相鄰的包攜帶固定版本的套件管理員執行時期。只有當無需顯式安裝即可在設定階段啟用這一能力成為 profile 相依性無法滿足的產品需求時，纔有理由重新引入專用快取；屆時該消費端可以選擇自己的快取約定。
 

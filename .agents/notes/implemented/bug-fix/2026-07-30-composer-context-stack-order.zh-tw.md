@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-composer-context-stack-order.md) | [简体中文](2026-07-30-composer-context-stack-order.zh.md) | 繁體中文
+[English](2026-07-30-composer-context-stack-order.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Goal、Todo 與 Queue 獨立註冊到同一個 `conversation.input.dock` 清單�
 
 [Todo 優先的對齊決策](2026-08-02-todo-first-composer-context-order.md)規定當前的升序排列。本記錄保留圍繞該順序的堆疊約定：數值間隔使未來條目可以聲明預期位置，不必相依性外掛程式啟用順序；composer bar 位於清單之後。
 
-`ConversationRoot` 負責獨立上下文卡片之間的 6px 間距。Goal 是一張獨立的 752×36px 卡片，摺疊後的 Todo 是一張獨立的 752×44px 卡片。Queue 是末端 dock 條目：其 776px 包裝層包含相同的 752px 面板列，並減去共享間距與具名的 5px 版面配置重疊量，因此後渲染的 composer 卡片只覆蓋 Queue 邊緣。空條目渲染為 null，不佔用間距。
+`ConversationRoot` 負責獨立上下文卡片之間的 6px 間距。Goal 是一張獨立的 752×36px 卡片，摺疊後的 Todo 是一張獨立的 752×44px 卡片。Queue 是末端 dock 條目：其 776px 包裝層包含相同的 752px 面板列，並減去共享間距與具名的 5px 版面設定重疊量，因此後渲染的 composer 卡片只覆蓋 Queue 邊緣。空條目渲染為 null，不佔用間距。
 
 順序與重疊是兩項獨立約定。註冊順序定義語義層級，stack 上的 CSS 變數定義共享幾何。系統不能僅因 Queue 是最後一個可見條目，就推斷它可以與 composer 重疊，因為沒有 Queue 時，Goal 或 Todo 可能成為最後一個可見上下文卡片，而它們必須與 composer 保持間隔。
 

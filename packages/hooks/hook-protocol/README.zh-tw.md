@@ -1,10 +1,10 @@
 # @deepseek-ai/dsh-hook-protocol
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
-Claude Code／Codex hook 協定格式（wire format）的**共享核心**。它不是 Cordis 外掛程式：不註冊也不注入任何內容。它是一個**庫**，提供兩個橋接外掛程式（`@deepseek-ai/dsh-hooks-claude-code`、`@deepseek-ai/dsh-hooks-codex`）匯入的方言無關原語，使兩者都無需重複實作協議中相同的部分。
+Claude Code／Codex hook 協定格式（wire format）的**共享核心**。它不是 Cordis 外掛程式：不註冊也不注入任何內容。它是一個**庫**，提供兩個橋接外掛程式（`@deepseek-ai/dsh-hooks-claude-code`、`@deepseek-ai/dsh-hooks-codex`）匯入的方言無關原語，使兩者都無需重複實作協定中相同的部分。
 
-Codex 有意重新實作了 Claude Code hook 協議的一個*子集*，包括相同的 `hooks.json` matcher group 結構、相同的退出碼／stdout 輸出約定以及相同的 command hook 執行模式。真正共享的部分位於此處；每個橋接只負責不同的部分。
+Codex 有意重新實作了 Claude Code hook 協定的一個*子集*，包括相同的 `hooks.json` matcher group 結構、相同的退出碼／stdout 輸出約定以及相同的 command hook 執行模式。真正共享的部分位於此處；每個橋接只負責不同的部分。
 
 ## 共享內容（此處）與各方言內容（橋接）
 

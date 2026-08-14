@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-persistent-bash-str-replace-editor.md) | [简体中文](2026-07-29-persistent-bash-str-replace-editor.zh.md) | 繁體中文
+[English](2026-07-29-persistent-bash-str-replace-editor.md) | 繁體中文
 
 ## 問題
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-`@deepseek-ai/dsh-tool-bash-persistent` 消費 `ctx.terminals` 並註冊一個 `bash(command)` 工具。它為每個精確 Agent 惰性建立一個互動式 shell，並序列化該所有者的呼叫。Cwd、匯出的變數、已啟用環境、函式和背景工作會保留。隨機私有標記劃分命令輸出；保留的 scrollback 會向前分頁，以復原命令真正的輸出前綴，若前綴已被丟棄則明確告知。經封裝的命令以非零狀態結束時，會追加 `[exit code: N]`；若 shell 在報告該狀態前終止，則改為追加 `[shell exited: code N]`、`[shell killed by signal: SIG]`，或在後端既未提供退出碼也未提供訊號時追加 `[shell exited]`。`maxOutputChars` 限制保留的命令輸出，而固定診斷可能使返回字串更長。逾時或取消會先關閉 shell，避免下一次呼叫複用狀態不確定的工作階段，模型可見的逾時／退出結果也會說明該重設。取消始終會重設 shell 並丟棄結果，即使已經能觀察到完整狀態標記也是如此，從而不會讓模型未曾看到的狀態變更得以保留。可設定描述默認只聲明持久性事實，因此網路和套件映像檔等聲明仍歸部署所有。
+`@deepseek-ai/dsh-tool-bash-persistent` 消費 `ctx.terminals` 並註冊一個 `bash(command)` 工具。它為每個精確 Agent 惰性建立一個互動式 shell，並序列化該所有者的呼叫。Cwd、匯出的變數、已啟用環境、函式和背景工作會保留。隨機私有標記劃分命令輸出；保留的 scrollback 會向前分頁，以復原命令真正的輸出前綴，若前綴已被丟棄則明確告知。經封裝的命令以非零狀態結束時，會追加 `[exit code: N]`；若 shell 在報告該狀態前終止，則改為追加 `[shell exited: code N]`、`[shell killed by signal: SIG]`，或在後端既未提供退出碼也未提供訊號時追加 `[shell exited]`。`maxOutputChars` 限制保留的命令輸出，而固定診斷可能使返回字串更長。逾時或取消會先關閉 shell，避免下一次呼叫複用狀態不確定的工作階段，模型可見的逾時／退出結果也會說明該重設。取消始終會重設 shell 並丟棄結果，即使已經能觀察到完整狀態標記也是如此，從而不會讓模型未曾看到的狀態變更得以保留。可設定描述預設只聲明持久性事實，因此網路和套件映像檔等聲明仍歸部署所有。
 
 `@deepseek-ai/dsh-tool-str-replace-editor` 獨立消費 `ctx.fs`，註冊包含 `view`、`create`、`str_replace` 與 `insert` 的 `str_replace_editor`。它提供帶行號文字查看、過濾後的兩層目錄清單、唯一字面量替換、規範插入邊界和有界輸出。路徑必須為絕對路徑；文件查看會保留內容中的製表符，因此複製的文字仍可作為有效的字面量替換輸入；變更會保留請求編輯範圍之外的製表符；公開 schema 與錯誤則只使用 `old_str`。它可以與持久 Bash、一次性 Bash、沙盒 Bash 或無 shell 組合。
 

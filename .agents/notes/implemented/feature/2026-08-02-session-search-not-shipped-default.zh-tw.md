@@ -1,12 +1,12 @@
-# Agent Note: 工作階段搜尋工具不是交付默認項
+# Agent Note: 工作階段搜尋工具不是交付預設項
 
 Status: implemented
 
-[English](2026-08-02-session-search-not-shipped-default.md) | [简体中文](2026-08-02-session-search-not-shipped-default.zh.md) | 繁體中文
+[English](2026-08-02-session-search-not-shipped-default.md) | 繁體中文
 
 ## 問題
 
-[交付清單決策](2026-07-31-even-out-shipped-tool-rosters.md)把 `tool-session-query` 設為共享 [`cordis.patch.yml`](../../../../packages/bundle/base/cordis.patch.yml) 的默認行，於是交付的 TUI 與 Web surface 把這五個工作階段搜尋工具（`session_search`、`session_event_search`、`session_trace`、`session_event_trace`、`session_event_read`）呈現給了模型。這與[面向模型的工作階段查詢工具決策](2026-07-24-model-facing-session-query-tools.md)相牴觸，該決策持需顯式啟用的立場，包 README 將其記錄為「shipped host compositions do not mount it by default」。這項預設設定還交付了一個提示詞段，向模型講授一套既往工作搜尋工作流程，而沒有任何使用者要求過。
+[交付清單決策](2026-07-31-even-out-shipped-tool-rosters.md)把 `tool-session-query` 設為共享 [`cordis.patch.yml`](../../../../packages/bundle/base/cordis.patch.yml) 的預設行，於是交付的 TUI 與 Web surface 把這五個工作階段搜尋工具（`session_search`、`session_event_search`、`session_trace`、`session_event_trace`、`session_event_read`）呈現給了模型。這與[面向模型的工作階段查詢工具決策](2026-07-24-model-facing-session-query-tools.md)相牴觸，該決策持需顯式啟用的立場，包 README 將其記錄為「shipped host compositions do not mount it by default」。這項預設設定還交付了一個提示詞段，向模型講授一套既往工作搜尋工作流程，而沒有任何使用者要求過。
 
 ## 決策
 
@@ -22,4 +22,4 @@ Status: implemented
 
 ## 後果
 
-兩個 surface 都回到同樣的二十個無條件工具（ripgrep 可用時再加上 `glob`/`grep`），五個工作階段搜尋 schema 及其提示詞段也一並退出默認請求。兩個 surface 上的交付組合測試都固定這份更小的目錄，因此把工作階段搜尋重新作為默認加回會觸及同樣的測試。想要工作階段搜尋的使用者從個人 overlay 或 ACP 示例掛載該消費端，並在掛載處新增相依性。
+兩個 surface 都回到同樣的二十個無條件工具（ripgrep 可用時再加上 `glob`/`grep`），五個工作階段搜尋 schema 及其提示詞段也一並退出預設請求。兩個 surface 上的交付組合測試都固定這份更小的目錄，因此把工作階段搜尋重新作為預設加回會觸及同樣的測試。想要工作階段搜尋的使用者從個人 overlay 或 ACP 示例掛載該消費端，並在掛載處新增相依性。

@@ -1,8 +1,8 @@
 # @deepseek-ai/dsh-acp-demo
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
-ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理）主幹、用戶端透過 [`@deepseek-ai/dsh-acp`](../../acp/acp/README.md) 建立的 agent、JSONL 持久化，以及語義檢查點機制，並透過一個 JSON-RPC stdio bin 對外提供服務。程序化用戶端建立新工作階段；此包不掛載人工互動 UI。
+ACP（Agent Client Protocol）自動化伺服器應用：預設 agent（代理）主幹、用戶端透過 [`@deepseek-ai/dsh-acp`](../../acp/acp/README.md) 建立的 agent、JSONL 持久化，以及語義檢查點機制，並透過一個 JSON-RPC stdio bin 對外提供服務。程序化用戶端建立新工作階段；此包不掛載人工互動 UI。
 
 ## 組合
 
@@ -46,7 +46,7 @@ ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理�
 
 ## 模型體驗
 
-模型體驗由 `dsh-agent-spine-demo` 和葉節點的面向模型外掛程式間接提供。ACP 提示詞文字會成為普通的已記錄使用者訊息；協議元資料與權限選擇不會進入模型請求。
+模型體驗由 `dsh-agent-spine-demo` 和葉節點的面向模型外掛程式間接提供。ACP 提示詞文字會成為普通的已記錄使用者訊息；協定元資料與權限選擇不會進入模型請求。
 
 #### KV Cache 影響
 
@@ -55,5 +55,5 @@ ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理�
 ## 已知限制與暫緩事項
 
 - **JSONL 持久化固定不變**：使用其他後端需要另一種組合。
-- **同級外掛程式可能破壞 stdout**：應用無法阻止另一個 Cordis 設定項寫入非協議位元組。
-- **只支持新建自動化工作階段**：復原和人工互動屬於其他執行入口。
+- **同級外掛程式可能破壞 stdout**：應用無法阻止另一個 Cordis 設定項寫入非協定位元組。
+- **只支援新建自動化工作階段**：復原和人工互動屬於其他執行入口。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-parallel-subagent-delegations.md) | [简体中文](2026-08-09-parallel-subagent-delegations.zh.md) | 繁體中文
+[English](2026-08-09-parallel-subagent-delegations.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Status: implemented
 
 該聲明在結構上滿足調度器的安全約定：子 agent 在自己的工作階段中工作，執行絕不變更父工作階段（啟動時追加的 `sandbox/mode`、`approval/policy`、`subagent/descriptor` 只落在子 agent 自己的日誌裡），工具把輸出返回給迴圈，由迴圈按順序提交。一次性後臺形態對父級擁有狀態的唯一寫入是透過 `tasks.start` 註冊一個 Task——這是一次同步、可交換的插入，滿足的是調度器 Agent Note 中的共享狀態條款，而非更強的「無變更」性質。提供方 seam 要求針對不同子 agent 的並行啟動和可繼續準備分別隔離操作區域性狀態、取消、結帳和清理。內建提供方滿足這項約定：spawn 和 fork 在各次啟動之間不保留可變狀態，fork 只讀取父級已完成輪次的前綴，行程外提供方按每次執行分配狀態，繼續執行管理器則為每次準備預留唯一的子 agent 身份和鎖。
 
-協調同級工作區效果是模型的職責，產品對後臺、可繼續和工作流程子 agent 已經採取同樣的立場。同類 harness 的做法一致：Claude Code 的 Task 工具無條件並行安全（上限 10）；oh-my-pi 的 task 工具默認歸入其可重疊的 `shared` 類別；opencode 的 task 工具在其 SDK 下不設上限地執行；Codex 則把委派做成非同步 spawn/wait 信箱，繞開了這個問題。
+協調同級工作區效果是模型的職責，產品對後臺、可繼續和工作流程子 agent 已經採取同樣的立場。同類 harness 的做法一致：Claude Code 的 Task 工具無條件並行安全（上限 10）；oh-my-pi 的 task 工具預設歸入其可重疊的 `shared` 類別；opencode 的 task 工具在其 SDK 下不設上限地執行；Codex 則把委派做成非同步 spawn/wait 信箱，繞開了這個問題。
 
 容量控制仍保持在調度器 Agent Note 所定的位置：`maxParallelToolCalls` 限制單個步驟中未結帳的工具呼叫數量——因而也限制並行執行的前臺子 agent 數量——而後臺和可繼續呼叫在啟動時即結帳並釋放池位，它們留下執行的子 agent 不受該上限約束。LLM（大型語言模型）提供方負責自身的容量控制。
 
@@ -34,7 +34,7 @@ Status: implemented
 
 **按 Codex 風格重新設計為非同步 spawn/wait。** 可繼續子 agent 加上 `send_message` 已經提供了非同步通道；圍繞信箱重建前臺約定，等於為瞭解決一條聲明就能修復的調度問題，丟棄一條可用的同步結果路徑。
 
-**按實例提供 `concurrencySafe` 設定開關。** 沒有消費端需要序列部署：`maxParallelToolCalls: 1` 已能復原全域性序列執行，同類 harness 的先例也默認委派並行安全。
+**按實例提供 `concurrencySafe` 設定開關。** 沒有消費端需要序列部署：`maxParallelToolCalls: 1` 已能復原全域性序列執行，同類 harness 的先例也預設委派並行安全。
 
 ## 影響
 
@@ -44,4 +44,4 @@ Status: implemented
 
 有序提交可能讓快速子 agent 的結果排在更早的緩慢同級之後等待，這是[調度器 Agent Note](2026-07-10-parallel-tool-call-execution.md)已經接受的取捨；即時介面仍會展示每個子 agent 各自的進度。
 
-使用不同提示詞的並行子 agent 快照場景仍需要重播 harness 的支持（確定性的子指令碼綁定與收集排序）；在此之前，此類場景必須使用可互換的孿生委派。
+使用不同提示詞的並行子 agent 快照場景仍需要重播 harness 的支援（確定性的子指令碼綁定與收集排序）；在此之前，此類場景必須使用可互換的孿生委派。

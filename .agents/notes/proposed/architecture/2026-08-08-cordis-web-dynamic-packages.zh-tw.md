@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-08-08-cordis-web-dynamic-packages.md) | [简体中文](2026-08-08-cordis-web-dynamic-packages.zh.md) | 繁體中文
+[English](2026-08-08-cordis-web-dynamic-packages.md) | 繁體中文
 
 ## Problem
 
@@ -80,7 +80,7 @@ Host-only Package 在 Host 成功建立 Fiber 後提交 current。包含 Client 
 
 這些對象不寫入設定或磁碟，也不在行程重新啟動後復原。Session Log 可以保留 Tool 呼叫、結果和卡片所需元資料，但不會重放動態程式碼來復原 Registry。行程重新啟動後歷史卡片仍可作為對話記錄存在，原 `pluginId` 和 `packageId` 不再可執行。
 
-執行態不作為可復原狀態寫入 Session projection。頁面刷新或新頁面打開不會自動復原 Client 半；自動復原會重新引入連線身份、啟動期 baseline 和跨頁面一致性協議，不屬於當前設計。
+執行態不作為可復原狀態寫入 Session projection。頁面刷新或新頁面打開不會自動復原 Client 半；自動復原會重新引入連線身份、啟動期 baseline 和跨頁面一致性協定，不屬於當前設計。
 
 ### Define、Run 與版本切換
 
@@ -139,13 +139,13 @@ Client 裝載狀態是頁面區域性事實。Host active 不代表當前頁面�
 
 動態 Package 透過私有 JSON 通道從 Client 呼叫 Host：Host 使用 `harness.handle(method, handler)` 註冊當前 Run 的方法，Client 使用 `host.call(method, args)` 呼叫。每次呼叫關聯 `pluginId + pluginRunId`，Host 拒絕已停止或過期 Run。參數和回傳值必須是無損 JSON，不允許函式、React 元素、Context、Service 實例或類對象。
 
-該通道只服務同一 Package 的 Client→Host 呼叫，不使用公開 Remote Service 或動態程式碼中的 `ctx.remote`。公開 Remote 面只承載 Runner 自己的控制協議，不向動態 Package 暴露。
+該通道只服務同一 Package 的 Client→Host 呼叫，不使用公開 Remote Service 或動態程式碼中的 `ctx.remote`。公開 Remote 面只承載 Runner 自己的控制協定，不向動態 Package 暴露。
 
 ### 動態程式碼、Guard 與生命週期
 
 Host 和 Client 都只執行 plain JavaScript 函式體，不經過 TypeScript、JSX 或 bundler 轉譯。Host 執行在 `node:vm`，Client 在受限閉包中求值。兩端上下文用於減少誤用並提供教學錯誤，不是惡意程式碼安全邊界。
 
-模型默認透過 `ctx.get('serviceName')` 讀取選填 Service 並判斷 `undefined`。只有 Service 是硬相依性、缺失時 Package 必須 waiting 並在 Service 出現後重新啟用時，纔在外掛程式對象聲明 `inject`。直接訪問 `ctx.serviceName` 只在同一外掛程式聲明對應 inject 時允許。
+模型預設透過 `ctx.get('serviceName')` 讀取選填 Service 並判斷 `undefined`。只有 Service 是硬相依性、缺失時 Package 必須 waiting 並在 Service 出現後重新啟用時，纔在外掛程式對象聲明 `inject`。直接訪問 `ctx.serviceName` 只在同一外掛程式聲明對應 inject 時允許。
 
 Host 與 Client 的 `timer` 都是同名 Cordis Service，使用一致介面，不是全域性 Builtin。需要 timer 的外掛程式必須聲明 `inject: ['timer']`；React effect 中建立的 timer 把 disposer 作為 cleanup 返回。
 
@@ -172,7 +172,7 @@ Host 和 Client 各自擁有 `CordisInspectRegistry`。Provider 註冊平臺內�
 
 Client Registry 變化後向 Host 同步完整 manifest，不按 Session 保存重複目錄。Host query 本機執行；Client query 由 Host 廣播 request ID，頁面呼叫本機 Provider 後回送。Host 只接受第一個透過輸出 schema 校驗的成功結果；失敗頁面不搶佔請求。沒有頁面成功回答時 Tool 保持 pending，直到後續成功或 Tool call 取消。
 
-Inspect 資料只用於寫程式碼前確認能力、簽名、類型和掛載協議。外掛程式執行時期需要業務資料時必須呼叫實際 Service 或監聽實際 Event，不能快取、展示或相依性 Inspect/Catalog 回傳值。
+Inspect 資料只用於寫程式碼前確認能力、簽名、類型和掛載協定。外掛程式執行時期需要業務資料時必須呼叫實際 Service 或監聽實際 Event，不能快取、展示或相依性 Inspect/Catalog 回傳值。
 
 `CordisCatalogProjector` 使用 TypeRT 分別生成 Host/Client Service 與 Event Catalog；Slot AST 生成器掃描 `SlotMap`、註冊選項、standard props、owner props 和引用類型；Slots Provider 查詢時合併靜態 Catalog 與 live tree。Theme token 由 ThemeService 匯出，Builtin 在 evaluator/Guard 附近手工維護，Tool schema 來自 Registry。
 
@@ -184,7 +184,7 @@ Catalog 掃描真實原始碼簽名，再應用 model-visible 白名單。白名
 
 模型指導分為四層：
 
-- System Prompt 保存穩定執行模型、兩端限制、生命週期、審批、版本指針、最低程式碼規範和七個 Tool 的使用地圖。Skill 不可用時它仍須支持最低限度正確實作。
+- System Prompt 保存穩定執行模型、兩端限制、生命週期、審批、版本指針、最低程式碼規範和七個 Tool 的使用地圖。Skill 不可用時它仍須支援最低限度正確實作。
 - `cordis-plugin-development` Skill 保存需求導覽、能力組合、推薦和反例，不複製完整 schema。
 - 每個 Tool description 只說明該動作的前置條件、參數語義、同步/非同步結果和下一步。
 - Provider/Catalog 返回當前精確名稱、簽名、參數、Slot props、token 和執行時期查詢結果。
@@ -193,7 +193,7 @@ System Prompt 要求先載入 Skill，再 list/query，之後 define/run。Skill
 
 ### `@pluginId` 與 Tool UI
 
-輸入系統為當前 Session 註冊 `@pluginId` mention。選擇後只注入 Plugin 身份、默認基準 Package、版本指針、活動 Run 和最近狀態，不注入原始碼。默認基準依次選擇 next、current、最近定義的 Package。模型必須先用 `cordis_inspect_self` 讀取原始碼，再以 existing 模式追加 Package；引用失效時不能靜默建立替代 Plugin。
+輸入系統為當前 Session 註冊 `@pluginId` mention。選擇後只注入 Plugin 身份、預設基準 Package、版本指針、活動 Run 和最近狀態，不注入原始碼。預設基準依次選擇 next、current、最近定義的 Package。模型必須先用 `cordis_inspect_self` 讀取原始碼，再以 existing 模式追加 Package；引用失效時不能靜默建立替代 Plugin。
 
 `cordis_define` 卡片以 Host/Client 兩個子頁簽展示程式碼。`cordis_run` 卡片由 `pluginRunId` 關聯精確 attempt，並讀取 Client store 顯示待審批、Client 待啟用、執行中、失敗、已被後續 Run 替代或 Plugin 已移除。
 
@@ -215,13 +215,13 @@ Host/Client Guard、Host 求值與 handler、Client 求值與 apply、Slot `onEn
 
 **Package ID 同時作為 Plugin ID。** 單層 ID 無法表達穩定實例下追加不可變版本，更新只能 stop、undefine、重新 define，歷史卡片和 `@` 引用也無法保持同一對象，因此採用 Plugin、Package、Run 三層身份。
 
-**提供獨立 `cordis_update`。** Update 的裝載、審批、UI、診斷和 Run 相同，獨立 Tool 只複製協議，因此合併到 `cordis_run mode:"update"`。
+**提供獨立 `cordis_update`。** Update 的裝載、審批、UI、診斷和 Run 相同，獨立 Tool 只複製協定，因此合併到 `cordis_run mode:"update"`。
 
 **更新失敗後自動復原舊物理 Run。** 自動復原會把“目標失敗”和“舊版本重新成功”混成一個結果。當前設計保留舊 current 指針但不自動重新啟動，讓使用者明確選擇重試 next 或 run current。
 
 **讓 `cordis_run` 阻塞到使用者審批和 Client 終局。** 審批或頁面操作可能只能在當前模型輪結束後發生，阻塞會形成死結，並在無頁面時無限佔用 Tool。當前設計立即返回，透過 store、Inspect 和 steering 報告終局。
 
-**Host 廣播原始碼並用逾時等待 Client ack。** 廣播會在授權前把程式碼發給所有頁面；逾時無法區分沒有頁面、頁面慢和使用者未操作；Host 還要維護補償式回滾。當前協議只廣播元資料，由獲準頁面按精確 Run 拉取原始碼。
+**Host 廣播原始碼並用逾時等待 Client ack。** 廣播會在授權前把程式碼發給所有頁面；逾時無法區分沒有頁面、頁面慢和使用者未操作；Host 還要維護補償式回滾。當前協定只廣播元資料，由獲準頁面按精確 Run 拉取原始碼。
 
 **頁面啟動時自動復原所有 Host active Package。** 這要求連線身份、啟動期 baseline 和跨頁面一致性。當前設計接受頁面區域性 Client 狀態，使用者可在面板重新裝載。
 
@@ -231,7 +231,7 @@ Host/Client Guard、Host 求值與 handler、Client 求值與 apply、Slot `onEn
 
 **把完整 API 寫進 System Prompt 或 Skill。** 固化文字會漂移並佔用上下文。System Prompt 保留穩定規則，Skill 負責需求導覽，精確簽名和執行時期目錄由 Provider/Catalog 返回。
 
-**要求 Slot owner 在執行時期註冊 props schema。** Slot props 已存在於 TypeScript 類型和 JSDoc 中，重複註冊會製造第二份權威。當前設計用 Slot AST Catalog 提取靜態協議，只在查詢時合併 live tree。
+**要求 Slot owner 在執行時期註冊 props schema。** Slot props 已存在於 TypeScript 類型和 JSDoc 中，重複註冊會製造第二份權威。當前設計用 Slot AST Catalog 提取靜態協定，只在查詢時合併 live tree。
 
 **把執行態寫入 Session Log 並在 replay 復原。** 動態程式碼和 Fiber 是行程區域性對象，復原要求重新執行歷史程式碼並重新解釋審批。Session 只保留模型可見記錄，Registry 和頁面 Run 不復原。
 

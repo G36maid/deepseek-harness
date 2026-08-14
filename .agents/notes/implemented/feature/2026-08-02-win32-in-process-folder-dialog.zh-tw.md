@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-win32-in-process-folder-dialog.md) | [简体中文](2026-08-02-win32-in-process-folder-dialog.zh.md) | 繁體中文
+[English](2026-08-02-win32-in-process-folder-dialog.md) | 繁體中文
 
 ## 問題
 
@@ -21,7 +21,7 @@ Windows 目錄選擇器的主層此前是圍繞 WinForms `FolderBrowserDialog` s
 
 ## 後果
 
-- 每臺 Windows 機器都得到帶其所支持的最佳 DPI 感知（1703+ 為 per-monitor-v2）的現代對話框，無論是否安裝 PowerShell。
+- 每臺 Windows 機器都得到帶其所支援的最佳 DPI 感知（1703+ 為 per-monitor-v2）的現代對話框，無論是否安裝 PowerShell。
 - 真實對話框的渲染與完成選擇的流程仍需在 Windows 上手動檢查（自動關閉冒煙測試證明打開／中止／收尾）。
 - 所用 COM vtable 槽位與 GUID 是凍結的 Windows ABI（Vista 起）；koffi 簽名錯誤可能引發原生訪問衝突，但被限制在對話框子行程內——宿主 Node 行程存活，失敗原樣上報（無回退層；見[鏈刪除](../simplification/2026-08-04-drop-windows-powershell-picker-fallback.md)）。mocked-koffi 的 ABI 固定測試與真實 win32 冒煙測試正是為了在交付前捕獲這類錯誤。
 - 打包二進位路徑——打包後的可執行文件以對話框入口形式自我 spawn——不受任何自動化測試覆蓋：原始碼側與普通 node 下建置出的 `lib/worker.cjs` 已被覆蓋，打包 spawn 推遲到 Windows CI 路線圖。

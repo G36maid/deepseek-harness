@@ -1,6 +1,6 @@
 # dsh-output-retention
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 一個輕相依性的**保留**庫：為必須限制返回上下文量的工具提供有界的面向模型輸出。呼叫方將項或文字區塊送入有界對象，然後取回保留的內容和精確的省略元資料。
 
@@ -23,7 +23,7 @@ import type {
 
 | 匯出項 | 職責 |
 |---|---|
-| `ItemRetainer<T>` | 限制有序邏輯單元（路徑、grep 匹配項、來源）。只支持 `head`。`push()` → `PushDecision`；`finish()` → `RetainedItems<T>`。 |
+| `ItemRetainer<T>` | 限制有序邏輯單元（路徑、grep 匹配項、來源）。只支援 `head`。`push()` → `PushDecision`；`finish()` → `RetainedItems<T>`。 |
 | `TextRetainer` | 限制面向位元組的文字流。`head` / `tail` / `headTail`，並在 `finish()` 時保留 UTF-8 邊界。`push()` → `PushDecision`；`finish()` → `RetainedText`。 |
 | `describeOmitted(omitted, unit)` | 標準化的省略子句（`exact` 輸出數量；`unknown` 不輸出）。 |
 | `formatRetentionNotice(notice, recovery)` | 將標準化的省略子句與工具自有的復原指引連線起來。 |
@@ -93,5 +93,5 @@ const footer = formatRetentionNotice(
 
 ## 已知限制與暫緩事項
 
-- **項保留只支持 `head`**：tail、head/tail、分頁、分組和提供方完整性語義仍由工具負責。
+- **項保留只支援 `head`**：tail、head/tail、分頁、分組和提供方完整性語義仍由工具負責。
 - **文字保留面向位元組**：`read` 分頁等行視窗和字元視窗需要單獨的渲染器；切割可能會丟棄部分 UTF-8 邊界位元組，以保持返迴文本有效。

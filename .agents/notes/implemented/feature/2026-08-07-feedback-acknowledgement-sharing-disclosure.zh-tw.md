@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-07-feedback-acknowledgement-sharing-disclosure.md) | [简体中文](2026-08-07-feedback-acknowledgement-sharing-disclosure.zh.md) | 繁體中文
+[English](2026-08-07-feedback-acknowledgement-sharing-disclosure.md) | 繁體中文
 
 ## 問題
 
@@ -24,4 +24,4 @@ Status: implemented
 
 ## 後果
 
-確認文字對使用者可見：它點名接收工作階段並報告當前的共享策略，如實說明 fire-and-forget 交接。包級測試為每種狀態以及無服務場景固定句子；組裝瀏覽器 e2e 以 FULL 模式掛載隨附的遙測行（指向本機 dead 端點），並以 golden 固定隨附默認句子（`Session sharing is enabled.`）。seam 成員是必需的，因此已掛載的後端總會披露策略，「未設定」句子如實地表示沒有遙測服務；`/feedback` 命令在未掛載遙測時仍能正常工作。仍為空白的新 Web 工作階段不渲染命令列，因此首則訊息之前記錄的回饋沒有可見確認（已在包 README 的限制中記錄）。
+確認文字對使用者可見：它點名接收工作階段並報告當前的共享策略，如實說明 fire-and-forget 交接。包級測試為每種狀態以及無服務場景固定句子；組裝瀏覽器 e2e 以 FULL 模式掛載隨附的遙測行（指向本機 dead 端點），並以 golden 固定隨附預設句子（`Session sharing is enabled.`）。seam 成員是必需的，因此已掛載的後端總會披露策略，「未設定」句子如實地表示沒有遙測服務；`/feedback` 命令在未掛載遙測時仍能正常工作。仍為空白的新 Web 工作階段不渲染命令列，因此首則訊息之前記錄的回饋沒有可見確認（已在包 README 的限制中記錄）。

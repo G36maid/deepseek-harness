@@ -1,17 +1,17 @@
 # 開發指南
 
-[English](development.md) | [简体中文](development.zh.md) | 繁體中文
+[English](development.md) | 繁體中文
 
-搭建教程引導新貢獻者從準備前置條件開始，直到檢出目錄透過檢查。後面的貢獻者參考介紹倉庫版面配置、日常工作流程和 CI 組織方式。設計依據與實作細節屬於連結的 Agent Note 和指令碼。
+搭建教程引導新貢獻者從準備前置條件開始，直到檢出目錄透過檢查。後面的貢獻者參考介紹倉庫版面設定、日常工作流程和 CI 組織方式。設計依據與實作細節屬於連結的 Agent Note 和指令碼。
 
 ## 搭建教程
 
 ### 前置條件
 
-- Node.js 支持 22.19+ 與 24+。CI 覆蓋 22.19、24 和 26；見 [Node 引擎下限 Agent Note](../.agents/notes/implemented/process/2026-07-06-node-engine-floor.md)。
+- Node.js 支援 22.19+ 與 24+。CI 覆蓋 22.19、24 和 26；見 [Node 引擎下限 Agent Note](../.agents/notes/implemented/process/2026-07-06-node-engine-floor.md)。
 - 啟用了 Corepack 的 pnpm。倉庫在 `package.json` 中固定使用 `pnpm@11.7.0`；如果 `pnpm --version` 無法透過 Corepack 解析，請先執行 `corepack enable`。
 - Git 2.26 或更高版本；掛鉤設定會啟用 Git 的 worktree 專屬設定擴充。
-- 選填：一個 DeepSeek API key，用於 Web、headless 和 ACP（Agent Client Protocol）自動化 agent（代理）演示以及真實 API 的 e2e 測試。
+- 選填：一個 DeepSeek API key，用於 Web、headless 和 ACP（Agent Client Protocol）自動化 agent（代理）示範以及真實 API 的 e2e 測試。
 
 ### 首次搭建
 
@@ -41,7 +41,7 @@ pnpm run typecheck
 
 ## 貢獻者參考
 
-### TypeScript 項目版面配置
+### TypeScript 項目版面設定
 
 倉庫使用相互隔離的 Host 與 Client aggregate。普通包只登記進其中一個 aggregate；Host 包進入 `tsconfig.host.json`，Client 包進入 `tsconfig.client.json`。
 
@@ -89,7 +89,7 @@ pnpm run build
 
 ### 環境變數
 
-真實的 DeepSeek 配接器和需要金鑰的 agent 演示從環境變數或倉庫根目錄一個被 gitignore 的 `.env` 文件讀取憑證：
+真實的 DeepSeek 配接器和需要金鑰的 agent 示範從環境變數或倉庫根目錄一個被 gitignore 的 `.env` 文件讀取憑證：
 
 ```sh
 DEEPSEEK_API_KEY=sk-...
@@ -100,7 +100,7 @@ DEEPSEEK_BASE_URL=https://... # optional
 
 ### Git 整合
 
-當兩種語言的文件都使用 Git 默認文字策略且能幹淨合併時，配對合併驅動會根據已確認的祖先、當前和另一側的配對文件 blob，推匯出發生衝突的 `.i18n.yaml` 記錄。配對文件發生衝突、存在非文字合併設定或記錄無效時，它會拒絕處理並保留衝突；如果合併已經因衝突而停止，請執行 `pnpm run resolve-translation-pairing-conflicts`，該命令會暫存每份可安全生成的配對記錄；如果其他配對衝突仍需手工處理，則以非零狀態退出。[雙語文件約定](i18n/README.md#the-pairing-contract)列出該驅動接受的確切文件和狀態。
+當兩種語言的文件都使用 Git 預設文字策略且能幹淨合併時，配對合併驅動會根據已確認的祖先、當前和另一側的配對文件 blob，推匯出發生衝突的 `.i18n.yaml` 記錄。配對文件發生衝突、存在非文字合併設定或記錄無效時，它會拒絕處理並保留衝突；如果合併已經因衝突而停止，請執行 `pnpm run resolve-translation-pairing-conflicts`，該命令會暫存每份可安全生成的配對記錄；如果其他配對衝突仍需手工處理，則以非零狀態退出。[雙語文件約定](i18n/README.md#the-pairing-contract)列出該驅動接受的確切文件和狀態。
 
 安裝指令碼在發布 worktree 設定前，會探測確切的 Node/tsx 驅動入口點。如果該執行時期之後變得不可用，不相依性 Node 的啟動器會寫入 Git 的普通文字合併結果、讓伴隨檔案保持未解決狀態，並列印復原路徑；請復原相依性後執行 `pnpm run resolve-translation-pairing-conflicts`，或執行 `git merge --abort`。如果 `pre-merge-commit` 拒絕原本能幹淨完成的合併，Git 會把完整結果留在暫存區但不建立提交；請修復失敗後執行 `git commit`，或中止合併。確切的索引與 `MERGE_HEAD` 狀態由[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md#failure-contract)負責記錄。
 
@@ -118,15 +118,15 @@ vendor manifest 守衛檢查 `vendor/*/src` 下的改動是否連同對應的 `v
 
 ### CI 閘門
 
-keyless [CI 工作流程](../.github/workflows/ci.yml) 將獨立閘門分組到若干寬粒度 lane，並在受支持的 Node 版本上執行一組較小的相容性檢查。產物消費端在各自 lane 內等待一次 build。單獨的真實 API 工作流程按其設定的 worker 上限執行 `pnpm run test:e2e`。當前閘門和 job 清單以 [scripts/run-gates.ts](../scripts/run-gates.ts) 和工作流程文件為準。
+keyless [CI 工作流程](../.github/workflows/ci.yml) 將獨立閘門分組到若干寬粒度 lane，並在受支援的 Node 版本上執行一組較小的相容性檢查。產物消費端在各自 lane 內等待一次 build。單獨的真實 API 工作流程按其設定的 worker 上限執行 `pnpm run test:e2e`。當前閘門和 job 清單以 [scripts/run-gates.ts](../scripts/run-gates.ts) 和工作流程文件為準。
 
 ### 日常命令
 
 根目錄的[貢獻者說明](../AGENTS.md#commands)概述常用命令，[`package.json`](../package.json) 與 [scripts/run-gates.ts](../scripts/run-gates.ts) 則負責當前指令碼和閘門清單。請選擇覆蓋變更表面的最小檢查集。文件變更使用 `pnpm run doc-sync`；包公開行為變更還需更新所屬 README 或 JSDoc，而基於建置產物的檢查需要先執行 `pnpm run build`。
 
-### 演示
+### 示範
 
-從原始碼 checkout 執行這些演示前，請單獨執行倉庫建置：
+從原始碼 checkout 執行這些示範前，請單獨執行倉庫建置：
 
 ```sh
 pnpm run build
@@ -138,7 +138,7 @@ pnpm run build
 pnpm dsh --profile headless "summarize this workspace"
 ```
 
-自指的 cordis 演示可以檢查並修改其即時外掛程式執行時期，並需要相同的憑證（默認 `web`，也可用 `acp`）：
+自指的 cordis 示範可以檢查並修改其即時外掛程式執行時期，並需要相同的憑證（預設 `web`，也可用 `acp`）：
 
 ```sh
 pnpm run demo:cordis

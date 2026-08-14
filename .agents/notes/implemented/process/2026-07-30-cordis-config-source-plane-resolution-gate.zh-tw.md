@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-cordis-config-source-plane-resolution-gate.md) | [简体中文](2026-07-30-cordis-config-source-plane-resolution-gate.zh.md) | 繁體中文
+[English](2026-07-30-cordis-config-source-plane-resolution-gate.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 ## 備選方案
 
-**相依性無金鑰 TUI PTY 冒煙測試。** 在默認原始碼模式下，該測試透過原始碼向量啟動真實目錄樹，確實能捕獲這個故障，但僅限乾淨目錄樹。CI 的 e2e 工作流程只以 `lib` 模式執行它（建置產物 bin 透過真實的包 `exports` 解析），因此沒有任何 CI 環節執行原始碼向量，而帶有過時 `lib/` 的開發者目錄樹在本機也仍被掩蓋。為 CI 增加一個原始碼模式冒煙測試，每次也只能證明一種組合；靜態閘門則覆蓋所有隨產品發布的設定與示例設定。
+**相依性無金鑰 TUI PTY 冒煙測試。** 在預設原始碼模式下，該測試透過原始碼向量啟動真實目錄樹，確實能捕獲這個故障，但僅限乾淨目錄樹。CI 的 e2e 工作流程只以 `lib` 模式執行它（建置產物 bin 透過真實的包 `exports` 解析），因此沒有任何 CI 環節執行原始碼向量，而帶有過時 `lib/` 的開發者目錄樹在本機也仍被掩蓋。為 CI 增加一個原始碼模式冒煙測試，每次也只能證明一種組合；靜態閘門則覆蓋所有隨產品發布的設定與示例設定。
 
 **將 `dsh-source-launch-smoke` 相容性測試擴充為完整啟動。** node-compat 冒煙測試只斷言 TTY 拒絕，而該拒絕發生在外掛程式載入之前。每條矩陣版本線都執行一次完整的無金鑰啟動，會以更高成本重複 PTY 冒煙測試，而且同樣只能驗證一種組合，無法覆蓋所有隨產品發布的設定與示例設定。
 

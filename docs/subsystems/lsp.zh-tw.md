@@ -1,6 +1,6 @@
 # LSP 導覽
 
-[English](lsp.md) | [简体中文](lsp.zh.md) | 繁體中文
+[English](lsp.md) | 繁體中文
 
 LSP seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-07-15-lsp-capability-seam.md)：它在單一 `ctx.lsp` 服務上公開語義程式碼導覽，並拆分到多個包：Service Definition（[dsh-lsp](../../packages/lsp/lsp)，`ctx.lsp` + 提供方登錄檔）、通用 Service Provider（[dsh-lsp-stdio](../../packages/lsp/lsp-stdio)，經過設定的 stdio 語言伺服器宿主）和 Consumer（[dsh-tool-lsp](../../packages/lsp/tool-lsp)，即 `lsp` 工具 schema）。LSP 是**一項選填能力**，不屬於 agent loop（代理循環）主幹，因此其詞彙定義在此而非 [core.md](core.md) 中。更換提供方不會改變模型請求導覽的方式。
 
@@ -8,7 +8,7 @@ LSP seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/202
 
 ## 操作與坐標
 
-seam 與模型恰好公開 4 項語義查詢；該聯合是閉合的，因此新增一項查詢會透過編譯強制要求同步修改 seam、提供方和工具。位置與範圍採用從零開始的 UTF-16 坐標，與協議一致；面向模型的工具採用從 1 開始的遊標約定，並在輸入和輸出時進行轉換。
+seam 與模型恰好公開 4 項語義查詢；該聯合是閉合的，因此新增一項查詢會透過編譯強制要求同步修改 seam、提供方和工具。位置與範圍採用從零開始的 UTF-16 坐標，與協定一致；面向模型的工具採用從 1 開始的遊標約定，並在輸入和輸出時進行轉換。
 
 ```ts type-equiv
 /**
@@ -113,7 +113,7 @@ type LspQueryResult =
 
 ## 提供方與服務
 
-每個提供方擁有一個穩定的品牌化 `id`，以及一份互斥的、小寫且以點開頭的擴充名對映。`registerProvider` 會原子預留 id 和每個擴充名：註冊無效或衝突時不發布任何內容；其 disposer 會釋放所有保留項。每次查詢獨立選擇提供方，且選擇與順序無關；沒有匹配項時拋出 `LspError` `LSP_UNAVAILABLE`。該 seam 不公開協議類型、行程或文件控制，也不提供通用 JSON-RPC 逃生口。
+每個提供方擁有一個穩定的品牌化 `id`，以及一份互斥的、小寫且以點開頭的擴充名對映。`registerProvider` 會原子預留 id 和每個擴充名：註冊無效或衝突時不發布任何內容；其 disposer 會釋放所有保留項。每次查詢獨立選擇提供方，且選擇與順序無關；沒有匹配項時拋出 `LspError` `LSP_UNAVAILABLE`。該 seam 不公開協定類型、行程或文件控制，也不提供通用 JSON-RPC 逃生口。
 
 ```ts type-equiv
 /**

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-code-runtime-portable-identifier-seam.md) | [简体中文](2026-07-31-code-runtime-portable-identifier-seam.zh.md) | 繁體中文
+[English](2026-07-31-code-runtime-portable-identifier-seam.md) | 繁體中文
 
 ## Problem
 
@@ -16,7 +16,7 @@ Service Definition 包（`@deepseek-ai/dsh-code-runtime`）以四個具名常數
 
 - `PORTABLE_RESERVED_WORDS`——ECMAScript 與 Python 保留字的聯集。任何命名空間 global 或 error-class 名稱匹配其中之一，都在所有後端上被拒絕，因此 `lambda` 即便是合法的 JS 參數名也被拒絕。新增一門語言即擴寬此聯集，這是對現有綁定名稱的一次有意的破壞性複審。
 - `RESERVED_BINDING_GLOBALS`——某個後端在程序命名空間中擁有的 global：`console`（worker 的日誌捕獲）、`__dsh_main__`/`__builtins__`/`__name__`（Python bootstrap 的包裝器與預置模組 global），以及 `__debug__`（不是 seed 的槽位，而是 CPython 編譯期常數，賦值會被拒，故以該名注入的 global 不可達——同一種可移植性分裂，只是機制不同）。在所有後端上被拒絕，使命名空間清單無法選到一個在某後端能用、在另一後端衝突的名稱。
-- `RESERVED_ERROR_MEMBERS`——每個後端都拒絕的 error-member 名稱：JS `Error` 槽位（`name`、`message`、`stack`）與 Python 例外協議成員（`args`、`with_traceback`、`add_note`）。
+- `RESERVED_ERROR_MEMBERS`——每個後端都拒絕的 error-member 名稱：JS `Error` 槽位（`name`、`message`、`stack`）與 Python 例外協定成員（`args`、`with_traceback`、`add_note`）。
 - `DUNDER_MEMBER`——dunder 形式正則（`__x__`，非空中綴），作為 error member 被整體拒絕，因為其中若干是受約束的 CPython 描述符，其確切集合是解釋器版本細節。
 
 Service Definition 同時把可移植識別符號子集收窄為 `[A-Za-z_][A-Za-z0-9_]*`（記錄在 `CodeBindingNamespace.global` 與 `CodeBindingErrorClass` 上），去掉 JS 專有的 `$`。worker 直接以這些常數的匯出名稱消費它們——binding-global 與 error-class 名稱用 `PORTABLE_RESERVED_WORDS`、後端擁有槽位用 `RESERVED_BINDING_GLOBALS`、error member 用 `RESERVED_ERROR_MEMBERS` 加 `DUNDER_MEMBER`——不再本機起別名；其 `IDENTIFIER` 正則去掉 `$`。

@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-27-session-projection-and-command-log.md) | [简体中文](2026-07-27-session-projection-and-command-log.zh.md) | 繁體中文
+[English](2026-07-27-session-projection-and-command-log.md) | 繁體中文
 
 ## 問題
 
@@ -20,7 +20,7 @@ Status: proposed
 
 ### 全量值事件規則
 
-攜帶狀態的日誌事件必須攜帶變更後的完整狀態，絕不攜帶裸增量。三個領域現狀已然合規：`todo/write` 是整錶快照，`plan/mode` 是一個完整布林值，`goal/change` 元資料是完整的 `GoalSnapshot`（或一個全量值清除墓碑）。該規則讓每個領域的狀態轉移始終足夠廉價（框架逐事件驅動它），讓值在協議層自描述，並讓任何消費端都可以把最近推送的值當作最終值——靠 seq 比較獲得亂序免疫，且自愈：漏掉的更新會被下一次更新糾正。
+攜帶狀態的日誌事件必須攜帶變更後的完整狀態，絕不攜帶裸增量。三個領域現狀已然合規：`todo/write` 是整錶快照，`plan/mode` 是一個完整布林值，`goal/change` 元資料是完整的 `GoalSnapshot`（或一個全量值清除墓碑）。該規則讓每個領域的狀態轉移始終足夠廉價（框架逐事件驅動它），讓值在協定層自描述，並讓任何消費端都可以把最近推送的值當作最終值——靠 seq 比較獲得亂序免疫，且自愈：漏掉的更新會被下一次更新糾正。
 
 ### host 側投影登錄檔（`dsh-session-projection`，新包）
 
@@ -49,7 +49,7 @@ declare module 'cordis' {
 }
 ```
 
-- 值就是協議層的 JSON 載荷；同一張類型表經 `import type` 端到端貫通（host 側單元、協議塊、React 掛鉤）——沒有第二張 DTO 表，也沒有獨立的用戶端「views」表。值如何*渲染*是 slot 體系的事，永遠不歸投影層管。
+- 值就是協定層的 JSON 載荷；同一張類型表經 `import type` 端到端貫通（host 側單元、協定塊、React 掛鉤）——沒有第二張 DTO 表，也沒有獨立的用戶端「views」表。值如何*渲染*是 slot 體系的事，永遠不歸投影層管。
 - **host 是投影唯一的計算地點。** 框架主動驅動（eager drive）每個已註冊的單元：每個已提交的工作階段事件都經過 `apply`；對某事件不感興趣的單元返回同一個狀態引用，而引用未變（`Object.is`）就不產生任何下游工作。用戶端從不摺疊領域事件——它們收到的是成品值（基線塊 + 下文的推送幀）。這消除了雙重實作陷阱（plan 的雙事件摺疊只在 host 寫一遍），也消除了一切用戶端側領域程式碼。
 - **狀態永遠靠計算得出，絕不入日誌。** 日誌只存事件；單元的狀態住在框架的按工作階段水位線快取裡（每單元一份 `{state, observedSeq}`），並在後續階段進入 domain-KV 儲存 seam 上的**持久投影快取（persisted projection cache）**：形如 `(sessionId, key, ver, seq, val)` 的行（`ver` = 單元的 `stateVersion`，`seq` = 水位線，`val` = 狀態 JSON）。一行永遠不會是錯的，至多是過時的——其 `seq` 精確說明過時到哪。冷讀與活讀共用同一套讀取配方：取快取狀態（或 `init()`），只對超出其水位線的事件做正向 `apply`，再對結果做 `view`。冷清單（跨全部 workspace 列出每個工作階段的標題）變成一次索引讀，至多外加一小段尾部重播；session-persistence seam 在同一後續階段為這段尾部補一個按 seq 起讀的原語。寫入策略：節流（次數/間隔，可設定）外加兩個強制點——`turn/end` 與 detach（由活轉冷的時刻）。兩次寫入之間崩潰的代價是尾部重播更長一些，絕不會是值出錯。
 - 領域的輸入事件集由領域自己選擇：todos 只摺疊 `todo/write`；plan 摺疊 `plan/mode` 外加它自己的 `/plan` `command/run` 記錄（見 plan 一節）；goal 摺疊 `goal/change` 元資料；工作階段標題摺疊其標題事件（順帶下線專設的 `session/title` 幀與用戶端的標題快照表——這是該 seam 收編的第四個手工投影）。
@@ -58,9 +58,9 @@ declare module 'cordis' {
 
 ### 已交付的消費端：subagent 身份單元
 
-登錄檔的兩處既有讀法已經服務於本 RFC 協議計畫之外的一個已交付消費端：[subagent 清單經投影單元讀取身份](../../implemented/architecture/2026-08-06-subagent-list-identity-projection.md)註冊了 `subagent` 單元——從 `subagent/descriptor` 按 last-wins 摺疊出的持久化 mode/label 身份——`SubagentRuntime.listChildren` 對 live child 經 `snapshot()` 讀取（水位快取，零日誌讀），對 cold child 則用一次持久化整讀的結果呼叫 `restore({}, events, 0)` 讀取。登錄檔約定不變：沒有失敗通道、沒有新讀法——單元永不拋錯，值缺席本身就是訊號，缺席如何呈現是該消費端自己的決定。
+登錄檔的兩處既有讀法已經服務於本 RFC 協定計畫之外的一個已交付消費端：[subagent 清單經投影單元讀取身份](../../implemented/architecture/2026-08-06-subagent-list-identity-projection.md)註冊了 `subagent` 單元——從 `subagent/descriptor` 按 last-wins 摺疊出的持久化 mode/label 身份——`SubagentRuntime.listChildren` 對 live child 經 `snapshot()` 讀取（水位快取，零日誌讀），對 cold child 則用一次持久化整讀的結果呼叫 `restore({}, events, 0)` 讀取。登錄檔約定不變：沒有失敗通道、沒有新讀法——單元永不拋錯，值缺席本身就是訊號，缺席如何呈現是該消費端自己的決定。
 
-### 協議層：歷史尾頁上的 projections 塊
+### 協定層：歷史尾頁上的 projections 塊
 
 ```ts ignore-check
 // session.history response, tail page only (beforeSeq absent):
@@ -85,11 +85,11 @@ api-proxy 的歷史處理器切出尾頁後同步遍歷登錄檔——全程沒�
 
 只要某單元的狀態引用發生變化（上文的 `Object.is` 閘門），框架就寄出該幀；`seq` 是寄出時該單元的水位線。這是即時推送狀態，絕不入日誌——與 tool-view 的 `view` slot 同一姿態：重播時在 host 重新計算。
 
-用戶端對象層為每個工作階段維護一個**通用值倉（value store）**：`key → { value, seq }`，由尾頁的 projections 塊播種、由該幀更新，唯一規則是 **seq 高者勝**。重放的基線無法把更新的幀往回滾；丟失一個幀的代價只是過時——到下一個幀或基線為止——絕不會出錯。沒有 `fromEvent`，沒有按領域的 cell 註冊，沒有用戶端側領域摺疊——領域交付投影支持只需**零用戶端程式碼**（`SessionProjectionMap` merge 經 `/types` 出口同時服務兩側）。專設的 `session/title` 幀與 manager 的標題快照表都收編進這對通用機制。所有按領域自造的柵欄（#587 的三層、#527 的寫 revision）都消融進這一條 seq 規則。
+用戶端對象層為每個工作階段維護一個**通用值倉（value store）**：`key → { value, seq }`，由尾頁的 projections 塊播種、由該幀更新，唯一規則是 **seq 高者勝**。重放的基線無法把更新的幀往回滾；丟失一個幀的代價只是過時——到下一個幀或基線為止——絕不會出錯。沒有 `fromEvent`，沒有按領域的 cell 註冊，沒有用戶端側領域摺疊——領域交付投影支援只需**零用戶端程式碼**（`SessionProjectionMap` merge 經 `/types` 出口同時服務兩側）。專設的 `session/title` 幀與 manager 的標題快照表都收編進這對通用機制。所有按領域自造的柵欄（#587 的三層、#527 的寫 revision）都消融進這一條 seq 規則。
 
 ### plan 走標準命令通道（完整示例）
 
-plan mode 完整演示了這套模式——觸發路徑、執行面、重播面，三者乾淨分離：
+plan mode 完整示範了這套模式——觸發路徑、執行面、重播面，三者乾淨分離：
 
 - **觸發路徑**：web 的 plan 開關像任何其他命令一樣經 `command.execute` 傳送 `/plan` / `/plan off`；專設的 `setPlanMode`/`planMode` RPC 下線。使用者的*請求*被持久記錄為該命令的 `command/run { name: 'plan', args: 'off' | '' }`——結構化欄位，無需解析行文字。
 - **執行面**（不變）：plan-mode 服務在記憶體裡保持待定意圖，並在下一個輪次邊界落下 `plan/mode`。冷啟動時服務從重播面重建其意圖佇列（「執行態為空即以重播態為準」）。
@@ -123,7 +123,7 @@ type UseProjection = {
 'command/done': { commandId: string; kind: 'success' | 'error'; text?: string }
 ```
 
-host 側命令執行器（`packages/interaction/commands`）在呼叫處理器前追加 `command/run`，在結帳時追加 `command/done`——在接收 agent（代理）的工作階段上直接獨立追加，與[合成輪次移除](../../implemented/simplification/2026-07-28-remove-synthetic-log-only-turns.md)之後所有外掛程式自有 log-only 事件同一形狀：沒有輪次包裹它們（輪次只描述模型迴圈執行），持久化在常規檢查點排空它們，run/done 配對由 commands 包自己的 invariant 伴生外掛程式把守。載荷是結構化的——`name` 以及默認攜帶的 `args` 來自解析器自己的切分（`parseCommand` 的 name 與 rawInput），因此消費端（摺疊自己命令記錄的投影單元、富命令卡片）永遠無需重新解析行文字。當載荷由權威領域事件持有時，命令定義會設定 `recordInput: false`；此時 `command/run` 省略 `args`，而不是重複該載荷。`text` 是處理器的原樣結果——與 `tool/result.content` 同一性質的事實資料，不是呈現（版式如何編排仍由用戶端在渲染時計算，滿足「呈現永不入日誌」這條紅線）。想讓模型知道結果的領域繼續做它們今天在做的事（plan 的旁白、goal 的注入）——那是領域自己的決定，保持不變。
+host 側命令執行器（`packages/interaction/commands`）在呼叫處理器前追加 `command/run`，在結帳時追加 `command/done`——在接收 agent（代理）的工作階段上直接獨立追加，與[合成輪次移除](../../implemented/simplification/2026-07-28-remove-synthetic-log-only-turns.md)之後所有外掛程式自有 log-only 事件同一形狀：沒有輪次包裹它們（輪次只描述模型迴圈執行），持久化在常規檢查點排空它們，run/done 配對由 commands 包自己的 invariant 伴生外掛程式把守。載荷是結構化的——`name` 以及預設攜帶的 `args` 來自解析器自己的切分（`parseCommand` 的 name 與 rawInput），因此消費端（摺疊自己命令記錄的投影單元、富命令卡片）永遠無需重新解析行文字。當載荷由權威領域事件持有時，命令定義會設定 `recordInput: false`；此時 `command/run` 省略 `args`，而不是重複該載荷。`text` 是處理器的原樣結果——與 `tool/result.content` 同一性質的事實資料，不是呈現（版式如何編排仍由用戶端在渲染時計算，滿足「呈現永不入日誌」這條紅線）。想讓模型知道結果的領域繼續做它們今天在做的事（plan 的旁白、goal 的注入）——那是領域自己的決定，保持不變。
 
 由於已提交事件會在 mux 流上廣播，刷新後仍在、多分頁標籤同步、fork/復原後可還原這三件事隨之全部自動獲得。`command.execute` RPC 退化為准入判定——`{ matched, commandId? }`：該行是否匹配命中，以及命中時新鑄的配對 id，發起命令的用戶端據此把自己的請求與生命週期事件產出的 flow 節點關聯起來。一次性通知通道（`runDetached` → `noticeFor`）就此下線。
 
@@ -151,25 +151,25 @@ host 側命令執行器（`packages/interaction/commands`）在呼叫處理器�
 
 **用戶端側摺疊（帶 `fromEvent` 的按領域投影 cell）**——否決：一旦 plan 的單元要摺疊兩種事件，用戶端 cell 就必須在瀏覽器裡復刻 host 的狀態轉移邏輯——同一個摺疊寫兩遍、各自演化。推送成品值（標題幀先例的泛化）保住唯一計算地點，並把用戶端簡化為一個由 seq 把守的通用值倉；領域零用戶端程式碼。
 
-**對日誌尾部的有界反向掃描（absorber 聲明）**——暫不採納：今天沒有任何東西支持它，它只服務於「每個事件都攜帶完整摺疊狀態」的領域，而持久投影快取以統一方式覆蓋同一冷讀需求（快取行 + 正向尾部重播——與用戶端的基線 + 追趕、與分頁載入是同一套配方）。只有當出現檢查點機制服務不了的真實冷讀路徑時才重議。
+**對日誌尾部的有界反向掃描（absorber 聲明）**——暫不採納：今天沒有任何東西支援它，它只服務於「每個事件都攜帶完整摺疊狀態」的領域，而持久投影快取以統一方式覆蓋同一冷讀需求（快取行 + 正向尾部重播——與用戶端的基線 + 追趕、與分頁載入是同一套配方）。只有當出現檢查點機制服務不了的真實冷讀路徑時才重議。
 
 **`invalidate` 式 cell（標髒，遇領域事件就重取）**——不予採納：它的存在只為伺候增量事件。全量值規則讓每個領域都是 last-wins；goal 的重取迴圈、合併邏輯、過時讀柵欄隨之全部消失。
 
 **把登錄檔掛到 `ctx.apiProxy` 名下**——不予採納：工作階段投影並非 web 專屬（TUI、ACP（Agent Client Protocol）、headless 都是未來消費端），且領域包不得相依性 apiproxy 包。獨立 seam 還順帶刪掉了 #587 從 api-proxy 指向 plan 包的 type-only 匯入邊。
 
-**獨立的用戶端 `SessionProjectionViews` 類型表**——不予採納：一張 `SessionProjectionMap` 端到端貫通正是協議直通紀律（不設第二套 DTO 詞彙）；值就是 JSON 載荷，渲染歸 slot 管。
+**獨立的用戶端 `SessionProjectionViews` 類型表**——不予採納：一張 `SessionProjectionMap` 端到端貫通正是協定直通紀律（不設第二套 DTO 詞彙）；值就是 JSON 載荷，渲染歸 slot 管。
 
 **用事件廣播收集、替代登錄檔遍歷**——不予採納：非同步監聽器給不出那個單一的同步切面，而正是它讓 `asOfSeq` 成為橫跨所有 key 的一致快照；登錄檔纔是本倉庫承接貢獻的通行形狀（`ctx.tools`、提示詞片段、slot）。
 
 **專設 `plan/select` 選擇事件（用結構化領域事件替代摺疊命令記錄）**——不予採納，改用命令通道：`command/run` 的結構化 `{name, args}` 已經記錄了選擇，`/plan` 的文法與其摺疊邏輯同住一個外掛程式（領域內耦合，非跨領域），還少一種事件類型。處理器必須在任何可能失敗的路徑之前呼叫 `set()`，使已入日誌的請求與執行面不可能分叉——這是領域內部的順序約束，文件寫在處理器處。
 
-**保留 `setPlanMode` 專用 RPC**——不予採納：plan 選擇就是一條普通的使用者命令；命令通道給它持久記錄、flow 渲染、多分頁標籤可見性與准入語義，不需要專設協議方法。Web UI 的互動元件（一個開關）在內部拼出命令列即可。
+**保留 `setPlanMode` 專用 RPC**——不予採納：plan 選擇就是一條普通的使用者命令；命令通道給它持久記錄、flow 渲染、多分頁標籤可見性與准入語義，不需要專設協定方法。Web UI 的互動元件（一個開關）在內部拼出命令列即可。
 
 **讓變更 RPC 的回應喂 cell 狀態**——不予採納：已提交的 mux 事件即刻到達，攜帶同一個全量值外加 seq；「回應喂狀態」正是當初逼出 #527 寫 revision 柵欄的根源。
 
 ## 驗收標準
 
-- 領域外掛程式把按工作階段的日誌派生狀態送達 React，只需寫：全量值事件聲明、一次 host 側單元 `register`、自己那份 `SessionProjectionMap` merge、以及 inject 回呼——零用戶端側程式碼，不改用戶端 `Session` 類、`ConversationSnapshot`、api-proxy 或任何協議 schema 文件。
+- 領域外掛程式把按工作階段的日誌派生狀態送達 React，只需寫：全量值事件聲明、一次 host 側單元 `register`、自己那份 `SessionProjectionMap` merge、以及 inject 回呼——零用戶端側程式碼，不改用戶端 `Session` 類、`ConversationSnapshot`、api-proxy 或任何協定 schema 文件。
 - 歷史尾頁攜帶 `projections`，其 `asOfSeq` 等於視窗尾部 seq；loadOlder 頁永不攜帶；未裝登錄檔的部署照常返回不帶該塊的歷史，用戶端把所有 key 視為缺席。
 - 過時的基線不能覆蓋更新的 `session/projection` 幀，重放的幀也不能讓值倉倒退（兩條路徑都做 seq 高者勝測試）。
 - 在一個分頁標籤執行的斜槓命令，刷新後、在第二個分頁標籤上、復原之後都在 flow 中渲染出持久節點；未註冊的命令渲染通用卡片；命令結果的 composer 通知路徑徹底移除。

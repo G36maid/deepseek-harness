@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-separate-context-injection-from-turn-execution.md) | [简体中文](2026-07-24-separate-context-injection-from-turn-execution.zh.md) | 繁體中文
+[English](2026-07-24-separate-context-injection-from-turn-execution.md) | 繁體中文
 
 ## 問題
 
@@ -32,7 +32,7 @@ pre-step 的 enter 分支會為正在最終確定的請求返回完整的 `PreSt
 
 如果 pre-step reject 或拋錯，其已領取的注入上下文、steering 與排隊提示詞都會保持已刪除，也不會追加返回批次。原子領取後插入的訊息不受影響，繼續保持待處理。
 
-agent loop 只會在輪次內從進入步驟的批次追加註入的 `user/message`。核心執行事件、steering、助手輸出和工具事件仍受輪次邊界約束；可合併擴充事件的關係由聲明它們的外掛程式擁有，而不是採用核心默認規則。
+agent loop 只會在輪次內從進入步驟的批次追加註入的 `user/message`。核心執行事件、steering、助手輸出和工具事件仍受輪次邊界約束；可合併擴充事件的關係由聲明它們的外掛程式擁有，而不是採用核心預設規則。
 
 ## 擴充點與呼叫方語義
 
@@ -40,7 +40,7 @@ enter 分支的 `PreStepDecision.messages` 是擬議步驟的完整批次。wate
 
 呼叫方主動注入與當前步驟上下文刻意採用不同的時序。`inject()` 會加入下一個可用 pre-step，無法保證正在最終確定的請求會消費它。必須影響該請求的監聽器在 `PreStepDecision.messages` 中返回上下文；下游 reject 或失敗時，該上下文不會落入日誌。
 
-跨工作階段引用採用這種領域組合方式：TUI 先準備快照，然後在 idle 直接訊息的 pre-step 中把快照與該訊息一同返回，或在 running 輪次中先注入快照再喚醒 steering。目標日誌包含兩條簡單訊息，因此來源工作階段後續變化不會改變回放，transcript 消費端也不需要提示詞封套。本決策取代[跨工作階段引用決策](../feature/2026-07-21-cross-session-references.md)中的附件機制，但保留其快照與信任邊界規則。
+跨工作階段引用採用這種領域組合方式：TUI 先準備快照，然後在 idle 直接訊息的 pre-step 中把快照與該訊息一同返回，或在 running 輪次中先注入快照再喚醒 steering。目標日誌包含兩條簡單訊息，因此來源工作階段後續變化不會改變重播，transcript 消費端也不需要提示詞封套。本決策取代[跨工作階段引用決策](../feature/2026-07-21-cross-session-references.md)中的附件機制，但保留其快照與信任邊界規則。
 
 本決策保留[移除注入內容封套](../simplification/2026-07-20-unwrap-injected-content-envelopes.md)確立的由呼叫方決定內容框架的原則，以及[一次 send、一個輪次](../simplification/2026-07-17-one-send-one-turn.md)確立的單條目輪次規則。後續的[獨立純日誌事件決策](../simplification/2026-07-28-remove-synthetic-log-only-turns.md)將同樣的「輪次僅表示執行」語義應用於外掛程式所屬記錄。
 
@@ -70,5 +70,5 @@ enter 分支的 `PreStepDecision.messages` 是擬議步驟的完整批次。wate
 
 - idle 注入只有在後續 pre-step 接納它後才會對模型可見，並可能被取消或 dispose 丟棄，而其持久 inbox 生命週期仍會保留記錄。
 - 兩條連續的 user-role 訊息會取代一條烘焙後的提示詞訊息；提供方配接器會保留這一順序。
-- 必須影響當前請求的上下文要從 `agent/pre-step` 返回；普通注入只支持在最近的後續邊界交付。
+- 必須影響當前請求的上下文要從 `agent/pre-step` 返回；普通注入只支援在最近的後續邊界交付。
 - 公共投遞約定和收件箱記錄保持精簡：沒有上下文附件、上下文放置元資料、提示詞封套或重複的持久事件類型。

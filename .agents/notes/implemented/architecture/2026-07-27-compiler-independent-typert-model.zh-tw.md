@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-compiler-independent-typert-model.md) | [简体中文](2026-07-27-compiler-independent-typert-model.zh.md) | 繁體中文
+[English](2026-07-27-compiler-independent-typert-model.md) | 繁體中文
 
 ## Problem
 
@@ -22,7 +22,7 @@ PackageModel 識別 Cordis service、event、`@typert object` 引用對象和 `@
 
 [`dsh-typert-registry`](../../../../packages/typert/registry/README.md) 提供 `ctx.typert`，且只負責執行時期註冊：一個 contribution 原子攜帶 package-face reflection 與選填 Zod schema，並隨 Cordis effect 撤銷。登錄檔不分析 TypeScript，也不合併兩個 face。JSON Schema 是對已註冊 Zod schema 的按需投影。
 
-包產物發布仍透過 package exports 採用顯式 opt-in。`WorkspaceTypertGenerator` 僅在被呼叫時校驗所請求 face 的根目錄產物協議：host face 必須透過面向使用者的 subpath `package/typert` 暴露 `package/lib/typert.host.{js,d.ts}`，client face 必須透過 `package/client/typert` 暴露 `package/lib/typert.client.{js,d.ts}`；它不會修改這些 exports。後續的 [Typert Remote 設計](2026-08-02-typert-remote-method-calls.md) 為根目錄 build、typecheck、lint 與文件型別檢查增加了全倉 Host 約定 pass。對於已 opt-in 的 Host 包，該 pass 會在消費端解析兩者之前生成本機反射產物與嚴格的 Host-for-Client `/remote` 約定。生成的本機聲明將 `TYPERT` 類型保持為 `unknown`，因此業務包不相依性登錄檔。
+包產物發布仍透過 package exports 採用顯式 opt-in。`WorkspaceTypertGenerator` 僅在被呼叫時校驗所請求 face 的根目錄產物協定：host face 必須透過面向使用者的 subpath `package/typert` 暴露 `package/lib/typert.host.{js,d.ts}`，client face 必須透過 `package/client/typert` 暴露 `package/lib/typert.client.{js,d.ts}`；它不會修改這些 exports。後續的 [Typert Remote 設計](2026-08-02-typert-remote-method-calls.md) 為根目錄 build、typecheck、lint 與文件型別檢查增加了全倉 Host 約定 pass。對於已 opt-in 的 Host 包，該 pass 會在消費端解析兩者之前生成本機反射產物與嚴格的 Host-for-Client `/remote` 約定。生成的本機聲明將 `TYPERT` 類型保持為 `unknown`，因此業務包不相依性登錄檔。
 
 建置期的 `CordisCatalogProjector` 一次消費分析後的 `FaceModel` 與 `TypeGraph`，生成 `docs/cordis-catalog/events.md`、`docs/cordis-catalog/services.md`，以及為 `tool-cordis` 提交的靜態 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` catalog。`tool-cordis` 讀取該靜態 catalog，執行時期不相依性 `ctx.typert`。[`dsh-typert-loader`](../../../../packages/typert/loader/README.md) 與登錄檔仍是獨立的執行時期路徑：loader 監聽 Cordis Loader 設定項生命週期事件，匯入顯式發布的 `./typert` host 產物，並透過 `ctx.typert` 註冊；兩者都不是當前 `cordis_inspect` catalog 的資料源。
 
@@ -34,7 +34,7 @@ PackageModel 識別 Cordis service、event、`@typert object` 引用對象和 `@
 
 邊界用例固定同 face 與跨 face 的顯式包匯入、跨 face 命名 re-export、精確 export alias、qualified `import()` link 和全域性 `@types` External 歸屬，並拒絕 package 自有 TypeScript 診斷、相對路徑越界、`package.json#exports` 之外的引用，以及尚無模型 target 的跨 face namespace re-export。interface declaration merging 顯式保留每個 authored part，無法無損表示的其他 merge 失敗。
 
-Zod emitter 對支持的節點和各類 literal 逐類執行成功與失敗 parse，對不支持的節點逐類斷言明確的 `TypertEmitError`。Emitter fixture 對生成的 Zod JavaScript 與 `.d.ts` 文字做快照，執行 JavaScript，並對聲明做型別檢查。`dsh-typert-registry` 測試固定原子註冊、查詢、JSON Schema 和 effect 撤銷，`dsh-typert-loader` 測試還證明延遲掛載、解除安裝及未完成 dynamic import 的釋放行為。真實 `dsh-tools` 縱切從模型生成 contribution，經執行時期登錄檔載入後，將其服務、事件與關聯類型記錄同已提交的靜態 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` 對照。全倉 projector 測試重新生成兩份 Cordis catalog 文件與 `tool-cordis` API catalog，並要求三份文字同已提交產物逐位元組一致。
+Zod emitter 對支援的節點和各類 literal 逐類執行成功與失敗 parse，對不支援的節點逐類斷言明確的 `TypertEmitError`。Emitter fixture 對生成的 Zod JavaScript 與 `.d.ts` 文字做快照，執行 JavaScript，並對聲明做型別檢查。`dsh-typert-registry` 測試固定原子註冊、查詢、JSON Schema 和 effect 撤銷，`dsh-typert-loader` 測試還證明延遲掛載、解除安裝及未完成 dynamic import 的釋放行為。真實 `dsh-tools` 縱切從模型生成 contribution，經執行時期登錄檔載入後，將其服務、事件與關聯類型記錄同已提交的靜態 `SERVICE_API`、`EVENT_API` 和 `TYPE_API` 對照。全倉 projector 測試重新生成兩份 Cordis catalog 文件與 `tool-cordis` API catalog，並要求三份文字同已提交產物逐位元組一致。
 
 ## Alternatives considered
 
@@ -48,6 +48,6 @@ Zod emitter 對支持的節點和各類 literal 逐類執行成功與失敗 pars
 
 ## Consequences
 
-新增生成目標或靜態檢查可複用同一 TypeGraph，業務類目也可在 PackageModel 上擴充，而無需再次解析 AST。保留計算前類型和獨立 face 的代價是模型比打平後的 schema 更複雜，emitter 必須顯式聲明支持範圍並對缺失能力失敗。
+新增生成目標或靜態檢查可複用同一 TypeGraph，業務類目也可在 PackageModel 上擴充，而無需再次解析 AST。保留計算前類型和獨立 face 的代價是模型比打平後的 schema 更複雜，emitter 必須顯式聲明支援範圍並對缺失能力失敗。
 
 包級顯式 opt-in 使產物發布與 exports 由各包自行管理。倉庫編排仍可為每個已 opt-in 的包執行全倉 Host 約定 pass；該 pass 仍由後續 Remote Gateway Agent Note 負責說明。靜態 Cordis catalog 可從標準模型復現，同時不把 `tool-cordis` 與執行時期登錄檔狀態耦合。`ctx.typert` 只反映當前執行時期中已掛載的產物；對於消費端直接匯入後仍持有的 Zod 實例，解除安裝流程無法控制。

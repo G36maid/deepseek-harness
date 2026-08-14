@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-manager-owned-subagent-settlement-delivery.md) | [简体中文](2026-08-06-manager-owned-subagent-settlement-delivery.zh.md) | 繁體中文
+[English](2026-08-06-manager-owned-subagent-settlement-delivery.md) | 繁體中文
 
 ## 問題
 
@@ -60,7 +60,7 @@ Status: implemented
 
 `subagent-continuable` 是其中固定失敗結局的那個。它的 child 最後一個輪次在被強制的持久化檢查點上死亡，且未進入任何 step，因此該 transcript 正是上面那條終止原因規則的端到端可見之處：通知說該 child **失敗**，把此前的 `SECOND_OK` 作為它最後產出的內容而非結果攜帶，而父級自己的確認輪次會到達 ACP 用戶端。
 
-另有一個無金鑰的 headless Loader 快照端到端覆蓋使用者可見路徑。其重放父級省略 `run_in_background` 以覆蓋可繼續後臺默認路徑，從不呼叫 `list_agents`、`send_message` 或 Task 工具，消費管理器寫入的 `subagent-settled` 通知，並給出最終答案。child 從不呼叫 `report`，因此該 transcript 不可能經由協作式上報路徑透過。一個僅用於測試的 Loader 柵欄會把父級啟動後的請求保持到真實管理器通知進入其 inbox 為止，從 transcript 中排除平臺調度差異，但不會偽造該通知。
+另有一個無金鑰的 headless Loader 快照端到端覆蓋使用者可見路徑。其重放父級省略 `run_in_background` 以覆蓋可繼續後臺預設路徑，從不呼叫 `list_agents`、`send_message` 或 Task 工具，消費管理器寫入的 `subagent-settled` 通知，並給出最終答案。child 從不呼叫 `report`，因此該 transcript 不可能經由協作式上報路徑透過。一個僅用於測試的 Loader 柵欄會把父級啟動後的請求保持到真實管理器通知進入其 inbox 為止，從 transcript 中排除平臺調度差異，但不會偽造該通知。
 
 `subagent-report` 還需要多做一步讓步。在隨附的喚醒上報預設值下，該場景有兩個互相獨立的父級喚醒——上報與結帳——而第二個究竟是延長第一個的輪次還是另開一個輪次，是一枚真正的硬幣，多次執行實測約為五五開。任何手寫 transcript 都無法同時容納兩種順序。因此它的 overlay 固定 `reportDelivery: quiet`，使結帳成為唯一喚醒；另一個僅用於快照的 pre-step 柵欄會把 child 保持到父級啟動輪次結束，使這次喚醒開啟一個確定輪次並同時認領兩則訊息。喚醒上報預設值的覆蓋則保留在 report 包自身的測試中。
 
@@ -74,7 +74,7 @@ Status: implemented
 
 **僅在 child 沒有上報時投遞。** 這是最初的設計。它需要按 Activation 記帳，仍會漏掉「報了進度、隨後在給出結果前死掉」的 child，而且最關鍵的是：它讓面向父級的承諾變成有條件的。「通常你會被告知」不是工具描述能陳述的契約，而無法相依性該通知的模型無論如何都會去輪詢。
 
-**把投遞做成可設定。** 部署開關會把面向模型的文字重新變回「通常」，而這正是本次改動要消除的失效。協議常數與安全不變數保持固定；這就是其中之一。
+**把投遞做成可設定。** 部署開關會把面向模型的文字重新變回「通常」，而這正是本次改動要消除的失效。協定常數與安全不變數保持固定；這就是其中之一。
 
 **修改 `subagent/end` 讓它攜帶父級，由外掛程式負責投遞。** 那會為一個包內消費者拓寬已發布的 payload，保留全部順序風險，並讓返回通道重新變成選填外掛程式。以 `terminal(failure)` 擴充包私有的 `ActivationObserver`，則只保留一處終止事實的計算，且不改動任何公開面。
 
@@ -92,7 +92,7 @@ Status: implemented
 
 ### 已接受的風險
 
-通知只是被投遞，而不是被確認。沒有持久化 mailbox、回執或重試：不線上的父級會丟失它，child 的 Session 仍是唯一的持久記錄。要補上這一點，需要一套帶有自身尋址、授權與重放規則的離線 mailbox 協議。
+通知只是被投遞，而不是被確認。沒有持久化 mailbox、回執或重試：不線上的父級會丟失它，child 的 Session 仍是唯一的持久記錄。要補上這一點，需要一套帶有自身尋址、授權與重放規則的離線 mailbox 協定。
 
 當父級緊接著被 dispose 時（每個拆卸呼叫方都會這麼做），在拆卸期間被 inject 的通知不會被模型讀到：dispose 的 cancel 會清除這條未被認領的訊息，而日誌保留 insert/cancel 這一對作為記錄。要讓拆卸期投遞在 resume 之後仍可讀，要麼需要上面那套離線 mailbox，要麼需要改變 dispose 對持久待處理工作的處理方式。dispose 會丟棄每一條未被認領的 inbox 項，使用者輸入也不例外，因此改變該行為是一個 core-agent 決策，而不是結帳投遞的細節。resume 後的父級可以發現 child，但不會收到結局：`list_agents` 只報告存在性與「線上/僅儲存」狀態——`SubagentListEntry.activity` 就是這麼寫的——要取回結局，必須透過 `send_message` 去問那個 child。
 

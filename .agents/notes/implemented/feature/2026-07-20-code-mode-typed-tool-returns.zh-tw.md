@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-code-mode-typed-tool-returns.md) | [简体中文](2026-07-20-code-mode-typed-tool-returns.zh.md) | 繁體中文
+[English](2026-07-20-code-mode-typed-tool-returns.md) | 繁體中文
 
 ## 問題
 
@@ -45,7 +45,7 @@ declare const tools: {
 }
 ```
 
-`jsonSchemaToTs()` 覆蓋統一 schema 支持的所有節點：對象、陣列、字串、數字、整數、布林值、null、無約束 JSON、標量 `enum` 與 `const`，以及 `oneOf`。提示詞生成期間，不支持的原始結構會回退為 `unknown`，而不會導致組裝失敗。工具名會保留精確鍵名，包括必須使用引號訪問的名稱。
+`jsonSchemaToTs()` 覆蓋統一 schema 支援的所有節點：對象、陣列、字串、數字、整數、布林值、null、無約束 JSON、標量 `enum` 與 `const`，以及 `oneOf`。提示詞生成期間，不支援的原始結構會回退為 `unknown`，而不會導致組裝失敗。工具名會保留精確鍵名，包括必須使用引號訪問的名稱。
 
 ### 綁定值與失敗
 
@@ -53,7 +53,7 @@ declare const tools: {
 
 Code Mode 透過執行時期請求中的 `{ name: "ToolCallError", memberNameProperty: "toolName" }` 聲明其以例外拒絕 Promise 的能力。執行時期 Service Definition 只把這些名稱視為資料：worker 會動態生成並注入真正用於 `tools` 綁定失敗的構造函式，因此無需讓通用執行時期瞭解工具，`error instanceof ToolCallError` 也能成立。worker 使用模組初始化時捕獲的 Error 構造函式與屬性定義內建方法，配合原型為 null 的屬性描述符，構造失敗對象並定義其公開欄位，因此模型程式碼的修改不會把約定承諾的 reject 變成 worker 失敗。該錯誤包含標準的 `Error` 訊息和確切的 `toolName`，並有意省略 `ToolFailure.info`、錯誤程式碼與 Native 內容。這是一項用於控制流的例外約定，而不是供程序分類的失敗聯合。
 
-綁定參數與綁定回傳值會在不可信 worker 協議的兩端重新校驗為無損 JSON，且不設位元組上限。每個分離後的值在透過結構化克隆跨越邊界前，都會編碼為扁平的前序 token 流，其傳輸結構的巢狀深度有界；接收方再以迭代方式重建該值。因此，有效應用資料的巢狀深度既不受 JavaScript 呼叫棧深度上限限制，也不受特定平臺對巢狀結構化克隆施加的上限限制。模組初始化時，worker 會捕獲自身 JavaScript 執行域中 `Array.prototype` 和 `Object.prototype` 的引用、僅用於識別其他執行域普通容器原型、可取得原生函式原始碼的內建函式，以及 JSON 邊界用於結構處理和計量的全部內建方法。屬性寫入使用原型為 null 的屬性描述符；內部的陣列與集合操作直接呼叫捕獲的方法，不會訪問可變的全域性或原型槽位。因此，即使模型程式碼替換 `Object.keys`、`Array.isArray`、集合方法、字串方法或 `Buffer.byteLength` 等輔助方法，重寫內建原型的構造函式槽位，或向 `Object.prototype` 新增形如屬性描述符的欄位，也不會改變校驗、協議傳輸或位元組計量。面向其他執行域的原生函式原始碼檢查仍會拒絕由使用者編寫、冒充 `Object` 或 `Array` 的構造函式。為保持相依性輕量，執行時期 Service Definition 將結構等價類型命名為 `CodeJsonValue`，從而無需相依性工作階段側擁有的規範類型；生成的 SDK 和工具 API 則使用 `JsonValue`。這些值不會經過提示詞截斷、上下文 spill 或持久化。因此，程序可以完整篩選已經採集的搜尋、工作流程、任務、檔案系統與 MCP 值，同時提供方和執行器的採集上限仍會實際生效。
+綁定參數與綁定回傳值會在不可信 worker 協定的兩端重新校驗為無損 JSON，且不設位元組上限。每個分離後的值在透過結構化克隆跨越邊界前，都會編碼為扁平的前序 token 流，其傳輸結構的巢狀深度有界；接收方再以迭代方式重建該值。因此，有效應用資料的巢狀深度既不受 JavaScript 呼叫棧深度上限限制，也不受特定平臺對巢狀結構化克隆施加的上限限制。模組初始化時，worker 會捕獲自身 JavaScript 執行域中 `Array.prototype` 和 `Object.prototype` 的引用、僅用於識別其他執行域普通容器原型、可取得原生函式原始碼的內建函式，以及 JSON 邊界用於結構處理和計量的全部內建方法。屬性寫入使用原型為 null 的屬性描述符；內部的陣列與集合操作直接呼叫捕獲的方法，不會訪問可變的全域性或原型槽位。因此，即使模型程式碼替換 `Object.keys`、`Array.isArray`、集合方法、字串方法或 `Buffer.byteLength` 等輔助方法，重寫內建原型的構造函式槽位，或向 `Object.prototype` 新增形如屬性描述符的欄位，也不會改變校驗、協定傳輸或位元組計量。面向其他執行域的原生函式原始碼檢查仍會拒絕由使用者編寫、冒充 `Object` 或 `Array` 的構造函式。為保持相依性輕量，執行時期 Service Definition 將結構等價類型命名為 `CodeJsonValue`，從而無需相依性工作階段側擁有的規範類型；生成的 SDK 和工具 API 則使用 `JsonValue`。這些值不會經過提示詞截斷、上下文 spill 或持久化。因此，程序可以完整篩選已經採集的搜尋、工作流程、任務、檔案系統與 MCP 值，同時提供方和執行器的採集上限仍會實際生效。
 
 ### 外層結果與輸出帳本
 
@@ -81,7 +81,7 @@ Code Mode 透過執行時期請求中的 `{ name: "ToolCallError", memberNamePro
 
 編譯期測試與快照測試鎖定了精確的 `ToolArgsMap`、`ToolOutputMap`、`ToolName`、schema 到 TypeScript 的覆蓋範圍以及特殊名稱。登錄檔與真實 worker 測試覆蓋標量、陣列、對象和 null 值；字串原文渲染；缺席的 `undefined`；消費端聲明、實際用於拒絕 Promise 的例外類，包括 `ToolCallError`；無效參數與完成值，包括偽裝為內建原型的偽造原型；模型程式碼修改過的 JSON 邊界全域性對象、原型方法、構造函式槽位，以及繼承而來的屬性描述符欄位；上述修改後的類型化綁定失敗；不設上限的大型中間綁定值；巢狀 spill 抑制；64 MiB 上限內外的精確計量；日誌、值與診斷的組合計量；拋出的超大堆疊；有界失敗的 spill；不可信對端偽造的流量；以及建置後包的執行。
 
-無金鑰的真實 worker 整合測試鎖定了自然語言結果無法安全支持的兩種控制代碼工作流程。後臺 bash 呼叫返回 job id，外層執行結束，之後的執行再根據該 id 輪詢直至任務完成；其他用例分別證明，預先中止不會建立任務、發布後的呼叫取消會保留任務、前臺執行仍與訊號耦合，並且由 `job_kill` 負責取消。Cordis 程序會直接讀取 active 或 pending 掛載的 id 和 `waitingFor` 欄位，按該 id 解除安裝，並在不解析渲染文字的情況下確認掛載已移除。
+無金鑰的真實 worker 整合測試鎖定了自然語言結果無法安全支援的兩種控制代碼工作流程。後臺 bash 呼叫返回 job id，外層執行結束，之後的執行再根據該 id 輪詢直至任務完成；其他用例分別證明，預先中止不會建立任務、發布後的呼叫取消會保留任務、前臺執行仍與訊號耦合，並且由 `job_kill` 負責取消。Cordis 程序會直接讀取 active 或 pending 掛載的 id 和 `waitingFor` 欄位，按該 id 解除安裝，並在不解析渲染文字的情況下確認掛載已移除。
 
 ## 考慮過的替代方案
 
@@ -107,6 +107,6 @@ worker 會以巢狀深度有界的扁平協定格式傳輸資料並執行無損�
 - 中間值沒有位元組上限，可能因值的保留、扁平協定格式副本或結構化克隆開銷而耗盡行程或 worker 記憶體。
 - 64 MiB 硬上限只適用於外層可變負載，不計固定的結果封裝文法與展示空白；spill 無法復原超出該上限後被拒絕的位元組。
 - 提供方或執行器的採集上限可能在規範值到達 Code Mode 前就已丟棄部分源資料。
-- 不支持的 MCP 輸出 schema 會回退為 `JsonValue`；更豐富的 Native 多媒體投影留待後續實作。
+- 不支援的 MCP 輸出 schema 會回退為 `JsonValue`；更豐富的 Native 多媒體投影留待後續實作。
 - 每個外層 `run_code` 只有一張結果卡片，巢狀呼叫不會各自生成卡片。
 - Code Mode 失敗只暴露 `ToolCallError` 的訊息與工具名，不提供程序可用的錯誤程式碼聯合。

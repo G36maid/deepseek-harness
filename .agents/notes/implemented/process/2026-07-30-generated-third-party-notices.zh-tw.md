@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-generated-third-party-notices.md) | [简体中文](2026-07-30-generated-third-party-notices.zh.md) | 繁體中文
+[English](2026-07-30-generated-third-party-notices.md) | 繁體中文
 
 ## 問題
 
@@ -18,15 +18,15 @@ Status: implemented
 
 有一處觸發缺口是接受而非繞過的：lefthook 只檢視磁碟上存在的文件，因此**刪除** manifest 不會觸發任何任務，移除一個包會落到測試 lane 的斷言上。重構暫存文件清單以納入刪除的做法不成立——無論怎麼給清單，lefthook 都會拿工作樹過濾一遍。這個場景正由斷言兜底。
 
-文件默認只披露**直接**相依性。完整的 npm 閉包連同鎖定版本已記錄在 `pnpm-lock.yaml`（`pnpm licenses list` 可渲染），Python 閉包記錄在 `python/sdk/uv.lock`；再用散文謄一遍只會得到一份更差的副本。唯一明確披露的傳遞相依性，是 `@anthropic-ai/claude-agent-sdk` 透過 `optionalDependencies` 聲明的官方 Claude 平臺載荷集合，因為這些包承載隨產品分發的 Claude Code 可執行文件，而非普通的庫實作細節。
+文件預設只披露**直接**相依性。完整的 npm 閉包連同鎖定版本已記錄在 `pnpm-lock.yaml`（`pnpm licenses list` 可渲染），Python 閉包記錄在 `python/sdk/uv.lock`；再用散文謄一遍只會得到一份更差的副本。唯一明確披露的傳遞相依性，是 `@anthropic-ai/claude-agent-sdk` 透過 `optionalDependencies` 聲明的官方 Claude 平臺載荷集合，因為這些包承載隨產品分發的 Claude Code 可執行文件，而非普通的庫實作細節。
 
 **分層依據是聲明方所在區域，而非 manifest 欄位名。** 只要 `DEV_ONLY_AREAS` 之外的任一 manifest——即根 manifest、`packages/test-support/`、`packages/test-support/client-runtime/`、`website/`、`examples/`、`native/` 之外——在 `dependencies` 或 `optionalDependencies` 裡點名某個包，它就是執行時期相依性。單看欄位名在兩個方向上都會出錯：測試支撐包把 `vitest` 寫在 `dependencies` 裡卻並不交付它；而根目錄的原始碼執行指令碼透過 `tsx` 執行，根本沒有任何 manifest 把它聲明為執行時期相依性，只能由生成器顯式標記。
 
-執行時期層刻意覆蓋**所有可掛載的外掛程式**，而不止 CLI、Web UI 與 Python 執行時期默認載入的那些。從原始碼執行時期，使用者可以透過 `cordis.yml` 掛載任何外掛程式包；因此，`@modelcontextprotocol/sdk` 與 OpenTelemetry 系列即使沒有任何默認裝配引入，也會觸達真實使用者。對法務披露而言，披露不足纔是代價更高的那個方向。
+執行時期層刻意覆蓋**所有可掛載的外掛程式**，而不止 CLI、Web UI 與 Python 執行時期預設載入的那些。從原始碼執行時期，使用者可以透過 `cordis.yml` 掛載任何外掛程式包；因此，`@modelcontextprotocol/sdk` 與 OpenTelemetry 系列即使沒有任何預設裝配引入，也會觸達真實使用者。對法務披露而言，披露不足纔是代價更高的那個方向。
 
 manifest 集合由根 `pnpm-workspace.yaml` 聲明的 `packages:` 成員派生，其中包括 Landlock 工作區及其公開包，因此新增成員區域在聲明當天就會被讀取，而不必等誰想起來去補一份清單。授權條款與倉庫地址取自根工作區已安裝的 pnpm store 和包本機連結場；某個包兩處都解析不到時直接失敗，而不是留下空單元格。`OVERRIDES` 收錄已發布 manifest 答不上來的包：用 Rust 建置、發布時省略 `license` 欄位的 npm 可執行包，以及 `modelcontextprotocol/servers` 系列——該倉庫正處在 MIT 向 Apache-2.0 的重新許可過程中，實際條款按貢獻逐條而定。執行時期相依性的授權條款若不在寬鬆清單內即為硬失敗：交付 copyleft 是一項分發決策，不該被一次重新生成悄悄吸收。被原始碼收編的包會與 `vendor/README.md` 交叉核對，出現非 MIT 即報錯；`pnpm-workspace.yaml` 的 `patchedDependencies` 列入執行時期表格，因為 pnpm 在安裝期就會打上這些修補程式——交付產物攜帶的是改動過的 `@earendil-works/pi-tui` 與 `node-pty`，修補程式文件本身就是改動的完整記錄。
 
-項目所有者另行授權分發每個官方 `@anthropic-ai/claude-agent-sdk` 版本，以及該版本透過 `optionalDependencies` 聲明的官方 Claude Code CLI 與平臺載荷。生成器將其表示為一項精確匹配直接包身份的例外，而非寬鬆授權條款覆蓋項：`SEE LICENSE IN README.md` 與 `SEE LICENSE IN LICENSE.md` 仍歸類為非寬鬆，所有無關的非寬鬆執行時期相依性仍以默認拒絕方式失敗。存在該 SDK 時，生成器會讀取其已安裝 manifest，拒絕不符合官方 SDK 載荷前綴的選填包身份，推導當前 SDK、CLI 與載荷版本，核驗已安裝宿主載荷的身份、版本和聲明授權條款欄位，並在單獨的聲明章節中渲染 SDK 聲明的完整載荷集合。版本、聲明授權條款和載荷集合發生變化時無需新的身份授權，但仍須經過常規的相依性、鎖定檔、相容性、條款和聲明評審。
+項目所有者另行授權分發每個官方 `@anthropic-ai/claude-agent-sdk` 版本，以及該版本透過 `optionalDependencies` 聲明的官方 Claude Code CLI 與平臺載荷。生成器將其表示為一項精確匹配直接包身份的例外，而非寬鬆授權條款覆蓋項：`SEE LICENSE IN README.md` 與 `SEE LICENSE IN LICENSE.md` 仍歸類為非寬鬆，所有無關的非寬鬆執行時期相依性仍以預設拒絕方式失敗。存在該 SDK 時，生成器會讀取其已安裝 manifest，拒絕不符合官方 SDK 載荷前綴的選填包身份，推導當前 SDK、CLI 與載荷版本，核驗已安裝宿主載荷的身份、版本和聲明授權條款欄位，並在單獨的聲明章節中渲染 SDK 聲明的完整載荷集合。版本、聲明授權條款和載荷集合發生變化時無需新的身份授權，但仍須經過常規的相依性、鎖定檔、相容性、條款和聲明評審。
 
 ## 測試
 

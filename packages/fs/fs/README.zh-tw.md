@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 **`FileSystem`**（`ctx.fs`）定義同一個執行世界中的儲存原語，包括解析路徑、公開規範化行程路徑與文件 URI、檢查包含關係、完整或流式讀取文字、有界讀取原始位元組、檢查／列出元資料、原子寫入和應用字面量編輯，但不規定實作方式。兩個變更操作都**選填** 接收版本防護，因此 `ctx.fs` 本身就是完整且不受約束的儲存 seam。本包還擁有由工具分派、政策外掛程式監聽的 `fs/*` 政策事件詞彙。
 
@@ -60,7 +60,7 @@
 
 ## 已知限制與延期工作
 
-- **變更操作約定只支持文字**：文字讀取和兩個變更操作都以 `FS_NOT_TEXT` 拒絕二進位/非 UTF-8 內容；`readBytes` 是唯一的原始位元組原語，二進位安全的變更操作仍是[工具 schema Agent Note](../../../.agents/notes/implemented/feature/2026-06-17-filesystem-tool-schemas.md)有意延期的工作。
-- **只有十二個原語**：沒有刪除、重新命名/移動、複製或監視；`listDir` 只支持一層，遞迴、glob、分頁和搜尋不在範圍內，見[目錄列出 Agent Note](../../../.agents/notes/archived/architecture/2026-07-03-filesystem-directory-listing-seam.md)。
+- **變更操作約定只支援文字**：文字讀取和兩個變更操作都以 `FS_NOT_TEXT` 拒絕二進位/非 UTF-8 內容；`readBytes` 是唯一的原始位元組原語，二進位安全的變更操作仍是[工具 schema Agent Note](../../../.agents/notes/implemented/feature/2026-06-17-filesystem-tool-schemas.md)有意延期的工作。
+- **只有十二個原語**：沒有刪除、重新命名/移動、複製或監視；`listDir` 只支援一層，遞迴、glob、分頁和搜尋不在範圍內，見[目錄列出 Agent Note](../../../.agents/notes/archived/architecture/2026-07-03-filesystem-directory-listing-seam.md)。
 - **沒有 I/O deadline**：該 seam 不啟動逾時；取消只是每個原語上盡力而為的選填 `AbortSignal`（見有意採用的 [fs 能力族立場](../README.md)）。
 - **先解析後操作使遠端後端每次工具呼叫需要兩次往返**：摺疊或快取解析由這種後端自行決定。

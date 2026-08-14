@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-07-13-documentation-site-projection.md) | [简体中文](2026-07-13-documentation-site-projection.zh.md) | 繁體中文
+[English](2026-07-13-documentation-site-projection.md) | 繁體中文
 
 ## 問題
 
-倉庫需要一個可導覽的文件網站，但不能讓網站目錄成為第二個文件源。把包指南、架構頁面或生成目錄複製到網站專用目錄樹，會使兩份副本發生漂移；讓 VitePress 直接指向倉庫根目錄，又會把公開 URL 和導覽與內部文件版面配置耦合。倉庫相對連結在網站上也需要指向不同位置：已發布頁面應留在站內，原始檔和未發布的貢獻者文件則應指向 GitHub。
+倉庫需要一個可導覽的文件網站，但不能讓網站目錄成為第二個文件源。把包指南、架構頁面或生成目錄複製到網站專用目錄樹，會使兩份副本發生漂移；讓 VitePress 直接指向倉庫根目錄，又會把公開 URL 和導覽與內部文件版面設定耦合。倉庫相對連結在網站上也需要指向不同位置：已發布頁面應留在站內，原始檔和未發布的貢獻者文件則應指向 GitHub。
 
 ## 決策
 
@@ -14,7 +14,7 @@ Status: implemented
 
 `website/docs.ts` 是一份顯式的發布 manifest（中繼資料清單）。每個條目將一個權威原始檔對映到穩定的公開路由、側邊欄、分區和順序。因此，新增或移除已發布頁面是一項可評審的 manifest 變更，而不是隱式目錄掃描的結果。
 
-在 VitePress 啟動或建置之前，`scripts/project-doc-site.ts` 會把 manifest 投影到被忽略的 `website/.generated/` 目錄。生成目錄樹遵循公開路由，使 VitePress 導覽、locale 偵測和本機搜尋使用同一套路由命名。每個頁面都會獲得一個指向其權威倉庫文件的 `editSource` frontmatter 欄位；編輯連結回呼只讀取該頁面的資料，因此公開 URL 與原始檔版面配置彼此獨立。
+在 VitePress 啟動或建置之前，`scripts/project-doc-site.ts` 會把 manifest 投影到被忽略的 `website/.generated/` 目錄。生成目錄樹遵循公開路由，使 VitePress 導覽、locale 偵測和本機搜尋使用同一套路由命名。每個頁面都會獲得一個指向其權威倉庫文件的 `editSource` frontmatter 欄位；編輯連結回呼只讀取該頁面的資料，因此公開 URL 與原始檔版面設定彼此獨立。
 
 各 locale 的首頁投影只保留權威 YAML frontmatter。面向倉庫的正文保留其 H1 和雙語原始檔連結；frontmatter 實作[保持 locale 不變的快速開始重定向](../simplification/2026-08-11-quickstart-documentation-home.md)，網站導覽負責切換 locale。
 
@@ -44,6 +44,6 @@ Mermaid 渲染權威圖表。網站工作區顯式聲明 `vitepress-plugin-merma
 
 ## 後果
 
-文件事實只有一個可編輯歸屬，公開路由在原始檔移動後仍保持穩定，網站也能納入生成的參考資料而無需提交另一份生成副本。本機開發會監視權威輸入並重新生成一次性投影。版面配置閘門會把過時的網站專用 Markdown 目錄樹變成合併失敗，而不是被忽略的建置輸入。影響文件網站的合併會把檢查過的結果部署到 Pages，手動觸發則提供復原和驗證的入口。
+文件事實只有一個可編輯歸屬，公開路由在原始檔移動後仍保持穩定，網站也能納入生成的參考資料而無需提交另一份生成副本。本機開發會監視權威輸入並重新生成一次性投影。版面設定閘門會把過時的網站專用 Markdown 目錄樹變成合併失敗，而不是被忽略的建置輸入。影響文件網站的合併會把檢查過的結果部署到 Pages，手動觸發則提供復原和驗證的入口。
 
-發布 manifest 是一份需要維護的 allowlist，連結投影也引入了一層倉庫專用的建置配接器。新增一種 Markdown 連結行為時，需要增加投影器測試。Mermaid 支持也會增大用戶端 bundle，但能保留權威文件中已經使用的圖表。
+發布 manifest 是一份需要維護的 allowlist，連結投影也引入了一層倉庫專用的建置配接器。新增一種 Markdown 連結行為時，需要增加投影器測試。Mermaid 支援也會增大用戶端 bundle，但能保留權威文件中已經使用的圖表。

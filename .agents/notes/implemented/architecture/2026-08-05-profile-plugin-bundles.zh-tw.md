@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-05-profile-plugin-bundles.md) | [简体中文](2026-08-05-profile-plugin-bundles.zh.md) | 繁體中文
+[English](2026-08-05-profile-plugin-bundles.md) | 繁體中文
 
 ## Problem
 
-`dsh` 啟動器硬編碼了自己的組合：`base.cordis.yml` + `web.cordis.yml` 隨 `apps/cli` 一起交付，三種各自訂製的入口模式（`--config`、`web`、`-p`）各帶一套層棧，外加一個全域性的個人 overlay（`$DSH_HOME/config.yaml`）。想把樹外外掛程式（一個 TUI、一個提供方擴充包）裝進已交付的表層，只能修改倉庫；第三方包也沒有任何位置可以貢獻默認組合。
+`dsh` 啟動器硬編碼了自己的組合：`base.cordis.yml` + `web.cordis.yml` 隨 `apps/cli` 一起交付，三種各自訂製的入口模式（`--config`、`web`、`-p`）各帶一套層棧，外加一個全域性的個人 overlay（`$DSH_HOME/config.yaml`）。想把樹外外掛程式（一個 TUI、一個提供方擴充包）裝進已交付的表層，只能修改倉庫；第三方包也沒有任何位置可以貢獻預設組合。
 
 ## Decision
 

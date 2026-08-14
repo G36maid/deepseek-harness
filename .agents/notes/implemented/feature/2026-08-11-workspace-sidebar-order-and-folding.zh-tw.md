@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-11-workspace-sidebar-order-and-folding.md) | [简体中文](2026-08-11-workspace-sidebar-order-and-folding.zh.md) | 繁體中文
+[English](2026-08-11-workspace-sidebar-order-and-folding.md) | 繁體中文
 
 ## 問題
 
-Session 很多的 Workspace 會佔滿整個側邊欄，把其他 Workspace 擠出可見範圍。緊湊清單需要有界的默認高度，同時仍要提供到達每條 Session 的明確入口。側邊欄還需要面向活動時間的順序，但 `WorkspaceView.sessionIds` 是持久的手動記帳，不能被 Session 活動改寫。
+Session 很多的 Workspace 會佔滿整個側邊欄，把其他 Workspace 擠出可見範圍。緊湊清單需要有界的預設高度，同時仍要提供到達每條 Session 的明確入口。側邊欄還需要面向活動時間的順序，但 `WorkspaceView.sessionIds` 是持久的手動記帳，不能被 Session 活動改寫。
 
 Workspace 分組本身沒有使用者可控的持久順序。瀏覽器原生拖拽還會把清單外鬆手判為拒絕，並把行彈回原位，即使應用仍持有有效插入標記。Workspace 展開後，若只按組頭命中，兩個分組之間的視覺邊界也不再等於任一組頭的中點。
 
@@ -26,7 +26,7 @@ Workspace 登錄檔持有持久 `workspaceIds` 順序，並提供採用 DOM `ins
 
 ### 拖拽與緊湊介面
 
-Workspace 命中測試使用完整渲染分組區段，包括可見 Session 行。前一分組的下半部與後一分組的上半部共享同一條插入邊界，指示器是一條帶有相連右向尖角且不影響版面配置的絕對定位橫線。樹主體覆蓋層會在滾動裁切區外以相同的負偏移繪製第一條邊界，因此左側尖角保持可見，清單位置也不會改變。Workspace 或 Session 拖拽期間，文件級 `dragover` 與 `drop` 處理器會接受原生操作；若在 Workspace 清單外鬆手，`dragend` 會提交最後一個有效標記。
+Workspace 命中測試使用完整渲染分組區段，包括可見 Session 行。前一分組的下半部與後一分組的上半部共享同一條插入邊界，指示器是一條帶有相連右向尖角且不影響版面設定的絕對定位橫線。樹主體覆蓋層會在滾動裁切區外以相同的負偏移繪製第一條邊界，因此左側尖角保持可見，清單位置也不會改變。Workspace 或 Session 拖拽期間，文件級 `dragover` 與 `drop` 處理器會接受原生操作；若在 Workspace 清單外鬆手，`dragend` 會提交最後一個有效標記。
 
 搜尋在摺疊時是區頭操作，展開後佔據標題與尾部操作的空間。查詢經清除首尾空白後為空時，點擊外部會收起搜尋；非空查詢則會保留。緊湊的 Workspace 與 Session 行、24px 底部漸隱以及取消每個 Workspace 的 Session 數量共同節省縱向空間，同時保留導覽入口。
 
@@ -46,7 +46,7 @@ Workspace 命中測試使用完整渲染分組區段，包括可見 Session 行�
 
 ## 後果
 
-- Workspace 順序透過 Host 持久並共享；分組方式、打開狀態、每個記帳的 Session 檢視表順序和查詢狀態仍是瀏覽器本機呈現偏好。Ungrouped 和單清單支持相同的拖拽與置頂規則，但因沒有單一 Workspace 記帳，其順序只保存在瀏覽器本機。
+- Workspace 順序透過 Host 持久並共享；分組方式、打開狀態、每個記帳的 Session 檢視表順序和查詢狀態仍是瀏覽器本機呈現偏好。Ungrouped 和單清單支援相同的拖拽與置頂規則，但因沒有單一 Workspace 記帳，其順序只保存在瀏覽器本機。
 - 最近更新模式會在進入時執行完整時間排序，隨後保持手動調整，直到 user prompt 或 steer 推進某條 Session 並將其置頂。返回手動排序會保留所有當前位置。
 - 未執行明確的**展開其餘**手勢時，打開 Workspace 最多顯示五條 Session；關閉分組只重設這項臨時手勢。
 - Host Session 記帳繼續採用[工作階段清單瀏覽與 Workspace 手動排序](2026-07-25-session-list-browsing-and-manual-order.md)確立的手動順序含義。

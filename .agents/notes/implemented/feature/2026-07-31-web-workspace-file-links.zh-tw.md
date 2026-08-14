@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-web-workspace-file-links.md) | [简体中文](2026-07-31-web-workspace-file-links.zh.md) | 繁體中文
+[English](2026-07-31-web-workspace-file-links.md) | 繁體中文
 
 > 範圍：完成的輪次以其產出文件收尾的那一行、讀得出是連結的檔案路徑連結，以及 Host 打開器對瀏覽器可渲染文件優先選用預設瀏覽器。經決定不在範圍內：以 HTTP 提供工作區文件，以及為不在 Host 機器上的用戶端提供預覽。
 
@@ -18,9 +18,9 @@ Status: implemented
 
 **路徑連結讀得出是連結。** 靜止狀態下就帶底線，而不只在懸停時。這是本次改動中更小的那一半，卻是修復中更大的那一半。
 
-**打開仍然是 Host 的職責，並且優先選用預設瀏覽器。** `host.openPath` 把路徑交給作業系統，得到的是真實瀏覽器裡的一份 `file://` 文件：頁面能力完整，且夠不到 `/api`——因為 `file://` 文件與它並不同源。在所報告的那份產物上實測：`localStorage` 可用、主題切換生效、tabs 可切換，而對 API 的 `fetch` 失敗。對瀏覽器能渲染的文件——`.html`、`.htm`、`.xhtml`、`.svg`——平臺能夠確定預設瀏覽器時，打開器解析的是默認**瀏覽器**而非該類型的默認應用，因為把 `.html` 綁給編輯器的開發者，否則點開一個產出的頁面得到的會是原始碼。macOS 讀取 LaunchServices 的 `https` 處理程序，桌面 Linux 讀取 `$BROWSER`；無法確定瀏覽器時，兩者都會回退到默認應用。Windows 使用其註冊的文件關聯，WSL 則先轉換路徑，再使用同一 Windows 交接。存在隱藏文件時，**在資料夾中顯示**會把 `.` 經由同一 owner `openFile` 傳遞；它只在 loopback 頁面的當前 `host.describe.canOpenPath` 允許原生打開時出現。其他部署會省略它；桌面探測誤報時可設定 `nativeOpen: false`。
+**打開仍然是 Host 的職責，並且優先選用預設瀏覽器。** `host.openPath` 把路徑交給作業系統，得到的是真實瀏覽器裡的一份 `file://` 文件：頁面能力完整，且夠不到 `/api`——因為 `file://` 文件與它並不同源。在所報告的那份產物上實測：`localStorage` 可用、主題切換生效、tabs 可切換，而對 API 的 `fetch` 失敗。對瀏覽器能渲染的文件——`.html`、`.htm`、`.xhtml`、`.svg`——平臺能夠確定預設瀏覽器時，打開器解析的是預設**瀏覽器**而非該類型的預設應用，因為把 `.html` 綁給編輯器的開發者，否則點開一個產出的頁面得到的會是原始碼。macOS 讀取 LaunchServices 的 `https` 處理程序，桌面 Linux 讀取 `$BROWSER`；無法確定瀏覽器時，兩者都會回退到預設應用。Windows 使用其註冊的文件關聯，WSL 則先轉換路徑，再使用同一 Windows 交接。存在隱藏文件時，**在資料夾中顯示**會把 `.` 經由同一 owner `openFile` 傳遞；它只在 loopback 頁面的當前 `host.describe.canOpenPath` 允許原生打開時出現。其他部署會省略它；桌面探測誤報時可設定 `nativeOpen: false`。
 
-**以 HTTP 提供工作區文件不在範圍內，非本機用戶端亦然。** 由 harness 自己提供文件——與 `/api` 同源、置於 `CSP: sandbox` 之後、或交給一個以自身埠給所服務文件獨立源的第二監聽器——隨產品範圍一並否決：不為「瀏覽器不在 Host 機器上」的場景提供預覽，因此 Host 打開器完整回答受支持的場景，而那套 HTTP 機制只會回答不受支持的那個。
+**以 HTTP 提供工作區文件不在範圍內，非本機用戶端亦然。** 由 harness 自己提供文件——與 `/api` 同源、置於 `CSP: sandbox` 之後、或交給一個以自身埠給所服務文件獨立源的第二監聽器——隨產品範圍一並否決：不為「瀏覽器不在 Host 機器上」的場景提供預覽，因此 Host 打開器完整回答受支援的場景，而那套 HTTP 機制只會回答不受支援的那個。
 
 ## 考慮過的替代方案
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-agent-lifecycle-and-ownership-contracts.md) | [简体中文](2026-06-18-agent-lifecycle-and-ownership-contracts.zh.md) | 繁體中文
+[English](2026-06-18-agent-lifecycle-and-ownership-contracts.md) | 繁體中文
 
 ## 問題
 
@@ -33,7 +33,7 @@ ACP（Agent Client Protocol）與 tool-bash 的若干限制是同一個所有權
 - ACP 斷連或外掛程式拆除後，任何由橋接層擁有的工作階段都不留下已註冊 agent 或工作階段儲存條目，包括與連線關閉競爭的建立流程。
 - 已入隊的提示詞啟動前執行 `session/cancel`，能阻止該提示詞執行；後來接受的提示詞仍是獨立的已入隊輪次。
 - `tool-bash` HMR 重載不會使另一個工作階段能夠讀取或終止已有的背景工作（所有權保留在執行器上）。
-- 既有的非 ACP 演示無需顯式管理 handle 仍能工作；由設定建立的 agent 仍歸 `AgentLoop` 外掛程式 fiber 所有。
+- 既有的非 ACP 示範無需顯式管理 handle 仍能工作；由設定建立的 agent 仍歸 `AgentLoop` 外掛程式 fiber 所有。
 
 ## 工作階段所有者權杖在存活 agent 中唯一
 

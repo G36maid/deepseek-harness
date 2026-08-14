@@ -2,7 +2,7 @@
 
 狀態：implemented
 
-[English](2026-08-12-web-image-intake-and-limits-alignment.md) | [简体中文](2026-08-12-web-image-intake-and-limits-alignment.zh.md) | 繁體中文
+[English](2026-08-12-web-image-intake-and-limits-alignment.md) | 繁體中文
 
 ## 問題
 
@@ -16,9 +16,9 @@ issue #2248 的第二步對齊，接在[附件展示 note](2026-08-11-web-attach
 
 **歷史縮略圖（DeepSeek Chat 規則）。** 一則訊息僅有的一張圖長邊 240px、展示比例鉗制在 [0.25, 4]，`cover` 裁切，特別高的圖錨定頂部、特別寬的錨定左側，從不放大；多張圖渲染為固定 64px 方塊，單個可換行的橫排（10px 間距，使用者訊息靠右對齊）。assistant 連續的 `image` 塊合併進同一個畫廊，平鋪而不是各佔一行。
 
-**上限對齊並投影。** 預設值為每則訊息 20 張、單圖 5 MiB、總量 100 MiB（`attachment-local`），HTTP 載體上限提為唯一共享的 `DEFAULT_MAX_REQUEST_BODY_BYTES = 160 MiB`（http-bridge，原先是兩個獨立的 32 MiB 字面量），以滿足載入時的容量斷言（總量 × 4/3 加餘量 ≈ 134.3 MiB）。消費級產品集中在 10 到 20 個附件（ChatGPT 10、Gemini 10、Claude 20；DeepSeek Chat 的 50 是例外），且視覺模型一張圖約 1300 到 4800 token，因此 50 張圖可在一則訊息中填滿 200k 上下文。默認單圖上限採用 5 MiB，可適用於分別採用 5 MiB 或 10 MiB 上限的 Anthropic 路由；僅使用較大上限路由的部署可以覆蓋該值。512 MiB 總量無法透過當前傳輸，因為 base64 進 JSON 需要一個超過 V8 約 512 MiB 字串上限的單個 JSON 字串。限額以 `imageLimits` 工作階段投影到達用戶端。它是每次啟動恆定的單元（`apply` 返回同一狀態引用，因此只靠基線攜帶、不存在變更幀），由 **apiproxy** 而非 attachment Service Definition 註冊：`dsh-llm` 相依性 `dsh-attachment`（`ImageBlock` → `ImageAttachmentRef`），seam 包引用 `dsh-session-projection`（其圖譜經 `dsh-session` 到達 `dsh-llm`）會閉合 project-reference 環，而該值描述的每訊息數量與總量規則本來就是 proxy 自己的准入檢查。`SessionProjectionMap` 合併放在 proxy 的 sessions 協議文件裡，每個用戶端程序都經載體的類型再匯出包含它。
+**上限對齊並投影。** 預設值為每則訊息 20 張、單圖 5 MiB、總量 100 MiB（`attachment-local`），HTTP 載體上限提為唯一共享的 `DEFAULT_MAX_REQUEST_BODY_BYTES = 160 MiB`（http-bridge，原先是兩個獨立的 32 MiB 字面量），以滿足載入時的容量斷言（總量 × 4/3 加餘量 ≈ 134.3 MiB）。消費級產品集中在 10 到 20 個附件（ChatGPT 10、Gemini 10、Claude 20；DeepSeek Chat 的 50 是例外），且視覺模型一張圖約 1300 到 4800 token，因此 50 張圖可在一則訊息中填滿 200k 上下文。預設單圖上限採用 5 MiB，可適用於分別採用 5 MiB 或 10 MiB 上限的 Anthropic 路由；僅使用較大上限路由的部署可以覆蓋該值。512 MiB 總量無法透過當前傳輸，因為 base64 進 JSON 需要一個超過 V8 約 512 MiB 字串上限的單個 JSON 字串。限額以 `imageLimits` 工作階段投影到達用戶端。它是每次啟動恆定的單元（`apply` 返回同一狀態引用，因此只靠基線攜帶、不存在變更幀），由 **apiproxy** 而非 attachment Service Definition 註冊：`dsh-llm` 相依性 `dsh-attachment`（`ImageBlock` → `ImageAttachmentRef`），seam 包引用 `dsh-session-projection`（其圖譜經 `dsh-session` 到達 `dsh-llm`）會閉合 project-reference 環，而該值描述的每訊息數量與總量規則本來就是 proxy 自己的准入檢查。`SessionProjectionMap` 合併放在 proxy 的 sessions 協定文件裡，每個用戶端程序都經載體的類型再匯出包含它。
 
-**加入預檢與錯誤文案。** 兩種加入手勢匯合到 InputBar 的一個 `intakeImages` 包裝：在 `addImages` 之前按投影檢查數量、單圖位元組與總位元組，違規的一批整體拒收（DeepSeek Chat 語義）並立刻彈出點名上限的橫幅——不再有提交時的回滾戲碼。宿主檢查保留，兜底繞過 composer 的呼叫方。橫幅文案遵循使用者定下的一條原則：使用者能解決的原因（模型不支持視覺、數量、大小、解析度、格式——格式改為正面列出支持清單而不是回顯被拒的 MIME 類型）用點明出路的產品句子；使用者無法解決的原因（base64 損壞、引用丟失、讀取失敗）摺疊為一條保留原因碼的傳送失敗句子，因為產品當前面向開發者，可上報的碼好過死衚衕。非附件錯誤碼保留原文加錯誤碼的展示。
+**加入預檢與錯誤文案。** 兩種加入手勢匯合到 InputBar 的一個 `intakeImages` 包裝：在 `addImages` 之前按投影檢查數量、單圖位元組與總位元組，違規的一批整體拒收（DeepSeek Chat 語義）並立刻彈出點名上限的橫幅——不再有提交時的回滾戲碼。宿主檢查保留，兜底繞過 composer 的呼叫方。橫幅文案遵循使用者定下的一條原則：使用者能解決的原因（模型不支援視覺、數量、大小、解析度、格式——格式改為正面列出支援清單而不是回顯被拒的 MIME 類型）用點明出路的產品句子；使用者無法解決的原因（base64 損壞、引用丟失、讀取失敗）摺疊為一條保留原因碼的傳送失敗句子，因為產品當前面向開發者，可上報的碼好過死衚衕。非附件錯誤碼保留原文加錯誤碼的展示。
 
 ## 備選方案
 
@@ -32,4 +32,4 @@ issue #2248 的第二步對齊，接在[附件展示 note](2026-08-11-web-attach
 
 ## 後果
 
-拖到視窗任何位置都能進附件欄，超限加入在手勢發生的那一刻就以點名上限的文案失敗，歷史圖片像 DeepSeek Chat 一樣平鋪。載體的默認請求體預算擴大約 5 倍，並且仍是單請求駐留記憶體上界（橋把請求體整體緩衝；已記錄在 connection README 的限制節）。fixture 傳輸用硬編碼的默認數字映像檔該投影——改設定的部署會與 fixture 模式的文案分叉，對 keyless 演示通道可接受。畫廊左右切換、燈箱縮放與下載、非圖片文件卡片仍然推遲（#2248）。
+拖到視窗任何位置都能進附件欄，超限加入在手勢發生的那一刻就以點名上限的文案失敗，歷史圖片像 DeepSeek Chat 一樣平鋪。載體的預設請求體預算擴大約 5 倍，並且仍是單請求駐留記憶體上界（橋把請求體整體緩衝；已記錄在 connection README 的限制節）。fixture 傳輸用硬編碼的預設數字映像檔該投影——改設定的部署會與 fixture 模式的文案分叉，對 keyless 示範通道可接受。畫廊左右切換、燈箱縮放與下載、非圖片文件卡片仍然推遲（#2248）。

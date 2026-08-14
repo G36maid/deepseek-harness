@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-13-session-query-tracing.md) | [简体中文](2026-07-13-session-query-tracing.zh.md) | 繁體中文
+[English](2026-07-13-session-query-tracing.md) | 繁體中文
 
 ## 問題
 
@@ -33,4 +33,4 @@ Status: implemented
 
 消費端無需快取或引入第二份語料，即可獲得確定性的關係檢視表。事件追蹤每次呼叫都會執行全日誌校驗和分配，而譜系追蹤每次呼叫都會列出完整的邏輯語料。這些成本讓真源保持明確，並且與承載內容的全文搜尋及過濾 API 相互獨立。
 
-該功能具備單元測試和服務層測試覆蓋，但沒有快照或端到端 fixture（測試前置資料），因為它沒有引入面向模型的消費端、transcript（文字記錄）變更或跨行程協議。
+該功能具備單元測試和服務層測試覆蓋，但沒有快照或端到端 fixture（測試前置資料），因為它沒有引入面向模型的消費端、transcript（文字記錄）變更或跨行程協定。

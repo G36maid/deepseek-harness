@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-08-06-token-surface-unpriced-replace-compatibility.md) | [简体中文](2026-08-06-token-surface-unpriced-replace-compatibility.zh.md) | 繁體中文
+[English](2026-08-06-token-surface-unpriced-replace-compatibility.md) | 繁體中文
 
 ## 問題
 
 `contextPressure` 與 `contextBreakdown` 兩個投影只維護一份滾動累計的表層 token 總量，外加至多一條待結帳的影子價格（shadow price）聲明，因此其持久化檢查點在工作階段整個生命週期內保持 O(1)。當前的替換生產方會緊貼在替換之前追加一條 `compaction/summary` 或 `compaction/prune` 計量事件；其 `shadowedTokenCount` 對被替換區間精確計價，`foldSurfaceProjection` 再把它換算成有符號增量。
 
-影子價格協議引入之前錄制的工作階段，其日誌中的替換沒有相鄰的計量事件。O(1) 狀態無法重建被替換區間的價格，而摺疊此前把每一次未計價替換都當作約定違規並拋出例外，於是重播這類工作階段會在第一處替換就中斷（`token surface: replace at seq … has no adjacent shadow price`），工作階段從此永遠無法打開。
+影子價格協定引入之前錄制的工作階段，其日誌中的替換沒有相鄰的計量事件。O(1) 狀態無法重建被替換區間的價格，而摺疊此前把每一次未計價替換都當作約定違規並拋出例外，於是重播這類工作階段會在第一處替換就中斷（`token surface: replace at seq … has no adjacent shadow price`），工作階段從此永遠無法打開。
 
 ## 決策
 
@@ -16,13 +16,13 @@ Status: implemented
 
 已就位但指向**另一個**區間的聲明仍會拋出例外。此時計量事件確實相鄰，說明生產方寫入了互相矛盾的相鄰事件：這是現行影子價格約定的違規，不是歷史資料，必須響亮失敗，而不能任由總量悄然漂移。
 
-兩個投影共用同一個摺疊，因此二者都不新增狀態欄位，也不提升 `stateVersion`。`surface-fold.ts` 與 `ctx.tokenMeter.measure()` 不受影響：它們持有逐節點的已計價表層，本來就不需要聲明協議。
+兩個投影共用同一個摺疊，因此二者都不新增狀態欄位，也不提升 `stateVersion`。`surface-fold.ts` 與 `ctx.tokenMeter.measure()` 不受影響：它們持有逐節點的已計價表層，本來就不需要聲明協定。
 
 ## 備選方案
 
-**維持拋出例外。**保住了嚴格的生產方約定，但協議之前的每個工作階段都將永遠無法重播，而投影本就是為服務重播而存在的。
+**維持拋出例外。**保住了嚴格的生產方約定，但協定之前的每個工作階段都將永遠無法重播，而投影本就是為服務重播而存在的。
 
-**在投影狀態中持久化完整的已計價表層。**可以對任意被替換區間精確計價，但檢查點會隨每條模型可見訊息各增加一個節點、無上限地成長，恰恰破壞了影子價格協議所要守住的 O(1) 約束（見[上下文儀表的 Agent Note](2026-08-05-context-meter-blind-to-compaction.md)）。
+**在投影狀態中持久化完整的已計價表層。**可以對任意被替換區間精確計價，但檢查點會隨每條模型可見訊息各增加一個節點、無上限地成長，恰恰破壞了影子價格協定所要守住的 O(1) 約束（見[上下文儀表的 Agent Note](2026-08-05-context-meter-blind-to-compaction.md)）。
 
 ## 影響
 

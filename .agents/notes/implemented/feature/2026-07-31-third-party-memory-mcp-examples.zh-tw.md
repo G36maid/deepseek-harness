@@ -2,19 +2,19 @@
 
 Status: implemented
 
-[English](2026-07-31-third-party-memory-mcp-examples.md) | [简体中文](2026-07-31-third-party-memory-mcp-examples.zh.md) | 繁體中文
+[English](2026-07-31-third-party-memory-mcp-examples.md) | 繁體中文
 
 ## 問題
 
 直接整合某個提供方會使該提供方的 API、設定、健康狀態行為和工具語義成為 DSH 的一部分。對於已經可以透過 MCP 表達的功能，這會讓產品介面過於龐大，而且每接入一個記憶系統都需要重複同樣的適配工作。使用者需要的是一種精簡、可檢查的方式，在保留通用 MCP 邊界的同時，選擇啟用一個外部記憶伺服器。
 
-驗收標準不止於「Socket可以連線」：每份參考設定都必須支持 DSH 在工作階段 A 中實際寫入，在新的 DSH 工作階段 B 中從提供方召回，並使用召回的值。與此同時，提供方下載、帳戶、模型、embedding、儲存初始化和獨立 HTTP 行程仍由上游負責。
+驗收標準不止於「Socket可以連線」：每份參考設定都必須支援 DSH 在工作階段 A 中實際寫入，在新的 DSH 工作階段 B 中從提供方召回，並使用召回的值。與此同時，提供方下載、帳戶、模型、embedding、儲存初始化和獨立 HTTP 行程仍由上游負責。
 
 ## 決策
 
 在 `examples/mcp-memory` 下交付三份預設關閉的 Cordis overlay 示例：Memorix、MCP Reference Memory 和 Engram。每個文件只插入一個 `@deepseek-ai/dsh-mcp-client` 設定項。交付組合不會引用這些文件；CLI（命令列介面）僅聲明通用橋接器，使使用者顯式選擇 overlay 時可以解析它。
 
-這些第三方設定僅作為互操作參考；收錄不代表 DeepSeek 的認可、推薦、合作關係或持續支持承諾。系統沒有記憶預設登錄檔、提供方專屬 DSH 外掛程式、通用記憶服務、安裝 UI、遷移層、健康檢查器或重連控制器。其他記憶 MCP 伺服器可以使用同一份文件中的 stdio 或 Streamable HTTP 設定項。
+這些第三方設定僅作為互操作參考；收錄不代表 DeepSeek 的認可、推薦、合作關係或持續支援承諾。系統沒有記憶預設登錄檔、提供方專屬 DSH 外掛程式、通用記憶服務、安裝 UI、遷移層、健康檢查器或重連控制器。其他記憶 MCP 伺服器可以使用同一份文件中的 stdio 或 Streamable HTTP 設定項。
 
 ## 職責邊界
 
@@ -37,7 +37,7 @@ Status: implemented
 | MCP Reference Memory | npm `2026.7.4`，package commit `6dd0a683e198783e30feabf7abaf42f925bd18b1` |
 | Engram | tag `v1.20.0`，commit `ba9e46ced152c37a7cb9e576153c41995873e2fc` |
 
-儲存仍由提供方負責。Memorix 默認使用 `~/.memorix/data`，Engram 默認使用 `~/.engram`。Reference Memory 示例設定穩定的 `$HOME/.dsh-mcp-reference-memory.jsonl` 路徑，而不是寫入已安裝的 npm 包目錄。每個提供方自己的環境變數都可以在 DSH 啟動前覆蓋這些位置。
+儲存仍由提供方負責。Memorix 預設使用 `~/.memorix/data`，Engram 預設使用 `~/.engram`。Reference Memory 示例設定穩定的 `$HOME/.dsh-mcp-reference-memory.jsonl` 路徑，而不是寫入已安裝的 npm 包目錄。每個提供方自己的環境變數都可以在 DSH 啟動前覆蓋這些位置。
 
 項目身份仍由提供方負責：Memorix 和 Engram 使用 DSH 工作目錄中的 Git 項目，其中 Engram 還可以選擇接受 `ENGRAM_PROJECT`。
 
@@ -45,7 +45,7 @@ Status: implemented
 
 示例不會修改 `@deepseek-ai/dsh-system-prompt`：設定 patch 會替換某個設定項的完整設定，可能抹除已有 persona。README 改為提供一條選填的附加指令：
 
-> 當用戶要求你記住某件事時，呼叫記憶寫入工具。當歷史資訊可能相關時，搜尋記憶並使用相關結果。
+> 當使用者要求你記住某件事時，呼叫記憶寫入工具。當歷史資訊可能相關時，搜尋記憶並使用相關結果。
 
 提供方的工具描述仍然是權威定義。
 
@@ -65,7 +65,7 @@ Status: implemented
 
 **每個提供方使用一個 DSH 外掛程式。** 不予採納，因為這會重複 MCP 已經標準化的認證、設定、生命週期和工具包裝層，並隨著每增加一個提供方而擴大維護範圍。
 
-**記憶提供方預設登錄檔。** 不予採納，因為登錄檔會讓第三方版本和推薦看起來像受支持的 DSH 產品介面。可複製的 overlay 讓所有權和版本偏移保持可見。
+**記憶提供方預設登錄檔。** 不予採納，因為登錄檔會讓第三方版本和推薦看起來像受支援的 DSH 產品介面。可複製的 overlay 讓所有權和版本偏移保持可見。
 
 **在 MCP 設定項內執行 `npx` 或 `go run`。** 不予採納，因為探測表明首次 npm 下載可能超過 MCP 初始化逾時，而中斷的 `npx` 快取可能變得不可用。DSH 負責啟動伺服器行程，不是提供方的套件管理員。固定版本的安裝命令屬於顯式前置條件。
 

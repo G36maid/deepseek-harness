@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-21-continuable-background-subagents.md) | [简体中文](2026-07-21-continuable-background-subagents.zh.md) | 繁體中文
+[English](2026-07-21-continuable-background-subagents.md) | 繁體中文
 
 本記錄已由[可繼續的 subagent](2026-07-28-continuable-subagent-conversations.md)取代——後者以一個持久 Session 加至多一個行程內 Activation（駐留期）替換了其基於 Task 的 activation 模型、路由、取消和持久性語義。其服務放置與提供方功能策略此前已由[將 subagent 控制合併到 subagent 服務](../simplification/2026-07-26-merge-subagent-control-service.md)和[以意圖命名的 subagent 繼續執行操作](../simplification/2026-07-27-intent-named-subagent-continuation-operations.md)取代。僅持久 child 工作階段與 descriptor 的設計依據仍然有效。
 
@@ -49,9 +49,9 @@ durable child Session
 
 對於可繼續 child 的初始啟用，繼續執行管理器會在建立 Task 前分配穩定的 child session id，並將其作為 `SubagentProviderStartRequest.continuation` 傳遞；行程內 spawn 和 fork 會發布這一確切 id，而不是在內部另行分配。普通 `SubagentStartRequest` 不含 continuation 欄位。後臺工具返回規範的 `{ kind: 'background', jobId, subagentId }`，渲染為 `started subagent <childId> as job <jobId>`。child id 在多次啟用中始終指代同一個持久化對話，Job id 則只指代當前啟用。初始 Task 失敗，或行程在 child 首次 flush 之前退出，都可能留下一個 **unmaterialized child**：呼叫方持有 child id，但不存在持久化 header 和描述符。後續按 id 的操作會報告該 id 不可用（已啟動的 Task 會帶著該詳情失敗），持久化枚舉也不會列出它。
 
-每個可繼續 child 輪次都透過這條由 Task 支撐的路徑准入。非終態 Task 是唯一受支持的存活啟用；不存在啟用時，其 run 已被 dispose，持久化 child 可以復原。在路由任何按 id 的操作之前，繼續執行管理器會同步將自身關聯與 `ctx.agents.get(childId)` 比較。如果登錄檔中的 Agent 沒有關聯，或者它與所關聯的 `run.localAgent` 不同，就屬於所有權衝突：管理器會失敗，而不會接管 idle Agent 或附加未受跟蹤的輪次。二者均不存在時，可以從持久化儲存復原；如果檢查後又有競爭方發布，仍會在 Agent 登錄檔的衝突邊界上失敗。
+每個可繼續 child 輪次都透過這條由 Task 支撐的路徑准入。非終態 Task 是唯一受支援的存活啟用；不存在啟用時，其 run 已被 dispose，持久化 child 可以復原。在路由任何按 id 的操作之前，繼續執行管理器會同步將自身關聯與 `ctx.agents.get(childId)` 比較。如果登錄檔中的 Agent 沒有關聯，或者它與所關聯的 `run.localAgent` 不同，就屬於所有權衝突：管理器會失敗，而不會接管 idle Agent 或附加未受跟蹤的輪次。二者均不存在時，可以從持久化儲存復原；如果檢查後又有競爭方發布，仍會在 Agent 登錄檔的衝突邊界上失敗。
 
-系統依據 Task 關聯進行路由。執行中的 Task 透過 run 選填且提供確認語義的 `SubagentRun.steer` 功能接收線上訊息。Task 不存在時，系統建立新 Task，並從持久化儲存復原 child。行程內 spawn 和 fork 會先同步要求 child 處於 `running` 狀態，並拒絕已經提交結構化捕獲的 child；隨後呼叫 `Agent.steer()`，等待該訊息專屬的准入回執。默認迴圈會為每個 steering 項目提供一份歸屬於該訊息的回執；只有在 `agent/step` 與非同步提示詞組裝成功後，系統追加該訊息、捕獲不可變的請求歷史並提交 `step/start`，回執才會解析為 `admitted`。終止型輪次策略、取消和 dispose（資源釋放）會將待處理回執解析為 `rejected`。非終止型輪次關閉可以把待處理 steering 帶入後續排隊輪次，但不會確認其准入。提供方必須在呼叫 `Agent.steer()` 前檢查存活狀態，避免其 idle 路徑在觀察到的 run 之外啟動輪次。如果尋找關聯之後、請求獲準之前，Task 結帳或終止策略率先完成，`steer()` 會拒絕，`send_message` 會報告訊息未送達，而且該次呼叫不會改用從持久化儲存復原路徑；在 Task 終態發布後重試，纔可能啟動下一次啟用。
+系統依據 Task 關聯進行路由。執行中的 Task 透過 run 選填且提供確認語義的 `SubagentRun.steer` 功能接收線上訊息。Task 不存在時，系統建立新 Task，並從持久化儲存復原 child。行程內 spawn 和 fork 會先同步要求 child 處於 `running` 狀態，並拒絕已經提交結構化捕獲的 child；隨後呼叫 `Agent.steer()`，等待該訊息專屬的准入回執。預設迴圈會為每個 steering 項目提供一份歸屬於該訊息的回執；只有在 `agent/step` 與非同步提示詞組裝成功後，系統追加該訊息、捕獲不可變的請求歷史並提交 `step/start`，回執才會解析為 `admitted`。終止型輪次策略、取消和 dispose（資源釋放）會將待處理回執解析為 `rejected`。非終止型輪次關閉可以把待處理 steering 帶入後續排隊輪次，但不會確認其准入。提供方必須在呼叫 `Agent.steer()` 前檢查存活狀態，避免其 idle 路徑在觀察到的 run 之外啟動輪次。如果尋找關聯之後、請求獲準之前，Task 結帳或終止策略率先完成，`steer()` 會拒絕，`send_message` 會報告訊息未送達，而且該次呼叫不會改用從持久化儲存復原路徑；在 Task 終態發布後重試，纔可能啟動下一次啟用。
 
 繼續執行管理器不會序列化兩個透過其外部路徑同時爭搶已停止 child 的呼叫方，也不會為結果產生與 dispose 之間的階段單獨建立 settling 狀態。在 producer 首次 await 之前同步安裝的關聯，使本行程內每個 child 只准入一次啟用——resume 載入期間競爭的 `followup` 會觀察到待處理的啟用並顯式失敗——而繞開該關聯的發布仍會在 Agent 登錄檔相同工作階段的衝突邊界上失敗。傳送也可能因與啟動、取消、完成或清理髮生競態而失敗。這些限制是明確的，而非隱藏在更大的生命週期抽象之後。
 
@@ -59,7 +59,7 @@ durable child Session
 
 模型獲得一個由 `SubagentRuntime.followup()` 支撐的 `send_message(subagent_id, message)` 工具，與 `Agent` 上的意圖動詞一致。該服務操作負責在 steering 與復原之間編排；它不同於 run 的 `SubagentRun.steer?()`，後者只能向已活躍的 run 傳送訊息。工具本身不執行生命週期路由。該工具將後續訊息的來源標記為 `{ kind: 'coordinator', senderSessionId: parent.id }`，並轉發 `{ source, signal }`；服務要求在一個選項對象中同時提供這兩項資訊。來源會貫穿線上 steering 和 cold resume 兩條路徑，而取消只控制尚未完成的線上投遞等待，因為 cold resume Task 會立即返回，並自行負責後續取消。child 模型收到的仍是普通的 user role 內容，而持久化的來源資訊可防止模型生成的後續訊息被歸類為直接使用者輸入。使用者配接器則提供 `{ kind: 'user' }` 及其互動訊號。該工具位於單獨載入的 `@deepseek-ai/dsh-tool-subagent-control` 包中，因此按提供方綁定的 `@deepseek-ai/dsh-tool-subagent` 實例可以繼續為 spawn、fork 或 ACP 註冊不同的委派工具，而不會重複註冊全域性控制工具。
 
-- 如果 child 存在執行中的 Task 並支持線上訊息，服務會呼叫 `run.steer(message, source)` 並返回現有 job id；它不會建立新 Task。
+- 如果 child 存在執行中的 Task 並支援線上訊息，服務會呼叫 `run.steer(message, source)` 並返回現有 job id；它不會建立新 Task。
 - 如果 child 沒有執行中的 Task，`send_message` 會建立新 Task，使用該訊息從持久化儲存復原工作階段，並返回新的 job id。
 - 如果活躍提供方無法接收線上訊息、帶確認語義的 steering 在准入競態中失敗，或 Task 關聯之外存在存活 child，`send_message` 會失敗，而不會靜默啟動、復原或接管未受跟蹤的輪次。
 
@@ -71,7 +71,7 @@ durable child Session
 
 ### 持久化 child handle 與從持久化儲存復原
 
-繼續執行管理器在建立 Task 前，透過 seam 的 `snapshotSubagentDescriptor()`（基於 [`snapshotJsonValue`](../../../../packages/core/session/src/json.ts) 建置）對每項描述符輸入建立快照；這一邊界與 Agent 訊息現有的分離式無損 JSON 邊界一致。作用於 child 作用域的 setup contribution——由行程內驅動前置安裝的一次性 `agent/prompt-submit` 監聽器——會在下游 prompt admission 能夠阻止請求或拋出例外之前追加一個對模型隱藏的 `subagent/descriptor` 事件。admission 獲準後才會開啟 child 的初始輪次；admission 被拒絕時，描述符會作為輪次前的僅日誌事實保留，並由該 activation 最終的必需檢查點持久化。該事件不攜帶 `surfaceOp`，不進入模型歷史，並在壓縮替換 surface 歷史時繼續保留。只有在載入已知 child id 對應的 child 工作階段後，能在該 child 自身的後綴中（`seedLength` 之後，因此 fork seed 不會洩露祖先的描述符）得到受支持的描述符，且工作階段 header 將呼叫方標識為直接 parent 時，該 id 纔可復原。
+繼續執行管理器在建立 Task 前，透過 seam 的 `snapshotSubagentDescriptor()`（基於 [`snapshotJsonValue`](../../../../packages/core/session/src/json.ts) 建置）對每項描述符輸入建立快照；這一邊界與 Agent 訊息現有的分離式無損 JSON 邊界一致。作用於 child 作用域的 setup contribution——由行程內驅動前置安裝的一次性 `agent/prompt-submit` 監聽器——會在下游 prompt admission 能夠阻止請求或拋出例外之前追加一個對模型隱藏的 `subagent/descriptor` 事件。admission 獲準後才會開啟 child 的初始輪次；admission 被拒絕時，描述符會作為輪次前的僅日誌事實保留，並由該 activation 最終的必需檢查點持久化。該事件不攜帶 `surfaceOp`，不進入模型歷史，並在壓縮替換 surface 歷史時繼續保留。只有在載入已知 child id 對應的 child 工作階段後，能在該 child 自身的後綴中（`seedLength` 之後，因此 fork seed 不會洩露祖先的描述符）得到受支援的描述符，且工作階段 header 將呼叫方標識為直接 parent 時，該 id 纔可復原。
 
 版本化描述符的可繼續分支（[descriptor.ts](../../../../packages/subagent/subagent/src/descriptor.ts) 中的 `SUBAGENT_DESCRIPTOR_VERSION`）攜帶 `mode: 'continuable'`、subagent 提供方名稱、已解析的 child `agentOptions.provider` 和 `agentOptions.model`，以及選填的 `persona` 與 `toolFilter`。它不會對可透過聲明合併擴充的 `AgentOptions` 對象建立快照：與此無關的擴充值不會僅因無法表示為 JSON 而導致繼續執行失敗。描述符會特意省略 `subagentDepth`；從持久化儲存復原時，系統相依性持久化 header 中的 `delegationDepth`，而不根據描述符重建深度。`outputSchema` 屬於單次啟用的結果約定，不屬於持久化 child 組合設定。child header 仍是 child id、`cwd`、`parentSession`、`seedLength` 和 `delegationDepth` 的權威資訊，持久化 child transcript 則負責保存 fork seed 和後續歷史。[`delegationDepthOf()`](../../../../packages/subagent/subagent/src/index.ts) 會在 header 值和執行時期值中取最大值，因此重建後的執行時期選項可以加深持久化值，但絕不能降低它，復原後的 child 無法重新獲得頂層委派預算。
 
@@ -81,7 +81,7 @@ durable child Session
 
 後臺工具會在呼叫 `JobRegistry.start()` 前校驗描述符輸入並建立快照。同步校驗失敗會拒絕工具呼叫，且不會建立 Task。除此之外，工具會立即返回 child id 和 Job id，不等待 child 發布或描述符持久化完成。行程內可繼續提供方會在 child 進入 idle 後、讀取結果之前執行最終的 `SessionStore.flush()`；返回 `true` 表示至少有一個持久性監聽器參與，返回 `false` 表示必需的檢查點失敗，而拒絕則攜帶監聽器失敗。此操作會在 child 仍存活時重試迴圈中失敗的檢查點。如果最終確認失敗，提供方會拒絕而不返回未經確認的輸出，繼續執行管理器會 dispose 該 run，已經建立的 Task 會結帳為 `failed`，其詳情包含持久性診斷。最終確認期間發生取消時，尚未發布的啟用結果由取消操作接管；即使 child 輪次已記錄為完成，或之後的檢查點失敗，也不能取代 Task 的 `killed` 結果。前臺一次性執行仍保留迴圈僅盡力執行檢查點的行為。行程內 spawn 和 fork 會在當前已載入的 parent 作用域下重建組合設定。復原 fork 時只載入 child 自己的持久化 transcript，其中已經包含初始建立時捕獲的已完成輪次前綴；系統絕不會再次 fork parent 更新後的歷史。復原 parent 不會立即復原其 child。
 
-TODO（ACP 繼續執行）：將遠端 ACP session id 作為提供方專用描述符資料持久化，並實作 `AcpProvider.resume?()`，依次執行 spawn、initialize、`loadSession` 和 prompt。初始 ACP run 必須檢查 `initialize.agentCapabilities.loadSession`，復原後的每個行程必須使用同一個持久化後端；`loadSession` 重播的歷史訊息不得計入新啟用的輸出。由於 ACP 的載入支持是按 child 協商的，不能僅根據提供方是否存在該方法來確定，因此該後續工作還必須定義 start 結果如何聲明單個 child 支持繼續執行，之後才能將 ACP child 寫入持久化目錄。
+TODO（ACP 繼續執行）：將遠端 ACP session id 作為提供方專用描述符資料持久化，並實作 `AcpProvider.resume?()`，依次執行 spawn、initialize、`loadSession` 和 prompt。初始 ACP run 必須檢查 `initialize.agentCapabilities.loadSession`，復原後的每個行程必須使用同一個持久化後端；`loadSession` 重播的歷史訊息不得計入新啟用的輸出。由於 ACP 的載入支援是按 child 協商的，不能僅根據提供方是否存在該方法來確定，因此該後續工作還必須定義 start 結果如何聲明單個 child 支援繼續執行，之後才能將 ACP child 寫入持久化目錄。
 
 ### 結果與通知所有權
 
@@ -105,7 +105,7 @@ Task 記錄和活躍 run 關聯都位於行程內。持久化使 child 工作階
 
 **將控制編排放在 `SubagentRuntime` 上。** 這一服務放置方案即[服務合併決策](../simplification/2026-07-26-merge-subagent-control-service.md)；[意圖操作細化](../simplification/2026-07-27-intent-named-subagent-continuation-operations.md)將提供方 start／resume 分發的複用限制在服務內部，同時將選填的 Task 與持久化工作隔離在注入的內部管理器中。
 
-**增加顯式啟用階段。** 公開的 `starting`／`running`／`settling` 狀態可以準確描述准入和清理，但會引入實作本身並不需要的生命週期協議。同步安裝關聯無需暴露這些階段，即可消除行程內重複的 cold resume。
+**增加顯式啟用階段。** 公開的 `starting`／`running`／`settling` 狀態可以準確描述准入和清理，但會引入實作本身並不需要的生命週期協定。同步安裝關聯無需暴露這些階段，即可消除行程內重複的 cold resume。
 
 ## 測試
 
@@ -122,5 +122,5 @@ Task 記錄和活躍 run 關聯都位於行程內。持久化使 child 工作階
 - 活躍 run 關聯只能協調一個執行時期。多個行程同時復原時不會序列化；此類部署需要持久化層的租約或 compare-and-set 操作。
 - 使用者互動要求作為 owner 的那個精確 parent Agent 實例保持存活，因為 dispose owner 會取消並移除其 Task。使用者互動還要求附加任務控制器。若要單獨與 child 互動，後續必須將 Task 訪問所有權與持久化通知目標分離。
 - 後臺工具會在 child 發布和描述符持久化之前返回 child id 和 Job id。啟動失敗、最終持久性確認失敗，或行程在 child 首次 flush 之前退出，都會使 Task 失敗，並可能留下 unmaterialized 或過時的 child id；按 id 的控制操作會將缺失狀態報告為不可用，而不會追溯修改工具確認訊息。
-- 將顯式組合欄位持久化到 child 日誌後，其無損 JSON 與相容性約定便成為復原約定的一部分。後續如需支持其他組合設定輸入，必須明確更改描述符版本，不能隱式持久化可透過聲明合併擴充的 `AgentOptions` 欄位。
+- 將顯式組合欄位持久化到 child 日誌後，其無損 JSON 與相容性約定便成為復原約定的一部分。後續如需支援其他組合設定輸入，必須明確更改描述符版本，不能隱式持久化可透過聲明合併擴充的 `AgentOptions` 欄位。
 - Task 記錄和活躍 run 關聯位於行程內，而 child 工作階段具有持久性。重新啟動會復原工作階段，但不會復原進行中的工作或其 Task 通知。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-onboarding-reads-every-provider.md) | [简体中文](2026-08-12-onboarding-reads-every-provider.zh.md) | 繁體中文
+[English](2026-08-12-onboarding-reads-every-provider.md) | 繁體中文
 
 ## Problem
 
@@ -35,4 +35,4 @@ Status: implemented
 
 ## Testing
 
-包內測試針對四種聯接狀態釘住 `providerUsable`，並針對新門檻與每一個存留的診斷釘住 `onboardingReadiness`；分區測試覆蓋首次執行姿態、普通行姿態，以及在新增卡保住草稿的同時摺疊設定卡片的那次取消。`onboarding-usable-provider` web e2e 泳道透過真實協議重放整個場景：兩張卡片都開著時取消、改配 `minimax-cn`、重載，然後不再出現接管——並附一份關閉後狀態的 aria golden。
+包內測試針對四種聯接狀態釘住 `providerUsable`，並針對新門檻與每一個存留的診斷釘住 `onboardingReadiness`；分區測試覆蓋首次執行姿態、普通行姿態，以及在新增卡保住草稿的同時摺疊設定卡片的那次取消。`onboarding-usable-provider` web e2e 泳道透過真實協定重放整個場景：兩張卡片都開著時取消、改配 `minimax-cn`、重載，然後不再出現接管——並附一份關閉後狀態的 aria golden。

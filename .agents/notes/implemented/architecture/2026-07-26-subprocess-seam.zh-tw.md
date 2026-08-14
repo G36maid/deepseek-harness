@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-subprocess-seam.md) | [简体中文](2026-07-26-subprocess-seam.zh.md) | 繁體中文
+[English](2026-07-26-subprocess-seam.md) | 繁體中文
 
 ## 問題
 
@@ -21,13 +21,13 @@ Status: implemented
 
 後臺行程的存續期從執行器移到了服務：執行器不再保有存活行程集合，於是重載執行器後，後臺工作會繼續執行且仍可讀取，而組合拆除（服務的 dispose）仍是先終止再等待退出的邊界。一條行為約定隨之挪動：後臺 spawn 失敗不再能在管道內部被緩衝成偽造的 stderr（對一個從未真正執行的行程，服務會 reject `done`，且不緩衝任何內容），因此執行器把 `spawn failed: …` 提示注入恰好一個 `readOutput()` 增量。
 
-基於已觀察到的流與生命週期需求，具備條件的行程消費端隨後遷到該 seam：LSP 使用管道化協議流加收集式 stderr 尾部；ACP（Agent Client Protocol）後端使用管道化 ndjson、繼承式 stderr 和消費端擁有的 stdin-EOF dispose 階梯；PTY 使用 `spawnTerminal()`，同時保留就緒與終端機策略。`dsh-subagent-subprocess` 與 LSP 私有行程樹輔助函式均被刪除。MCP 傳輸 spawn 和刻意保持輕相依性的 test-support 啟動器因所有權或執行形狀仍留在外部；適用的生產呼叫方共享憑據清除。
+基於已觀察到的流與生命週期需求，具備條件的行程消費端隨後遷到該 seam：LSP 使用管道化協定流加收集式 stderr 尾部；ACP（Agent Client Protocol）後端使用管道化 ndjson、繼承式 stderr 和消費端擁有的 stdin-EOF dispose 階梯；PTY 使用 `spawnTerminal()`，同時保留就緒與終端機策略。`dsh-subagent-subprocess` 與 LSP 私有行程樹輔助函式均被刪除。MCP 傳輸 spawn 和刻意保持輕相依性的 test-support 啟動器因所有權或執行形狀仍留在外部；適用的生產呼叫方共享憑據清除。
 
 ## 曾考慮的替代方案
 
 **把行程管道留在 `dsh-bash-local` 裡（維持現狀）。**否決的理由與[任務登錄檔拆分](2026-07-26-job-registry-seam.md)得以落地的理由相同：這條邊界既穩定，也早已記錄在程式碼裡（`run.ts` 的模組文件曾寫明「this layer reacts to an abort signal; the executor owns deadlines and classifies causes」），而若繼續將它保持私有，未來每個非 shell 執行器就只能要麼 fork 這套機制，要麼為非 bash 工作去相依性一個以 bash 命名的包。本次變更對使用者可見的動因正是這一拆分。
 
-**保留最初只支持批次的介面，讓流式消費端繼續各自實作。**否決：已觀察到的 LSP、ACP 與 PTY 形狀表明，這會繼續保留重複的私有行程樹訊號與環境清除。Node 形狀的處置方式覆蓋這些消費端，又不緩衝管道化流。
+**保留最初只支援批次的介面，讓流式消費端繼續各自實作。**否決：已觀察到的 LSP、ACP 與 PTY 形狀表明，這會繼續保留重複的私有行程樹訊號與環境清除。Node 形狀的處置方式覆蓋這些消費端，又不緩衝管道化流。
 
 **用單個 `stdio: 'pipe' | 'inherit' | 'collect'` 模式統一全部流。**否決：真實消費端按流混用模式——LSP 使用 pipe/pipe/collect，ACP 使用 pipe/pipe/inherit，Bash 使用 data/collect/collect。
 

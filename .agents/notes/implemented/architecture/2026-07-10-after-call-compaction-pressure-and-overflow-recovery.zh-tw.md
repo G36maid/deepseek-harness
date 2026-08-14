@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md) | [简体中文](2026-07-10-after-call-compaction-pressure-and-overflow-recovery.zh.md) | 繁體中文
+[English](2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 ### 成功壓力在下一個 pre-step 邊界執行
 
-`agent/pre-step` 接收獨佔的已領取消息批次與 `{ turn, step, signal }`，並返回最終 reject/enter 決策。它不攜帶壓縮專用的提示詞或前綴欄位。
+`agent/pre-step` 接收獨佔的已領取訊息批次與 `{ turn, step, signal }`，並返回最終 reject/enter 決策。它不攜帶壓縮專用的提示詞或前綴欄位。
 
 Compact-basic 會在每個擬議請求之前包裝 `agent/pre-step`。在續步邊界，前一條 assistant 輸出、所有已分發或合成的工具結果、工具後上下文與 steering 都已經持久化，因此壓力策略能看到完整的成功呼叫狀態，同時不會拆開 assistant 工具呼叫與其結果。初始邊界上的無 header 工作階段尚無已完成路由請求，因此不執行壓力工作。Compact-basic 會在內部處理操作性失敗、寄出警告並繼續委託，不會 reject 擬議步驟。
 
@@ -38,7 +38,7 @@ Compact-basic 會在每個擬議請求之前包裝 `agent/pre-step`。在續步�
 
 `maxOverflowRetries` 選填且預設為 `1`；`0` 只停用溢位復原，不會停用壓力檢查。`auto: false` 不註冊任何自動監聽器。非規範化錯誤、嘗試耗盡、已經中止的 signal、缺失路由模型、沒有安全範圍、generation 未變化，以及在任何替換之前復原拋錯，都會委託給下一個監聽器。若沒有後續復原，迴圈報告原始提供方錯誤對象與程式碼。generation 增加後的復原拋錯會基於持久進展授權重試；即使復原工作並行完成，取消或 dispose（資源釋放）仍具有最終優先級。
 
-默認摘要器依次解析顯式設定、最近記錄的路由與 agent options。因為直接 `llm/stream` 中介軟體可以重新路由該輔助呼叫，`compaction/summary.{provider, model}` 記錄分發後觀察到的可變 `GenerateOptions` 最終目標，而不是 waterfall 之前的候選值。
+預設摘要器依次解析顯式設定、最近記錄的路由與 agent options。因為直接 `llm/stream` 中介軟體可以重新路由該輔助呼叫，`compaction/summary.{provider, model}` 記錄分發後觀察到的可變 `GenerateOptions` 最終目標，而不是 waterfall 之前的候選值。
 
 ## 測試
 

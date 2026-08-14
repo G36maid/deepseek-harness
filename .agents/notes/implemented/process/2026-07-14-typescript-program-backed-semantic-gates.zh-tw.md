@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-14-typescript-program-backed-semantic-gates.md) | [简体中文](2026-07-14-typescript-program-backed-semantic-gates.zh.md) | 繁體中文
+[English](2026-07-14-typescript-program-backed-semantic-gates.md) | 繁體中文
 
 ## 問題
 
@@ -32,13 +32,13 @@ Context 與 AgentEventDispatch 呼叫只貢獻由字串字面量構成的有限�
 
 語義查詢只在存在消費分支的位置執行：呼叫先經過封閉的事件 API 方法名集合預過濾，再做接收者分類；輔助函式呼叫點索引按需建置，而不是預先對全部包原始碼的每個呼叫求解簽名。需求式索引對每個輔助函式逐一證明區域性性——未匯出、位於真正的 ES 模組文件中、且同文件所有引用都是直接呼叫位的輔助函式，按模組作用域規則其全部呼叫必在本文件內，此時只索引該文件。任一前提無法證明（帶匯出修飾符、位於全域性 script 文件、存在別名化或無法歸類的引用）即回退到原全部包原始碼索引，回退路徑就是原語義本身：證明隻影響開銷，不影響結果。惰性單一全域性索引方案被否決，因為當前原始碼樹確實會走到輔助函式參數路徑，該方案仍需付款幾乎全額的 `getResolvedSignature` 掃描成本。
 
-每個已聲明的 harness 事件都必須存在掃描得到的生產方。找不到生產方時，生成過程會將其視為沒有生產方的事件詞彙或尚不支持的語義 dispatch 形態，並明確失敗；沒有監聽方的擴充點仍然合法。`internal/dispatch` 插樁不會被當作它所觀察的每個事件的訂閱，因此關係矩陣只記錄直接的產品監聽方，不再手工補充間接關係。
+每個已聲明的 harness 事件都必須存在掃描得到的生產方。找不到生產方時，生成過程會將其視為沒有生產方的事件詞彙或尚不支援的語義 dispatch 形態，並明確失敗；沒有監聽方的擴充點仍然合法。`internal/dispatch` 插樁不會被當作它所觀察的每個事件的訂閱，因此關係矩陣只記錄直接的產品監聽方，不再手工補充間接關係。
 
 ### B. 帶作用域的事件路由生成一份強類型解析函式表
 
 [`gen-scoped-events`](../../../../scripts/gen-scoped-events.ts) 掃描真實的 `scopeTarget(base, key)` 呼叫，為每種 scoped 基礎對象確定路由鍵類型。隨後，它尋找帶有 `this: Scoped<Base>` 的 Cordis `Events` 成員，並在每個事件參數及其第一層公開屬性中搜尋與該鍵匹配的類型；移除 `null` 和 `undefined` 後，候選類型必須與路由鍵類型完全相同。
 
-恰好一個匹配項會生成解析函式。存在多個匹配項時，含義不明確，生成器會失敗。沒有匹配項時，事件必須標記 `@dshScopeScan unsupported`；該標記只用於路由鍵有意留在事件參數之外的情況，例如按所屬 agent（代理）路由的工作階段事件和按父 agent 路由的 subagent 生命週期事件。此標記只表示掃描不受支持，不編碼事件名、參數下標、屬性路徑或替代類型。
+恰好一個匹配項會生成解析函式。存在多個匹配項時，含義不明確，生成器會失敗。沒有匹配項時，事件必須標記 `@dshScopeScan unsupported`；該標記只用於路由鍵有意留在事件參數之外的情況，例如按所屬 agent（代理）路由的工作階段事件和按父 agent 路由的 subagent 生命週期事件。此標記只表示掃描不受支援，不編碼事件名、參數下標、屬性路徑或替代類型。
 
 提交到倉庫的 [`scoped-events.generated.ts`](../../../../packages/core/scope/src/scoped-events.generated.ts) 是位於 scoped dispatch 所屬包中的純執行時期對映，不匯入任何事件聲明方包。語義完整性由生成器自身保證：根 Program 枚舉所有 scoped `Events` 聲明與真實 `scopeTarget` 約定，透過 checker 解析唯一的 payload 路徑，並在渲染 `unknown[]` 執行時期邊界前拒絕缺失、過時或含義不明確的條目。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-web-turn-run-time.md) | [简体中文](2026-08-03-web-turn-run-time.zh.md) | 繁體中文
+[English](2026-08-03-web-turn-run-time.md) | 繁體中文
 
 ## 問題
 
@@ -12,7 +12,7 @@ Web 聊天介面會顯示訊息的到達時間，卻不顯示 agent（代理）�
 
 輪次實際耗時（wall time）採用日誌中已有的 `turn/start` 和 `turn/end` 時間戳，不新增任何工作階段事件。用戶端 Session 將載入視窗內的每對邊界歸並到 `turnTimings` 中；輪次結束後，承載操作圖示的 assistant 頁腳把 `endTime - startTime` 渲染為本機化的 `Ran for {duration}` 標籤。執行中的 `TurnStatus` 時鐘採用最新一條沒有結束時間的計時記錄，因此重新載入會保留已用時長，steering（中途引導）不會重設計時，重試也從自身的日誌邊界開始。兩處讀數共用同一個本機化格式化器，並向下取整到整秒。該時鐘在 15 秒後纔出現，並從即時區域中隱藏，因此螢幕閱讀器會播報活動狀態而不會重複播報每次時鐘跳動。
 
-時鐘與執行時期長這類時間附屬元素（time chrome）在懸停時才顯示：訊息容器透過 `data-time-hover-root` 屬性顯式啟用該行為，`MessageIconActions.module.css` 在容器處於 `:hover`/`:focus-within` 時以淡入方式顯示時間標籤。該規則限定在 `@media (hover: hover)` 之內，觸屏設備因此保持標籤始終可見；顯隱透過 opacity（而非 display）實作，版面配置保持穩定。複製與分支圖示始終可見。
+時鐘與執行時期長這類時間附屬元素（time chrome）在懸停時才顯示：訊息容器透過 `data-time-hover-root` 屬性顯式啟用該行為，`MessageIconActions.module.css` 在容器處於 `:hover`/`:focus-within` 時以淡入方式顯示時間標籤。該規則限定在 `@media (hover: hover)` 之內，觸屏設備因此保持標籤始終可見；顯隱透過 opacity（而非 display）實作，版面設定保持穩定。複製與分支圖示始終可見。
 
 ## 考慮過的替代方案
 
@@ -20,7 +20,7 @@ Web 聊天介面會顯示訊息的到達時間，卻不顯示 agent（代理）�
 
 **將即時時鐘錨定到元件掛載時刻。** 更簡單，但輪次進行中重新載入會讓時鐘從零重新計時，並與最終的頁腳標籤不一致。僅當 `turn/start` 位於已載入視窗之外時，纔回退到掛載時刻。
 
-**將整個操作行隱藏至懸停時才顯示。** 複製與分支是值得讓使用者發現的操作入口，而整行等級的顯隱切換有版面配置偏移的風險。只有被動的時間文字由懸停控制顯隱。
+**將整個操作行隱藏至懸停時才顯示。** 複製與分支是值得讓使用者發現的操作入口，而整行等級的顯隱切換有版面設定偏移的風險。只有被動的時間文字由懸停控制顯隱。
 
 ## 後果
 

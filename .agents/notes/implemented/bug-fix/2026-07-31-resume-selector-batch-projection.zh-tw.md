@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-resume-selector-batch-projection.md) | [简体中文](2026-07-31-resume-selector-batch-projection.zh.md) | 繁體中文
+[English](2026-07-31-resume-selector-batch-projection.md) | 繁體中文
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 - 標題來自投影系統：`session-title` 已註冊 `title` 投影單元，因此即時行讀取登錄檔快照，持久化行讀取持久 checkpoint 行（`sessionProjectionCache.cachedSnapshot`，零 I/O），只有沒有可用 checkpoint 的行才付出一次 `coldSnapshot`——checkpoint 加 `readFrom` 尾部摺疊，並寫回使下次掃描零 I/O。冷讀取受 TUI `resumeScanConcurrency` 設定約束。未掛載快取的組合回退到一次對日誌的有界 `readTitleSnapshots` 批次讀取；兩條路徑都把單行失敗隔離為停用的「Unreadable session」回退。
 - 活動時間戳從不讀取日誌：即時工作階段取記憶體中最後一個事件的時間；持久化工作階段對選填 `sessionPersistence.locate()` 命名的產物做 stat（mtime），當後端定位不到按工作階段的產物（SQLite）或 stat 失敗時回退到 header 的建立時間。任何追加都會移動 mtime，因此僅僅一次 pickup 邊界也會讓瀏覽過的工作階段上浮——這是元資料時間戳的代價，予以接受。
-- 行內不再有最後輪次標籤、提供方/模型路由和目標階段列。路由可用性改由 Enter 時的預檢強制：預檢透過 `readSession` 完整讀取並回放驗證選中的那一份日誌後才移交。
+- 行內不再有最後輪次標籤、提供方/模型路由和目標階段列。路由可用性改由 Enter 時的預檢強制：預檢透過 `readSession` 完整讀取並重播驗證選中的那一份日誌後才移交。
 
 選擇器 overlay 在 `/resume` 分發時同步打開，早於掃描結帳：`undefined` 候選集渲染「Loading sessions…」載入佔位符，選擇器從第一幀起就擁有終端機輸入，Enter 提示工作階段仍在載入，Escape 取消。關閉 overlay 會透過查詢方法接受的 `AbortSignal` 中止掃描；忽略訊號的後端的遲到結帳由過時性檢查丟棄。掃描完成後透過 `setCandidates`（同時清除過時的仍在載入錯誤）換入行資料，不替換 overlay；排在正在關閉的前任之後的排隊啟用會在構造時直接收到已掃描的集合；清單查詢、標題與 mtime 共用同一個 catch，因此任何掃描失敗都會關閉 overlay 並報告通知，而不會讓載入佔位符懸置。
 

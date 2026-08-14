@@ -3,7 +3,7 @@
 
 # 登錄檔
 
-[English](registry.md) | [简体中文](registry.zh.md) | 繁體中文
+[English](registry.md) | 繁體中文
 
 外掛程式載入與相依性注入。
 
@@ -59,7 +59,7 @@ plugin<P extends Plugin>(plugin: P, ...args: Spread<GetPluginConfig<P>>): Fiber 
 
 ## Plugin
 
-支持的外掛程式入口點形式。
+支援的外掛程式入口點形式。
 
 ```ts cordis-catalog
 /** Supported plugin entrypoint shapes. */

@@ -1,10 +1,10 @@
 # 第三方記憶 MCP 示例
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 這三份**預設關閉的參考設定**透過 [`@deepseek-ai/dsh-mcp-client`](../../packages/mcp/mcp-client/README.md) 將一個記憶系統連線到 DSH。請選擇其中一份，或複製相同的通用 MCP 設定項來連線其他伺服器。
 
-這些第三方設定僅作為互操作參考；收錄不代表 DeepSeek 的認可、推薦、合作關係或持續支持承諾。
+這些第三方設定僅作為互操作參考；收錄不代表 DeepSeek 的認可、推薦、合作關係或持續支援承諾。
 
 ## DSH 負責什麼
 
@@ -41,7 +41,7 @@ npm install --global memorix@1.3.0
 dsh web --patch "$PWD/examples/mcp-memory/memorix.cordis.yml"
 ```
 
-Memorix 無需 LLM（大型語言模型）或 embedding 服務，即可在本機啟發式模式下執行。請在 Memorix 自己的 `~/.memorix/config.toml` 或項目 `memorix.toml` 中設定選填提供方。該示例沿用 DSH 工作目錄中的 Git 項目標識，並使用 Memorix 自身的默認目錄 `~/.memorix/data`。若要覆蓋該目錄，請在啟動 DSH 前設定 `MEMORIX_DATA_DIR`。
+Memorix 無需 LLM（大型語言模型）或 embedding 服務，即可在本機啟發式模式下執行。請在 Memorix 自己的 `~/.memorix/config.toml` 或項目 `memorix.toml` 中設定選填提供方。該示例沿用 DSH 工作目錄中的 Git 項目標識，並使用 Memorix 自身的預設目錄 `~/.memorix/data`。若要覆蓋該目錄，請在啟動 DSH 前設定 `MEMORIX_DATA_DIR`。
 
 ### MCP Reference Memory
 
@@ -61,7 +61,7 @@ go install github.com/Gentleman-Programming/engram/cmd/engram@v1.20.0
 dsh web --patch "$PWD/examples/mcp-memory/engram.cordis.yml"
 ```
 
-Engram 負責儲存和項目選擇：它默認使用 `~/.engram`，從 DSH 工作目錄偵測 Git 項目，並接受 `ENGRAM_DATA_DIR` 或 `ENGRAM_PROJECT` 作為環境覆蓋項。
+Engram 負責儲存和項目選擇：它預設使用 `~/.engram`，從 DSH 工作目錄偵測 Git 項目，並接受 `ENGRAM_DATA_DIR` 或 `ENGRAM_PROJECT` 作為環境覆蓋項。
 
 ## 選填的共用模型指令
 

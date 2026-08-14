@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence-sqlite
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 SQLite 持久工作階段儲存後端：第二個 `SessionPersistence` 提供方（見[工作階段持久化](../../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)），滿足與 `dsh-session-persistence-jsonl` 相同的約定（僅附加、連續 seq、延遲實體化、在 load 時關閉中斷輪次），但用 `node:sqlite` 行而非文件位元組表達。
 
@@ -10,7 +10,7 @@ SQLite 持久工作階段儲存後端：第二個 `SessionPersistence` 提供方
 
 每個 `SessionEvent` 1:1 對映到 `events` 表中的一行 `(session_id, seq, type, time, data, source_event_seqs, surface_op)`；`data` 是作為 JSON 文字的事件 payload，因此行結構就是原始事件本身（包括 `assistant/chunk`，保持 `seq` 連續）。兩個 `TEXT` 列 `source_event_seqs` 和 `surface_op` 可為空，儲存事件選填介面元資料欄位（見[工作階段介面](../../../.agents/notes/implemented/architecture/2026-06-18-session-surface.md)）。日誌外元資料（`SessionHeader`）、每實體化 incarnation id 和每日誌單調修訂位於 `sessions` 行；`createdAt` 是儲存在 strict `INTEGER` 列中的非負安全整數。單例狀態行攜帶不可變儲存 id。`sessions` 行只由第一次 `append` 寫入，其存在性是延遲實體化訊號（`list` 精確報告有行的工作階段）。
 
-倉庫支持的 Node 範圍可不加 flag 使用 `node:sqlite`。資料庫啟用外鍵，並使用已設定 journal mode（默認 `wal`；WAL 共享記憶體文件不適用時使用 rollback mode）。`PRAGMA application_id` 標識規範持久化資料庫，`PRAGMA user_version` 儲存版面配置版本。新資料庫必須沒有 application identity 或使用者定義 schema 對象；初始化在一個事務中建立全部表並蓋上兩個 pragma。非 pristine 無版本資料庫、外部 application identity 和所有非當前版本在 journal-mode 變更前均會被拒絕，因為該未發布格式無遷移。
+倉庫支援的 Node 範圍可不加 flag 使用 `node:sqlite`。資料庫啟用外鍵，並使用已設定 journal mode（預設 `wal`；WAL 共享記憶體文件不適用時使用 rollback mode）。`PRAGMA application_id` 標識規範持久化資料庫，`PRAGMA user_version` 儲存版面設定版本。新資料庫必須沒有 application identity 或使用者定義 schema 對象；初始化在一個事務中建立全部表並蓋上兩個 pragma。非 pristine 無版本資料庫、外部 application identity 和所有非當前版本在 journal-mode 變更前均會被拒絕，因為該未發布格式無遷移。
 
 在具有 POSIX mode 的檔案系統上，後端為缺失目錄請求 mode `0700`，並在 SQLite 打開前以 mode `0600` 排他建立缺失資料庫；行程 umask 可進一步限制兩者。新 WAL、共享記憶體和持久 rollback-journal sidecar 獲得資料庫最終的僅所有者 mode。現有目錄、資料庫文件和 sidecar 保留原 mode；除已存在資料庫外的檔案系統設定錯誤會使初始化失敗。這些預設值防止寬鬆行程 umask 造成的意外暴露，但當其他 principal 能替換父目錄中的資料庫條目時，不保護資料庫機密性或完整性。
 

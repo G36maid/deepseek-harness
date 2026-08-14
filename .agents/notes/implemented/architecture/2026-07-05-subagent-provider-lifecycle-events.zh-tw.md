@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-05-subagent-provider-lifecycle-events.md) | [简体中文](2026-07-05-subagent-provider-lifecycle-events.zh.md) | 繁體中文
+[English](2026-07-05-subagent-provider-lifecycle-events.md) | 繁體中文
 
 ## 問題
 
@@ -24,7 +24,7 @@ Status: implemented
 ## 曾考慮的替代方案
 
 - **在 `apply` 時解析提供方，不存在則拋例外**：否決。「先列後端」這一要求聲稱了 Loader 並不存在的順序保證。
-- **重試尋找（輪詢直到提供方出現）**：最終能收斂，但在框架已有的機制（effect 註冊 + disposal）之外發明瞭一套私有就緒協議；它也無法感知提供方離開，因此 HMR 會殘留一個措辭描述已 dispose 後端的工具。
+- **重試尋找（輪詢直到提供方出現）**：最終能收斂，但在框架已有的機制（effect 註冊 + disposal）之外發明瞭一套私有就緒協定；它也無法感知提供方離開，因此 HMR 會殘留一個措辭描述已 dispose 後端的工具。
 - **僅在 section 中放置 subagent 措辭，在組裝時惰性解析**：同樣能容忍任意載入順序，但將 tool-choice 引導移出了描述，與提示詞變數 Agent Note 建立的所有權規則相矛盾（每個工具的語義和何時使用屬於描述）。響應式註冊既保持描述的權威性，又不相依性順序。
 - **根據提供方名稱而非提供方對象確定措辭**：`providerName` 本身是設定，重新命名後的提供方會靜默獲得錯誤的措辭；從已解析提供方自身的 `inheritsParentContext` 派生則不會漂移。
 

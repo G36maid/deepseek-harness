@@ -2,13 +2,13 @@
 
 Status: implemented
 
-[English](2026-06-30-hook-bridges.md) | [简体中文](2026-06-30-hook-bridges.zh.md) | 繁體中文
+[English](2026-06-30-hook-bridges.md) | 繁體中文
 
 ## 問題
 
-harness 的擴充面是其類型化攔截點（見[攔截擴充點 Agent Note](2026-06-30-interception-extension-points.md)）：所謂「原生掛鉤」不過是一個普通的 Cordis 外掛程式，訂閱 `agent/session-start`、`agent/pre-step`、`tools/pre-execute`、`tools/post-execute`、`agent/turn-stopping`、`subagent/start` 或 `subagent/end`。但使用者帶著**既有的** Claude Code（CC）和 Codex 掛鉤設定到來，一個 `hooks.json`（或 settings 文件中的 `hooks` 鍵）裡滿是 shell 命令掛鉤，並希望它們原樣執行。本 Agent Note 引入兩個**橋接外掛程式**，將外部 shell 掛鉤協議翻譯到類型化擴充點上，建置於共享的協定格式（wire format）庫之上（見 [hook-protocol-lib Agent Note](2026-06-30-hook-protocol-lib.md)）。
+harness 的擴充面是其類型化攔截點（見[攔截擴充點 Agent Note](2026-06-30-interception-extension-points.md)）：所謂「原生掛鉤」不過是一個普通的 Cordis 外掛程式，訂閱 `agent/session-start`、`agent/pre-step`、`tools/pre-execute`、`tools/post-execute`、`agent/turn-stopping`、`subagent/start` 或 `subagent/end`。但使用者帶著**既有的** Claude Code（CC）和 Codex 掛鉤設定到來，一個 `hooks.json`（或 settings 文件中的 `hooks` 鍵）裡滿是 shell 命令掛鉤，並希望它們原樣執行。本 Agent Note 引入兩個**橋接外掛程式**，將外部 shell 掛鉤協定翻譯到類型化擴充點上，建置於共享的協定格式（wire format）庫之上（見 [hook-protocol-lib Agent Note](2026-06-30-hook-protocol-lib.md)）。
 
-核心規則是：**橋接是相容性配接器，不是進階工具。** 橋接能做的事（阻止工具、注入上下文、強制繼續、觀察 subagent），原生 Cordis 外掛程式都能做得更強——類型化回傳值、完整 `ctx`、無序列化邊界。橋接存在的理由是執行外部 CC/Codex 命令掛鉤中被明確支持的子集。這使每個橋接保持精簡：解析設定、選擇匹配模式、建置每事件的 payload、呼叫共享庫的 `runHook` + `mergeHookOutputs`，再將中性結果對映為類型化 Decision。各包的 README 維護著當前不支持的事件和部分支持的欄位的完整清單，以官方協議為參照。
+核心規則是：**橋接是相容性配接器，不是進階工具。** 橋接能做的事（阻止工具、注入上下文、強制繼續、觀察 subagent），原生 Cordis 外掛程式都能做得更強——類型化回傳值、完整 `ctx`、無序列化邊界。橋接存在的理由是執行外部 CC/Codex 命令掛鉤中被明確支援的子集。這使每個橋接保持精簡：解析設定、選擇匹配模式、建置每事件的 payload、呼叫共享庫的 `runHook` + `mergeHookOutputs`，再將中性結果對映為類型化 Decision。各包的 README 維護著當前不支援的事件和部分支援的欄位的完整清單，以官方協定為參照。
 
 ## 決策
 
@@ -28,8 +28,8 @@ harness 的擴充面是其類型化攔截點（見[攔截擴充點 Agent Note](2
 | `tools/pre-execute` | `deny`→`deny`；`ask`→`ask` | `block`→`deny`（無 allow/ask） |
 | `tools/post-execute` | `deny`→`block`+回饋；僅上下文→委託並摺疊 | 同上 |
 | `agent/turn-stopping` | 阻塞的 Stop → 下一步 steering（中途引導） | 同上 |
-| `subagent/start`（emit） | additionalContext → 注入到存活的行程內 subagent；遠端 subagent 無本機注入目標 | 本橋接不支持 |
-| `subagent/end`（emit） | 僅觀察 | 本橋接不支持 |
+| `subagent/start`（emit） | additionalContext → 注入到存活的行程內 subagent；遠端 subagent 無本機注入目標 | 本橋接不支援 |
+| `subagent/end`（emit） | 僅觀察 | 本橋接不支援 |
 
 CC 橋接的 `ask` 結果是一條真正的權限路徑，而非終態橋接決策：`dsh-tools` 透過選填的[審批 seam](2026-07-06-approval-seam.md) 來解析它。ACP（Agent Client Protocol）自動化用戶端可以應答所屬工作階段的一次性機器策略請求，`allowed-once` 後繼續執行；如果沒有 ApprovalService 或應答器，呼叫以 `deny` 安全關閉。
 
@@ -45,7 +45,7 @@ CC 橋接的 `ask` 結果是一條真正的權限路徑，而非終態橋接決�
 
 ### CLAUDE_PROJECT_DIR 預設為工作階段工作區
 
-Claude Code 始終匯出 `CLAUDE_PROJECT_DIR`，常見的未修改掛鉤引用 `$CLAUDE_PROJECT_DIR` 來構造項目相對路徑。顯式的 `config.projectDir` 優先；當它被省略時（默認 ACP 接線只設定 `configPath`），橋接將該環境變數按每次執行預設為 agent（代理）的工作階段工作區——即掛鉤已經在其中執行的 `session.header.cwd`——而非留空。這樣，一個標準的項目相對路徑掛鉤在預設配置下即可正常工作。
+Claude Code 始終匯出 `CLAUDE_PROJECT_DIR`，常見的未修改掛鉤引用 `$CLAUDE_PROJECT_DIR` 來構造項目相對路徑。顯式的 `config.projectDir` 優先；當它被省略時（預設 ACP 接線只設定 `configPath`），橋接將該環境變數按每次執行預設為 agent（代理）的工作階段工作區——即掛鉤已經在其中執行的 `session.header.cwd`——而非留空。這樣，一個標準的項目相對路徑掛鉤在預設設定下即可正常工作。
 
 ### 隔離
 

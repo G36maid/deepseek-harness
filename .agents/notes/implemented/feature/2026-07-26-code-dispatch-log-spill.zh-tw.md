@@ -2,9 +2,9 @@
 
 Status: implemented
 
-[English](2026-07-26-code-dispatch-log-spill.md) | [简体中文](2026-07-26-code-dispatch-log-spill.zh.md) | 繁體中文
+[English](2026-07-26-code-dispatch-log-spill.md) | 繁體中文
 
-> 範圍：用既有的 spill 實作限制 `tool/code-dispatch` 事件的內容。[宿主側基礎 Agent Note](2026-07-26-code-dispatch-ui-foundation.md) 有意接受了不設上限的日誌，並把 spill 支持留到本次更改；[即時平行 Agent Note](2026-07-26-code-mode-live-parallel-dispatch.md) 定義了該監聽器處理的事件對。
+> 範圍：用既有的 spill 實作限制 `tool/code-dispatch` 事件的內容。[宿主側基礎 Agent Note](2026-07-26-code-dispatch-ui-foundation.md) 有意接受了不設上限的日誌，並把 spill 支援留到本次更改；[即時平行 Agent Note](2026-07-26-code-mode-live-parallel-dispatch.md) 定義了該監聽器處理的事件對。
 
 ## 問題
 
@@ -14,7 +14,7 @@ Status: implemented
 
 **在登錄檔上增設 `tools/code-dispatch-log` waterfall（瀑布式事件），spill 策略作為其第一個監聽器。**
 
-- **擴充點**：`tools/code-dispatch-log` 是一個按作用域過濾的 waterfall，橋接層會在追加 `tool/code-dispatch` 之前，對每個已結帳的子分發執行它。橋接層透過 `RunCodeBridgeOptions` 以能力閉包形式接收登錄檔私有的 `shapeDispatchLog` 呼叫器；waterfall 是公開約定，該呼叫器不會增加服務方法。監聽器拋出例外時，呼叫器會安全地報告任意拋出值，並使用原始的已結帳內容。`CodeDispatchLog` 載荷包含外層執行、`agent` 路由鍵、子呼叫標識和默認內容；默認內容是原生 `tool/result` 會攜帶的渲染後結果投影，而程序收到結構化 `value`。監聽器只能替換持久化副本，模型不會看到這份副本。監聽器作為受跟蹤任務在程序的返迴路徑之外執行。待處理日誌任務超過 `maxParallelSubCalls` 時，有序提交迴圈會等待，因此慢速 spill 後端會限制後續子呼叫啟動，而不會無限累積待完成 I/O。run 結帳仍會等待開放輪次內的全部任務完成。
+- **擴充點**：`tools/code-dispatch-log` 是一個按作用域過濾的 waterfall，橋接層會在追加 `tool/code-dispatch` 之前，對每個已結帳的子分發執行它。橋接層透過 `RunCodeBridgeOptions` 以能力閉包形式接收登錄檔私有的 `shapeDispatchLog` 呼叫器；waterfall 是公開約定，該呼叫器不會增加服務方法。監聽器拋出例外時，呼叫器會安全地報告任意拋出值，並使用原始的已結帳內容。`CodeDispatchLog` 載荷包含外層執行、`agent` 路由鍵、子呼叫標識和預設內容；預設內容是原生 `tool/result` 會攜帶的渲染後結果投影，而程序收到結構化 `value`。監聽器只能替換持久化副本，模型不會看到這份副本。監聽器作為受跟蹤任務在程序的返迴路徑之外執行。待處理日誌任務超過 `maxParallelSubCalls` 時，有序提交迴圈會等待，因此慢速 spill 後端會限制後續子呼叫啟動，而不會無限累積待完成 I/O。run 結帳仍會等待開放輪次內的全部任務完成。
 - **策略**：`dsh-spill-policy` 為該事件註冊監聽器，並複用面向模型結果的監聽器所用的替換程式碼：相同的 `maxInlineBytes` 上限、預覽和定位符、不超上限不變式，以及盡力而為回退。spill 產物以 `dispatch` 為標籤，記錄在子呼叫 id 名下。UI 與重播透過被 spill 的原生結果所用的同一路徑讀取全文，因此兩類結果會渲染出相同的資訊。
 - **一處有意差異**：面向模型結果的監聽器跳過 `read`，以防出現 `read → spill → read again` 迴圈。分發日誌監聽器也會替換過大的 `read` 子呼叫內容，因為日誌副本不是模型上下文，該迴圈不會發生，而 `read` 最可能產生巨大的日誌條目。
 

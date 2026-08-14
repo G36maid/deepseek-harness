@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-model-facing-goal-tools.md) | [简体中文](2026-07-19-model-facing-goal-tools.zh.md) | 繁體中文
+[English](2026-07-19-model-facing-goal-tools.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Status: implemented
 
 ### 工具與模型約定
 
-`get_goal()` 返回當前目標或 `null`。非空結果包含用於比較並交換的 id 與修訂號、目標描述、持久階段、已接納和最大 Goal Round 數、可能存在的阻塞原因，以及行程本機啟用態觀察。`create_goal(objective, max_goal_rounds?)` 建立一個長時間執行的同工作階段目標。`update_goal(goal_id, revision, action, objective?, max_goal_rounds?, blocked_reason?)` 支持 `edit`、`pause`、`resume`、`complete` 和 `blocked`；替換欄位僅對 `edit` 有效，非空的 `blocked_reason` 僅在 `blocked` 時必填，並以穩定程式碼 `model-reported` 持久化。執行器把值恰好為空字串的選填欄位和值為 0 的 `max_goal_rounds` 視為嚴格 schema 佔位值：這些值等同於省略；編輯時仍必須提供至少一個有實際意義的替換欄位；所有非佔位值仍受對應操作的限制。
+`get_goal()` 返回當前目標或 `null`。非空結果包含用於比較並交換的 id 與修訂號、目標描述、持久階段、已接納和最大 Goal Round 數、可能存在的阻塞原因，以及行程本機啟用態觀察。`create_goal(objective, max_goal_rounds?)` 建立一個長時間執行的同工作階段目標。`update_goal(goal_id, revision, action, objective?, max_goal_rounds?, blocked_reason?)` 支援 `edit`、`pause`、`resume`、`complete` 和 `blocked`；替換欄位僅對 `edit` 有效，非空的 `blocked_reason` 僅在 `blocked` 時必填，並以穩定程式碼 `model-reported` 持久化。執行器把值恰好為空字串的選填欄位和值為 0 的 `max_goal_rounds` 視為嚴格 schema 佔位值：這些值等同於省略；編輯時仍必須提供至少一個有實際意義的替換欄位；所有非佔位值仍受對應操作的限制。
 
 提示詞告訴模型：它可以從任何措辭或語言的直接人類請求中推斷目標意圖，但不應把常規單輪工作轉換為目標。更新前必須讀取當前目標，並複製準確的 id 和修訂號。對於復原或 fork 後處於活躍但未啟用狀態的目標，人類在語義上要求繼續即可成為執行 `resume` 的依據。只有目標已經實作時才能標記完成，困難或不確定性本身不構成阻塞；阻塞報告必須說明具體條件。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-host-backed-web-preferences.md) | [简体中文](2026-08-06-host-backed-web-preferences.zh.md) | 繁體中文
+[English](2026-08-06-host-backed-web-preferences.md) | 繁體中文
 
 ## 問題
 
@@ -12,9 +12,9 @@ Web 的 Appearance、Language 和繁忙態 Enter 偏好原本存在瀏覽器 `lo
 
 ## 決策
 
-各領域所屬的 Host half 註冊三份 schema：選填的 `locale.preference`（`zh` 或 `en`，缺失時交由瀏覽器決定）、`ui-theme.preference`（`light`、`dark` 或 `system`，預設為 `system`），以及 `ui-conversation.busyEnter`（`queue` 或 `steer`，預設為 `queue`）。本機 settings 提供方將顯式選擇存入 `$DSH_HOME/settings.yaml`，在使用默認 home 時，該路徑解析為 `~/.dsh/settings.yaml`。API 代理會顯式暴露這三個 namespace，與其他 Web settings 並列；僅註冊它們，絕不會跨越該設定邊界。
+各領域所屬的 Host half 註冊三份 schema：選填的 `locale.preference`（`zh` 或 `en`，缺失時交由瀏覽器決定）、`ui-theme.preference`（`light`、`dark` 或 `system`，預設為 `system`），以及 `ui-conversation.busyEnter`（`queue` 或 `steer`，預設為 `queue`）。本機 settings 提供方將顯式選擇存入 `$DSH_HOME/settings.yaml`，在使用預設 home 時，該路徑解析為 `~/.dsh/settings.yaml`。API 代理會顯式暴露這三個 namespace，與其他 Web settings 並列；僅註冊它們，絕不會跨越該設定邊界。
 
-用戶端執行時期為每個 namespace 提供一份 `bindSettingsScope` 生命週期——即 Host 側 settings owner seam 的瀏覽器映像檔。它在開始後臺初始讀取之前安裝 `settings/changed` 和 `connection/reset` 監聽器，因此任何 settings 傳輸都不會阻塞外掛程式啟用，失效通知也不會掉入先讀取、後訂閱的空檔；它還會發布一個供領域服務訂閱的快照 store（狀態、分節值、revision、可寫性、host／記憶體模式）。默認解碼器會對照該 namespace 自身的序列化 wire schema（經 dsh-client-schema-form 還原）校驗每個傳入分節，因此各領域無需攜帶手寫的 wire 校驗器。領域服務把 scope 當作普通的構造函式協作者接收，立即發布各自的暫定預設值：由瀏覽器派生的 locale、系統主題和 Queue；隨後採納已獲接受的 Host 分節，但不將其寫回；不帶 scope 構造的服務——獨立詞典或政策 fixture（測試前置資料）——則僅停留在行程本機。
+用戶端執行時期為每個 namespace 提供一份 `bindSettingsScope` 生命週期——即 Host 側 settings owner seam 的瀏覽器映像檔。它在開始後臺初始讀取之前安裝 `settings/changed` 和 `connection/reset` 監聽器，因此任何 settings 傳輸都不會阻塞外掛程式啟用，失效通知也不會掉入先讀取、後訂閱的空檔；它還會發布一個供領域服務訂閱的快照 store（狀態、分節值、revision、可寫性、host／記憶體模式）。預設解碼器會對照該 namespace 自身的序列化 wire schema（經 dsh-client-schema-form 還原）校驗每個傳入分節，因此各領域無需攜帶手寫的 wire 校驗器。領域服務把 scope 當作普通的構造函式協作者接收，立即發布各自的暫定預設值：由瀏覽器派生的 locale、系統主題和 Queue；隨後採納已獲接受的 Host 分節，但不將其寫回；不帶 scope 構造的服務——獨立詞典或政策 fixture（測試前置資料）——則僅停留在行程本機。
 
 使用者變更會同步更新即時服務，並經 `scope.set` 將一項 `settings.mutate` 路徑操作排入佇列。scope 會序列處理手勢，以最新已知 namespace revision 作為 `expectedRevision` 傳送，記錄每次成功寫入的 revision，並且只允許最新寫入的結帳結果重新發布即時狀態。最新寫入被拒或失敗時，scope 會重新載入 Host 狀態。外掛程式釋放會拒絕新工作、跳過已排隊操作、抑制執行中操作發布狀態，並等待該操作結帳後才讓外掛程式達到完全靜止。
 
@@ -26,7 +26,7 @@ Web 的 Appearance、Language 和繁忙態 Enter 偏好原本存在瀏覽器 `lo
 
 **將 Host settings 映像檔到 `localStorage`。** 第二個權威來源會要求另外定義啟動與失效時的衝突規則，同時依然保留造成該缺陷的分區。Host settings 文件是唯一的持久化真源。
 
-**等待初始讀取，以避免暫定渲染。** 繪製頁面不以設定可用為前置條件。後臺讀取可能引發一次即時收斂，但它會隔離失敗，並保留既有的瀏覽器／系統／默認回落路徑。
+**等待初始讀取，以避免暫定渲染。** 繪製頁面不以設定可用為前置條件。後臺讀取可能引發一次即時收斂，但它會隔離失敗，並保留既有的瀏覽器／系統／預設回落路徑。
 
 **讓每個領域擁有自己的 settings 控制器。** 並行、revision、失敗、失效與釋放規則完全一致；此前的主題實作已因複製這些規則產生生命週期漂移。由領域持有 schema，可以避免把產品政策放入共享執行時期。
 

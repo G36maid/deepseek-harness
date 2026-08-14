@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-07-tool-call-timeout-policy.md) | [简体中文](2026-07-07-tool-call-timeout-policy.zh.md) | 繁體中文
+[English](2026-07-07-tool-call-timeout-policy.md) | 繁體中文
 
 ## 問題
 
@@ -30,7 +30,7 @@ ctx.tools.execute(exec)
   -> tools/post-execute
 ```
 
-默認行為是保守的：未聲明 `timeoutMs` 的工具不會從該外掛程式收到 `TOOL_TIMEOUT` 截止訊號。
+預設行為是保守的：未聲明 `timeoutMs` 的工具不會從該外掛程式收到 `TOOL_TIMEOUT` 截止訊號。
 
 ### `tools/execute` 環繞分發擴充點
 
@@ -40,7 +40,7 @@ catch 是基礎 `next`（而非 waterfall 之外的東西）這一點至關重�
 
 ### `timeout-policy` 外掛程式
 
-該外掛程式是 `@deepseek-ai/dsh-tool-call-timeout-policy`，一個零設定的函式/命名空間外掛程式（`name` / `inject` / `apply`），位於 `packages/guard/` 組。每個工具的預算聲明在工具自身，而非本外掛程式：`ToolDefinition` 攜帶一個選填的 `timeoutMs`，由擁有該工具的外掛程式從自身設定中設定。例如 `dsh-tool-web` 將 `fetchTimeoutMs` / `searchTimeoutMs`（默認 30000）解析到 `web_fetch` / `web_search` 的定義上：
+該外掛程式是 `@deepseek-ai/dsh-tool-call-timeout-policy`，一個零設定的函式/命名空間外掛程式（`name` / `inject` / `apply`），位於 `packages/guard/` 組。每個工具的預算聲明在工具自身，而非本外掛程式：`ToolDefinition` 攜帶一個選填的 `timeoutMs`，由擁有該工具的外掛程式從自身設定中設定。例如 `dsh-tool-web` 將 `fetchTimeoutMs` / `searchTimeoutMs`（預設 30000）解析到 `web_fetch` / `web_search` 的定義上：
 
 ```yaml
 - id: timeout-policy
@@ -91,11 +91,11 @@ function toolTimeoutResult(timeoutMs: number): ToolExecutionResult {
 
 **將外掛程式命名為 `tool-timeout`。** 字面的 Agent Note 名稱匹配了 `gen-tool-catalog` 完整性守衛的 `packages/*/tool-*` glob，該 glob 要求每個匹配項註冊一個面向模型的工具。本外掛程式不註冊任何工具——它是一個 `tools/execute` 包裝器——因此 `tool-*` 名稱要麼導致 `verify-tool-catalog` 失敗，要麼強制產生一個誤導性的啟動條目。包為 `@deepseek-ai/dsh-tool-call-timeout-policy`，位於新的 `packages/guard/` 組；cordis.yml 的 `id` 仍可為 `timeout-policy`。
 
-**僅保留逐工具的逾時處理。** 這是 `bash` 和 `web_fetch` 的既有形態，也與 Claude Code 和 Codex 對 shell 命令的做法一致。它對 web 類工具不利，因為每個新的支持逾時的工具都必須自行選擇校驗方式、上限語義、文件、快照和分類。外掛程式集中了策略和分類，讓每個工具的 schema 專注於業務輸入。
+**僅保留逐工具的逾時處理。** 這是 `bash` 和 `web_fetch` 的既有形態，也與 Claude Code 和 Codex 對 shell 命令的做法一致。它對 web 類工具不利，因為每個新的支援逾時的工具都必須自行選擇校驗方式、上限語義、文件、快照和分類。外掛程式集中了策略和分類，讓每個工具的 schema 專注於業務輸入。
 
 **立即將所有逾時策略移出 bash-local。** 長期來看更乾淨——bash-local 將成為純子行程執行器，所有呼叫方自行管理截止時間。但作為第一步不合適，因為掛鉤直接呼叫 `ctx.shell`，且 bash 模型工具的前臺/後臺語義與工具呼叫生命週期不同。保留 `BASH_TIMEOUT` 維持了這些路徑的穩定，同時讓工具呼叫逾時在更簡單的工具上先行驗證。
 
-**為所有工具使用全域性默認預算。** 方便，但會讓工具作者意外：任何偶然執行超過全域性預算的工具在外掛程式載入後就會開始失敗。逐工具聲明預算使採納成為有意的行為。
+**為所有工具使用全域性預設預算。** 方便，但會讓工具作者意外：任何偶然執行超過全域性預算的工具在外掛程式載入後就會開始失敗。逐工具聲明預算使採納成為有意的行為。
 
 **暴露面向模型的 `timeout_ms` 覆蓋參數。** Claude Code 的 `WebFetch`/`WebSearch` 和 Codex 的 web 工具將逾時排除在模型呼叫形狀之外。模型覆蓋會使逾時成為提示詞語義的一部分，並迫使 `timeout-policy` 引入 schema/參數剝離規則。Web 逾時僅作為部署策略。
 

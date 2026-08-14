@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-todo-first-composer-context-order.md) | [简体中文](2026-08-02-todo-first-composer-context-order.zh.md) | 繁體中文
+[English](2026-08-02-todo-first-composer-context-order.md) | 繁體中文
 
 ## 問題
 
@@ -26,7 +26,7 @@ Todo 與 Goal 的註冊測試分別固定順序 `0` 和 `10`；Queue 仍固定�
 
 **使用 CSS `order` 移動 Todo 的視覺位置。** 不予採納，因為無障礙順序和鍵盤順序必須與視覺層級一致，而 slot 帳本已經負責語義順序。
 
-**讓 Todo 保持 Queue 包裝層的寬度。** 不予採納，因為 Queue 包裝層的透明內縮是其與 composer 重疊所需的版面配置基礎設施，不屬於可見面板列。
+**讓 Todo 保持 Queue 包裝層的寬度。** 不予採納，因為 Queue 包裝層的透明內縮是其與 composer 重疊所需的版面設定基礎設施，不屬於可見面板列。
 
 ## 後果
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-str-replace-editor
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 基於 `ctx.fs`、面向模型的獨立 `str_replace_editor`。它可與持久 Bash、一次性 Bash、沙盒 Bash 或其他終端機介面組合。
 
@@ -47,6 +47,6 @@ schema 提供針對絕對路徑的 `view`、`create`、`str_replace` 與 `insert
 
 ## 已知限制與暫緩事項
 
-- 操作面向 UTF-8 文字，不支持二進位檔案。
+- 操作面向 UTF-8 文字，不支援二進位檔案。
 - `str_replace` 刻意拒絕零匹配或多匹配，且沒有 `replace_all` 參數。
 - 每個修改操作都會經過 `fs/write-intent` 或 `fs/edit-intent`，解析當前工作階段的沙盒策略，並交由掛載的檔案系統與策略外掛程式實施約束。

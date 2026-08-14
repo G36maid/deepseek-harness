@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-agent-instructions
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 為每個工作階段載入與 `AGENTS.md` 相容的工作區指令文件。該外掛程式會將初始的使用者全域性指令與項目指令鏈注入持久歷史，隨後發現巢狀文件，並在成功的檔案系統工具呼叫後報告後續變更或移除。
 
@@ -163,7 +163,7 @@ The previously loaded instructions from this file no longer apply.
 
 - **發現跟隨結構化 fs 工具，而非 shell 導覽**：更改目錄的 `bash` 命令不會觸發巢狀指令發現，因為 shell 文法與每次呼叫 shell 狀態不是可靠的檔案系統 seam。
 - **刷新由 touch 驅動**：沒有 watcher；外部編輯會在下一次成功的第一方 `read`、`write` 或 `edit` 時、復原過程對帳可見基線時，或進入步驟的 pre-step 復原被遮蔽的基線時可見。
-- **候選語義有意保持簡單**：不解釋小寫名稱、`.claude/rules/` 與 `@path` import；項目 scope 默認載入 `AGENTS.local.md`／`CLAUDE.local.md` overlay，但使用者全域性 `$DSH_HOME` scope 沒有本機 overlay，其他自訂名稱需要顯式候選設定。
+- **候選語義有意保持簡單**：不解釋小寫名稱、`.claude/rules/` 與 `@path` import；項目 scope 預設載入 `AGENTS.local.md`／`CLAUDE.local.md` overlay，但使用者全域性 `$DSH_HOME` scope 沒有本機 overlay，其他自訂名稱需要顯式候選設定。
 - **每目錄去重基於內容**：只有在去除首尾空白後位元組完全一致時，才摺疊同級候選文件。`CLAUDE.md` 若 symlink 到同級 `AGENTS.md`，會解析為相同內容，並像任何重複項一樣摺疊；從 `AGENTS.md` 漂移的獨立實體副本則會與它一起完整載入。
 - **Symlink 指令文件會跨越信任邊界跟隨**：最終元件是 symlink 的候選文件會被解析並載入其目標，因此克隆倉庫可以將樹外文件內容呈現為較低優先級的工作區指引（它絕不會覆蓋 system、developer 或使用者直接下達的指令）。載入不受信任倉庫時，請用檔案系統策略閘門或 OS 沙盒限制 `ctx.fs`。
 - **指令內容受限但不會被摘要**：超出預算的寬泛文件會被省略，最具體文件可能被截斷；該外掛程式絕不請求模型壓縮指令文字。

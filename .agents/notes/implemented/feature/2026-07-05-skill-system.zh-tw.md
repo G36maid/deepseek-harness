@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-05-skill-system.md) | [简体中文](2026-07-05-skill-system.zh.md) | 繁體中文
+[English](2026-07-05-skill-system.md) | 繁體中文
 
 ## 問題
 
@@ -12,9 +12,9 @@ DeepSeek Harness 使用同一原語，使項目特定的評審、外掛程式編
 
 ## 決策
 
-`@deepseek-ai/dsh-skill` 是純提供方登錄檔（`ctx.skills`），`@deepseek-ai/dsh-skill-filesystem` 是隨附的本機檔案系統提供方，`@deepseek-ai/dsh-tool-skill` 負責持久化工作階段目錄與面向模型的 loader 工具。`dsh-agent-spine-demo` 默認載入登錄檔、本機提供方和消費端，使 TUI、headless 與 ACP（Agent Client Protocol）應用獲得相同行為，同時嵌入式或遠端提供方可在不修改登錄檔或消費端的前提下貢獻 skill。其 `skills` 設定將 `registry`、`local` 和 `tool` 分支分別轉發給對應的所有者。
+`@deepseek-ai/dsh-skill` 是純提供方登錄檔（`ctx.skills`），`@deepseek-ai/dsh-skill-filesystem` 是隨附的本機檔案系統提供方，`@deepseek-ai/dsh-tool-skill` 負責持久化工作階段目錄與面向模型的 loader 工具。`dsh-agent-spine-demo` 預設載入登錄檔、本機提供方和消費端，使 TUI、headless 與 ACP（Agent Client Protocol）應用獲得相同行為，同時嵌入式或遠端提供方可在不修改登錄檔或消費端的前提下貢獻 skill。其 `skills` 設定將 `registry`、`local` 和 `tool` 分支分別轉發給對應的所有者。
 
-專用的隨包提供方可以貢獻不可變的 skill，無需檔案系統發現。交付的 CLI（命令列介面）默認將 `@deepseek-ai/dsh-skill-badge` 聲明為停用；啟用其組合設定行，就會透過同一個登錄檔和消費端貢獻官方徽章指令（見[決策](2026-08-06-bundled-dsh-badge-skill.md)）。
+專用的隨包提供方可以貢獻不可變的 skill，無需檔案系統發現。交付的 CLI（命令列介面）預設將 `@deepseek-ai/dsh-skill-badge` 聲明為停用；啟用其組合設定行，就會透過同一個登錄檔和消費端貢獻官方徽章指令（見[決策](2026-08-06-bundled-dsh-badge-skill.md)）。
 
 提供方外掛程式在 `apply()` 期間同步註冊。提供方成員資格是由直接 effect 持有的狀態：註冊與 dispose（資源釋放）同步地使已完成的目錄失效，發現操作按需讀取當前提供方對映而非監聽登錄檔變更事件。提供方目錄從等待的 `list()` 呼叫返回排序後的候選項，遠端提供方在此過程中執行初始化、認證和發現，同時遵守尋找的 abort 訊號。登錄檔校驗每個候選項，按排名、提供方註冊順序和提供方內部順序以先到先得方式解決同名 skill 衝突，然後按 skill 名稱排序摘要以保證消費端獲得確定性結果。它僅快取已完成的目錄快照，並在發現過程中提供方／執行時期修訂版本發生變化時重試，因此解除安裝操作不會將一個過時且不可解析的 skill 凍結到工作階段目錄中。執行時期 `ctx.skills.register(...)` 仍作為嵌入式行程內 skill 的便捷方式保留，使用 project 優先於 user 的優先級；`runtime` 保留為登錄檔擁有的提供方名稱。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-doc-site-carries-its-images.md) | [简体中文](2026-08-06-doc-site-carries-its-images.zh.md) | 繁體中文
+[English](2026-08-06-doc-site-carries-its-images.md) | 繁體中文
 
 ## 問題
 
@@ -28,7 +28,7 @@ Status: implemented
 
 **把 `publicDir` 設到 `.generated` 之外，並使用站內絕對 URL。** 投影這邊的活動部件更少，但同一份 Markdown 在倉庫中閱讀時，每一處圖片引用都會是壞的，而正本文件是兩種方式都要讀的。
 
-**把圖片放到 assets 分支，就像演示 GIF 那樣。** 那個分支的存在是為了讓大體積二進位不進主線歷史，而它的 raw 地址有著完全相同的可見性問題。它仍然是錄屏的正確歸宿；但它解決不了這件事。
+**把圖片放到 assets 分支，就像示範 GIF 那樣。** 那個分支的存在是為了讓大體積二進位不進主線歷史，而它的 raw 地址有著完全相同的可見性問題。它仍然是錄屏的正確歸宿；但它解決不了這件事。
 
 **等倉庫轉為公開。** 那只是消除症狀，不會讓站點自給自足，而且每一張圖片都會讓站點隱式相依性 GitHub 的可用性與限流。
 

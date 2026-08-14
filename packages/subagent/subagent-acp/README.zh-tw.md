@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-acp
 
-[English](README.md) | [简体中文](README.zh.md) | 繁體中文
+[English](README.md) | 繁體中文
 
 ACP（Agent Client Protocol）提供方會在全新的子行程中執行每個 subagent，並作為 Agent Client Protocol 用戶端驅動它。這是 spawn 與 fork 的行程外替代方案：子 agent（代理）擁有自己的執行時期、工作階段、模型設定和工具。
 
@@ -10,7 +10,7 @@ ACP（Agent Client Protocol）提供方會在全新的子行程中執行每個 s
 
 工作目錄優先使用已設定的 `cwd` 覆蓋值，否則使用執行委派的父工作階段 cwd，絕不使用伺服器行程自身的 cwd，因為同一個伺服器行程會服務來自多個工作區的工作階段。從父級取得的值必須是絕對路徑，指向 harness 可以進入的目錄（具備搜尋權限，這是子行程 cwd 的要求）；解析後的同一路徑同時作為子行程 cwd 和 ACP `session/new` 工作區。
 
-返回的執行 id 在父級命名空間中生成。子伺服器的工作階段 id 只用於 ACP 協議呼叫，因為 ACP 只保證它在該全新子行程中唯一；若將其用作父級生命週期 id，可能與另一個遠端執行或本機 agent 衝突。
+返回的執行 id 在父級命名空間中生成。子伺服器的工作階段 id 只用於 ACP 協定呼叫，因為 ACP 只保證它在該全新子行程中唯一；若將其用作父級生命週期 id，可能與另一個遠端執行或本機 agent 衝突。
 
 發布後，提供方傳送提示詞，並把流式 `agent_message_chunk` 文字收集到 `SubagentResult.output`。提示詞/傳輸失敗會以 `stopReason: 'error'` 兌現；如果必需的請求訊號或 dispose（資源釋放）請求了取消，則以 `aborted` 兌現。
 
@@ -57,9 +57,9 @@ ACP 不聲明任何啟動時能力，因為當前行程無法強制執行遠端�
 
 ## 行程邊界
 
-子行程經由 [`dsh-subprocess`](../../subprocess/subprocess/README.md) seam spawn：共享的憑據清除先移除疑似憑據的環境變數和環境中已有的 `DSH_*` 名稱，顯式 `config.env` 值在清除之後合併（有意轉發的 `DEEPSEEK_API_KEY` 會保留下來，`DSH_PERMISSION_MODE` 這類 `DSH_*` 部署事實也以同樣的方式到達子行程——清除只丟棄其過時的同名環境值），stderr 會繼承到父行程自身的流，dispose 則先應用本外掛程式的 EOF 時間窗，再由子行程責任方執行 SIGTERM→SIGKILL 升級並等待整棵行程樹退出。ACP 協定格式（wire format）是真正的序列化邊界；同進程 subagent 值不會為防禦目的而克隆。
+子行程經由 [`dsh-subprocess`](../../subprocess/subprocess/README.md) seam spawn：共享的憑據清除先移除疑似憑據的環境變數和環境中已有的 `DSH_*` 名稱，顯式 `config.env` 值在清除之後合併（有意轉發的 `DEEPSEEK_API_KEY` 會保留下來，`DSH_PERMISSION_MODE` 這類 `DSH_*` 部署事實也以同樣的方式到達子行程——清除只丟棄其過時的同名環境值），stderr 會繼承到父行程自身的流，dispose 則先應用本外掛程式的 EOF 時間窗，再由子行程責任方執行 SIGTERM→SIGKILL 升級並等待整棵行程樹退出。ACP 協定格式（wire format）是真正的序列化邊界；同行程 subagent 值不會為防禦目的而克隆。
 
-本包沒有默認匯出。否則 Cordis loader 的解包會隱藏具名 `inject` 元資料；見[事後檢討（postmortem）0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)。
+本包沒有預設匯出。否則 Cordis loader 的解包會隱藏具名 `inject` 元資料；見[事後檢討（postmortem）0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)。
 
 ## 模型體驗
 
@@ -94,7 +94,7 @@ ACP 不聲明任何啟動時能力，因為當前行程無法強制執行遠端�
 ## 已知限制與暫緩事項
 
 - **每次執行使用全新行程**：持久行程池屬於後續最佳化（見 [seam Agent Note](../../../.agents/notes/implemented/feature/2026-06-21-subagent-capability-seam.md)）。
-- **僅支持本機工作區**：解析後的 cwd 是交給同一臺機器上子行程的本機路徑；遠端 ACP agent 的工作區對映需要獨立的後端能力，此處尚未設計這種能力。
-- **不支持選填啟動時能力**：該提供方無法在遠端行程內應用本機 harness 的 `outputSchema`、深度上限、工具過濾器或 persona，因此不會聲明這些能力；服務會拒絕需要它們的請求。
+- **僅支援本機工作區**：解析後的 cwd 是交給同一臺機器上子行程的本機路徑；遠端 ACP agent 的工作區對映需要獨立的後端能力，此處尚未設計這種能力。
+- **不支援選填啟動時能力**：該提供方無法在遠端行程內應用本機 harness 的 `outputSchema`、深度上限、工具過濾器或 persona，因此不會聲明這些能力；服務會拒絕需要它們的請求。
 - **只收集已提交的 `agent_message_chunk` 文字**：自動化伺服器把推理（reasoning）、工具活動、計畫和其他 trace 資料保留在子 agent 工作階段日誌中，不透過 ACP 寄出。
 - **權限提示自動回答**（`permission: allow | reject`）：不會把子 agent 的 `session/request_permission` 呈現給人。

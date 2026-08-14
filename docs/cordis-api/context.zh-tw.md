@@ -3,7 +3,7 @@
 
 # 上下文
 
-[English](context.md) | [简体中文](context.zh.md) | 繁體中文
+[English](context.md) | 繁體中文
 
 上下文是 Cordis 的核心對象：所有服務、事件和生命週期 API 都透過 `ctx` 訪問。事件方法見[事件](events.md)，副作用與當前 fiber 見 [Fiber](fiber.md)，外掛程式載入見[登錄檔](registry.md)。
 
@@ -148,7 +148,7 @@ logger: LoggerService
 reflect: ReflectService
 ```
 
-為上下文代理提供支持的反射層（`ctx.get`、`ctx.provide` 等）。
+為上下文代理提供支援的反射層（`ctx.get`、`ctx.provide` 等）。
 
 [原始碼](../../vendor/cordis/src/context.ts#L30)
 
@@ -330,7 +330,7 @@ fiber 啟用後，該服務對同一隔離作用域內的相依性方可見；�
 accessor(name: string, options: Omit<Property.Accessor, 'type'>): void
 ```
 
-定義一個由 get/set 掛鉤支持的計算型上下文屬性。
+定義一個由 get/set 掛鉤支援的計算型上下文屬性。
 
 當前 fiber 解除安裝時會移除該訪問器。如果該名稱已被聲明，則拋出例外。
 

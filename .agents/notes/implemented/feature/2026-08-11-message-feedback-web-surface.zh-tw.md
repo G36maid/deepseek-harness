@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-message-feedback-web-surface.md) | [简体中文](2026-08-11-message-feedback-web-surface.zh.md) | 繁體中文
+[English](2026-08-11-message-feedback-web-surface.md) | 繁體中文
 
 ## 問題
 
@@ -16,7 +16,7 @@ Status: implemented
 
 三個接縫，各自歸屬於其權威已經所在的位置。
 
-**用戶端節點中的訊息身份。** `AssistantMessageNode` 增加選填的 `messageId`，在該節點由已完成的 `assistant/message` 物化時從 `event.data.message.id` 複製。它在被中斷凍結的部分輸出上保持缺失——那些從未完成、不指向任何持久訊息——在 trajectory 版面配置為未完成部分輸出構造的合成哨兵上同樣缺失。該欄位之所以選填，正是為了讓這兩種情況無法被表示為回饋目標，而不是用佔位值掩蓋過去。`ui-conversation` 與 `ui-trajectory` 各自物化自己的該節點副本，因此兩條「已完成」分支都做了更新；「被中斷」分支被有意保留原樣。這與 Host 自身的目標規則一致——它按 `isAppendSurfaceEvent` 過濾——因此用戶端與 Host 在「什麼是可尋址的」上取得一致，而不需要共享程式碼。
+**用戶端節點中的訊息身份。** `AssistantMessageNode` 增加選填的 `messageId`，在該節點由已完成的 `assistant/message` 物化時從 `event.data.message.id` 複製。它在被中斷凍結的部分輸出上保持缺失——那些從未完成、不指向任何持久訊息——在 trajectory 版面設定為未完成部分輸出構造的合成哨兵上同樣缺失。該欄位之所以選填，正是為了讓這兩種情況無法被表示為回饋目標，而不是用佔位值掩蓋過去。`ui-conversation` 與 `ui-trajectory` 各自物化自己的該節點副本，因此兩條「已完成」分支都做了更新；「被中斷」分支被有意保留原樣。這與 Host 自身的目標規則一致——它按 `isAppendSurfaceEvent` 過濾——因此用戶端與 Host 在「什麼是可尋址的」上取得一致，而不需要共享程式碼。
 
 **聲明式槽位而非直接相依性。** `ui-conversation` 聲明 `conversation.chat.assistant-actions`（list 類型、session 作用域、owner 為 `{messageId}`），並把它授權為 `turn-tail` 節點渲染器的第二個子項，與既有的 `conversation.chat.turnTail` 鏈並列。`TurnTailNodeView` 渲染它，並透過新的 `extraActions` prop 把結果傳入 `MessageIconActions`，位置在複製與分支之間。當 `messageId` 缺失時渲染點整體跳過該槽位，因此被中斷的 Turn 不顯示任何控制元件。回饋包因此只貢獻一個 entry，從不引入 conversation 的實作；當該外掛程式從 `cordis.yml` 組裝中移除時，這條操作欄以零成本渲染為空。
 

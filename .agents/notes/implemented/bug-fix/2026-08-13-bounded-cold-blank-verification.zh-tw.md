@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-13-bounded-cold-blank-verification.md) | [简体中文](2026-08-13-bounded-cold-blank-verification.zh.md) | 繁體中文
+[English](2026-08-13-bounded-cold-blank-verification.md) | 繁體中文
 
 ## Problem
 
@@ -14,7 +14,7 @@ Web 工作階段樹會隱藏空白 Session，並把當前選中的空白項複�
 
 `dsh-host-apiproxy` 註冊 `sessionListMetadata` 投影，其中包含 `blank` 與 `lastPromptAt`。已附加摘要直接用同一組函式摺疊即時日誌。`blank` 只在 `turn/start` 時從 true 單調變為 false；`lastPromptAt` 只在來源 kind 為 `user` 的 `user/message` 上更新。
 
-冷摘要信任快取的 `blank: false`，因為已包含 `turn/start` 的 checkpoint 前綴會始終保持非空。快取的 `blank: true` 和 cache miss 都無法證明當前日誌為空。當 persistence 透過 `locate()` 暴露物理工件，且其觀測大小不超過 `coldBlankProbeMaxBytes` 資格閾值（默認每個 Session 1 KiB）時，閘道呼叫 `readFrom(id, 0)`，從已存前綴摺疊精確清單元資料。超過閾值的文件、不提供位置的後端、已消失的工件和讀取失敗都產生 `blank: false`，讓 Session 保持可見。
+冷摘要信任快取的 `blank: false`，因為已包含 `turn/start` 的 checkpoint 前綴會始終保持非空。快取的 `blank: true` 和 cache miss 都無法證明當前日誌為空。當 persistence 透過 `locate()` 暴露物理工件，且其觀測大小不超過 `coldBlankProbeMaxBytes` 資格閾值（預設每個 Session 1 KiB）時，閘道呼叫 `readFrom(id, 0)`，從已存前綴摺疊精確清單元資料。超過閾值的文件、不提供位置的後端、已消失的工件和讀取失敗都產生 `blank: false`，讓 Session 保持可見。
 
 `updatedAt` 取 `createdAt` 與 `lastPromptAt` 中較晚者。符合資格的工件讀取無需額外 I/O 即可提供精確 `lastPromptAt`；其他 cache miss 或過時 checkpoint 只會讓 Session 排得偏舊，而不會因無關的文件寫入被提升。每次非同步冷讀取後，閘道都會再次檢查即時 store；若另一請求期間已復原該 Session，則用已附加摘要替換冷結果。
 
@@ -30,7 +30,7 @@ Web 工作階段樹會隱藏空白 Session，並把當前選中的空白項複�
 
 ## Consequences
 
-既有的小型空白 JSONL 工件無需相依性 projection cache 是否存在即可被隱藏，過時 cache 也無法隱藏已存的 `turn/start`。對於 cache 尚不能證明非空，且觀測物理大小在設定閾值內的每個 Session，冷清單可能讀取其工件。對默認交付的 Zstandard JSONL 後端，該閾值比較壓縮後的位元組數。
+既有的小型空白 JSONL 工件無需相依性 projection cache 是否存在即可被隱藏，過時 cache 也無法隱藏已存的 `turn/start`。對於 cache 尚不能證明非空，且觀測物理大小在設定閾值內的每個 Session，冷清單可能讀取其工件。對預設交付的 Zstandard JSONL 後端，該閾值比較壓縮後的位元組數。
 
 超過閾值的空白工件，以及來自不提供位置的後端的空白 Session 會保持可見。對於未被讀取的工件，缺失或延遲的最近時間 cache 會回退到 `createdAt`。這些都是保守降級：UI 可能多顯示一條空記錄，或把 Session 排得偏低，但不會隱藏真實對話，也不會因為單純打開而把工作階段提升到前面。
 

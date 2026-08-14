@@ -2,11 +2,11 @@
 
 Status: proposed
 
-[English](2026-08-04-artifact-first-npm-baseline-publication.md) | [简体中文](2026-08-04-artifact-first-npm-baseline-publication.zh.md) | 繁體中文
+[English](2026-08-04-artifact-first-npm-baseline-publication.md) | 繁體中文
 
 ## 問題
 
-monorepo 中可執行的原始碼並不能證明發布後的包可執行。workspace link、TypeScript paths、tsx 原始碼載入和工作樹裡殘留的 `lib/` 都可能補上發布 tarball 中缺失的文件或相依性。即使現有建置產物測試使用普通 Node，它仍直接讀取工作樹中的 `lib/`，沒有驗證 `package.json#files` 最終選中了什麼，也沒有驗證套件管理員安裝後的文件版面配置。一次開發模式正常的執行因此可能發布為缺少 bundle chunk、聲明文件、設定或資源的包。
+monorepo 中可執行的原始碼並不能證明發布後的包可執行。workspace link、TypeScript paths、tsx 原始碼載入和工作樹裡殘留的 `lib/` 都可能補上發布 tarball 中缺失的文件或相依性。即使現有建置產物測試使用普通 Node，它仍直接讀取工作樹中的 `lib/`，沒有驗證 `package.json#files` 最終選中了什麼，也沒有驗證套件管理員安裝後的文件版面設定。一次開發模式正常的執行因此可能發布為缺少 bundle chunk、聲明文件、設定或資源的包。
 
 發布多個互相相依性的 `@deepseek-ai` 包還會產生集合一致性問題。如果指令碼每 pack 一個包就立即 publish，那麼後續 pack 或驗證失敗時，登錄檔中已經存在無法作為完整基線使用的前半組版本。npm 登錄檔沒有跨包交易，因此這裡的「一次性發布」不能承諾原子提交，只能承諾在任何遠端寫入前完整生成並驗證發布集合，再由一個可復原的編排命令發布這個不可變集合。
 
@@ -36,7 +36,7 @@ pack 階段按以下順序執行：
 
 ## 當前實作邊界
 
-已提交的 pack 命令實作了固定 commit 暫存、內部相依性精確固化、靜態與 tarball payload 檢查、不可變 manifest，以及把每個發布 tarball 都作為本機頂層相依性的隔離 npm 安裝。它在輸出 publish 命令前，用普通 Node 執行安裝後的 `dsh --version` 與 `dsh --dump-default-config` 入口，再在 POSIX PTY 中啟動安裝後的默認 TUI，等待其 `main-session-` 就緒訊號，並透過 `/exit` 退出。Publish 支持按 integrity 復原，將只讀登錄檔驗證與認證身份檢查分離，並以完整的遠端 integrity 和 dist-tag 驗證結束。
+已提交的 pack 命令實作了固定 commit 暫存、內部相依性精確固化、靜態與 tarball payload 檢查、不可變 manifest，以及把每個發布 tarball 都作為本機頂層相依性的隔離 npm 安裝。它在輸出 publish 命令前，用普通 Node 執行安裝後的 `dsh --version` 與 `dsh --dump-default-config` 入口，再在 POSIX PTY 中啟動安裝後的預設 TUI，等待其 `main-session-` 就緒訊號，並透過 `/exit` 退出。Publish 支援按 integrity 復原，將只讀登錄檔驗證與認證身份檢查分離，並以完整的遠端 integrity 和 dist-tag 驗證結束。
 
 PR（Pull Request） CI 不會呼叫 pack 命令；安裝態入口探測屬於本機發布檢查，而不是合併閘門。免憑據 CI 執行、其他每個 bin 與公開執行時期入口的包自有探測、workflow artifact 傳遞及受保護 publish job 仍屬於提案範圍。
 
@@ -57,17 +57,17 @@ PR（Pull Request） CI 不會呼叫 pack 命令；安裝態入口探測屬於�
 測試至少覆蓋以下執行面：
 
 - `@deepseek-ai/dsh` 安裝後的 `dsh --version` 與 `dsh --dump-default-config` 在普通 Node 下成功，分別覆蓋靜態 CLI 入口和一個動態模式入口。
-- 安裝後的默認 `dsh` 在 PTY 中完成一次無金鑰 TUI 啟動，到達既定 ready 訊號後由測試受控退出。這條路徑必須載入真實 TUI 動態 chunk，因此缺少類似 `lib/tui-*.js` 的發布文件會使閘門失敗。
+- 安裝後的預設 `dsh` 在 PTY 中完成一次無金鑰 TUI 啟動，到達既定 ready 訊號後由測試受控退出。這條路徑必須載入真實 TUI 動態 chunk，因此缺少類似 `lib/tui-*.js` 的發布文件會使閘門失敗。
 - 每個其他已發布 `bin` 都定義一個不會訪問真實服務或修改使用者狀態的包級冒煙命令。不同 CLI 不強制共用 `--help`；測試必須執行其真實安裝入口並檢查約定的退出或 ready 訊號。
-- Node 相容的公開執行時期入口從安裝目錄載入；瀏覽器、worker 或必須由宿主協議驅動的入口使用對應的隔離 fixture（測試前置資料），但輸入仍只能是本次 tarball。
+- Node 相容的公開執行時期入口從安裝目錄載入；瀏覽器、worker 或必須由宿主協定驅動的入口使用對應的隔離 fixture（測試前置資料），但輸入仍只能是本次 tarball。
 
 這些測試驗證可執行性，不替代單元測試、快照、真實 API e2e 或 publint。測試 fixture 應複用現有 built-bin 和 PTY 場景的行為斷言，但必須把入口改為 tarball 安裝結果；直接執行工作樹 `lib/bin.js` 的測試不能算作本閘門。
 
 ## 發布與復原
 
-publish 命令先驗證 release manifest、所有本機校驗和、目標登錄檔、`npm ping` 和 `npm whoami`，再按確定順序上傳 tarball。命令只接受 pack 階段生成的 manifest，不接受 workspace 目錄作為發布輸入。默認登錄檔為 `https://registry.npm.harnessment.com/`，每次 publish 都顯式傳入登錄檔和派生 tag，避免使用者級 `.npmrc` 改變目標。
+publish 命令先驗證 release manifest、所有本機校驗和、目標登錄檔、`npm ping` 和 `npm whoami`，再按確定順序上傳 tarball。命令只接受 pack 階段生成的 manifest，不接受 workspace 目錄作為發布輸入。預設登錄檔為 `https://registry.npm.harnessment.com/`，每次 publish 都顯式傳入登錄檔和派生 tag，避免使用者級 `.npmrc` 改變目標。
 
-npm 不提供多包原子交易，上傳仍會逐包發生。編排器透過冪等復原縮小失敗面：若遠端不存在 `<name>@<version>` 就上傳；若已存在且 integrity 與 release manifest 相同就跳過；若已存在但內容不同就立即失敗。dist-tag 檢查只讀取 tag 對映，不解析默認 tag 指向的版本，因此即使無關 tag 指向的版本已不存在，也不會阻斷復原。完成後必須逐包確認版本 integrity 和 dist-tag 都指向本次版本，只有整個集合透過最終驗證，工作流程才報告發布成功。
+npm 不提供多包原子交易，上傳仍會逐包發生。編排器透過冪等復原縮小失敗面：若遠端不存在 `<name>@<version>` 就上傳；若已存在且 integrity 與 release manifest 相同就跳過；若已存在但內容不同就立即失敗。dist-tag 檢查只讀取 tag 對映，不解析預設 tag 指向的版本，因此即使無關 tag 指向的版本已不存在，也不會阻斷復原。完成後必須逐包確認版本 integrity 和 dist-tag 都指向本次版本，只有整個集合透過最終驗證，工作流程才報告發布成功。
 
 如果 pack、tarball 檢查或安裝後整合測試失敗，登錄檔必須保持零寫入。如果 publish 在部分上傳後失敗，操作者使用同一 release manifest 重跑 publish 命令來復原，不得重新 pack 並生成另一個時間戳版本來代替復原。修復程式碼或改變建置輸入後需要不同 tarball 時，才重新執行完整 pack 與測試。
 
@@ -85,7 +85,7 @@ PR 與普通 push 可以執行無憑據的 pack-and-test 訊號，從而在合�
 
 **只測試工作樹中建置後的 `lib/`。** 不採用，因為這驗證的是建置樹，不是 `package.json#files` 選出的 tarball。工作樹中存在而 tarball 中漏掉的動態 chunk 正是本提案必須捕獲的失敗。
 
-**只執行 `dsh --help`。** 不採用，因為 Commander 可以在載入 TUI、Web 或 headless 動態入口之前輸出幫助並退出。它無法證明默認生產啟動路徑完整。
+**只執行 `dsh --help`。** 不採用，因為 Commander 可以在載入 TUI、Web 或 headless 動態入口之前輸出幫助並退出。它無法證明預設生產啟動路徑完整。
 
 **把 `src` 和聲明對映一起發布以降低漏文件風險。** 不採用，因為原始碼平面不是生產執行時期的後備路徑；擴大 payload 會掩蓋 bundle 閉包錯誤，並把本機除錯產物變成無意的發布約定。
 
@@ -98,7 +98,7 @@ PR 與普通 push 可以執行無憑據的 pack-and-test 訊號，從而在合�
 - 一個 pack 入口從確定 commit 發現 `packages/*/*` 和 `apps/*` 的全部目標包，以 UTC 秒級時間戳與短 commit 生成並顯示版本，再等待 Enter；它在任何登錄檔寫入前生成完整 release bundle，並輸出一個可複製的 publish 命令；`release` 在 pack 後再次等待，`--yes` 跳過兩次確認。
 - 靜態 manifest 閘門和 tarball 內容閘門都拒絕發布 `src` 與 `.d.ts.map`，同時保留原始碼 manifest 中的 `exports["./src/*"]`。
 - release bundle 記錄完整包集合、commit、派生版本、tag、登錄檔和逐 tarball integrity；所有內部相依性都精確固化到該版本，publish 只消費該 bundle，絕不重建。
-- 一個隔離整合測試從本機 tarball 安裝消費端，並用普通 Node 啟動安裝後的默認 `dsh` TUI；刪除任一所需動態 chunk 會使該測試穩定失敗。
+- 一個隔離整合測試從本機 tarball 安裝消費端，並用普通 Node 啟動安裝後的預設 `dsh` TUI；刪除任一所需動態 chunk 會使該測試穩定失敗。
 - 所有已發布 bin 和適用的公開執行時期入口都有 tarball 安裝後的執行覆蓋，且解析路徑證明沒有回退到 monorepo。
 - publish 可在部分成功後用同一 manifest 安全重跑；相同 integrity 被跳過，不同 integrity 被拒絕，最終驗證要求所有版本與 tag 一致。
 - GitHub Actions 的無憑據 job 生成並測試 bundle，受保護 job 上傳完全相同的 bundle，發布 token 只存在於後者。

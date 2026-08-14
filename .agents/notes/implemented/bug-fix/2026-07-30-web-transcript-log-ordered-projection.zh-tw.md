@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-transcript-log-ordered-projection.md) | [简体中文](2026-07-30-web-transcript-log-ordered-projection.zh.md) | 繁體中文
+[English](2026-07-30-web-transcript-log-ordered-projection.md) | 繁體中文
 
 ## Problem
 
@@ -53,7 +53,7 @@ const COMPACT_PLUGIN: CompactionCheckpointSource['plugin'] = 'compact'
 
 **一條純形狀規則**——任何 replacement `user/message` 都是壓縮。已拒絕：它今天正確只因為壓縮是 replacement `user/message` 的唯一生產者，一旦這點改變便無任何機制能捕獲。那個 pin 測試只花一個文件，就精確消除了這一風險。
 
-**在宿主側給檢查點打標**，經投影或線協議。已拒絕：這最貼合“經 cordis 服務協作”的規則，但用戶端今天摺疊的是原始 `SessionEvent`，因此這意味著一次線協議約定變更——為一個純謂詞付出的代價不成比例。
+**在宿主側給檢查點打標**，經投影或線協定。已拒絕：這最貼合“經 cordis 服務協作”的規則，但用戶端今天摺疊的是原始 `SessionEvent`，因此這意味著一次線協定約定變更——為一個純謂詞付出的代價不成比例。
 
 **把凍結節點的歸屬移進配接器**（`nodes(extraNodes)`），像那個未合併分支所做的那樣。已拒絕：被打斷的節點來自 `Session` 已經在視窗上執行的 `turn/end` 清掃，而在按 seq 單調的記錄之上，簡單形態就是正確的——配接器返回節點，工作階段按 seq 歸並凍結節點。加寬配接器簽名什麼也換不到，還會把清掃與它的產物拆開。
 
@@ -67,7 +67,7 @@ const COMPACT_PLUGIN: CompactionCheckpointSource['plugin'] = 'compact'
 
 壓縮不再抹掉 Web 歷史；一個被壓縮多次的工作階段按日誌順序顯示每次落地壓縮一個標記，而同一視窗在即時與冷復原之後渲染完全相同。分頁缺口是被構造性閉合而非被防禦，`ConversationSnapshot` 少了一個已發布欄位，這觸及十三個文件。
 
-`ConversationNode` 增加第八個分支，因此每個窮盡消費端都多一個分支：`MessageItem` 透過新的 `CompactionItem` 渲染標記，trajectory 版面配置加寬它的“無單元格”分支，使標記不貢獻單元格但仍推進耗時遊標。
+`ConversationNode` 增加第八個分支，因此每個窮盡消費端都多一個分支：`MessageItem` 透過新的 `CompactionItem` 渲染標記，trajectory 版面設定加寬它的“無單元格”分支，使標記不貢獻單元格但仍推進耗時遊標。
 
 效能約定未變，且現在更易表述：一次追加物化一個節點，不改變任何節點的事件保持上一次的陣列引用——因此區塊風暴零成本、`nodes()` 甚至不會重算——未變化的節點保持其對象標識。視窗仍隨工作階段長度而非隨 surface 成長，這正是本修復存在所要做的交換；一次壓縮過去恰好為壓縮所服務的長工作階段限制了投影規模。
 

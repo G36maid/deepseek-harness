@@ -2,11 +2,11 @@
 
 Status: implemented
 
-[English](2026-08-11-web-attachment-display-alignment.md) | [简体中文](2026-08-11-web-attachment-display-alignment.zh.md) | 繁體中文
+[English](2026-08-11-web-attachment-display-alignment.md) | 繁體中文
 
 ## 問題
 
-Web 輸入框的圖片介面缺乏基本可用性（使用者回饋，issue #2248）。刪除按鈕以 `top/right: -6px` 掛在 72px 縮略圖外側，被附件欄的 `overflow-x` 盒子裁切，點擊經常落空；預覽只能雙擊打開，除了 tooltip 沒有任何提示這個操作；附件欄超出輸入框寬度時在膠囊內部直接出現原生橫向捲軸；圖片接收被拒和傳送失敗（例如所選模型不支持圖片輸入時的 `attachment-error`）以常駐的內聯紅條顯示在卡片上方。這些介面在 DeepSeek Chat 裡都有使用者熟悉的既定設計：單擊預覽、卡片內部懸停顯示的刪除按鈕、隱藏捲軸的箭頭翻頁、頂部置中的短時 toast。
+Web 輸入框的圖片介面缺乏基本可用性（使用者回饋，issue #2248）。刪除按鈕以 `top/right: -6px` 掛在 72px 縮略圖外側，被附件欄的 `overflow-x` 盒子裁切，點擊經常落空；預覽只能雙擊打開，除了 tooltip 沒有任何提示這個操作；附件欄超出輸入框寬度時在膠囊內部直接出現原生橫向捲軸；圖片接收被拒和傳送失敗（例如所選模型不支援圖片輸入時的 `attachment-error`）以常駐的內聯紅條顯示在卡片上方。這些介面在 DeepSeek Chat 裡都有使用者熟悉的既定設計：單擊預覽、卡片內部懸停顯示的刪除按鈕、隱藏捲軸的箭頭翻頁、頂部置中的短時 toast。
 
 首個多模態版本把這些介面記錄在[Web 多模態 Note](2026-07-22-web-multimodal-image-input-and-durable-attachments.md)中；本 Note 取代其中的展示與互動細節（縮略圖幾何、點擊方式、錯誤呈現），其附件服務邊界、准入與持久化決策繼續有效。
 
@@ -30,4 +30,4 @@ Web 輸入框的圖片介面缺乏基本可用性（使用者回饋，issue #224
 
 ## 結果
 
-輸入框與歷史圖片介面的互動模型現已與 DeepSeek Chat 一致，label props 接縫讓原子元件在任何語言環境下渲染而無需觸達 locale。代價是一個真實的包邊界：`ui-attachment` 背上標準腳手架（invariant 伴生、雙語 README、tsconfig face、逐文件 100% 覆蓋率），且每個未來消費者都要自行解析條目文案而非繼承。錯誤橫幅變為短時——使用者移開視線四秒就會錯過訊息，這正是 DeepSeek Chat 自己做的取捨。非圖片附件仍不支持；附件欄的卡片模型已就緒，但輸入框的接收仍只認圖片（記錄於包 README 的限制一節）。
+輸入框與歷史圖片介面的互動模型現已與 DeepSeek Chat 一致，label props 接縫讓原子元件在任何語言環境下渲染而無需觸達 locale。代價是一個真實的包邊界：`ui-attachment` 背上標準腳手架（invariant 伴生、雙語 README、tsconfig face、逐文件 100% 覆蓋率），且每個未來消費者都要自行解析條目文案而非繼承。錯誤橫幅變為短時——使用者移開視線四秒就會錯過訊息，這正是 DeepSeek Chat 自己做的取捨。非圖片附件仍不支援；附件欄的卡片模型已就緒，但輸入框的接收仍只認圖片（記錄於包 README 的限制一節）。

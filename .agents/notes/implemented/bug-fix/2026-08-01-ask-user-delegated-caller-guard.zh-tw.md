@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-01-ask-user-delegated-caller-guard.md) | [简体中文](2026-08-01-ask-user-delegated-caller-guard.zh.md) | 繁體中文
+[English](2026-08-01-ask-user-delegated-caller-guard.md) | 繁體中文
 
 ## 問題
 
@@ -26,7 +26,7 @@ Status: implemented
 
 **僅在 `dsh-tool-ask-user` 內拒絕。** 不予採用：`exit_plan_mode` 與直接呼叫方共用 `ctx.userQuestions.ask()`。服務是所有人機互動消費端共同經過的最窄操作邊界。
 
-**讓子級向上委託或等待轉發。** 不予採用：一次性委託沒有公開從子級向父級請求的通道，也沒有回答轉發協議。唯一有保證的返迴路徑是子級的最終結果。
+**讓子級向上委託或等待轉發。** 不予採用：一次性委託沒有公開從子級向父級請求的通道，也沒有回答轉發協定。唯一有保證的返迴路徑是子級的最終結果。
 
 **相依性瀏覽器的 composer 修復。** 不予採用：呈現方式無法憑空產生由所有者負責的人類通道，非瀏覽器部署仍然需要該呼叫能夠終止。
 

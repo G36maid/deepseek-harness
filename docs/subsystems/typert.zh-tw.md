@@ -1,6 +1,6 @@
 # Typert 遠端呼叫
 
-[English](typert.md) | [简体中文](typert.zh.md) | 繁體中文
+[English](typert.md) | 繁體中文
 
 以下類型由生成的 Remote 產物、Host Gateway 與消費端 API assembly 共用。[Typert Gateway Agent Note](../../.agents/notes/implemented/architecture/2026-08-02-typert-remote-method-calls.md) 負責架構與傳輸決策；本頁記錄 [`dsh-typert-protocol`](../../packages/typert/protocol/src/types.ts) 和 [`dsh-api-gateway`](../../packages/api/gateway/src/types.ts) 中公共約定的字面定義。
 
@@ -116,7 +116,7 @@ interface InvocationDescriptor {
 
 ## Typert 登錄檔
 
-`ctx.typert` 分開保存當前環境的 descriptor、顯式選擇的 Remote contribution、lookup 提供方與作用域上下文提供方。lookup 提供方擁有穩定 wire 聲明和默認 resolver；Host 組合可以為同一個 key 設定 effect-scoped 同步或非同步 resolver，設定解除安裝後復原默認策略。各項註冊都是由 Cordis 持有的 effect，並返回可等待的 disposer。
+`ctx.typert` 分開保存當前環境的 descriptor、顯式選擇的 Remote contribution、lookup 提供方與作用域上下文提供方。lookup 提供方擁有穩定 wire 聲明和預設 resolver；Host 組合可以為同一個 key 設定 effect-scoped 同步或非同步 resolver，設定解除安裝後復原預設策略。各項註冊都是由 Cordis 持有的 effect，並返回可等待的 disposer。
 
 ```ts type-equiv
 /** Minimal Typert runtime consumed through dependency inversion. */
