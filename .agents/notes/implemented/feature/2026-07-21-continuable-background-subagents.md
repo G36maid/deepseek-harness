@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-21-continuable-background-subagents.zh.md) | [繁體中文](2026-07-21-continuable-background-subagents.zh-tw.md)
+
 
 This record is superseded by [Continuable subagents](2026-07-28-continuable-subagent-conversations.md), which replaces its Task-backed activation model, routing, cancellation, and durability semantics with one durable Session plus at most one process-local Activation. Its service-placement and provider-capability policy were already superseded by [Merge subagent control into the subagent service](../simplification/2026-07-26-merge-subagent-control-service.md) and [Intent-named subagent continuation operations](../simplification/2026-07-27-intent-named-subagent-continuation-operations.md). Only the durable child-session and descriptor rationale remains in force.
 

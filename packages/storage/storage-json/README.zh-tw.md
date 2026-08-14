@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-[儲存中心](../storage/README.md)的 JSON 後端：設定根目錄下每個單元使用一個人類可讀的 `<unit>.json` 文件，註冊為後端 `json`。設計見[領域 KV 儲存 Agent Note](../../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.zh.md)。
+[儲存中心](../storage/README.md)的 JSON 後端：設定根目錄下每個單元使用一個人類可讀的 `<unit>.json` 文件，註冊為後端 `json`。設計見[領域 KV 儲存 Agent Note](../../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md)。
 
 ## 模型
 

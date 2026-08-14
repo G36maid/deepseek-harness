@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-02-tool-schema-catalog.zh.md) | [繁體中文](2026-07-02-tool-schema-catalog.zh-tw.md)
+
 
 ## Problem
 

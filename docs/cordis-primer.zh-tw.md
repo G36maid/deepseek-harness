@@ -2,7 +2,7 @@
 
 [English](cordis-primer.md) | [简体中文](cordis-primer.zh.md) | 繁體中文
 
-Cordis 是 DeepSeek Harness 底層以 vendor 方式引入的外掛程式框架。本文介紹 harness 外掛程式作者在閱讀[子系統頁面](subsystems/core.md)上生成的服務/事件參考之前需要瞭解的 Cordis 核心概念；[Cordis 教程](cordis-tutorial/index.md)則透過實踐逐一講解這些概念。vendor 原始碼與同步流程見 [vendor/README.md](../vendor/README.md)。
+Cordis 是 DeepSeek Harness 底層以 vendor 方式引入的外掛程式框架。本文介紹 harness 外掛程式作者在閱讀[子系統頁面](subsystems/core.md)上生成的服務/事件參考之前需要瞭解的 Cordis 核心概念；[Cordis 教學](cordis-tutorial/index.md)則透過實踐逐一講解這些概念。vendor 原始碼與同步流程見 [vendor/README.md](../vendor/README.md)。
 
 ## 五個核心概念
 
@@ -41,7 +41,7 @@ Cordis 是 DeepSeek Harness 底層以 vendor 方式引入的外掛程式框架�
 
 ## Loader 設定
 
-`@deepseek-ai/cordis-plugin-include` 將 `!!js` 解析為表達式節點。Loader 在聲明的注入啟用後，基於該外掛程式上下文（`ctx.serviceName`）插值條目的 `config`，並在每次掛載決策時基於 loader 上下文插值其 `disabled` 欄位；Include 會保留巢狀行表達式，直到目標行啟用。其餘條目元資料保持字面值。由環境選擇外掛程式時，請使用 overlay。
+`@deepseek-ai/cordis-plugin-include` 將 `!!js` 解析為運算式節點。Loader 在聲明的注入啟用後，基於該外掛程式上下文（`ctx.serviceName`）插值條目的 `config`，並在每次掛載決策時基於 loader 上下文插值其 `disabled` 欄位；Include 會保留巢狀行運算式，直到目標行啟用。其餘條目中繼資料保持字面值。由環境選擇外掛程式時，請使用 overlay。
 
 ## 實踐規則
 

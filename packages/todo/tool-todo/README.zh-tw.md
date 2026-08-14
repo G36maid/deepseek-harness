@@ -24,9 +24,9 @@
 
 除 schema 的類型／必填／枚舉檢查外，`execute` 還會拒絕空或重複的 `content`，以及 `content`/`status` 之外的任何條目鍵——擴充條目形狀（id、巢狀）會明確報錯而不是被靜默壓平，保證落日誌的快照與模型自認為寫入的內容一致。同時可以有多少任務處於 `in_progress` 由部署決定（見 § 設定）：選擇 `true` 的組合允許平行工作（並行 subagent、後臺命令）同時將多個任務標記為 `in_progress`。清單的順序及及時更新由模型依照工具描述負責。
 
-## 渲染
+## 算繪
 
-規範結果為 `{ todos, counts: { pending, inProgress, completed } }`；其 Native 渲染器返回精簡的更新確認。工具還會寫入完整 `todo/write` 工作階段事件。UI 訂閱事件串流，並自行渲染該持久化清單：[web 用戶端](../../client/ui-conversation)基於當前有效計畫（其後沒有更晚 `turn/start` 的最近一次 `todo/write`）顯示計畫條和專屬工具行（[展示](../../../.agents/notes/implemented/feature/2026-07-23-web-todo-display.md)、[生命週期](../../../.agents/notes/implemented/feature/2026-07-28-todo-plan-clears-on-next-turn.md)）。
+規範結果為 `{ todos, counts: { pending, inProgress, completed } }`；其 Native 算繪器返回精簡的更新確認。工具還會寫入完整 `todo/write` 工作階段事件。UI 訂閱事件串流，並自行算繪該持久化清單：[web 用戶端](../../client/ui-conversation)基於當前有效計畫（其後沒有更晚 `turn/start` 的最近一次 `todo/write`）顯示計畫條和專屬工具行（[展示](../../../.agents/notes/implemented/feature/2026-07-23-web-todo-display.md)、[生命週期](../../../.agents/notes/implemented/feature/2026-07-28-todo-plan-clears-on-next-turn.md)）。
 
 ## 工作階段投影
 
@@ -34,7 +34,7 @@
 
 ## 匯出形狀
 
-函式／命名空間外掛程式：匯出 `name`/`inject`/`apply`，不提供默認匯出。意外的 `export default` 會被 Loader 的 `unwrapExports` 摺疊為默認匯出，並導致 `inject` 丟失（參見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
+函式／命名空間外掛程式：匯出 `name`/`inject`/`apply`，不提供預設匯出。意外的 `export default` 會被 Loader 的 `unwrapExports` 摺疊為預設匯出，並導致 `inject` 丟失（參見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
 
 ## 模型體驗
 

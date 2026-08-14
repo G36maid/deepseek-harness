@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/skill/skill-badge/README.md
 README.md: 6b7c7278efb5df8418b22c16371ffd3c8434328c
 README.zh.md: 226903070e65a3eed419f2cd8ab420eee6d93fa1
-README.zh-tw.md: e0e9bc21feee9e3770c93b92b606f501627ac186
+README.zh-tw.md: 12ffe9a7a35e0399ab4150dab7a6ccd187ee0fb4

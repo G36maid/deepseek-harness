@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-28-user-settings-seam.zh.md) | [繁體中文](2026-07-28-user-settings-seam.zh-tw.md)
+
 
 > Scope: the `packages/settings/` capability family — the Service Definition, the file-backed provider, and the composition boundary between user settings and `cordis.yml`. The [web config-tree note](2026-07-24-web-config-tree-boot-and-transport-layering.md) recorded "the profile write path" as a deferral; this seam is that write path's owner. Consumer migrations (theme, locale, default model route) and the web `settings.*` RPC surface are follow-ups, not part of this note's shipped scope.
 

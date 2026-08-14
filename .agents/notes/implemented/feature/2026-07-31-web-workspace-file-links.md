@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-31-web-workspace-file-links.zh.md) | [繁體中文](2026-07-31-web-workspace-file-links.zh-tw.md)
+
 
 > Scope: the produced-files row a finished turn ends with, the file-path link that reads as one, and the Host opener preferring the default browser for documents a browser renders. Not in scope, by decision: serving workspace files over HTTP, and previews for a client that is not on the Host machine.
 

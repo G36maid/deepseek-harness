@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-13-oauth-only-providers-withheld.md
-2026-08-13-oauth-only-providers-withheld.md: e51be742d18641148a159688193f6f73411e6131
-2026-08-13-oauth-only-providers-withheld.zh.md: 59428e4579b761634f60c99ec249741ff2b4e240
-2026-08-13-oauth-only-providers-withheld.zh-tw.md: b3c20509756095ac84150d84e04171a9c2f68ca8

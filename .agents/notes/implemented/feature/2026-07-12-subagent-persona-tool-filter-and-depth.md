@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-12-subagent-persona-tool-filter-and-depth.zh.md) | [繁體中文](2026-07-12-subagent-persona-tool-filter-and-depth.zh-tw.md)
+
 
 ## Problem
 

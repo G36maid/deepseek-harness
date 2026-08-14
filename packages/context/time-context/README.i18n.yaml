@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/context/time-context/README.md
 README.md: d6bf662421e927499581d8902d723c289f65d7bd
 README.zh.md: 73ce465d68cb5d0f7f1d639486d25b490e638f13
-README.zh-tw.md: 2664243ca157d04fe4ccf56a46cc42e363aa8d41
+README.zh-tw.md: 8ebbe3989b349084de4ea38c66eb89a5cebf658e

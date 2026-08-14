@@ -28,7 +28,7 @@ Cordis 外掛程式的根相依性容器和子相依性容器。
 extend(meta = {}): this
 ```
 
-在當前作用域之上建立一個帶有額外元資料的子上下文。
+在當前作用域之上建立一個帶有額外中繼資料的子上下文。
 
 子上下文透過原型繼承當前上下文的所有屬性；`meta` 的自有屬性會遮蔽繼承的同名屬性。父上下文不會被修改。
 
@@ -148,7 +148,7 @@ logger: LoggerService
 reflect: ReflectService
 ```
 
-為上下文代理提供支持的反射層（`ctx.get`、`ctx.provide` 等）。
+為上下文代理提供支援的反射層（`ctx.get`、`ctx.provide` 等）。
 
 [原始碼](../../vendor/cordis/src/context.ts#L30)
 
@@ -330,7 +330,7 @@ fiber 啟用後，該服務對同一隔離作用域內的相依性方可見；�
 accessor(name: string, options: Omit<Property.Accessor, 'type'>): void
 ```
 
-定義一個由 get/set 掛鉤支持的計算型上下文屬性。
+定義一個由 get/set 掛鉤支援的計算型上下文屬性。
 
 當前 fiber 解除安裝時會移除該訪問器。如果該名稱已被聲明，則拋出例外。
 

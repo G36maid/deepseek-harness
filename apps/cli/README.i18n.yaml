@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write apps/cli/README.md
 README.md: f3f3a7a5a92b3ea0d95c9f1086e127e9dfc40581
 README.zh.md: 740361a2dc5ad06f68f12092315a054f9bd40ec7
-README.zh-tw.md: 21b5dcbc01497aadf50bfeed5b4ded3c3c5c08c9
+README.zh-tw.md: b1f26a7802c86b3e945501810f611dc57b5c2e8d

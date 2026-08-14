@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-26-code-mode-live-parallel-dispatch.zh.md) | [繁體中文](2026-07-26-code-mode-live-parallel-dispatch.zh-tw.md)
+
 
 > Scope: the `tool/code-dispatch-start` event, per-sub-call running state in the web chat, and the bridge's scheduler reusing the native concurrency contract. Builds on the [host foundation](2026-07-26-code-dispatch-ui-foundation.md) and [chat sub-call rows](2026-07-26-code-mode-chat-subcall-rows.md); the native contract itself is owned by the [parallel tool-call note](2026-07-10-parallel-tool-call-execution.md).
 

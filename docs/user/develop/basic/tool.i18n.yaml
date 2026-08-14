@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/develop/basic/tool.md
 tool.md: ba8a42313af439512425b5a8ade4a24b91f47453
 tool.zh.md: f752e9af168b1630f4f0a4a8e2b5978eb194a822
-tool.zh-tw.md: 9ae80ac038a723275c29f9b27148da1bfd09acb2
+tool.zh-tw.md: 7201a7805c4c774988aaad11ecc000a845a322a7

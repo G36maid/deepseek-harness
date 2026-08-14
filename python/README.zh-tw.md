@@ -9,7 +9,7 @@
 | 目錄 | 分發名／模組 | 職責 |
 |---|---|---|
 | [sdk](sdk/README.md) | `deepseek-harness-sdk` / `deepseek_harness` | 高層輪次 API 與低層 JSON-RPC 用戶端 |
-| [sdk-runtime](sdk-runtime/README.md) | `deepseek-harness-runtime-bin` / `deepseek_harness_runtime` | 內建執行時期二進位與默認 agent（代理）設定 |
+| [sdk-runtime](sdk-runtime/README.md) | `deepseek-harness-runtime-bin` / `deepseek_harness_runtime` | 內建執行時期二進位與預設 agent（代理）設定 |
 
 ## 行為
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/examples/agent-spine-demo/README.md
 README.md: 89afebfe92e895d4d9ab81a72118addee5a910d4
 README.zh.md: 653032dcaba2569e3df7cb388c535e9584583ec3
-README.zh-tw.md: 36d10f2dfe0d963fd9eaf7da167c60329801b223
+README.zh-tw.md: ef51bcd1c44d2c888dd8f1d8d4cee4f08346bd46

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-20-unified-json-value-schema-dsl.md
-2026-07-20-unified-json-value-schema-dsl.md: 88fa461c799ea20c3a4c800136d1afe7f0dec08a
-2026-07-20-unified-json-value-schema-dsl.zh.md: e46e92954999c921d917a4955995854ae89766f4
-2026-07-20-unified-json-value-schema-dsl.zh-tw.md: ab2d6814c50d4c2532f2051dfdbfc21bf6a0011f

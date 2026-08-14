@@ -6,15 +6,15 @@
 
 ## 設定發現
 
-第一個非空通道生效：先 `$DSH_CORDIS_CONFIG`，再位置參數 `argv[2]`。如果二者都沒有指向現有文件，bin 會向 stderr 列印單行用法並以 1 退出；沒有工作目錄回退或內建回退。[`dsh-app-boot`](../../boot/app-boot/README.md) 會使外掛程式載入失敗成為致命錯誤。此協議不使用 `DSH_SNAPSHOT`。
+第一個非空通道生效：先 `$DSH_CORDIS_CONFIG`，再位置參數 `argv[2]`。如果二者都沒有指向現有文件，bin 會向 stderr 列印單行用法並以 1 結束；沒有工作目錄回退或內建回退。[`dsh-app-boot`](../../boot/app-boot/README.md) 會使外掛程式載入失敗成為致命錯誤。此協定不使用 `DSH_SNAPSHOT`。
 
 不含 `dsh-sdk-jsonrpc-server` 的設定仍然有效，只是不提供任何服務；bin 不會指定伺服器外掛程式。
 
-## 退出生命週期
+## 結束生命週期
 
-stdin EOF 和 `SIGTERM` 會 dispose（釋放資源）根上下文，等待完全靜止後以 0 退出；`SIGINT` 完成同樣的 dispose 後以 130 退出。EOF 可能按[分發 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md) 所述截斷正在處理的輪次。`jsonrpc` 外掛程式擁有先回應再退出的協議關閉流程；兩條路徑均冪等，即使發生競態也安全。
+stdin EOF 和 `SIGTERM` 會 dispose（釋放資源）根上下文，等待完全靜止後以 0 結束；`SIGINT` 完成同樣的 dispose 後以 130 結束。EOF 可能按[分發 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md) 所述截斷正在處理的輪次。`jsonrpc` 外掛程式擁有先回應再結束的協定關閉流程；兩條路徑均冪等，即使發生競態也安全。
 
-## stdout 是協議
+## stdout 是協定
 
 stdout 只承載 JSON-RPC 幀。bin 和啟動守衛在 stderr 上輸出診斷，設定必須省略 stdout logger。
 
@@ -30,4 +30,4 @@ stdout 只承載 JSON-RPC 幀。bin 和啟動守衛在 stderr 上輸出診斷，
 
 - **bin 無法證明設定提供 JSON-RPC 服務**：不含 `dsh-sdk-jsonrpc-server` 條目的有效設定也能成功啟動，但不會提供任何服務。
 - **不存在內建或預設配置**：每次啟動都必須提供 `DSH_CORDIS_CONFIG` 或位置路徑；部署方負責完整的外掛程式樹和 stdout 紀律。
-- **stdin EOF 會截斷正在處理的工作**：用戶端消失時立即釋放根上下文；需要有序完成的呼叫方應使用協議級 `shutdown` 請求。
+- **stdin EOF 會截斷正在處理的工作**：用戶端消失時立即釋放根上下文；需要有序完成的呼叫方應使用協定級 `shutdown` 請求。

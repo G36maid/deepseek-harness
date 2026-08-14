@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-09-committed-artifact-citations.zh.md) | [繁體中文](2026-08-09-committed-artifact-citations.zh-tw.md)
+
 
 ## Problem
 

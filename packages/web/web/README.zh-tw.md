@@ -56,6 +56,6 @@
 ## 已知限制與暫緩事項
 
 - **沒有觀測介面**：沒有提供方變更事件或能力狀態查詢；可用性只能透過執行 `search()`／`fetch()` 並按拋出的 `WebError` code 路由來觀測，無提供方失敗是通用的 `WEB_PROVIDER_UNAVAILABLE`，不會枚舉逐提供方原因（見 [Agent Note](../../../.agents/notes/archived/simplification/2026-07-04-drop-unconsumed-web-observation-surface.md)）。
-- **`WebSearchRequest` 只攜帶 `query` + `maxResults`**：提供方無關的控制項（新近程度、網域過濾條件、區域提示、搜尋深度）暫緩至 Exa 與 Perplexity 都能誠實支持時（見 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md)）。
-- **`WebFetchBody` 沒有 `pdf` 分支**：可提取文字的 PDF 支持屬於明確的暫緩工作；封閉聯合會使新增該分支成為三個 web 包中由編譯強制執行的變更。
-- **提供方支持的頁面提取不屬於 `fetch()` 範圍**：Firecrawl/Tavily 風格的 `web_extract` 能力暫緩，而不會擴充抓取操作。
+- **`WebSearchRequest` 只攜帶 `query` + `maxResults`**：提供方無關的控制項（新近程度、網域過濾條件、區域提示、搜尋深度）暫緩至 Exa 與 Perplexity 都能誠實支援時（見 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md)）。
+- **`WebFetchBody` 沒有 `pdf` 分支**：可提取文字的 PDF 支援屬於明確的暫緩工作；封閉聯合會使新增該分支成為三個 web 包中由編譯強制執行的變更。
+- **提供方支援的頁面提取不屬於 `fetch()` 範圍**：Firecrawl/Tavily 風格的 `web_extract` 能力暫緩，而不會擴充抓取操作。

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-23-toolview-dissolution.md
-2026-07-23-toolview-dissolution.md: 5443f928c6c034036f536be52052adb1324aec2f
-2026-07-23-toolview-dissolution.zh.md: 833e72878d9102e7a88227833cdb52a8a924664a
-2026-07-23-toolview-dissolution.zh-tw.md: 3c7659cfc2885b561ead973cbf5c2cfd5576e775

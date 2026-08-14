@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-用戶端命令 API（`ctx.commandUi`）：以工作階段為 key 的命令目錄快取、帶 `matchSpace`／`matchEnter` 決策掛鉤的 `/` 命令 source、三類派發（`execute`／`popupSelect`／`leadingInput`），以及面向業務包的 popupSelect 註冊。[Web 命令 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-25-web-command-surfaces-and-assembly.zh.md) 記錄了這項決策。
+用戶端命令 API（`ctx.commandUi`）：以工作階段為 key 的命令目錄快取、帶 `matchSpace`／`matchEnter` 決策掛鉤的 `/` 命令 source、三類派發（`execute`／`popupSelect`／`leadingInput`），以及面向業務包的 popupSelect 註冊。[Web 命令 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-25-web-command-surfaces-and-assembly.md) 記錄了這項決策。
 
 `src/client/contract.ts` 是固定的業務 API 約定：`CommandUiContract.register(name, spec)` 與 `decorate(name, spec)` 是業務包消費的全部內容；`CommandUiSpec{options, onSelect}` 自己提供 popup 資料——外層元件歸本包所有，業務包永遠見不到它。貢獻項是用戶端自有命令（與 host 命令同名時會明確報錯）；裝飾項則為**已存在的** host 命令新增裸呼叫 popup。host 保留目錄行、帶參 claim（空格／帶參數的 Enter）與生命週期記帳，被裝飾的名字若在工作階段目錄中無 host 行，則永不觸發。命令類型按每次派發派生，絕不在註冊時定型：帶 `input` 的 host descriptor 是 `leadingInput`，註冊了 `CommandUiSpec` 的是 `popupSelect`，其餘全部是 `execute`。
 
@@ -18,7 +18,7 @@
 
 ## 模型體驗
 
-間接影響，途徑是本包的派發與 `claim.submit` 路徑觸發的 host `command.execute` RPC：匹配命中的命令，其 handler 會修改 host 領域狀態，其他包再把該狀態投影進下一個請求（`/plan` 的 handler 翻轉 plan 模式，其歸屬包注入 `plan:policy` 系統提示詞 section），而命令列本身、detached result 與所有選單／notice 渲染都留在用戶端，永不進入工作階段日誌。
+間接影響，途徑是本包的派發與 `claim.submit` 路徑觸發的 host `command.execute` RPC：匹配命中的命令，其 handler 會修改 host 領域狀態，其他包再把該狀態投影進下一個請求（`/plan` 的 handler 翻轉 plan 模式，其歸屬包注入 `plan:policy` 系統提示詞 section），而命令列本身、detached result 與所有選單／notice 算繪都留在用戶端，永不進入工作階段日誌。
 
 #### KV Cache 影響
 

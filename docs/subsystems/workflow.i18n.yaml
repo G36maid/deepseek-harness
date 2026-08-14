@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/workflow.md
 workflow.md: 0f53e86caf1786f2d24d15489f9c3f05fa12a437
 workflow.zh.md: 41323f369cfa53663695fe601c4d3a5acd55dde4
-workflow.zh-tw.md: 96b73e3708b848fb642b91e3b4d5edff21e50e00
+workflow.zh-tw.md: 65f881b864e01efe2b350062d734033c3a151a41

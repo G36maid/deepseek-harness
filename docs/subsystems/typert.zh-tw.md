@@ -18,7 +18,7 @@ interface TypertLookupMap {}
 interface TypertContextMap {}
 ```
 
-lookup 的 resolver 解除安裝後，登錄檔仍會保留其 wire 聲明。因此 SRC 發現過程會繼續把該參數歸類為 lookup，並因不可用而失敗，而不會把 wire 值當作普通業務對象接受。
+lookup 的 resolver 解除安裝後，登錄檔仍會保留其 wire 聲明。因此 SRC 發現程序會繼續把該參數歸類為 lookup，並因不可用而失敗，而不會把 wire 值當作普通業務對象接受。
 
 ```ts type-equiv
 /** Stable wire declaration retained after a lookup provider unloads. */
@@ -116,7 +116,7 @@ interface InvocationDescriptor {
 
 ## Typert 登錄檔
 
-`ctx.typert` 分開保存當前環境的 descriptor、顯式選擇的 Remote contribution、lookup 提供方與作用域上下文提供方。lookup 提供方擁有穩定 wire 聲明和默認 resolver；Host 組合可以為同一個 key 設定 effect-scoped 同步或非同步 resolver，設定解除安裝後復原默認策略。各項註冊都是由 Cordis 持有的 effect，並返回可等待的 disposer。
+`ctx.typert` 分開保存當前環境的 descriptor、顯式選擇的 Remote contribution、lookup 提供方與作用域上下文提供方。lookup 提供方擁有穩定 wire 聲明和預設 resolver；Host 組合可以為同一個 key 設定 effect-scoped 同步或非同步 resolver，設定解除安裝後復原預設策略。各項註冊都是由 Cordis 持有的 effect，並返回可等待的 disposer。
 
 ```ts type-equiv
 /** Minimal Typert runtime consumed through dependency inversion. */

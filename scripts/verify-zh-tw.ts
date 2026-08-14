@@ -46,7 +46,18 @@ function lineHasSimplifiedChars(text: string, offset: number): boolean {
  * @returns Every residual-Simplified finding in unprotected prose.
  */
 export function checkZhTwDocument(markdown: string, file = ''): ZhTwIssue[] {
-  const { text } = protectSpans(markdown)
+  // The language-switcher line carries the 简体中文 label (UI chrome, not
+  // body prose); without protection its Simplified characters would count
+  // as residual findings in every document.
+  const switcherLines: string[] = []
+  const withSwitchers = markdown.replace(
+    /^\[English\]\([^)]*\.md\) \| .+$/gm,
+    (line: string) => {
+      switcherLines.push(line)
+      return '\u0000ZH_TW_SWITCHER\u0000'
+    },
+  )
+  const { text } = protectSpans(withSwitchers)
   return check(text)
     .filter(issue => lineHasSimplifiedChars(text, issue.start))
     .map(issue => ({ ...issue, file }))

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/compaction/compaction-tool-result-pruner/README.md
 README.md: 2e6d934a88272246b5b50156ec7940359865086e
 README.zh.md: db868167ac01df825f702532657e950c0606cd50
-README.zh-tw.md: f33a73c5a416808fb91170ed9db965b7a6be292d
+README.zh-tw.md: 4ee80c109d443ec52a86787263f83b3c14271c12

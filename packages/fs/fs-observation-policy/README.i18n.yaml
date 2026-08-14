@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/fs/fs-observation-policy/README.md
 README.md: e4c3d4a82ec308cf948b653b7ad3bb3f1eca52a7
 README.zh.md: 5c9d5405b969941b1c5e9fb9721df8ce21070dae
-README.zh-tw.md: c5945fc7f885dca78a2fb326ba8a3a8738e71ec0
+README.zh-tw.md: 57856e17ac09cf6ee9796a3923faae4523194cbe

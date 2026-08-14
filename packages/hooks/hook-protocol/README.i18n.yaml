@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/hooks/hook-protocol/README.md
 README.md: c381d3fb18240eaf6b729a6ab75ededc9ba27791
 README.zh.md: d824ea0b2a046b368db7ef083a2dec3964b24b08
-README.zh-tw.md: 96bd6a868fc7e2f8828b0791a014d38dc4594004
+README.zh-tw.md: 26768fce4395e9370cba7ad60638b9560973144a

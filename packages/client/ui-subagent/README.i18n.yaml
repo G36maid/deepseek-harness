@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-subagent/README.md
 README.md: bb149d668e0aae4800c696bf59d84450efc1c957
 README.zh.md: 2d3d285b7ebf1c544950f4516327246a2fe99679
-README.zh-tw.md: 987e77e091bea2f119a0c6d0feb43b86de0261fd
+README.zh-tw.md: e5fe28610933838f3099e207b4bb0668b2c0fb4d

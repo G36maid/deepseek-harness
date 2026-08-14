@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-24-web-config-tree-boot-and-transport-layering.zh.md) | [繁體中文](2026-07-24-web-config-tree-boot-and-transport-layering.zh-tw.md)
+
 
 > Scope: how `dsh web` composes (cordis.yml + pre-cordis boot classes + config sources) and how the web transport splits across packages (gateway / carrier / binding / graph / dev-reload). The [client plugin loading note](2026-07-23-client-plugin-loading-model.md) owns the browser-side loading chain this composition feeds.
 

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-23-translation-prompt-v4-contract.md
-2026-07-23-translation-prompt-v4-contract.md: d5e816f550681d94b61747215d001a34132ce2da
-2026-07-23-translation-prompt-v4-contract.zh.md: 9cce02b3320e9ffec0e299960f93c91bdfe72b20
-2026-07-23-translation-prompt-v4-contract.zh-tw.md: d2234aaa5f20cd95f9248e6815becab94e4e9315

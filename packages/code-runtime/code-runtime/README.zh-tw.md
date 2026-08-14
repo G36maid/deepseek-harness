@@ -4,7 +4,7 @@
 
 **`CodeRuntime`**（`ctx.codeRuntime`）定義程式碼執行時期做什麼，即針對宿主提供的一組非同步綁定執行一段模型編寫的程序，並報告 `{ value, logs, error? }`，而不規定如何實作。
 
-此包承擔該能力的 Service Definition 角色（以 bash 三包結構為範本，參見[能力 seam](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：提供方透過繼承 `CodeRuntime` 並註冊服務接入；Consumer 是工具登錄檔的 Code Mode，它生成面向模型的 SDK，並橋接工具分發。這兩項職責均由 [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) 規定，首個提供方是 Node worker 執行緒後端。執行時期不瞭解工具或工作階段：呼叫方只向它提供具名非同步函式與程序字串；所有與工具有關的內容都留在 Consumer。
+此包承擔該能力的 Service Definition 角色（以 bash 三包結構為樣板，參見[能力 seam](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：提供方透過繼承 `CodeRuntime` 並註冊服務接入；Consumer 是工具登錄檔的 Code Mode，它生成面向模型的 SDK，並橋接工具分發。這兩項職責均由 [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) 規定，首個提供方是 Node worker 執行緒後端。執行時期不瞭解工具或工作階段：呼叫方只向它提供具名非同步函式與程序字串；所有與工具有關的內容都留在 Consumer。
 
 ## 服務 API（`ctx.codeRuntime`）
 
@@ -14,7 +14,7 @@
 | `language` | 只讀描述符：`run` 期望的源語言。已知值為 `'typescript'` 與 `'python'`——`dsh-tools` 能呈現的那些；其中只有 `'typescript'` 有已發布的後端。僅供參考，不作閘門；生成語言專用呈現的消費端會根據該值選擇分支，遇到無法呈現的語言時明確失敗。 |
 | `isolation` | 只讀描述符：執行基底（`'worker-thread'`、`'process'`、`'container'`）。供部署與診斷使用，**不構成安全聲明**。 |
 
-每個實作都必須遵守以下語義（完整約定見類 JSDoc）：綁定呼叫會橋接完整的無損 JSON 參數與 resolve 值，seam 層不設位元組上限；程序被視為敵對對等方（任意綁定名稱都會成為自有屬性，格式錯誤的通訊絕不能使宿主崩潰）；不同執行之間不保留任何狀態；dispose 會終止進行中的執行，並且在完成前等待其退出。
+每個實作都必須遵守以下語義（完整約定見類 JSDoc）：綁定呼叫會橋接完整的無損 JSON 參數與 resolve 值，seam 層不設位元組上限；程序被視為敵對對等方（任意綁定名稱都會成為自有屬性，格式錯誤的通訊絕不能使宿主崩潰）；不同執行之間不保留任何狀態；dispose 會終止進行中的執行，並且在完成前等待其結束。
 
 ## 詞彙
 

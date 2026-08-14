@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-20-unwrap-injected-content-envelopes.md
-2026-07-20-unwrap-injected-content-envelopes.md: 27c5b1b751c1decbeb72a42fcb51e7fa2678e202
-2026-07-20-unwrap-injected-content-envelopes.zh.md: 3c5346f5a9922fe0ceb19490a0bf94e60d2af615
-2026-07-20-unwrap-injected-content-envelopes.zh-tw.md: 21eca40c87c4f7c4652f69d384a6c6e36abbe996

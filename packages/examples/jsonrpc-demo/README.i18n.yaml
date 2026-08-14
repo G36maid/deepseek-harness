@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/examples/jsonrpc-demo/README.md
 README.md: 07874f875994257d4ad2a453960d10eacd1b9884
 README.zh.md: ae32d1e028005c169b724048f50ed57a7987e9a8
-README.zh-tw.md: db9d34f1fbb2dd6d59ba0d2d6c2cbeec5ba0ad4d
+README.zh-tw.md: e6ff5e58c33d337834f055b0d39980ba69a120bb

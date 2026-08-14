@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-primer.md
 cordis-primer.md: 56f0a26308aa44d9f9e46fad9f0624984b2baa1e
 cordis-primer.zh.md: 01080e3c3aeca8899573bcfc0bb7af541155cb1e
-cordis-primer.zh-tw.md: ffb5e7da527729e36664dbe3f7e9aba0eb8fde3e
+cordis-primer.zh-tw.md: 6daed92a7d7c1d4a9548536d29188a4b3d990bca

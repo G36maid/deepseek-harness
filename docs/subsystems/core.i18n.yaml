@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/core.md
 core.md: 5cac47691baefa8a03470d4a71b831d8e9db93ce
 core.zh.md: 569fc23704c2200a3e90c3049c2518eca02d8e7f
-core.zh-tw.md: d386e3d2f0cb20c2a443447d61ddc845e4e204dd
+core.zh-tw.md: eafdadcb43f864d2c43dfdcd8d236f8f065b0845

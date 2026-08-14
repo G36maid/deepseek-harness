@@ -31,7 +31,7 @@ interface ResolvedCredential {
 
 ## 描述
 
-`describe(ref)` 在絕不暴露值的前提下回應設定介面：引用當前是否可解析、來自哪一層、`set` 當前能否成功。本機提供方把由當前行程環境供值的引用報告為 `writable: false`——那樣的寫入會表面成功而解析持續返回遮蔽值，因此 seam 直接拒絕，介面也得以提前把該引用渲染為只讀。
+`describe(ref)` 在絕不暴露值的前提下回應設定介面：引用當前是否可解析、來自哪一層、`set` 當前能否成功。本機提供方把由當前行程環境供值的引用報告為 `writable: false`——那樣的寫入會表面成功而解析持續返回遮蔽值，因此 seam 直接拒絕，介面也得以提前把該引用算繪為只讀。
 
 ```ts type-equiv
 /** Source and writability facts for one reference, safe for configuration UIs — never the value. */

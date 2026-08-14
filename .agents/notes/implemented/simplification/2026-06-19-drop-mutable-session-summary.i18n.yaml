@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-06-19-drop-mutable-session-summary.md
-2026-06-19-drop-mutable-session-summary.md: 3f66dc57ce2aba5a02b448d2baa2acb9a08a984f
-2026-06-19-drop-mutable-session-summary.zh.md: 233b3050793ba059ee85098d91edc7c935d5850f
-2026-06-19-drop-mutable-session-summary.zh-tw.md: 5511b4de4d0e60b7fd1ac14ba9683ef064252f37

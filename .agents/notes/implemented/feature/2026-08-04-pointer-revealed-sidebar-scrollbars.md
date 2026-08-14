@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-04-pointer-revealed-sidebar-scrollbars.zh.md) | [繁體中文](2026-08-04-pointer-revealed-sidebar-scrollbars.zh-tw.md)
+
 
 ## Problem
 

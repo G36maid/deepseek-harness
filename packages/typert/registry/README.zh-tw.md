@@ -8,12 +8,12 @@
 
 ## 公開 API
 
-- `TypertRegistry` 是默認外掛程式，並提供 `ctx.typert`。
-- `ctx.typert.lookups.register()` 註冊由業務包擁有的協議聲明和默認解析器；`configure()` 註冊由宿主組合擁有且可非同步執行的解析器。兩者的生命週期相互獨立：設定可以先於提供方註冊，解除安裝設定會復原默認策略。
+- `TypertRegistry` 是預設外掛程式，並提供 `ctx.typert`。
+- `ctx.typert.lookups.register()` 註冊由業務包擁有的協定聲明和預設解析器；`configure()` 註冊由宿主組合擁有且可非同步執行的解析器。兩者的生命週期相互獨立：設定可以先於提供方註冊，解除安裝設定會復原預設策略。
 - `ctx.typert.contexts.registerHost()` 和 `configureHost()` 對具作用域的上下文身份採用同樣的所有權劃分；`registerClient()` 提供對應的用戶端上下文綁定器。
 - `register(contribution)` 會在提交任何內容之前拒絕格式錯誤的標識，以及重複的包與 face 組合鍵或 schema 鍵，隨後返回 Cordis effect 提供的同一資源釋放函式。
 - `get(key)`、`resolve(key)` 和 `list(filter?)` 查詢當前有效的 schema。`resolve()` 能區分格式錯誤的鍵、未註冊的包，以及已註冊但未以該名稱提供 schema 的包。
-- `getPackage(packageName, face?)` 和 `listPackages(filter?)` 查詢生成的服務、事件和對象反射資訊；默認 face 為 `host`。
+- `getPackage(packageName, face?)` 和 `listPackages(filter?)` 查詢生成的服務、事件和對象反射資訊；預設 face 為 `host`。
 - `toJSONSchema(key, params?)` 使用 `z.toJSONSchema()` 投影當前有效的 schema，且不快取結果。
 - `typertKey()` 和 `typertPackageKey()` 構造兩種穩定的標識形式。
 

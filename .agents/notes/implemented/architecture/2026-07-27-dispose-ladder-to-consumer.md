@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-27-dispose-ladder-to-consumer.zh.md) | [繁體中文](2026-07-27-dispose-ladder-to-consumer.zh-tw.md)
+
 
 ## Problem
 

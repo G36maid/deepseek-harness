@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/tool-execution-pipeline.md
 tool-execution-pipeline.md: d04d2e4e5093fee92f8921f0eb0112c960a81bb8
 tool-execution-pipeline.zh.md: 8a62702914e5bd7514939a9132a49a7977475e70
-tool-execution-pipeline.zh-tw.md: aa29f4643eb92eb93ee615f249ecd2b545d75756
+tool-execution-pipeline.zh-tw.md: 731cbe9285c824dc668991469e3c88892a63bce0

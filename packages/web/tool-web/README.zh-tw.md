@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-面向模型的 web 工具套件 `web_search` 與 `web_fetch`，建置於 [web 能力 seam](../web/README.md)（`ctx.web`）之上。它只負責面向模型的事項：工具名稱、JSON Schema、snake_case 參數名稱、提示詞區段、結果數量上限、結果格式、HTML→markdown 呈現，以及 UI 呈現投影——`presentCall`、`presentResult`（以 `kind: 'search' | 'fetch'` 區分的 `card: 'web'` 結果卡片），以及承載有損渲染文字無法攜帶的結構化搜尋來源或抓取摘要的 `output.presentationMeta`（見 [web-result-card Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-web-result-card.md)）。所有 web 訪問都透過 `ctx.web`；該包絕不匯入具體提供方。兩個工具都不公開面向模型的逾時：每個工具的協作式工具呼叫逾時預算透過設定在此聲明（`fetchTimeoutMs`／`searchTimeoutMs`，附加為 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.md)（`tools/execute` 包裝層）強制執行；每個工具只把 `exec.signal` 轉發給 seam。
+面向模型的 web 工具套件 `web_search` 與 `web_fetch`，建置於 [web 能力 seam](../web/README.md)（`ctx.web`）之上。它只負責面向模型的事項：工具名稱、JSON Schema、snake_case 參數名稱、提示詞區段、結果數量上限、結果格式、HTML→markdown 呈現，以及 UI 呈現投影——`presentCall`、`presentResult`（以 `kind: 'search' | 'fetch'` 區分的 `card: 'web'` 結果卡片），以及承載有損算繪文字無法攜帶的結構化搜尋來源或抓取摘要的 `output.presentationMeta`（見 [web-result-card Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-web-result-card.md)）。所有 web 訪問都透過 `ctx.web`；該包絕不匯入具體提供方。兩個工具都不公開面向模型的逾時：每個工具的協作式工具呼叫逾時預算透過設定在此聲明（`fetchTimeoutMs`／`searchTimeoutMs`，附加為 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.md)（`tools/execute` 包裝層）強制執行；每個工具只把 `exec.signal` 轉發給 seam。
 
 每個工具獨立註冊；只需要其中一個工具的產品可以透過設定停用另一個（`{ search: false }`／`{ fetch: false }`）。僅當抓取也透過設定啟用時，搜尋指引才會提及 `web_fetch`；僅啟用搜尋的組合則會要求模型使用返回的 snippet 並引用其 URL。
 
@@ -10,12 +10,12 @@
 
 | 工具 | 參數 | 行為 |
 |---|---|---|
-| `web_search` | `query`（string） | 用於發現資訊。返回選填答案與來源 URL。`max_results` **不**面向模型：工具設定上限（`searchMaxResults` 設定，默認 8）並傳給 seam。 |
-| `web_fetch` | `url`（string） | 取得特定 URL。HTML 主體渲染為 markdown（turndown，帶 GFM 表格／刪除線）；文字主體原樣透過。非 2xx 狀態會報告，而非報錯。工具呼叫逾時是部署策略（`dsh-tool-call-timeout-policy`），不是模型參數。 |
+| `web_search` | `query`（string） | 用於發現資訊。返回選填答案與來源 URL。`max_results` **不**面向模型：工具設定上限（`searchMaxResults` 設定，預設 8）並傳給 seam。 |
+| `web_fetch` | `url`（string） | 取得特定 URL。HTML 主體算繪為 markdown（turndown，帶 GFM 表格／刪除線）；文字主體原樣透過。非 2xx 狀態會報告，而非報錯。工具呼叫逾時是部署策略（`dsh-tool-call-timeout-policy`），不是模型參數。 |
 
 兩個工具都選擇並行調度，因為提供方讀取會返回內容，不會修改父 agent（代理）的狀態。
 
-規範化後的服務結果也是標準工具值：`WebSearchResult` 與 `WebFetchResult`。原生渲染器會保留下文所述的答案、來源和抓取正文文字；提供方對搜尋結果數量和正文大小的上限仍屬於取得限制，而非僅用於呈現的截斷。
+規範化後的服務結果也是標準工具值：`WebSearchResult` 與 `WebFetchResult`。原生算繪器會保留下文所述的答案、來源和抓取正文文字；提供方對搜尋結果數量和正文大小的上限仍屬於取得限制，而非僅用於呈現的截斷。
 
 ## 設定
 
@@ -26,9 +26,9 @@
 | `searchMaxResults` | `8` | 一次 `web_search` 呼叫返回的來源數量上限（seam 截斷更長的提供方清單並標記）。 |
 | `fetchTimeoutMs` | `30000` | `web_fetch` 的協作式工具呼叫逾時預算（ms）。 |
 | `searchTimeoutMs` | `30000` | `web_search` 的協作式工具呼叫逾時預算（ms）。 |
-| `fetchMaxOutputChars` | `200000` | 同步轉換的源字元數與單次完整 `web_fetch` 輸出的上限（狀態頭、渲染後的主體與頁腳合併計算）；主體被截斷時，在能容納的情況下附帶截斷提示。 |
+| `fetchMaxOutputChars` | `200000` | 同步轉換的源字元數與單次完整 `web_fetch` 輸出的上限（狀態頭、算繪後的主體與頁腳合併計算）；主體被截斷時，在能容納的情況下附帶截斷提示。 |
 
-`fetchTimeoutMs`／`searchTimeoutMs` 聲明每個工具的協作式逾時預算（附加為 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.md) 強制執行；面向模型的 schema 不公開逾時參數。`fetchMaxOutputChars` 同時限制同步轉換工作量和完整渲染結果：只轉換至多該數量的源字元，隨後對狀態頭、轉換後的前綴和截斷提示合併設限。預設值為本機提供方的 100,000 字元主體上限留出餘量，但渲染膨脹仍可能使最終上限截斷結果。
+`fetchTimeoutMs`／`searchTimeoutMs` 聲明每個工具的協作式逾時預算（附加為 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.md) 強制執行；面向模型的 schema 不公開逾時參數。`fetchMaxOutputChars` 同時限制同步轉換工作量和完整算繪結果：只轉換至多該數量的源字元，隨後對狀態頭、轉換後的前綴和截斷提示合併設限。預設值為本機提供方的 100,000 字元主體上限留出餘量，但算繪膨脹仍可能使最終上限截斷結果。
 
 ```yaml
 - id: tool-web
@@ -133,6 +133,6 @@ Use the web_fetch tool to retrieve the content of a specific HTTP(S) URL (for ex
 
 ## 已知限制與暫緩事項
 
-- **HTML→markdown 轉換會在 GFM 無法安全表示的輸入上降級**：[turndown](https://github.com/mixmark-io/turndown)（帶 GFM 表格／刪除線）透過真實 DOM 轉換至多 `fetchMaxOutputChars` 個源字元。保守的 512 層詞法守衛會將深層或巢狀有歧義的主體作為原始 HTML 直接透傳，轉換例外也會如此處理；表格的 `colspan` 會被忽略，因為 GFM 無法表示跨列單元格。這些限制可避免阻塞事件迴圈，也避免不受信任的數值屬性使輸出膨脹（[已歸檔的相依性決策](../../../.agents/notes/archived/simplification/2026-07-26-turndown-for-tool-web-html-markdown.md)）。
+- **HTML→markdown 轉換會在 GFM 無法安全表示的輸入上降級**：[turndown](https://github.com/mixmark-io/turndown)（帶 GFM 表格／刪除線）透過真實 DOM 轉換至多 `fetchMaxOutputChars` 個源字元。保守的 512 層詞法守衛會將深層或巢狀有歧義的主體作為原始 HTML 直接透傳，轉換例外也會如此處理；表格的 `colspan` 會被忽略，因為 GFM 無法表示跨列單元格。這些限制可避免阻塞事件迴圈，也避免不受信任的數值屬性使輸出膨脹（[已封存的相依性決策](../../../.agents/notes/archived/simplification/2026-07-26-turndown-for-tool-web-html-markdown.md)）。
 - **面向模型的介面有意保持精簡，後續擴充暫緩**：`max_results` 保持為設定上限（不是模型參數），`web_fetch` 只接受 `url`（沒有 `format`／`prompt`／LLM（大型語言模型）摘要模式）；兩項都列為 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md) 中的後續步驟。
 - **沒有 web 專用權限策略**：兩個工具都不會請求 `ctx.approval` 就直接執行；需要確認的部署必須新增 `tools/pre-execute` 策略，該包不定義持久化的 URL／網域授權。

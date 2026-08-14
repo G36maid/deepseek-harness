@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-06-22-fork-child-replay-seed-boundary.zh.md) | [繁體中文](2026-06-22-fork-child-replay-seed-boundary.zh-tw.md)
+
 
 ## Problem
 

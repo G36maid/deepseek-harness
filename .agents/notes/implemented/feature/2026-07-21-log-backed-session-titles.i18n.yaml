@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-21-log-backed-session-titles.md
-2026-07-21-log-backed-session-titles.md: e12fdc07ab4fbd5f484e41daa285df8482b836bf
-2026-07-21-log-backed-session-titles.zh.md: e546a9fa050ceb9f3e96c2ced5a3b60c5c9c0590
-2026-07-21-log-backed-session-titles.zh-tw.md: 7909257a2d2219df84d463ad44591cb9867aa623

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-23-acp-automation-only-protocol.zh.md) | [繁體中文](2026-07-23-acp-automation-only-protocol.zh-tw.md)
+
 
 ## Problem
 

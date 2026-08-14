@@ -102,7 +102,7 @@ interface SessionEventRecord {
 
 ## 與提供方無關的過濾器和文件
 
-工作階段和事件過濾器陣列內的各項按邏輯與（AND）組合；單個清單子句中的各值按邏輯或（OR）組合。範圍包含兩端。事件的 `text` 子句會對提取出的語義文字執行正規表達式掃描：搜尋文字按字面量處理，按 Unicode 規則執行不區分大小寫的匹配，並允許靈活匹配空白字元；該過程與全文搜尋提供方無關。
+工作階段和事件過濾器陣列內的各項按邏輯與（AND）組合；單個清單子句中的各值按邏輯或（OR）組合。範圍包含兩端。事件的 `text` 子句會對提取出的語義文字執行正規表達式掃描：搜尋文字按字面量處理，按 Unicode 規則執行不區分大小寫的匹配，並允許靈活匹配空白字元；該程序與全文搜尋提供方無關。
 
 ```ts type-equiv
 /**
@@ -142,7 +142,7 @@ interface SessionEventSearchDocument extends SessionEventRecord {
 
 ## 全文搜尋結果頁
 
-整合後的 `ctx.sessionQuery` seam 提供兩個全文搜尋範圍。`searchSessions()` 按匹配度最強的事件對語料庫分組；`searchEvents()` 搜尋單個工作階段。請求將不透明遊標與規範化後的查詢、元資料過濾器和結果數量上限綁定。提供方的元資料過濾器有意不包含事件文字掃描。
+整合後的 `ctx.sessionQuery` seam 提供兩個全文搜尋範圍。`searchSessions()` 按匹配度最強的事件對語料庫分組；`searchEvents()` 搜尋單個工作階段。請求將不透明遊標與規範化後的查詢、中繼資料過濾器和結果數量上限綁定。提供方的中繼資料過濾器有意不包含事件文字掃描。
 
 ```ts type-equiv
 /** Provider-owned opaque continuation token returned by session search. */
@@ -332,7 +332,7 @@ interface SessionEventTraceObservation extends SessionEventTrace {
 
 ## 錯誤
 
-封閉的 code 聯合類型區分請求校驗、目標缺失、surface 日誌格式錯誤、選填後端故障、部署關閉搜尋與矛盾的源元資料。
+封閉的 code 聯合類型區分請求校驗、目標缺失、surface 日誌格式錯誤、選填後端故障、部署關閉搜尋與矛盾的源中繼資料。
 
 ```ts type-equiv
 /** Stable machine-routable failure taxonomy for session reads, traces, and search. */

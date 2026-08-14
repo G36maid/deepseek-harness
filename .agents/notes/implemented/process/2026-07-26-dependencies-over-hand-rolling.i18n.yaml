@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-26-dependencies-over-hand-rolling.md
-2026-07-26-dependencies-over-hand-rolling.md: e5f599ee2b6a8ed940ef0bca3eee679d9edb6c92
-2026-07-26-dependencies-over-hand-rolling.zh.md: 83d153f583fd413b9d6ab10616e57d0e844f364f
-2026-07-26-dependencies-over-hand-rolling.zh-tw.md: d98b6425bbf872e0815d8be715d734f9766671b9

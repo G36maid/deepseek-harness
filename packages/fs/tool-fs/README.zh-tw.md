@@ -22,7 +22,7 @@ await ctx.plugin(ToolFs)                                  // this package — re
 
 | 鍵 | 預設值 | 含義 |
 |---|---|---|
-| `readLimit` | `2000` | 一次 `read` 呼叫返回的默認和最大行數（工具 schema 將其聲明為 `limit` 預設值）。 |
+| `readLimit` | `2000` | 一次 `read` 呼叫返回的預設和最大行數（工具 schema 將其聲明為 `limit` 預設值）。 |
 | `readMaxLineLength` | `2000` | 每行截斷前保留的字元數（後綴會說明上限）。 |
 | `readMaxBytes` | `51200` | 一次 `read` 呼叫所選行的位元組上限；溢位時以「已達上限」footer 結束視窗。 |
 | `readStreamMinSize` | `10485760` | 大於等於該大小或大小未知的文件採用流式讀取，而不是整體載入到記憶體。 |
@@ -32,24 +32,24 @@ await ctx.plugin(ToolFs)                                  // this package — re
 | 工具 | 參數 | 行為 |
 |---|---|---|
 | `read` | `file_path`、`offset?`、`limit?` | 帶行號的 UTF-8 內容和分頁 footer。`offset` 從 1 開始；`limit` 預設為設定的 `readLimit`（2000），上限也為該值。 |
-| `read_image` | `file_path` | 透過有界位元組 seam 讀取 PNG/JPEG/WebP/GIF 文件，經 `ctx.attachments.saveImage` 持久保存，並在小型元資料信封旁返回影像塊。只有確切路由的模型聲明影像輸入時才會成功。 |
+| `read_image` | `file_path` | 透過有界位元組 seam 讀取 PNG/JPEG/WebP/GIF 文件，經 `ctx.attachments.saveImage` 持久保存，並在小型中繼資料信封旁返回影像塊。只有確切路由的模型聲明影像輸入時才會成功。 |
 | `write` | `file_path`、`content` | 建立文件或完整替換文件。有策略外掛程式時：覆蓋現有文件要求先在未變版本上執行 `read`；建立新文件不需要。沒有外掛程式時：無條件執行。 |
 | `edit` | `file_path`、非空 `old_string`、`new_string`、`replace_all?` | 字面量替換；除非 `replace_all` 為 true，否則要求唯一匹配。有策略外掛程式時：要求先執行 `read`（任何視窗），且文件此後未變。沒有外掛程式時：無條件執行。 |
 
 欄位名使用 snake_case，與 Claude Code 和現有 harness 工具 schema 一致。
 
-規範成功值分別為：`read` → `{ path, offset, lines: [{ number, text }], totalLines }`，`read_image` → `{ path, image: { attachmentId, mediaType, bytes, width, height, name? } }`，`write` → `{ path, operation: 'create' | 'update', before: string | null, after }`，`edit` → `{ path, before, after }`。原生渲染器會保留下方帶行號的讀取結果和變更確認。`write`/`edit` 從這些規範值派生可重播的 diff 卡片元資料，`read` 派生可重播的讀取卡片視窗 `{ path, offset, lines, totalLines, lang? }`；規範值本身僅限於本次執行，不會新增到 `tool/result`，只有派生出的呈現元資料會被持久化。
+規範成功值分別為：`read` → `{ path, offset, lines: [{ number, text }], totalLines }`，`read_image` → `{ path, image: { attachmentId, mediaType, bytes, width, height, name? } }`，`write` → `{ path, operation: 'create' | 'update', before: string | null, after }`，`edit` → `{ path, before, after }`。原生算繪器會保留下方帶行號的讀取結果和變更確認。`write`/`edit` 從這些規範值派生可重播的 diff 卡片中繼資料，`read` 派生可重播的讀取卡片視窗 `{ path, offset, lines, totalLines, lang? }`；規範值本身僅限於本次執行，不會新增到 `tool/result`，只有派生出的呈現中繼資料會被持久化。
 
 ## 工具就是執行器；策略是事件閘門
 
-工具**不**注入策略服務，也不檢查任何快取。每個工具透過 `ctx.fs.resolve(path, { cwd, signal })` 解析路徑；它會傳入呼叫 agent（代理）的工作階段 cwd（`exec.agent.session.header.cwd`），使相對路徑以工作階段工作區為基準解析並與 `dsh-tool-bash` 一致，同時把工具取消轉發到解析過程（見[每工作階段 cwd Agent Note](../../../.agents/notes/implemented/architecture/2026-07-02-fs-per-session-cwd.md)）。隨後執行：
+工具**不**注入策略服務，也不檢查任何快取。每個工具透過 `ctx.fs.resolve(path, { cwd, signal })` 解析路徑；它會傳入呼叫 agent（代理）的工作階段 cwd（`exec.agent.session.header.cwd`），使相對路徑以工作階段工作區為基準解析並與 `dsh-tool-bash` 一致，同時把工具取消轉發到解析程序（見[每工作階段 cwd Agent Note](../../../.agents/notes/implemented/architecture/2026-07-02-fs-per-session-cwd.md)）。隨後執行：
 
 - **read**：一次 `ctx.fs.stat`（用於類型、大小路由和版本），隨後呼叫 `readText`/`streamText`，建置行視窗，再發出 `fs/observed`，使用普通 `ctx.emit`。（1 次 stat。）
 - **read_image**：在任何 I/O 之前校驗參數、擴充名、附件可用性、部署接受的媒體類型和影像路由；隨後一次 `ctx.fs.stat`（目標缺失時與 `read` 一樣記錄 `absent` 觀察）、以 `imageLimits.maxImageBytes` 與 `imageLimits.maxMessageImageBytes` 中較小者為上限的有界 `ctx.fs.readBytes`（結果是攜帶一張影像的一則訊息）、`attachments.saveImage`（內容尋址，因此在 `tool/result` 事件追加時影像塊引用的對象已持久提交），最後寄出 `fs/observed`。（1 次 stat。）
 - **write**：呼叫 `ctx.waterfall('fs/write-intent', target, exec, () => undefined)` 取得選填防護，然後呼叫 `ctx.fs.writeText(target, content, intent)`，再發出 `fs/observed`。（0 次 stat。）
 - **edit**：呼叫 `ctx.waterfall('fs/edit-intent', target, exec, () => undefined)` 取得選填防護，然後呼叫 `ctx.fs.editText(target, edit, intent)`，再發出 `fs/observed`。（0 次 stat。）
 
-工具在每次分派中把 `exec`（工具執行上下文）作為不透明 `actor` 傳入。默認 thunk 返回 `undefined`（不受約束的裸提供方）。載入 `@deepseek-ai/dsh-fs-observation-policy` 後，它會佔用單個決策槽：返回 `createIfAbsent`/`replaceIfVersion`/`{ version }` 或拋出 `FS_NOT_OBSERVED`，並在 `fs/observed` 時記錄。後端錯誤（`FsError`）和拋出的 `FS_NOT_OBSERVED` 會流經 `ToolRuntime.execute()`，變成 `isError` 工具結果，並附帶 `{ name, code }`。
+工具在每次分派中把 `exec`（工具執行上下文）作為不透明 `actor` 傳入。預設 thunk 返回 `undefined`（不受約束的裸提供方）。載入 `@deepseek-ai/dsh-fs-observation-policy` 後，它會佔用單個決策槽：返回 `createIfAbsent`/`replaceIfVersion`/`{ version }` 或拋出 `FS_NOT_OBSERVED`，並在 `fs/observed` 時記錄。後端錯誤（`FsError`）和拋出的 `FS_NOT_OBSERVED` 會流經 `ToolRuntime.execute()`，變成 `isError` 工具結果，並附帶 `{ name, code }`。
 
 當 `ctx.fs.sandboxMode` 表明提供方施加沙盒限制時，write/edit 會公開 `sandbox_permissions` 與 `justification`，並透過 `ctx.approval` 處理獲批後的重試。策略歸屬方會貢獻與具體能力無關的常駐策略；工具結果仍保留針對具體操作的拒絕與重試引導。
 
@@ -59,7 +59,7 @@ await ctx.plugin(ToolFs)                                  // this package — re
 
 `read` 允許並行調度，因為它唯一會改變狀態的操作是同步記錄版本。稍後的 `write` 或 `edit` 會在目標鎖內重新檢查版本，因此即使記錄器發生競態，系統也會安全地拒絕操作；兩個變更工具仍保持互斥。見[平行工具呼叫 Agent Note](../../../.agents/notes/implemented/feature/2026-07-10-parallel-tool-call-execution.md)。
 
-包根目錄只匯出 Cordis 外掛程式約定（`name`、`inject`、`Config` 和 `apply`）。讀取渲染（行視窗與輸出格式化）位於 `src/read-render.ts`（不相依性 Cordis，單獨進行單元測試）；`src/read.ts`/`read-image.ts`/`write.ts`/`edit.ts` 是工具執行器，`src/index.ts` 負責組合。
+包根目錄只匯出 Cordis 外掛程式約定（`name`、`inject`、`Config` 和 `apply`）。讀取算繪（行視窗與輸出格式化）位於 `src/read-render.ts`（不相依性 Cordis，單獨進行單元測試）；`src/read.ts`/`read-image.ts`/`write.ts`/`edit.ts` 是工具執行器，`src/index.ts` 負責組合。
 
 ## 模型體驗
 
@@ -155,7 +155,7 @@ Use the edit tool for targeted changes to existing UTF-8 text files. It replaces
 
 #### 模型看到的內容
 
-失敗會規範化為 `Error: <message>`。本包穩定的校驗和讀取消息是 `file_path must be a non-empty string`、`limit must be less than or equal to <max>`、`old_string must be a non-empty string`、`old_string and new_string must differ`、`cannot read "<path>": not found`、`cannot read "<path>": not a regular file`、`offset <offset> is out of range for "<path>" (<total> lines)`、`cannot read "<path>": read_image only accepts PNG/JPEG/WebP/GIF paths`、`cannot read "<path>" as an image: model "<model>" does not declare image input; switch to an image-capable model to read images`，以及類型不匹配的修復訊息 `cannot read "<path>": the <ext> extension declares <type>, but the bytes use a different image format; rename the file to match its actual format if it is PNG/JPEG/WebP/GIF, or convert it to one of those formats`；提供方和策略範本在各自包的 README 中逐字列出。防護變更失敗還會在訊息中攜帶復原指令，由本包面向模型的錯誤包裝追加：`FS_STALE_VERSION` 追加 `— re-read the file, then retry`，`FS_NOT_OBSERVED` 追加 `— read the file, then retry`；結構化錯誤碼保持不變。該次重新讀取確認缺失後，edit 會報告 `FS_NOT_FOUND`，而不會重複過時復原指令；write 則使用帶防護的建立。
+失敗會規範化為 `Error: <message>`。本包穩定的校驗和讀取消息是 `file_path must be a non-empty string`、`limit must be less than or equal to <max>`、`old_string must be a non-empty string`、`old_string and new_string must differ`、`cannot read "<path>": not found`、`cannot read "<path>": not a regular file`、`offset <offset> is out of range for "<path>" (<total> lines)`、`cannot read "<path>": read_image only accepts PNG/JPEG/WebP/GIF paths`、`cannot read "<path>" as an image: model "<model>" does not declare image input; switch to an image-capable model to read images`，以及類型不匹配的修復訊息 `cannot read "<path>": the <ext> extension declares <type>, but the bytes use a different image format; rename the file to match its actual format if it is PNG/JPEG/WebP/GIF, or convert it to one of those formats`；提供方和策略樣板在各自包的 README 中逐字列出。防護變更失敗還會在訊息中攜帶復原指令，由本包面向模型的錯誤包裝追加：`FS_STALE_VERSION` 追加 `— re-read the file, then retry`，`FS_NOT_OBSERVED` 追加 `— read the file, then retry`；結構化錯誤碼保持不變。該次重新讀取確認缺失後，edit 會報告 `FS_NOT_FOUND`，而不會重複過時復原指令；write 則使用帶防護的建立。
 
 #### Token 影響
 
@@ -171,5 +171,5 @@ Use the edit tool for targeted changes to existing UTF-8 text files. It replaces
 - **`read` 只處理 UTF-8 文字文件**：影像使用獨立的、按擴充名路由的 `read_image` 工具；PDF、音訊和影片仍延期處理。目錄目標為 `FS_NOT_REGULAR_FILE`。
 - **路由閘門與並行模型切換存在競態**：`read_image` 在執行時檢查最新路由的模型；在該檢查與下一次請求之間提交的切換，可能讓影像塊落在拒絕影像內容的路由上。Web 宿主已拒絕把含影像的工作階段切到純文字模型；其他前端擁有各自的等價防護。
 - **媒體類型按擴充名聲明**：擴充名選擇聲明類型，附件儲存的魔數校驗保持權威；擴充名錯誤但格式正確的影像會得到改名修復提示，而不是被嗅探接受。
-- **工具結果卡片沒有內嵌影像預覽**：UI 表面以通用形式渲染影像結果（持久引用而非畫素）；內嵌渲染延後到 UI 包處理。
+- **工具結果卡片沒有內嵌影像預覽**：UI 表面以通用形式算繪影像結果（持久引用而非畫素）；內嵌算繪延後到 UI 包處理。
 - **沒有逾時介面**：`read`/`write`/`edit` 不接受逾時參數，也不聲明 `timeout-policy` 預算；取消只透過 `exec.signal` 傳遞（見[提供方理由](../README.md#no-timeouts-on-file-io)）。

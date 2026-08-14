@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [简体中文](2026-07-29-durable-last-activity-index.zh.md) | [繁體中文](2026-07-29-durable-last-activity-index.zh-tw.md)
+
 
 ## Problem
 

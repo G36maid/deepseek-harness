@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-這是圍繞 `core/session` 記憶體中執行的服務建置的持久功能族：包括持久化 seam 及其儲存後端和檢查點策略、提供日誌派生全量值的投影 seam、日誌支持的標題，以及外發工作階段遙測。它們全部都是**產品**包（package）。`session-query/` 仍是同級獨立組：讀取／工具介面的消費不相依性持久化內部實作。
+這是圍繞 `core/session` 記憶體中執行的服務建置的持久功能族：包括持久化 seam 及其儲存後端和檢查點策略、提供日誌派生全量值的投影 seam、日誌支援的標題，以及外發工作階段遙測。它們全部都是**產品**包（package）。`session-query/` 仍是同級獨立組：讀取／工具介面的消費不相依性持久化內部實作。
 
 ## 持久化
 
@@ -29,7 +29,7 @@
 
 ## 標題
 
-從工作階段日誌派生持久工作階段標題，並支持選填的模型驅動提供方。
+從工作階段日誌派生持久工作階段標題，並支援選填的模型驅動提供方。
 
 | 包 | 職責 | ctx 鍵 |
 |---|---|---|
@@ -49,4 +49,4 @@
 | [`session-telemetry/`](session-telemetry/README.md) | 定義捕獲、脫敏、投影，以及即時或按需後端投遞。 |
 | [`session-telemetry-otel/`](session-telemetry-otel/README.md) | 透過 OpenTelemetry 日誌以 `FULL`、`FEEDBACK_ONLY` 或 `DISABLED` 模式投遞遙測。 |
 
-子系統參考：[persistence.md](../../docs/subsystems/persistence.md)、[session-projection.md](../../docs/subsystems/session-projection.md)、[session-title.md](../../docs/subsystems/session-title.md) 與 [session-telemetry.md](../../docs/subsystems/session-telemetry.md)。同一時間只允許一個標題提供方註冊；demo 主幹掛載回退服務，兩個模型提供方都留在默認組合之外。
+子系統參考：[persistence.md](../../docs/subsystems/persistence.md)、[session-projection.md](../../docs/subsystems/session-projection.md)、[session-title.md](../../docs/subsystems/session-title.md) 與 [session-telemetry.md](../../docs/subsystems/session-telemetry.md)。同一時間只允許一個標題提供方註冊；demo 主幹掛載回退服務，兩個模型提供方都留在預設組合之外。

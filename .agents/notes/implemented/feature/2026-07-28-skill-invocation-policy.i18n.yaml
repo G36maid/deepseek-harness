@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-28-skill-invocation-policy.md
-2026-07-28-skill-invocation-policy.md: 93c10d4f3e4cd8d3be93960b9717420e482b05d3
-2026-07-28-skill-invocation-policy.zh.md: 758b9c483636bb09b4be0ff0e1bd0c3191006033
-2026-07-28-skill-invocation-policy.zh-tw.md: 7462950fa1491efb3e9efd8d14b5d8d472872cfe

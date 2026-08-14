@@ -119,7 +119,7 @@ interface Workspace {
 
 `WorkspaceRegistry`（[簽名](#ctxworkspaceregistry--workspaceregistry)）擁有註冊與解析。`create(path, title?)` 規範化路徑，拒絕不存在的路徑（原樣傳出原始 `ENOENT`）或非目錄；當規範路徑已被擁有時原樣返回既有實體；否則建立一條標題為 `title ?? basename(path)` 的記錄並前插到持久的登錄檔順序中——新記錄不得與既有顯示標題重複（`WorkspaceNameConflictError`）。`get(id)` 與有序的 `list()` 是同步快取讀取；`resolveByPath(path)` 應用同一套 realpath 規範但不建立。`delete(id)` 只移除註冊記錄、順序條目和工作階段帳本——目錄、使用者文件、即時工作階段和已持久化日誌一概不動，因此這些工作階段變為 Ungrouped（[決策](../../.agents/notes/implemented/feature/2026-07-27-workspace-registration-deletion.md)）；未知 id 返回 `false`。create 與 delete 會在其兩次寫入（記錄 + 順序）可能分叉之前先持久寫入一個待定變更標記；啟動時恰好解決被標記的那次變更——透過刪除被標記的錶行：這會補完被中斷的 delete，並回滾被中斷的 create（註冊可以重建，因此回滾是安全方向）——而沒有標記的順序/表不一致則作為損壞大聲失敗。
 
-工作階段的 cwd 在建立時由建立者賦予，而不是由本登錄檔賦予——API 閘道從所選工作區的 `path` 解析新工作階段的 cwd（回退到顯式或默認 cwd），先建立工作階段使 cwd 落入其不可變的 [`SessionHeader`](persistence.md#sessionheader--metadata-beside-the-log)，再呼叫 `attachSession`，後者會把已儲存的 header cwd 與工作區路徑重新校驗一遍。首次成功啟動時，登錄檔僅憑已持久化的 header（`id`、`cwd`、`createdAt`——絕不讀事件正文）引導歷史：把規範 cwd 有效的工作階段按目錄分組為工作區，最新的排在最前；「已初始化」標記最後寫入，因此被中斷的引導可以安全續跑。引導只發生這一次：沒有 cwd 的歷史殘留工作階段保持 Ungrouped，此後建立的工作階段只能透過 `attachSession` 加入工作區。
+工作階段的 cwd 在建立時由建立者賦予，而不是由本登錄檔賦予——API 閘道從所選工作區的 `path` 解析新工作階段的 cwd（回退到顯式或預設 cwd），先建立工作階段使 cwd 落入其不可變的 [`SessionHeader`](persistence.md#sessionheader--metadata-beside-the-log)，再呼叫 `attachSession`，後者會把已儲存的 header cwd 與工作區路徑重新校驗一遍。首次成功啟動時，登錄檔僅憑已持久化的 header（`id`、`cwd`、`createdAt`——絕不讀事件正文）引導歷史：把規範 cwd 有效的工作階段按目錄分組為工作區，最新的排在最前；「已初始化」標記最後寫入，因此被中斷的引導可以安全續跑。引導只發生這一次：沒有 cwd 的歷史殘留工作階段保持 Ungrouped，此後建立的工作階段只能透過 `attachSession` 加入工作區。
 
 ## 消費端
 

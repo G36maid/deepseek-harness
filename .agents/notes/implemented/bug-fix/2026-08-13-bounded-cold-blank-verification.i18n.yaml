@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-13-bounded-cold-blank-verification.md
-2026-08-13-bounded-cold-blank-verification.md: 1d0571e0f38f983aa584b0d7861bb9c708f4f499
-2026-08-13-bounded-cold-blank-verification.zh.md: e380362606c17f1fe3504f9d2ff2fab050dadc98
-2026-08-13-bounded-cold-blank-verification.zh-tw.md: dae069f94a6ad7234d2f8063c0de95fd85faafb1

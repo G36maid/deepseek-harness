@@ -180,10 +180,9 @@ function isTranslationSourceExcluded(file: string): boolean {
 
 /** Whether one discovered Markdown or sidecar path belongs to the bilingual source corpus. */
 export function isTranslationScopeFile(file: string): boolean {
-  return !file.startsWith('.agents/notes/archived/')
+  return !file.startsWith('.agents/')
     && !isTranslationSourceExcluded(file) && (README_ARTIFACT.test(file)
     || ROOT_CONTRIBUTING_ARTIFACT.test(file)
-    || file.startsWith('.agents/notes/')
     || file.startsWith('docs/')
     || file.startsWith('python/'))
 }

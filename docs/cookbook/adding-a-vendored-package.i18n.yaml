@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/adding-a-vendored-package.md
 adding-a-vendored-package.md: b0271e4736ad7d6da2329834de0312c8ed6cff35
 adding-a-vendored-package.zh.md: eed2ac2d78e08c40fe931740894542defaa62ba1
-adding-a-vendored-package.zh-tw.md: da57054934149170c0b6ec1fb5cc66df9e2e003f
+adding-a-vendored-package.zh-tw.md: 782caa4e7e8d10cbca6aca00d0018f714e2cea81

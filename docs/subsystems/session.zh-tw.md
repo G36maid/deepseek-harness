@@ -153,7 +153,7 @@ interface TodoItem {
 
 ### 請求標頭事件：`request/header`
 
-請求信封（即 `EpochHeader`：呼叫設定 + 配接器所提供預設值的標記 + 渲染後的系統提示詞 + 已組裝的工具 schema）會作為工作階段狀態寫入日誌，因此每個對話請求都是日誌的純函式（見可重建性 Agent Note）。帶有 reason `'initial'` 或 `'resume'` 的完整 `request/header` 快照記錄每個 agent loop 實例的邊界；之後請求發生變化時，系統會以 reason `'change'` 記錄另一份完整快照。`foldRequestHeader(events)` 透過選擇最新快照重建請求標頭。該事件不是 `SurfaceEventType`，不產生 LLM 訊息。
+請求信封（即 `EpochHeader`：呼叫設定 + 配接器所提供預設值的標記 + 算繪後的系統提示詞 + 已組裝的工具 schema）會作為工作階段狀態寫入日誌，因此每個對話請求都是日誌的純函式（見可重建性 Agent Note）。帶有 reason `'initial'` 或 `'resume'` 的完整 `request/header` 快照記錄每個 agent loop 實例的邊界；之後請求發生變化時，系統會以 reason `'change'` 記錄另一份完整快照。`foldRequestHeader(events)` 透過選擇最新快照重建請求標頭。該事件不是 `SurfaceEventType`，不產生 LLM 訊息。
 
 ```ts type-equiv
 /**
@@ -177,7 +177,7 @@ interface EpochHeader {
 
 ### 路由容量事件：`request/context`
 
-請求所解析到的路由的上下文元資料是獨立的已記錄狀態，在同一步驟內緊隨 `request/header` 追加，且僅在提供方、模型或容量與上一條記錄不同時追加。它保持在 `EpochHeader` 之外，因為該類型是 `headerEquals` 逐欄位比較的重建約定。容量描述的是路由，不是請求輸入，把它摺疊進去會讓一次容量變化被登記為請求信封的 `change`，也會把配接器元資料拉進 loop 的重建不變式。與 `request/header` 一樣，它不是 `SurfaceEventType`，也不產生 LLM 訊息。`session.requestContext()` 以增量方式歸並最新一條記錄。配接器不公佈容量的路由會以缺失 `contextWindow` 的形式記錄，因此新記錄可以清除較早路由的容量。
+請求所解析到的路由的上下文中繼資料是獨立的已記錄狀態，在同一步驟內緊隨 `request/header` 追加，且僅在提供方、模型或容量與上一條記錄不同時追加。它保持在 `EpochHeader` 之外，因為該類型是 `headerEquals` 逐欄位比較的重建約定。容量描述的是路由，不是請求輸入，把它摺疊進去會讓一次容量變化被登記為請求信封的 `change`，也會把配接器中繼資料拉進 loop 的重建不變式。與 `request/header` 一樣，它不是 `SurfaceEventType`，也不產生 LLM 訊息。`session.requestContext()` 以增量方式歸並最新一條記錄。配接器不公佈容量的路由會以缺失 `contextWindow` 的形式記錄，因此新記錄可以清除較早路由的容量。
 
 ```ts type-equiv
 /** Registration-bound metadata for one resolved model route. */
@@ -250,7 +250,7 @@ type SessionEvent<T extends SessionEventType = SessionEventType> = {
 
 ## Surface 類型
 
-三種產生訊息的類型（`SurfaceEventType`：`user/message`、`assistant/message`、`tool/result`）攜帶 surface 元資料，用來聲明它們如何加入有序的派生 surface。見 [session surface Agent Note](../../.agents/notes/implemented/architecture/2026-06-18-session-surface.md)。
+三種產生訊息的類型（`SurfaceEventType`：`user/message`、`assistant/message`、`tool/result`）攜帶 surface 中繼資料，用來聲明它們如何加入有序的派生 surface。見 [session surface Agent Note](../../.agents/notes/implemented/architecture/2026-06-18-session-surface.md)。
 
 ### `SurfaceEventType`：事件類型中產生訊息的子集
 
@@ -522,7 +522,7 @@ declare class Session {
 
 `Session.deriveMessages()` 將事件日誌投影為模型看到的 `Message[]`。它是快取的（每個 surface 節點在首次出現時投影一次；surface 重寫觸發重建）且凍結的（每次呼叫返回一個新陣列，引用共享的深凍結訊息，因此透過投影修改已記錄的歷史在類型上不可表達）。`deriveEventMessage(event)` 是摺疊所應用的逐節點純函式，公開暴露以便外部重建器和開發不變式檢查能以完全相同的規則投影日誌前綴，不會與快取產生分歧。投影規則：
 
-- `user/message` → 一條攜帶確切 `content` 的 user 訊息；選填 envelope 僅作為日誌中的展示元資料保留。
+- `user/message` → 一條攜帶確切 `content` 的 user 訊息；選填 envelope 僅作為日誌中的展示中繼資料保留。
 - `assistant/message` → 一條 assistant 訊息，包含生成它的提供方和模型，以及選填的配接器私有重播狀態。原始 `assistant/chunk` 事件屬於重播/UI 資料，在派生時會被**跳過**（組裝後的訊息纔是權威）。**內容為空的** `assistant/message` 也會跳過：因 max-tokens 而截斷且無內容的步驟仍會記錄一條 `assistant/message` 來保存用量、提供方和模型，但無內容的 assistant 輪次不得進入提供方 transcript（文字記錄）。
 - `tool/result` → 一條攜帶 `tool-result` 塊的 user 訊息。
 - `user/message`（注入上下文，即非 `user` 來源）→ 按時間順序在相應位置生成一條 user-role 訊息，並原樣承載其 `content`；其類型化 source 標明生產方，並攜帶所有生產方專用資料。
@@ -533,7 +533,7 @@ declare class Session {
 
 `ctx.sessions.create(id, { seed, meta })` 是底層的重播/fork 原語。對於普通的活躍工作階段 fork，`SessionStore` 暴露一個策略 API：
 
-- `fork(source, boundary?, childSessionId?)` 接受一個活躍的 `Session` 對象或活躍的 `SessionId`，選取到 `boundary` seq（含）為止的源事件（預設為當前最後一個事件），要求所選前綴結束時沒有開放輪次，然後建立一個活躍的子工作階段，包含深克隆的種子事件和子工作階段元資料（`parentSession`、`seedLength` 及繼承的 `cwd`）。
+- `fork(source, boundary?, childSessionId?)` 接受一個活躍的 `Session` 對象或活躍的 `SessionId`，選取到 `boundary` seq（含）為止的源事件（預設為當前最後一個事件），要求所選前綴結束時沒有開放輪次，然後建立一個活躍的子工作階段，包含深克隆的種子事件和子工作階段中繼資料（`parentSession`、`seedLength` 及繼承的 `cwd`）。
 
 顯式 `boundary` 允許呼叫者從任意穩定的輪次間位置 fork，包括之前的 `turn/end` 或更晚的獨立純日誌事件，即使源工作階段有更新的事件或正在進行的輪次。API 拒絕結束於開放輪次內的前綴，而不是靜默截斷。更廣泛的執行關係健全性檢查留在既有的 `dsh-invariants` 外掛程式和持久化修復路徑中，不在 `fork()` 中重複。`dsh-subagent-fork-in-process` 保留其已完成前綴截斷邏輯，因為工具呼叫時的委託通常在父輪次仍然打開時啟動；普通的工作階段分支應顯式指定請求的 boundary。
 
@@ -541,7 +541,7 @@ declare class Session {
 
 ## 輪次的結束原因：`TurnEndReasonMap`
 
-`turn/start` 沒有 trigger 欄位。已進入的 `user/message` 批次記錄進入每個步驟的內容，`llm/retry` 記錄請求復原，idle 注入則保持待處理，直到喚醒交付抵達後續 pre-step。即時輪次會保留停止驅動器的類型化 [`AgentCancelCause`](core.md#the-agent-handle)；只有在匯入受支持的粗粒度取消記錄且記錄未保存呼叫方時，持久化才使用額外的 `{ kind: 'legacy' }` 原因。
+`turn/start` 沒有 trigger 欄位。已進入的 `user/message` 批次記錄進入每個步驟的內容，`llm/retry` 記錄請求復原，idle 注入則保持待處理，直到喚醒交付抵達後續 pre-step。即時輪次會保留停止驅動器的類型化 [`AgentCancelCause`](core.md#the-agent-handle)；只有在匯入受支援的粗粒度取消記錄且記錄未保存呼叫方時，持久化才使用額外的 `{ kind: 'legacy' }` 原因。
 
 ```ts type-equiv
 /** Durable cancellation cause, including imports whose original coarse record carried no cause. */

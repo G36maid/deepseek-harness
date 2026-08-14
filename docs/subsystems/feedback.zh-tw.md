@@ -205,7 +205,7 @@ Plugin disposal 會先關閉變更接納，排空已進入各 Session 佇列的�
 
 [`@deepseek-ai/dsh-client-ui-message-feedback`](../../packages/client/ui-message-feedback) 是瀏覽器側消費端。`@deepseek-ai/dsh-api-remotes` 掛載生成的 `messageFeedback` 貢獻，因此該外掛程式呼叫 `ctx.remote.messageFeedback`，不接觸傳輸層。
 
-控制元件是 `conversation.chat.assistant-actions` list slot 的 `feedback` 條目（order 10），該 slot 由 `ui-conversation` 聲明，並渲染在已定稿助手訊息的 IconActions 行內。為抵達該渲染點需要一處管道改動：`AssistantMessageNode` 現在攜帶來自 `assistant/message` 事件的選填 `messageId`。被中斷凍結的部分輸出沒有該欄位，渲染點在欄位缺失時跳過該 slot。該操作欄每個 Turn 渲染一次，位於收尾的助手訊息上：Host 接受每條 append-origin 步驟訊息作為目標，但多步驟 Turn 中較早的步驟渲染的是工具行而非可評分正文，因此 UI 暴露的範圍比 Host 約定允許的更窄。
+控制元件是 `conversation.chat.assistant-actions` list slot 的 `feedback` 條目（order 10），該 slot 由 `ui-conversation` 聲明，並算繪在已定稿助手訊息的 IconActions 行內。為抵達該算繪點需要一處管道改動：`AssistantMessageNode` 現在攜帶來自 `assistant/message` 事件的選填 `messageId`。被中斷凍結的部分輸出沒有該欄位，算繪點在欄位缺失時跳過該 slot。該操作欄每個 Turn 算繪一次，位於收尾的助手訊息上：Host 接受每條 append-origin 步驟訊息作為目標，但多步驟 Turn 中較早的步驟算繪的是工具行而非可評分正文，因此 UI 暴露的範圍比 Host 約定允許的更窄。
 
 每個 Session 一個 `MessageFeedbackController`，支撐該 Session 內所有訊息的控制元件：一次 `list` 讀取即填充整段對話，且延遲到首次 hover 或 focus 才發起，而非掛載時觸發。每次變更把該 controller 最後觀察到的版本作為 `ifVersion` 傳送；`version-conflict` 回應攜帶權威條目，controller 據此對帳而不重新拉取。變更按 Session 序列，排隊操作與已提交版本比較。`connection/reset` 只刷新已讀取過的 Session。
 
@@ -214,12 +214,12 @@ Plugin disposal 會先關閉變更接納，排空已進入各 Session 佇列的�
 - 變更佇列僅在行程內生效。storage-domain 沒有跨行程條件寫，因此多個 Host 寫入同一儲存根目錄時，不提供 compare-and-swap 或防止丟失更新的保證。
 - Session persistence 沒有持久刪除介面。服務不把 `session/disposed` 或 `host/session-removed` 當作刪除，因此不偽造級聯；在帶外移除日誌後，孤兒伴隨記錄可能繼續存在。
 - 請求若恰好落在 live detach 之後、persistence catalog 物化 header 之前的極短視窗，可能收到 `session-not-found`；呼叫方應在 retirement materialization 後重試。
-- 由於 persistence 沒有按 id 讀取元資料的操作，cold 請求會掃描完整的 Session snapshot 目錄。單個 Session 行也沒有條目數或聚合位元組上限；在具體消費端擁有行策略之前，`maxNoteBytes` 只限制每條備注。
+- 由於 persistence 沒有按 id 讀取中繼資料的操作，cold 請求會掃描完整的 Session snapshot 目錄。單個 Session 行也沒有條目數或聚合位元組上限；在具體消費端擁有行策略之前，`maxNoteBytes` 只限制每條備注。
 - 只有 `{createdAt, cwd}` 不同時，header 身份才能識別複用的 id；本約定無法區分保留相同 header 身份的克隆日誌。
-- Host 約定不記錄已認證的 actor 或審計身份，因此假設呼叫方邊界可信。
-- Web 控制元件只出現在對話檢視表。trajectory 與 waterfall 檢視表不渲染回饋條目，儘管它們的助手節點攜帶相同的 `messageId`。
+- Host 約定不記錄已驗證的 actor 或審計身份，因此假設呼叫方邊界可信。
+- Web 控制元件只出現在對話檢視表。trajectory 與 waterfall 檢視表不算繪回饋條目，儘管它們的助手節點攜帶相同的 `messageId`。
 - 該 sidecar 不發布即時幀，因此另一個分頁標籤的評分要等到重連或下一次衝突回應纔可見，不會立即出現。
-- 備注編輯器不預先校驗 `maxNoteBytes`；超長備注在保存時以 `note-too-large` 失敗，而不是在輸入過程中。
+- 備注編輯器不預先校驗 `maxNoteBytes`；超長備注在保存時以 `note-too-large` 失敗，而不是在輸入程序中。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

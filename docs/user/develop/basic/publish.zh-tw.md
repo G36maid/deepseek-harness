@@ -2,9 +2,9 @@
 
 [English](publish.md) | [简体中文](publish.zh.md) | 繁體中文
 
-前幾篇教程透過 `--patch` overlay 載入本機外掛程式。本教程把它打包成可安裝的**組合包**（bundle），用 `dsh plugin add` 安裝進一個 **profile**，並解釋決定組合後設定的層順序。本文假設 `dsh` CLI 已安裝。請先完成[外掛程式設定](./config.md)。
+前幾篇教學透過 `--patch` overlay 載入本機外掛程式。本教學把它打包成可安裝的**組合包**（bundle），用 `dsh plugin add` 安裝進一個 **profile**，並解釋決定組合後設定的層順序。本文假設 `dsh` CLI 已安裝。請先完成[外掛程式設定](./config.md)。
 
-如果改用全新的原始碼 checkout，請先按照[從原始碼執行章節](../../../../README.md#run-from-source)完成準備，將本教程的 `hello-plugin` 目錄放在倉庫根目錄，並從該目錄把下文的 `dsh ...` 命令改為 `pnpm dsh ...`。建置與啟動器行為見[原始碼執行](../../../../apps/cli/reference/README.md#source-execution)。
+如果改用全新的原始碼 checkout，請先按照[從原始碼執行章節](../../../../README.md#run-from-source)完成準備，將本教學的 `hello-plugin` 目錄放在倉庫根目錄，並從該目錄把下文的 `dsh ...` 命令改為 `pnpm dsh ...`。建置與啟動器行為見[原始碼執行](../../../../apps/cli/reference/README.md#source-execution)。
 
 ## 兩個概念，兩種 manifest
 

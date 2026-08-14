@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/mcp/mcp-client/README.md
 README.md: 005bd0dfb0d1819326cfc673084b6c7e6906da14
 README.zh.md: b01ca31c05065394993818abc5ff30c0cbc727b3
-README.zh-tw.md: 1017dfa42e816877230be3d619fdb95ddb4ef165
+README.zh-tw.md: 1e611fa49e90f66a63b9352bd04734e2db8efd28

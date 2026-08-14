@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/bundle/headless/README.md
 README.md: 93432b7c245a39ba4897746aabc47d2606d20d99
 README.zh.md: f104cac1270681f7e1e89e8f0b1de6c91b0308ac
-README.zh-tw.md: 797ea06720a45da4081182bac46537cb22f34a38
+README.zh-tw.md: 8ff30091e324f5ed5dd5ba32c7b60af2692630bf

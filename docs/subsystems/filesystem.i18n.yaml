@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/filesystem.md
 filesystem.md: d7141ab0991578e6ae59283d3a53e47507f5fd9b
 filesystem.zh.md: a7296811c756dfc5c102331497f6561972c5f25b
-filesystem.zh-tw.md: 94a12fd9cc1039e819ca7ad996934c8d41d8a7d0
+filesystem.zh-tw.md: af519a57d3cbcade5259c46b8a2902ce1cfa678a

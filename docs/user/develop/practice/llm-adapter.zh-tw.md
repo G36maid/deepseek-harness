@@ -49,9 +49,9 @@ export function apply(ctx: Context, config: Config) {
 }
 ```
 
-## StreamChunk 協議
+## StreamChunk 協定
 
-`stream()` 必須按以下協議生成區塊：
+`stream()` 必須按以下協定生成區塊：
 
 ```ts
 import { CallId, type StreamChunk } from '@deepseek-ai/dsh-llm'
@@ -110,9 +110,9 @@ async function* exampleChunks(): AsyncIterable<StreamChunk> {
 
 ## GenerateOptions
 
-`stream()` 接收倉庫匯出的 `GenerateOptions`。它包含模型、配接器擁有的推理強度 ID、對話歷史、系統提示詞、工具 schema、生成參數、停止序列和中止訊號；完整欄位以 `@deepseek-ai/dsh-llm` 匯出的 TypeScript 類型為準。配接器必須將支持的欄位對映到具體 API；如果無法支持某個欄位，應拋出帶穩定 code 的 `LlmError`，不得靜默丟棄。
+`stream()` 接收倉庫匯出的 `GenerateOptions`。它包含模型、配接器擁有的推理強度 ID、對話歷史、系統提示詞、工具 schema、生成參數、停止序列和中止訊號；完整欄位以 `@deepseek-ai/dsh-llm` 匯出的 TypeScript 類型為準。配接器必須將支援的欄位對映到具體 API；如果無法支援某個欄位，應拋出帶穩定 code 的 `LlmError`，不得靜默丟棄。
 
-請覆寫 `resolveModel(provider, model, signal?)`，在一次查詢中返回確切的提供方／模型身份以及選填的 `context` 和 `reasoning` 元資料。推理元資料包含有序的不透明 ID、展示名稱，以及選填的設定預設值；請保留配接器給出的權威選填清單，包括其上游能力 API 返回的 `off`，不要將這些值提升為核心枚舉。非同步查詢必須回應該選填訊號，使取消和資源釋放過程完全靜止。服務會校驗聚合結果，並在呼叫 `stream()` 前拒絕顯式指定但不受支持的推理強度；省略 `reasoning` 表示該模型沒有選填的推理強度能力。
+請覆寫 `resolveModel(provider, model, signal?)`，在一次查詢中返回確切的提供方／模型身份以及選填的 `context` 和 `reasoning` 中繼資料。推理中繼資料包含有序的不透明 ID、展示名稱，以及選填的設定預設值；請保留配接器給出的權威選填清單，包括其上游能力 API 返回的 `off`，不要將這些值提升為核心枚舉。非同步查詢必須回應該選填訊號，使取消和資源釋放程序完全靜止。服務會校驗聚合結果，並在呼叫 `stream()` 前拒絕顯式指定但不受支援的推理強度；省略 `reasoning` 表示該模型沒有選填的推理強度能力。
 
 ## 註冊配接器
 
@@ -152,7 +152,7 @@ ctx.llm.registerAdapter(['my-provider'], adapter)
 
 ## 錯誤處理
 
-配接器應透過帶穩定 code 的 `LlmError` 拋出傳輸和協議故障；agent loop（代理循環）會保留該錯誤及其 code，用於診斷和策略處理。不要相依性普通 `Error` 被自動轉換。每個提供方 HTTP 請求還必須合併 `attributionHeaders()`，並傳遞 `options.signal`。
+配接器應透過帶穩定 code 的 `LlmError` 拋出傳輸和協定故障；agent loop（代理循環）會保留該錯誤及其 code，用於診斷和策略處理。不要相依性普通 `Error` 被自動轉換。每個提供方 HTTP 請求還必須合併 `attributionHeaders()`，並傳遞 `options.signal`。
 
 ```ts
 import {

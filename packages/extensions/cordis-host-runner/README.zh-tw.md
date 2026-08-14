@@ -8,24 +8,24 @@
 
 分兩個階段：`define` 只做登記，一切帶副作用的動作都掛在一次 run 上。
 
-- `define`／`undefine` 掌管一個定義的生命週期。`define` 對元資料做首尾去空白與必填校驗，透過編譯預檢每一半的文法（不執行任何程式碼），鑄出 `dyn-<n>`，並把該定義登記在發起呼叫的工作階段名下——它沒有任何可回滾的副作用，所以無法解析的程式碼在拿到 id 之前就被拒絕。`undefine` 先停掉正在執行的定義，再把它忘掉。兩者都不上 wire：只有模型自己的工具呼叫才會 define。
+- `define`／`undefine` 掌管一個定義的生命週期。`define` 對中繼資料做首尾去空白與必填校驗，透過編譯預檢每一半的文法（不執行任何程式碼），鑄出 `dyn-<n>`，並把該定義登記在發起呼叫的工作階段名下——它沒有任何可回滾的副作用，所以無法解析的程式碼在拿到 id 之前就被拒絕。`undefine` 先停掉正在執行的定義，再把它忘掉。兩者都不上 wire：只有模型自己的工具呼叫才會 define。
 - `run` 回答模型「執行某個定義」的請求，它的兩種形態取決於這個包是誰的事。只有 host 半的包是本行程自己的事：host 半在 `cordis-dynamic` group fiber 之下於 vm 中求值，呼叫隨即返回。帶瀏覽器半的包必須由一個頁面來執行，於是 `run` 變成一次可作答的往返——它 emit `cordis/request-run`、掛起，並由某個人允許或拒絕來結束。這裡沒有定時器；呼叫方的 `AbortSignal`（提問的那一輪次被取消）是唯一的另一條出路，而且它會把這次取消播報出去，讓其他頁面不再提供作答入口。請求寄出時**並不知道**會不會有人作答——收到它的頁面也可能永遠不答，所以沒有頁面連線的部署與其他未作答請求一樣掛起，最終以 `cancelled` 收場。`run` 沒有 wire 面——`cordis_run` 在行程內呼叫它。
 - `runHostHalf`／`getClientCode` 是獲得允許的頁面依次走的步驟，host 半在先，因此 host 半失敗會在瀏覽器還沒動作之前短路。`runHostHalf` 在約定上是冪等的：已在執行的包只做綁定，不再求值；針對同一個定義的並行呼叫只求值一次，`startedHere` 指出求值的是哪一個呼叫方。隨後 `getClientCode` 把瀏覽器半的原始碼交給這一個頁面；定義已消失、沒有瀏覽器半、或未在執行時期，它會拒絕。程式碼從不搭乘任何播報，所以這是它到達瀏覽器的唯一途徑。
 - `resolveRequestRun` 用作答頁面的結論結束這次往返，並 emit `cordis/request-run-resolved`，讓其他每個頁面撤下待作答的入口。首答即成；更晚的或未知的 request id 會被接受並忽略。命名了登錄檔已越過的版本的成功結論會被拒絕而非應用（`accepted: false`，請求仍處於掛起），因為作答的那個頁面裝載的是一個已不再存活的下發。失敗的結論只會在 host 半正是由這次請求求值時才將它回退，因此某個頁面裝不上自己那一半，絕不會把其他頁面正在使用的包停掉。
 - `stop` 回退一次存活的下發——丟棄 handler、把 host 半 fiber dispose（資源釋放）到完全靜止、emit `dynamicCordisRunner/retract`——並讓該定義仍然可執行。
-- `inventory` 回答整個登錄檔，不按工作階段尋址，且每一行都指明擁有該定義的工作階段，因為執行控制面是全域性的。能列出不等於能操作：每個有實際動作的動詞仍會檢查這份歸屬。每一行還會指明該定義有沒有瀏覽器半，因此執行控制面只在確有可裝載的半時，才提供「裝入當前頁面」。`snapshot` 是它按工作階段限定的 host 本機對側，攜帶每個存活 host 半的 fiber，供 `cordis_inspect` 自行渲染 provides／waiting／state（fiber 無法跨 wire）。
-- `reportRenderFailure` 記錄某個頁面看到一個**已裝載**的瀏覽器半在渲染時做錯了什麼。渲染嚴格發生在裝載成功之後，因此到那時 run 早已回答了 `ok`：這份上報是 fire-and-forget 的，不帶任何結帳權威，也絕不觸碰 `resolveRequestRun` 或 run 結論的任何部分——**它不是那個已退役的 v2 `report`／ack**。host 按定義保留跨所有頁面的最後一次失敗（第二個頁面上報即覆蓋），而一次全新的 run、一次 stop 或一次 undefine 都會清掉它，因此模型絕不會看到一次已不存在的下發留下的失敗。瀏覽器半的契約面自己保留一份「**這個頁面**當前正在顯示什麼」；兩者回答的是不同的問題，不是同一個問題的兩份答案。上報的工作階段若並不擁有該定義，這次上報會被丟棄，因為上報路徑絕不能讓一次渲染失敗。
+- `inventory` 回答整個登錄檔，不按工作階段尋址，且每一行都指明擁有該定義的工作階段，因為執行控制面是全域性的。能列出不等於能操作：每個有實際動作的動詞仍會檢查這份歸屬。每一行還會指明該定義有沒有瀏覽器半，因此執行控制面只在確有可裝載的半時，才提供「裝入當前頁面」。`snapshot` 是它按工作階段限定的 host 本機對側，攜帶每個存活 host 半的 fiber，供 `cordis_inspect` 自行算繪 provides／waiting／state（fiber 無法跨 wire）。
+- `reportRenderFailure` 記錄某個頁面看到一個**已裝載**的瀏覽器半在算繪時做錯了什麼。算繪嚴格發生在裝載成功之後，因此到那時 run 早已回答了 `ok`：這份上報是 fire-and-forget 的，不帶任何結帳權威，也絕不觸碰 `resolveRequestRun` 或 run 結論的任何部分——**它不是那個已退役的 v2 `report`／ack**。host 按定義保留跨所有頁面的最後一次失敗（第二個頁面上報即覆蓋），而一次全新的 run、一次 stop 或一次 undefine 都會清掉它，因此模型絕不會看到一次已不存在的下發留下的失敗。瀏覽器半的契約面自己保留一份「**這個頁面**當前正在顯示什麼」；兩者回答的是不同的問題，不是同一個問題的兩份答案。上報的工作階段若並不擁有該定義，這次上報會被丟棄，因為上報路徑絕不能讓一次算繪失敗。
 - `invoke` 把一個包的瀏覽器半發起的一次呼叫，路由到它自己的 host 半用 `harness.handle` 註冊的方法。這套基礎設施只做路由：不存在 host 到瀏覽器的方向。
 
 `run` 或 `stop` 的拒絕會給出 `definition-missing`、`host-half-failed`、`client-half-failed`、`rejected`、`cancelled`、`not-running` 之一；後三者是答覆而非缺陷——有人拒絕了、提問的那一輪次已結束，或本來就沒有在執行的東西可停。
 
 別的工作階段登記的定義讀起來是不存在，而不是被禁止，因此不會跨工作階段洩漏任何東西。`invoke` 與 `resolveRequestRun` 完全不攜帶工作階段：元件的一次呼叫和頁面的一次作答都是頁面全域性的事實，不屬於某一個工作階段。
 
-本功能擁有四條轉發事件，由本包在其 client-safe 的 [`./types`](src/types.ts) 子路徑上聲明，並由 [`@deepseek-ai/dsh-api-remotes`](../../api/remotes/README.md) 的白名單準許投遞——正是這一點讓瀏覽器能經 `ctx.remote.$on` 收到它們：`cordis/request-run`（`{requestId, agentId, id, name, purpose}`——只有元資料，絕無程式碼）、`cordis/request-run-resolved`（`{requestId, outcome}`）、`dynamicCordisRunner/package`（`{id, name, rev}`），以及 `dynamicCordisRunner/retract`（`{id, rev}`）。後兩者是對稱的一對執行狀態播報：每次全新啟動與每次停止都播，與該包有沒有瀏覽器半無關。
+本功能擁有四條轉發事件，由本包在其 client-safe 的 [`./types`](src/types.ts) 子路徑上聲明，並由 [`@deepseek-ai/dsh-api-remotes`](../../api/remotes/README.md) 的白名單準許投遞——正是這一點讓瀏覽器能經 `ctx.remote.$on` 收到它們：`cordis/request-run`（`{requestId, agentId, id, name, purpose}`——只有中繼資料，絕無程式碼）、`cordis/request-run-resolved`（`{requestId, outcome}`）、`dynamicCordisRunner/package`（`{id, name, rev}`），以及 `dynamicCordisRunner/retract`（`{id, rev}`）。後兩者是對稱的一對執行狀態播報：每次全新啟動與每次停止都播，與該包有沒有瀏覽器半無關。
 
 ## 儲存立場
 
-登錄檔就是行程記憶體，也是唯一真源。工作階段日誌只承載一次 define 呼叫的元資料，絕不承載它的程式碼：因此行程重新啟動後確實沒有任何定義，這是合理的；而 id 已無法解析的卡片會如實說明這一點，不會假裝自己還能執行。本包不向磁碟寫任何東西，也不會自動復原任何定義；刷新過的頁面手上什麼都沒有，直到有人再次執行某個包——正是這一步讓它綁定存活的 host 半並重新取回瀏覽器半。
+登錄檔就是行程記憶體，也是唯一真源。工作階段日誌只承載一次 define 呼叫的中繼資料，絕不承載它的程式碼：因此行程重新啟動後確實沒有任何定義，這是合理的；而 id 已無法解析的卡片會如實說明這一點，不會假裝自己還能執行。本包不向磁碟寫任何東西，也不會自動復原任何定義；刷新過的頁面手上什麼都沒有，直到有人再次執行某個包——正是這一步讓它綁定存活的 host 半並重新取回瀏覽器半。
 
 ## 信任立場
 
@@ -41,7 +41,7 @@ vm 沙盒隔離全域性變數，但不是安全邊界：Node 全域性變數不
 
 ## 匯出形狀
 
-服務包：默認匯出 `DynamicCordisRunnerService`（服務鍵 `dynamicCordisRunner`），`./types` 則承載 `dynamicCordisRunner` remote namespace 與其消費端共享的載荷形狀。`define`／`undefine` 的形狀留在包內部，因為它們從不跨 wire。
+服務包：預設匯出 `DynamicCordisRunnerService`（服務鍵 `dynamicCordisRunner`），`./types` 則承載 `dynamicCordisRunner` remote namespace 與其消費端共享的載荷形狀。`define`／`undefine` 的形狀留在包內部，因為它們從不跨 wire。
 
 ## 模型體驗
 
@@ -61,7 +61,7 @@ vm 沙盒隔離全域性變數，但不是安全邊界：Node 全域性變數不
 
 ## 已知限制與暫緩事項
 
-- **run 成功不等於 UI 渲染成功。** 只要作答頁面**已裝載**瀏覽器半，`run` 就會返回；React 是隨後才渲染的，因此一個拋例外的元件根本不可能出現在 run 的回執裡。該失敗經 `reportRenderFailure` 浮現，並透過 `cordis_inspect what:"temporary"` 讀回；run 的結果會把這一點說出來，而不是暗示成功。
+- **run 成功不等於 UI 算繪成功。** 只要作答頁面**已裝載**瀏覽器半，`run` 就會返回；React 是隨後纔算繪的，因此一個拋例外的元件根本不可能出現在 run 的回執裡。該失敗經 `reportRenderFailure` 浮現，並透過 `cordis_inspect what:"temporary"` 讀回；run 的結果會把這一點說出來，而不是暗示成功。
 
 - 帶瀏覽器半的包在**沒有頁面連線的地方會掛起**——headless 與 ACP（Agent Client Protocol）部署會把這次 run 一直掛到提問的輪次被取消，因為轉發事件不回報誰收到了它。只有 host 半的包不受影響。
 - 掛起的 run 請求**沒有逾時**：它一直等人，直到提問的那一輪次被取消，因此無人值守的自動化用不了帶瀏覽器半的包。

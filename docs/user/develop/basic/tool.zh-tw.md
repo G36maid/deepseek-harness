@@ -2,7 +2,7 @@
 
 [English](tool.md) | [简体中文](tool.zh.md) | 繁體中文
 
-本教程會在 Web UI 中新增一個 `greet` 工具。請先完成[第一個外掛程式](./)，並保留其中的 `scratch-plugin` 目錄。
+本教學會在 Web UI 中新增一個 `greet` 工具。請先完成[第一個外掛程式](./)，並保留其中的 `scratch-plugin` 目錄。
 
 ## 建立工具外掛程式
 

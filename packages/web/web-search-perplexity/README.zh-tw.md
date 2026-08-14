@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-由 [Perplexity](https://perplexity.ai) 支持的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 Perplexity 的 OpenAI 相容 `POST /chat/completions` 端點，把生成答案與引用對映為 seam 規範化的 `WebSearchResult`。
+由 [Perplexity](https://perplexity.ai) 支援的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 Perplexity 的 OpenAI 相容 `POST /chat/completions` 端點，把生成答案與引用對映為 seam 規範化的 `WebSearchResult`。
 
 這是一個**實作**包：它向 `ctx.web` 註冊提供方，不擁有該鍵，也不註冊面向模型的工具。與 `@deepseek-ai/dsh-llm-deepseek` 一樣，它是函式／命名空間外掛程式（`inject: ['web']`）。OpenAI 相容協定格式（wire format）是提供方私有細節，並**不**使該提供方相依性 `ctx.llm`。
 
@@ -47,7 +47,7 @@
 
 #### 模型看到的內容
 
-透過 [`dsh-tool-web`](../tool-web/README.md)，工作階段模型會看到生成答案及結構化結果元資料，或只含 URL 的引用。該提供方確切的錯誤訊息為 `Perplexity search aborted`、`Perplexity search request failed: <error>` 和 `Perplexity returned an unprocessable response body: <error>`；HTTP 失敗保留提供方訊息。錯誤包裝層屬於消費端。
+透過 [`dsh-tool-web`](../tool-web/README.md)，工作階段模型會看到生成答案及結構化結果中繼資料，或只含 URL 的引用。該提供方確切的錯誤訊息為 `Perplexity search aborted`、`Perplexity search request failed: <error>` 和 `Perplexity returned an unprocessable response body: <error>`；HTTP 失敗保留提供方訊息。錯誤包裝層屬於消費端。
 
 #### Token 影響
 
@@ -59,7 +59,7 @@
 
 ## 已知限制與暫緩事項
 
-- **引用回退源只含 URL**：Perplexity 省略結構化 `search_results[]` 時，源不含 `title`／`snippet`／`publishedAt`，因此工具只渲染純主機名標籤。
-- **超量返回的來源仍會增加 token 消耗和延遲**：協議沒有結果數量控制，`maxResults` 只能由 seam 在事後截斷。
-- **只公開 `model`／`maxTokens`／`searchRecency`**：Perplexity 的其他搜尋控制項（網域過濾條件、`web_search_options` 上下文大小、圖片）有待提供方無關的 Service Definition 欄位支持（見 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md)）。
+- **引用回退源只含 URL**：Perplexity 省略結構化 `search_results[]` 時，源不含 `title`／`snippet`／`publishedAt`，因此工具只算繪純主機名標籤。
+- **超量返回的來源仍會增加 token 消耗和延遲**：協定沒有結果數量控制，`maxResults` 只能由 seam 在事後截斷。
+- **只公開 `model`／`maxTokens`／`searchRecency`**：Perplexity 的其他搜尋控制項（網域過濾條件、`web_search_options` 上下文大小、圖片）有待提供方無關的 Service Definition 欄位支援（見 [seam Agent Note](../../../.agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md)）。
 - **按錯誤形狀分類中止**：只有 `DOMException` 且名為 `AbortError` 時才對映為 `WEB_ABORTED`；攜帶自訂原因的中止（例如 `dsh-timeout` 的 `TimeoutReason`）會呈現為 `WEB_PROVIDER_ERROR`。

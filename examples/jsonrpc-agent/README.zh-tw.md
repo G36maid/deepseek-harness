@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-面向 Python SDK 內建 JSON-RPC 執行時期的無人值守編碼 agent（代理）組合。它有意不載入終端機 UI、控制台日誌記錄器、批准介面或使用者互動工具，因為 stdout 屬於 SDK 協議，輪次由 SDK 驅動。
+面向 Python SDK 內建 JSON-RPC 執行時期的無人值守編碼 agent（代理）組合。它有意不載入終端機 UI、控制台日誌記錄器、批准介面或使用者互動工具，因為 stdout 屬於 SDK 協定，輪次由 SDK 驅動。
 
 面向模型的工具為：
 
@@ -21,8 +21,8 @@
 | `DEEPSEEK_BASE_URL` | `dsh-llm-deepseek` 使用的宿主端點 |
 | `DSH_CWD` | bash 和檔案系統工具使用的 agent workspace |
 | `DSH_CONTEXT_WINDOW` | 極簡變體中為 `DSH_MODEL` 目錄項記錄的上下文容量 |
-| `DSH_MAX_TOKENS_AS_SUCCESS` | `true`（默認）接受受 token 上限限制的結果；`false` 將其報告為錯誤 |
-| `DSH_MODEL` | `minimal.py` 使用的默認模型；`--model` 優先 |
+| `DSH_MAX_TOKENS_AS_SUCCESS` | `true`（預設）接受受 token 上限限制的結果；`false` 將其報告為錯誤 |
+| `DSH_MODEL` | `minimal.py` 使用的預設模型；`--model` 優先 |
 | `DSH_SESSION_ROOT` | JSONL 工作階段目錄 |
 | `DSH_SYSTEM_PROMPT` | 由部署提供的編碼人格 |
 
@@ -37,4 +37,4 @@
 
 它組合了內建執行時期所需的本機 PTY、裸 `fs-local` 後端、供持久 Bash 使用的 danger-full-access 策略，以及未壓縮的 JSONL 持久化。Bash 和編輯器絕對路徑可以修改執行時期行程有權訪問的任何路徑，因此只能針對可丟棄的 checkout 或容器執行該變體。持久 PTY 需要 POSIX 終端機環境，因此不適用於 Windows agent 介面。
 
-[`minimal.py`](minimal.py)透過 Python SDK 執行該組合，並把 `DSH_MODEL` 作為默認模型。[Python SDK 教程](../../docs/user/guide/python-sdk.md)介紹安裝、執行、workspace 選擇與 session 標識；[SDK 參考](../../python/sdk/README.md)歸屬執行時期生命週期與結果語義。
+[`minimal.py`](minimal.py)透過 Python SDK 執行該組合，並把 `DSH_MODEL` 作為預設模型。[Python SDK 教學](../../docs/user/guide/python-sdk.md)介紹安裝、執行、workspace 選擇與 session 標識；[SDK 參考](../../python/sdk/README.md)歸屬執行時期生命週期與結果語義。

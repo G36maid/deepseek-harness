@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/shell/tool-bash-persistent/README.md
 README.md: b20e59354e3cb7276108440b29e93131ed296236
 README.zh.md: ed1297cd1e25bd041d59801aca3f61cb609c6db8
-README.zh-tw.md: 4cd52e9e91f5453a746d97dd5debe70bfe4dc5dd
+README.zh-tw.md: 87805d89e26628e86f772377d01e18ec5b014bb9

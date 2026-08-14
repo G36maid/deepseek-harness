@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-25-scriptable-llm-wire-fault-server.zh.md) | [繁體中文](2026-07-25-scriptable-llm-wire-fault-server.zh-tw.md)
+
 
 ## Problem
 

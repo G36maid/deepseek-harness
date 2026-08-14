@@ -112,7 +112,7 @@ export function apply(ctx: Context) {
 
 ## 服務隔離
 
-`cordis.yml` 支持服務隔離——同一個服務可以有多個實例，不同外掛程式組看到不同實例：
+`cordis.yml` 支援服務隔離——同一個服務可以有多個實例，不同外掛程式組看到不同實例：
 
 ```yaml
 - id: group-a

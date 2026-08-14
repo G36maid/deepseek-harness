@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/shell/bash-sandbox/README.md
 README.md: bda199db8e05ba82411464a37b0994f87db04df9
 README.zh.md: abc5ad7e3849d87e34a88f9a71bd1ff761620edc
-README.zh-tw.md: 7681efc8689d37508e6a479836cbfff12d87233b
+README.zh-tw.md: df34cc104ebe2fe2291eb78fdf943f33072aec79

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/boot/app-boot/README.md
 README.md: f4d4bfc0cc1760b87f14b70f30b37f96da3d9b87
 README.zh.md: 919a533669c6a0cf2aad0e7c4d16779219739a7d
-README.zh-tw.md: dbe46ae33aacc12638ecdfae15394662292e2d05
+README.zh-tw.md: d3276a3c11f772261b5f8eb03c741552a864f0d4

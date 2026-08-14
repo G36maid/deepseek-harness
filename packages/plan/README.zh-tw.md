@@ -10,4 +10,4 @@ Plan mode 是按 agent（代理）記錄的協作狀態，而不是通用模式�
 
 [plan 專用協作狀態](../../.agents/notes/implemented/simplification/2026-07-22-plan-specific-collaboration-state.md)決策記錄了該家族的設計。
 
-子系統參考——`plan/mode` 摺疊、步驟邊界刷寫、設定、退出工具——見 [docs/subsystems/plan.md](../../docs/subsystems/plan.md)；設計見[計畫專屬協作狀態](../../.agents/notes/implemented/simplification/2026-07-22-plan-specific-collaboration-state.md)。
+子系統參考——`plan/mode` 摺疊、步驟邊界刷寫、設定、結束工具——見 [docs/subsystems/plan.md](../../docs/subsystems/plan.md)；設計見[計畫專屬協作狀態](../../.agents/notes/implemented/simplification/2026-07-22-plan-specific-collaboration-state.md)。

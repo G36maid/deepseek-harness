@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-26-merge-subagent-control-service.zh.md) | [繁體中文](2026-07-26-merge-subagent-control-service.zh-tw.md)
+
 
 The public operation set is refined by [Intent-named subagent continuation operations](2026-07-27-intent-named-subagent-continuation-operations.md) and again by [Continuable subagents](../feature/2026-07-28-continuable-subagent-conversations.md), which keeps the single merged service while removing provider `resume` dispatch and the Task-backed continuation lifecycle.
 

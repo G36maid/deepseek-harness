@@ -30,7 +30,7 @@ interface Config {
 
 發布和註冊覆蓋全部包；但不會為了覆蓋全部包而人為編造執行時期斷言。只有當包擁有可觀察事件關係或相關可變資料關係時，配套入口才安裝檢查。確認必需方法、外掛程式名稱、注入、effect 或固定純函式結果屬於類型、載入或單元測試關注點，而非執行時期不變數。
 
-如果不存在合理的執行時期關係，配套入口使用空 installer，並以包專用的前置 `No runtime invariant:` 註釋說明原因。純工具、行為已透過其介面包觀察的薄實作、僅組合包、二進位程序、需要透過崩潰測試和往返測試驗證其約定的持久化配接器和測試支持包通常屬於此類。當 owner 獲得可變狀態或事件協議時，必須重新審視該說明。
+如果不存在合理的執行時期關係，配套入口使用空 installer，並以包專用的前置 `No runtime invariant:` 註解說明原因。純工具、行為已透過其介面包觀察的薄實作、僅組合包、二進位程序、需要透過崩潰測試和往返測試驗證其約定的持久化配接器和測試支援包通常屬於此類。當 owner 獲得可變狀態或事件協定時，必須重新審視該說明。
 
 當前可執行配套入口保護以下關係：
 
@@ -38,12 +38,12 @@ interface Config {
 |---|---|
 | `dsh-session`、`dsh-agent`、`dsh-scope`、`dsh-agent-loop` | 工作階段包含關係和呼叫/結果跟蹤、agent（代理）狀態轉換、inbox FIFO 守恆、作用域 subject 和模型請求重建。 |
 | `dsh-llm`、`dsh-llm-retry`、`dsh-tools`、`dsh-system-prompt` | 流文法、持久重試位置和邊界、工具管線階段與凍結結果，以及權威提示詞組裝資料。 |
-| `dsh-compaction`、`dsh-hook-protocol`、`dsh-sandbox-policy` | 持久壓縮（compaction）與掛鉤配對、壓縮元資料和沙盒 mode 詞彙。 |
+| `dsh-compaction`、`dsh-hook-protocol`、`dsh-sandbox-policy` | 持久壓縮（compaction）與掛鉤配對、壓縮中繼資料和沙盒 mode 詞彙。 |
 | `dsh-fs`、`dsh-subagent`、`dsh-workflow` | 檔案系統事件身份、提供方/子級配對和工作流程/agent 生命週期身份。 |
 | `dsh-goal`、`dsh-goal-round-driver` | 持久 goal 來源/內容一致性、修訂和生命週期轉換、時間戳、依次獲準的 Round 和重建的繼續提示詞。 |
 | `dsh-permission-presets`、`dsh-user-approval` | 活動 preset 引用和審批詢問/決定審計配對。 |
 | `dsh-jobs`、`dsh-tool-todo` | 任務快照生命週期/歸屬欄位和持久整表 todo 結構。 |
-| `dsh-time-context` | 持久化時鐘讀數與工作階段中正在進行的輪次、下一步驟開始前的位置及已用時間 baseline 一致；渲染時間可解析，且不晚於其事件。 |
+| `dsh-time-context` | 持久化時鐘讀數與工作階段中正在進行的輪次、下一步驟開始前的位置及已用時間 baseline 一致；算繪時間可解析，且不晚於其事件。 |
 
 每個 owner 的根入口仍獨立於診斷。單獨載入服務不會安裝產品檢查；在沒有服務時載入配套入口，會等待其聲明的 `invariants` 注入。
 

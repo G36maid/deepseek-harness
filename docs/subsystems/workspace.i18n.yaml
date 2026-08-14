@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/workspace.md
 workspace.md: dd4686b91bb9525da21b6aa3130cd5c8d5c180ce
 workspace.zh.md: d2b671e4d3f181ee152235c7572f867f004e8f29
-workspace.zh-tw.md: b5e5edcb39df91c2a012b71111ac6090ced8448f
+workspace.zh-tw.md: 6231715473b4d73d6c2755ad728a164d7340f80f

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/approval.md
 approval.md: 528a4e8adce61231732bff56b9058270d624f964
 approval.zh.md: c24809969e2d210b015d5e2354b24fbbfb6e8879
-approval.zh-tw.md: b3ea8b5ab1a614a5ee716bbe676e29ca5078d381
+approval.zh-tw.md: 305cedf9010c6cae3472c6967302f56939db06eb

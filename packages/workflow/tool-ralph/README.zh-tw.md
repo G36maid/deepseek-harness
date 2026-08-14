@@ -6,11 +6,11 @@
 
 ## 契約
 
-`ralph({ objective, maxRounds? })` 會等待整個執行完成。部署設定中的 `maxRounds` 既是預設值，也是呼叫覆蓋值的上限。每個 Ralph Round 透過 `subagentProvider` 啟動一個子 agent；該提供方必須存在、支持結構化輸出，並報告 `inheritsParentContext: false`。已設定的提供方以 `WorkflowStartRequest.subagentProvider` 傳遞，使固定指令碼無法檢查或更改路由，普通的模型編寫 `workflow` 工具也不會因此獲得提供方選擇器。解析後的 Round 上限還會作為 `WorkflowStartRequest.maxTotalAgents` 傳遞，使固定迴圈與引擎的子 agent 總數後備上限協同；Ralph 上限超過引擎部署上限時，引擎會在發布執行前拒絕。
+`ralph({ objective, maxRounds? })` 會等待整個執行完成。部署設定中的 `maxRounds` 既是預設值，也是呼叫覆蓋值的上限。每個 Ralph Round 透過 `subagentProvider` 啟動一個子 agent；該提供方必須存在、支援結構化輸出，並報告 `inheritsParentContext: false`。已設定的提供方以 `WorkflowStartRequest.subagentProvider` 傳遞，使固定指令碼無法檢查或更改路由，普通的模型編寫 `workflow` 工具也不會因此獲得提供方選擇器。解析後的 Round 上限還會作為 `WorkflowStartRequest.maxTotalAgents` 傳遞，使固定迴圈與引擎的子 agent 總數後備上限協同；Ralph 上限超過引擎部署上限時，引擎會在發布執行前拒絕。
 
 每個子 agent 只接收不可變目標、當前 Ralph Round 及其上限、一條「共享工作區是權威狀態」指令，以及上一個結構化交接內容。工作區是長期記憶；不會把父級對話或先前子 agent 工作階段作為初始內容。報告包含 `status: continue | complete | blocked`、非空摘要、證據、後續步驟和阻塞文字。固定工作流程內部及消費端邊界都會校驗特定狀態的語義和序列化後的 `maxHandoffChars` 上限。無效、缺失或過大的報告會使工作流程失敗，而不會被截斷或誤認為上限耗盡。
 
-成功的終態工具結果為 `complete`、`blocked` 或 `budget-limited`，並包含最後一份有界報告和已啟動的 Round 數量。規範包絡為 `{ runId, agentsStarted, result }`；Native 渲染器中的完成與阻塞標籤會明確說明結果由 worker 報告，而非獨立認證。`maxResultChars` 只限制包含截斷標記的渲染文字，不會改變規範值中經過校驗的報告或跨 Round 交接內容。
+成功的終態工具結果為 `complete`、`blocked` 或 `budget-limited`，並包含最後一份有界報告和已啟動的 Round 數量。規範包絡為 `{ runId, agentsStarted, result }`；Native 算繪器中的完成與阻塞標籤會明確說明結果由 worker 報告，而非獨立驗證。`maxResultChars` 只限制包含截斷標記的算繪文字，不會改變規範值中經過校驗的報告或跨 Round 交接內容。
 
 普通子 agent 失敗會產生錯誤，其中標明失敗的 Round；如果已有上一次成功交接，也會保留它。Ralph 不會重試該 Round。致命的提供方啟動、傳輸、worker 或工作流程失敗仍是工作流程錯誤，並可能在固定指令碼返回交接內容前結帳。取消同樣屬於錯誤；區域性輸出絕不會視為成功。
 
@@ -18,7 +18,7 @@
 
 呼叫方 agent 是每個全新子 agent 的父級，因此會保留 cwd 和譜系，但不會複製其對話。`exec.signal` 進入工作流程引擎，同時也橋接到 `run.cancel()`，以便不相依性具體實作。工具等待 `run.result` 並呼叫 `run.dispose()`，後一個呼叫位於 `finally` 中，因此取消的父級步驟會等到引擎完成有界終止且子 agent 完全靜止後才返回。
 
-## 渲染意圖
+## 算繪意圖
 
 待處理呼叫使用 `generic` 卡片，標題為 `ralph`；不可變目標作為其 `rawInput`。結果繼續使用 generic 卡片。兩個呈現函式都只相依性工具參數和已結帳的工具包絡。
 
@@ -86,7 +86,7 @@ Use the ralph tool ONLY when the direct human explicitly asks for a Ralph loop o
 ## 已知限制與暫緩事項
 
 - **完成由 worker 自行聲明**：沒有獨立的評估器或驗證器判斷目標是否實際完成；評估器策略及評估器驅動的延續均暫緩處理。
-- **僅支持前臺**：沒有 job id、後臺收集、行程復原檢查點、調度器或基於掛鐘時間的啟動策略。
+- **僅支援前臺**：沒有 job id、後臺收集、行程復原檢查點、調度器或基於掛鐘時間的啟動策略。
 - **工作區是唯一的跨 Round 長期記憶**：一份有界報告作為顯式交接內容，每個子 agent 結束後，未提交的對話推理都會消失。
 - **一個 Round 對應一個全新子 agent**：Round 內沒有扇出、模型/提供方切換、fork 上下文或由模型呼叫選擇的提供方。
 - **普通子 agent 失敗會終止執行**：固定指令碼報告失敗的 Round 和上一次成功交接，但不會重試；致命的工作流程基礎設施失敗可能在該狀態返回前結束。

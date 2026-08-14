@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/web/web-fetch-http/README.md
 README.md: 0ada53b59295e66f979d8714c51faf2bce8bbf8d
 README.zh.md: b24de8ae89300d2ce2aed7e9be62b6ffdfbc8fb4
-README.zh-tw.md: a6d6a13678d516977c1ff8f644599955c96af030
+README.zh-tw.md: 335a3d940240331b62d4eb4f70e1b6642383bc92

@@ -99,7 +99,7 @@ interface Domain<S extends DomainSpec> {
 
 ## 領域 facility：`ctx.storageDomain`
 
-`DomainFacility`（[簽名](#ctxstoragedomain--domainfacility)）在經過路由的後端之上打開已聲明的領域。路由是領域外掛程式的設定，絕不屬於樞紐：`backend` 指定必填的默認路由，`routes` 按領域名逐個覆蓋。`open(spec)` 按嚴格順序執行，每一步失敗都使整個呼叫失敗：拒絕已打開或仍在關閉中的名稱（`already-open`），解析路由（`backend-not-found`），要求後端具備 `kv` facet（`facet-unsupported`），打開 unit（後端的 `version-mismatch`/`malformed-medium` 原樣透傳），並按 spec 的 zod schema 校驗每條已儲存記錄和 global（`invalid-record`，附帶出錯的表與鍵）。呼叫方擁有返回的控制代碼，並用 `Domain.close()` 釋放它；外掛程式解除安裝時仍處於打開狀態的領域由 facility 負責關閉，已關閉領域的名稱只有在拆除完全結束後才釋放出來供重新打開。`get(name)` 是無類型的診斷尋找，命中的是每個類型化控制代碼背後包內私有的 `DomainImpl` 執行時期；`closeAll()` 是解除安裝路徑。
+`DomainFacility`（[簽名](#ctxstoragedomain--domainfacility)）在經過路由的後端之上打開已聲明的領域。路由是領域外掛程式的設定，絕不屬於樞紐：`backend` 指定必填的預設路由，`routes` 按領域名逐個覆蓋。`open(spec)` 按嚴格順序執行，每一步失敗都使整個呼叫失敗：拒絕已打開或仍在關閉中的名稱（`already-open`），解析路由（`backend-not-found`），要求後端具備 `kv` facet（`facet-unsupported`），打開 unit（後端的 `version-mismatch`/`malformed-medium` 原樣透傳），並按 spec 的 zod schema 校驗每條已儲存記錄和 global（`invalid-record`，附帶出錯的表與鍵）。呼叫方擁有返回的控制代碼，並用 `Domain.close()` 釋放它；外掛程式解除安裝時仍處於打開狀態的領域由 facility 負責關閉，已關閉領域的名稱只有在拆除完全結束後才釋放出來供重新打開。`get(name)` 是無類型的診斷尋找，命中的是每個類型化控制代碼背後包內私有的 `DomainImpl` 執行時期；`closeAll()` 是解除安裝路徑。
 
 ## 變更事件：`domain/changed`
 

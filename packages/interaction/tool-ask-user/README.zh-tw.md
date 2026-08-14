@@ -15,11 +15,11 @@
 - `options`：選填選項，包含 `label` 和 `description`。如需推薦某個選項，請將其置於首位，並在該標籤末尾追加 `(Recommended)`。
 - `multi_select`：該問題是否可以返回多個選中的選項。
 
-工具呼叫 `ctx.userQuestions.ask()`，並返回規範的 `{ answers: [{ id, selected, custom? }] }`。`selected` 包含選項標籤；`custom` 攜帶自由填寫的回答，對於多選題會補充 `selected`，對於單選題則會覆蓋它。Native 渲染器會保留緊湊的 JSON 文字形式 `{ "answers": [{ "id": "...", "selected": ["..."], "custom": "..." }] }`。
+工具呼叫 `ctx.userQuestions.ask()`，並返回規範的 `{ answers: [{ id, selected, custom? }] }`。`selected` 包含選項標籤；`custom` 攜帶自由填寫的回答，對於多選題會補充 `selected`，對於單選題則會覆蓋它。Native 算繪器會保留緊湊的 JSON 文字形式 `{ "answers": [{ "id": "...", "selected": ["..."], "custom": "..." }] }`。
 
 ## 職責
 
-此包是使用者互動 seam 的Consumer 包。它不渲染 UI，也不瞭解輸入的收集方式；它只將模型參數轉換為 `AskUserQuestionRequest`，並把使用者回答返回給 agent loop（代理循環）。
+此包是使用者互動 seam 的Consumer 包。它不算繪 UI，也不瞭解輸入的收集方式；它只將模型參數轉換為 `AskUserQuestionRequest`，並把使用者回答返回給 agent loop（代理循環）。
 
 ## 模型體驗
 
@@ -55,4 +55,4 @@
 
 - **待處理問題會阻塞工具呼叫，直至使用者作答**：該工具未聲明 `timeout-policy` 預算；取消僅沿用當前輪次的 `exec.signal`。
 - **執行時期中歸屬於其他 agent 的 subagent 不能向使用者提問**：`ask_user_question` 會以 `DELEGATED_CALLER` 拒絕歸屬於另一個 agent 的存活子級；該子級必須在最終結果中包含尚未解決的問題或決策。持久譜系不能決定這一邊界，因此帶有譜系的工作階段復原為執行時期根後可以正常提問。
-- **Native 回答渲染為 JSON 文字**：規範值仍為結構化資料，但模型側結果使用緊湊 JSON，而非更豐富的內容區塊詞彙。
+- **Native 回答算繪為 JSON 文字**：規範值仍為結構化資料，但模型側結果使用緊湊 JSON，而非更豐富的內容區塊詞彙。

@@ -69,8 +69,6 @@ function repositoryFileExists(file: string): boolean {
 const SCOPE_PATTERNS = [
   '**/*.md',
   '**/*.i18n.yaml',
-  '.agents/notes/**/*.md',
-  '.agents/notes/**/*.i18n.yaml',
 ]
 
 const manifestContent = readRepositoryFile('scripts/translation-pairing.manifest.json')

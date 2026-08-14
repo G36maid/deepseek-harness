@@ -8,9 +8,9 @@ SQLite 持久工作階段儲存後端：第二個 `SessionPersistence` 提供方
 
 ## 儲存模型
 
-每個 `SessionEvent` 1:1 對映到 `events` 表中的一行 `(session_id, seq, type, time, data, source_event_seqs, surface_op)`；`data` 是作為 JSON 文字的事件 payload，因此行結構就是原始事件本身（包括 `assistant/chunk`，保持 `seq` 連續）。兩個 `TEXT` 列 `source_event_seqs` 和 `surface_op` 可為空，儲存事件選填介面元資料欄位（見[工作階段介面](../../../.agents/notes/implemented/architecture/2026-06-18-session-surface.md)）。日誌外元資料（`SessionHeader`）、每實體化 incarnation id 和每日誌單調修訂位於 `sessions` 行；`createdAt` 是儲存在 strict `INTEGER` 列中的非負安全整數。單例狀態行攜帶不可變儲存 id。`sessions` 行只由第一次 `append` 寫入，其存在性是延遲實體化訊號（`list` 精確報告有行的工作階段）。
+每個 `SessionEvent` 1:1 對映到 `events` 表中的一行 `(session_id, seq, type, time, data, source_event_seqs, surface_op)`；`data` 是作為 JSON 文字的事件 payload，因此行結構就是原始事件本身（包括 `assistant/chunk`，保持 `seq` 連續）。兩個 `TEXT` 列 `source_event_seqs` 和 `surface_op` 可為空，儲存事件選填介面中繼資料欄位（見[工作階段介面](../../../.agents/notes/implemented/architecture/2026-06-18-session-surface.md)）。日誌外中繼資料（`SessionHeader`）、每實體化 incarnation id 和每日誌單調修訂位於 `sessions` 行；`createdAt` 是儲存在 strict `INTEGER` 列中的非負安全整數。單例狀態行攜帶不可變儲存 id。`sessions` 行只由第一次 `append` 寫入，其存在性是延遲實體化訊號（`list` 精確報告有行的工作階段）。
 
-倉庫支持的 Node 範圍可不加 flag 使用 `node:sqlite`。資料庫啟用外鍵，並使用已設定 journal mode（默認 `wal`；WAL 共享記憶體文件不適用時使用 rollback mode）。`PRAGMA application_id` 標識規範持久化資料庫，`PRAGMA user_version` 儲存版面配置版本。新資料庫必須沒有 application identity 或使用者定義 schema 對象；初始化在一個事務中建立全部表並蓋上兩個 pragma。非 pristine 無版本資料庫、外部 application identity 和所有非當前版本在 journal-mode 變更前均會被拒絕，因為該未發布格式無遷移。
+倉庫支援的 Node 範圍可不加 flag 使用 `node:sqlite`。資料庫啟用外鍵，並使用已設定 journal mode（預設 `wal`；WAL 共享記憶體文件不適用時使用 rollback mode）。`PRAGMA application_id` 標識規範持久化資料庫，`PRAGMA user_version` 儲存版面配置版本。新資料庫必須沒有 application identity 或使用者定義 schema 對象；初始化在一個事務中建立全部表並蓋上兩個 pragma。非 pristine 無版本資料庫、外部 application identity 和所有非當前版本在 journal-mode 變更前均會被拒絕，因為該未發布格式無遷移。
 
 在具有 POSIX mode 的檔案系統上，後端為缺失目錄請求 mode `0700`，並在 SQLite 打開前以 mode `0600` 排他建立缺失資料庫；行程 umask 可進一步限制兩者。新 WAL、共享記憶體和持久 rollback-journal sidecar 獲得資料庫最終的僅所有者 mode。現有目錄、資料庫文件和 sidecar 保留原 mode；除已存在資料庫外的檔案系統設定錯誤會使初始化失敗。這些預設值防止寬鬆行程 umask 造成的意外暴露，但當其他 principal 能替換父目錄中的資料庫條目時，不保護資料庫機密性或完整性。
 
@@ -20,7 +20,7 @@ SQLite 持久工作階段儲存後端：第二個 `SessionPersistence` 提供方
 - **延遲實體化。**`create()` 只在記憶體記錄意圖，第一次 `append` 前不寫行。已建立但從未 append 的工作階段沒有 `sessions` 行，因此不在 `list()` 中（它精確報告有行的工作階段）。
 - **在 load 時關閉中斷輪次。**`load()` 實作共享[當機復原約定](../../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)：保留有效中斷輪次，在一個事務中追加合成關閉事件，並只移除撕裂尾部行。已提交解析錯誤或序列缺口使工作階段無法載入。復原會變更已儲存行，因此下一次 append 從平衡日誌和準確遊標開始。
 - **非修改式檢查。**`inspect()` 返回不可變、平衡的邏輯檢視表，並可在記憶體中合成復原 closer，但不會刪除撕裂尾部行、追加復原行或更改輕量修訂。
-- **輕量修訂。**`listSnapshots(signal?)` 組合不可變儲存與資料庫文件身份、每實體化 incarnation id，以及在每個變更交易中遞增的每工作階段計數器。完整前綴讀取在同一個讀交易中捕獲該 revision 及其事件行，`readStoredRevision()` 則只查詢 session 行來校驗保留的 preparation。它在不解析事件行的情況下保持未變觀察穩定，並區分獨立儲存和重建的同 id 日誌。它在共享就緒和同步元資料查詢前後檢查取消；查詢本身不可搶佔。
+- **輕量修訂。**`listSnapshots(signal?)` 組合不可變儲存與資料庫文件身份、每實體化 incarnation id，以及在每個變更交易中遞增的每工作階段計數器。完整前綴讀取在同一個讀交易中捕獲該 revision 及其事件行，`readStoredRevision()` 則只查詢 session 行來校驗保留的 preparation。它在不解析事件行的情況下保持未變觀察穩定，並區分獨立儲存和重建的同 id 日誌。它在共享就緒和同步中繼資料查詢前後檢查取消；查詢本身不可搶佔。
 
 ## 設定（schemastery）
 
@@ -43,7 +43,7 @@ interface Config {
 
 #### 模型看到的內容
 
-SQLite 儲存不會向當前請求提供提示詞或 schema。載入會復原與 JSONL 相同的呈現歷史，並保留之前的 header 用於重建；新 loop 組合當前 envelope。復原會用 `TOOL_NOT_STARTED` 平衡沒有已持久化呼叫的 assistant 請求；已有持久化呼叫但無結果時則變為 `TOOL_OUTCOME_UNKNOWN`，它要求模型只重試只讀或冪等工作，並驗證可能的副作用或詢問使用者。行元資料和原始區塊不會成為訊息。
+SQLite 儲存不會向當前請求提供提示詞或 schema。載入會復原與 JSONL 相同的呈現歷史，並保留之前的 header 用於重建；新 loop 組合當前 envelope。復原會用 `TOOL_NOT_STARTED` 平衡沒有已持久化呼叫的 assistant 請求；已有持久化呼叫但無結果時則變為 `TOOL_OUTCOME_UNKNOWN`，它要求模型只重試只讀或冪等工作，並驗證可能的副作用或詢問使用者。行中繼資料和原始區塊不會成為訊息。
 
 #### Token 影響
 

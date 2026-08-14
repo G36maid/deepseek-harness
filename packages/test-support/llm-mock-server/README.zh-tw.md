@@ -4,7 +4,7 @@
 
 可編指令碼的 OpenAI 相容 HTTP／SSE（Server-Sent Events）伺服器，用於在無提供方金鑰的情況下測試真實 LLM（大型語言模型）配接器、agent loop（代理循環）和復原策略。它接受 `POST /chat/completions` 和 `POST /v1/chat/completions`；每個已接受請求按到達順序消費一個已設定行為。無效的請求方法、路徑、Bearer token 和 JSON 不會消費指令碼條目。
 
-庫入口匯出 `startMockLlmServer(options)`、行為類型和遙測（telemetry）類型、默認隨機壓力權重、Node 定時器允許的上限，以及帶有綁定 `baseURL`、自動生成或顯式設定 `randomSeed`、已捕獲請求和冪等 `close()` 的執行控制代碼。關閉會強制終止停滯連線。
+庫入口匯出 `startMockLlmServer(options)`、行為類型和遙測（telemetry）類型、預設隨機壓力權重、Node 定時器允許的上限，以及帶有綁定 `baseURL`、自動生成或顯式設定 `randomSeed`、已捕獲請求和冪等 `close()` 的執行控制代碼。關閉會強制終止停滯連線。
 
 ## 獨立使用
 
@@ -26,13 +26,13 @@ DEEPSEEK_API_KEY=mock-key \
 pnpm dsh --profile headless "test provider recovery"
 ```
 
-倉庫指令碼將 JSONL 寫入 stdout：`ready` 記錄攜帶以 `/v1` 結尾的基礎 URL 和隨機種子，後續請求/結果記錄同時命名指令碼行為和實際選中的具體行為。這個私有支持包不公開可安裝的二進位命令。
+倉庫指令碼將 JSONL 寫入 stdout：`ready` 記錄攜帶以 `/v1` 結尾的基礎 URL 和隨機種子，後續請求/結果記錄同時命名指令碼行為和實際選中的具體行為。這個私有支援包不公開可安裝的二進位命令。
 
 ## 行為指令碼
 
 `--sequence` 是逗號分隔的 FIFO。耗盡時返回結構化 HTTP 500；`--repeat-last` 顯式重用最後一項。
 
-| 行為 | 協議結果 |
+| 行為 | 協定結果 |
 |---|---|
 | `connection_reset` | 在傳送 HTTP 標頭前銷毀 socket |
 | `stream_disconnect` | 傳送 SSE 標頭，然後在第一個事件前重設連線 |
@@ -73,7 +73,7 @@ CLI 公開 `--success-text`、`--partial-text`、`--reasoning-text`、`--chunk-s
 
 ## 模型體驗
 
-無。該測試伺服器替代提供方協議行為，而不呼叫真實模型。
+無。該測試伺服器替代提供方協定行為，而不呼叫真實模型。
 
 #### KV Cache 影響
 

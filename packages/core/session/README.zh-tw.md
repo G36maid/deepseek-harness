@@ -14,7 +14,7 @@
 
 - `ctx.sessions.create(id?, { seed?, meta? }?)` 校驗持久種子／頭部資料並生成脫離副本，補齊版本和 id，在未提供 `createdAt` 時使用當前時間，發布工作階段並將其綁定到呼叫方 fiber。持久化重建會提供原始的 `createdAt`、`seedLength` 和 `delegationDepth`。
 - `ctx.sessions.flush(session)` 透過工作階段捕獲的作用域分發一個需等待完成的平行持久性檢查點。每個監聽器都會啟動；呼叫會等待全部結帳後才報告失敗。未發布、已脫離和過時的對象會被拒絕。
-- `ctx.sessions.fork(source, boundary?, childSessionId?): Session`：解析即時工作階段對象或 id，選取截至 `boundary` 事件序號（含該事件）的種子（預設為當前最後一個事件），要求所選前綴結束時沒有開放輪次，再建立帶譜系元資料的即時子工作階段。
+- `ctx.sessions.fork(source, boundary?, childSessionId?): Session`：解析即時工作階段對象或 id，選取截至 `boundary` 事件序號（含該事件）的種子（預設為當前最後一個事件），要求所選前綴結束時沒有開放輪次，再建立帶譜系中繼資料的即時子工作階段。
 - `ctx.sessions.get(id: SessionId): Session | undefined`
 - `ctx.sessions.list(): Session[]`
 
@@ -36,17 +36,17 @@
 
 普通類（不是 Cordis 服務）。活躍工作階段透過 `ctx.sessions.create()` 建立，脫離態的重播或檢查工作階段透過 `Session.create()` 建立；脫離態工廠不會發布生命週期事件，也不會將工作階段綁定到 fiber。
 
-- `session.append(type, data, opts?)` 會為持久資料和 surface 元資料製作快照並凍結它們，校驗標記形態、被引用的源事件 seq、替換覆蓋完整性，以及僅修改內容的單個 `tool/result` 重寫，隨後同步提交，再在彼此獨立的失敗收容下通知觀察者。對已掛接工作階段的重入追加會被拒絕，執行時期檢查也覆蓋擴寬後的聯合類型和已載入日誌。
+- `session.append(type, data, opts?)` 會為持久資料和 surface 中繼資料製作快照並凍結它們，校驗標記形態、被引用的源事件 seq、替換覆蓋完整性，以及僅修改內容的單個 `tool/result` 重寫，隨後同步提交，再在彼此獨立的失敗收容下通知觀察者。對已掛接工作階段的重入追加會被拒絕，執行時期檢查也覆蓋擴寬後的聯合類型和已載入日誌。
 - `session.deriveMessages()` 對每個新的 surface 條目只做一次增量投影，並返回一個新陣列，其中包含這些條目儲存的完整、帶標識且凍結的訊息。assistant 訊息的模型來源會保留生成該訊息的提供方和模型，以及配接器私有重播狀態。surface 重寫會重建投影；不存在原始日誌回退。
 - `session.deriveEventMessage(event)` 是重建和請求檢查使用的規範逐事件投影。
 - `session.surface` 暴露只讀 `SessionSurface` 檢視表，由工作階段唯一的增量 surface 管理器所有；每次提交重寫，`replaceGeneration` 都會變化。
 - `session.events` 是按追加失效的快取凍結快照；已接受事件保持深度凍結。
 - `session.seq`、`session.id`：當前序號和只讀類型化身份。
-- `session.header: SessionHeader`：脫離、深凍結的建立元資料（`version`、`id`、`createdAt`，以及選填的 `cwd`／`parentSession`／`seedLength`／`delegationDepth`）。構造時會校驗持久記錄，並要求其中的 id 與 `session.id` 一致。
+- `session.header: SessionHeader`：脫離、深凍結的建立中繼資料（`version`、`id`、`createdAt`，以及選填的 `cwd`／`parentSession`／`seedLength`／`delegationDepth`）。構造時會校驗持久記錄，並要求其中的 id 與 `session.id` 一致。
 
 ### 無損 JSON 工具
 
-持久值需要一種已接受的表示，不能先檢查再二次讀取。`isJsonValue(value)` 是布林判斷函式；`snapshotJsonValue(value)` 在一趟迭代中校驗並複製普通值，無效輸入返回 `undefined`，getter 拋出的例外則向外傳播。快照輔助函式接受除 `-0` 外的有限 JSON 數值（JSON 會將其改寫為 `0`）、稠密普通陣列、普通對象或 null 原型對象；它會在規範化前拒絕迴圈引用、不支持的標量和特殊原型，同時不施加呼叫棧深度限制。
+持久值需要一種已接受的表示，不能先檢查再二次讀取。`isJsonValue(value)` 是布林判斷函式；`snapshotJsonValue(value)` 在一趟迭代中校驗並複製普通值，無效輸入返回 `undefined`，getter 拋出的例外則向外傳播。快照輔助函式接受除 `-0` 外的有限 JSON 數值（JSON 會將其改寫為 `0`）、稠密普通陣列、普通對象或 null 原型對象；它會在規範化前拒絕迴圈引用、不支援的標量和特殊原型，同時不施加呼叫棧深度限制。
 
 工作階段事件匯入將所有權與訊息校驗分開處理。`snapshotSessionEvent(event)` 會先克隆借用的事件，再校驗並凍結其中帶標識的訊息。`adoptSessionEvent(event)` 原地執行相同的訊息處理並返回原事件；呼叫方只有在移交獨佔的對象圖，且該對象圖沒有與其他事件共享可變子對象時，纔可以使用此函式。
 
@@ -64,7 +64,7 @@
 
 `user/message` 會直接儲存完整的 `UserMessage`，其中包括收件箱路由或進入步驟前建立的標識。無論它是直接人類提示詞、合成注入，還是已進入的 Goal Round，都會原樣呈現其 `content`；帶類型的 `source` 是區分三者的唯一通道，並攜帶各領域專有的持久事實。`assistant/message` 和 `tool/result` 也會儲存完整的訊息值。輪次執行仍由 `turn/start` 與 `turn/end` 包圍；`agent.inject()` 會把輸入排隊，直到後續某次 pre-step 領取它，並在 enter 決策中返回它。
 
-`tool/result` 持久保存一條帶標識、user-role 的工具結果訊息，以及選填內部失敗標識和選填呈現元資料。工具成功時的規範 `value` 和便於人類閱讀的規範失敗訊息只存在於執行本機；渲染後的錯誤內容是重播權威訊息。
+`tool/result` 持久保存一條帶標識、user-role 的工具結果訊息，以及選填內部失敗標識和選填呈現中繼資料。工具成功時的規範 `value` 和便於人類閱讀的規範失敗訊息只存在於執行本機；算繪後的錯誤內容是重播權威訊息。
 
 ### 工作階段事件詞彙（`types.ts`）
 
@@ -74,21 +74,21 @@
 
 此包還定義 `TurnEndReasonMap`，即用於輪次結束、可合併擴充且以 `kind` 為標籤的和類型。`turn/start` 只攜帶輪次編號；隨後已進入的 `user/message` 批次記錄其輸入，`llm/retry` 則記錄請求復原。
 
-被中斷的即時輪次以 `{ kind: 'aborted', reason: AgentCancelCause }` 結束，在持久 transcript 中保留類型化取消原因。持久化會將受支持舊格式中的粗粒度中止結果匯入為 `{ kind: 'aborted', reason: { kind: 'legacy' } }`，因為該記錄沒有保留呼叫方。輪次失敗攜帶 `{ kind: 'error', error }`；只有當機復原會合成 `{ kind: 'interrupted' }`。
+被中斷的即時輪次以 `{ kind: 'aborted', reason: AgentCancelCause }` 結束，在持久 transcript 中保留類型化取消原因。持久化會將受支援舊格式中的粗粒度中止結果匯入為 `{ kind: 'aborted', reason: { kind: 'legacy' } }`，因為該記錄沒有保留呼叫方。輪次失敗攜帶 `{ kind: 'error', error }`；只有當機復原會合成 `{ kind: 'interrupted' }`。
 
-每個 `SessionEvent` 都有三個選填頂層欄位（結構元資料）：
+每個 `SessionEvent` 都有三個選填頂層欄位（結構中繼資料）：
 
 - `sourceEventSeqs?: number[]`：被引用為來源的較早事件 seq（例如 `assistant/message` 引用的 `assistant/chunk` seq，或壓縮替換條目引用的已遮蔽條目）。對於 `assistant/message`，存在的 `[]` 表示已知提供方流為空；省略則表示舊版或外部事件沒有記錄源流。其他 surface 事件若有此欄位，則要求非空清單。
 - `surfaceOp?: SurfaceOp`：事件進入 surface 的方式。非 surface 事件（邊界、區塊、用量、錯誤）不含該欄位。
 - `ignorable?: true`：標記讀取器在不認識事件類型時可以安全跳過該事件；缺失表示必需，不認識的事件類型會使工作階段重建被拒絕（[機制](../../../.agents/notes/implemented/architecture/2026-08-10-session-log-version-mechanism.md)）。
 
-### 元資料類型（`types.ts`）
+### 中繼資料類型（`types.ts`）
 
-- `SessionHeader`：工作階段元資料，在發布為 `Session.header` 時寫入一次；脫離和深凍結保證執行時期不可變：`{ version, id, createdAt, cwd?, parentSession?, seedLength?, delegationDepth? }`。持久化 loader 可返回相同資料類型的可變脫離副本。該類型與 `SessionId` 一同歸此包所有，因為 `Session.header` 以它為類型；持久化後端只是重新匯出而不擁有它，否則會形成包迴圈相依性。
+- `SessionHeader`：工作階段中繼資料，在發布為 `Session.header` 時寫入一次；脫離和深凍結保證執行時期不可變：`{ version, id, createdAt, cwd?, parentSession?, seedLength?, delegationDepth? }`。持久化 loader 可返回相同資料類型的可變脫離副本。該類型與 `SessionId` 一同歸此包所有，因為 `Session.header` 以它為類型；持久化後端只是重新匯出而不擁有它，否則會形成包迴圈相依性。
 
 ### 擴充點
 
-- 持久化外掛程式：訂閱 `session/event`（延後寫入），並在 `session/flush`（受等待）及 fiber dispose（資源釋放）時排空。持久後端讀取日誌並重新載入到即時工作階段；這類後端會把元資料約定（`SessionHeader`、`session.header`）與日誌一同儲存。
+- 持久化外掛程式：訂閱 `session/event`（延後寫入），並在 `session/flush`（受等待）及 fiber dispose（資源釋放）時排空。持久後端讀取日誌並重新載入到即時工作階段；這類後端會把中繼資料約定（`SessionHeader`、`session.header`）與日誌一同儲存。
 - 重播／fork：`create(id, { seed })` 校驗並凍結連續的當前格式日誌，再重建 surface；請求標頭必須包含提供方／模型，assistant 訊息必須包含提供方／模型溯源資訊。持久化層在構造該當前格式 seed 前負責讀取相容性處理。`fork(source, boundary?, childSessionId?)` 選擇已完成輪次前綴並記錄譜系。
 - 壓縮：`dsh-compaction-basic` 為摘要檢查點追加一個替換用 `user/message`，而 `dsh-compaction-tool-result-pruner` 追加僅修改內容的 `tool/result` 替換。工具配對邊界策略及其快取歸 [`dsh-compaction` seam](../../compaction/compaction/README.md) 所有；此包擁有有序 surface 成員關係、替換校驗與 `replaceGeneration`。
 
@@ -139,6 +139,6 @@
 ## 已知限制與暫緩事項
 
 - **工作階段分支／樹結構**（pi 風格條目樹）：除非需要超越基於邊界的 `fork()` 能力，否則暫緩。
-- **`fork()` 僅在即時工作階段的穩定邊界處切分**：所選前綴結束時不得有開放輪次，且源工作階段必須位於儲存中；[fork API](../../../.agents/notes/implemented/feature/2026-06-30-session-store-fork-api.md) 不支持對已持久化但未載入的工作階段進行 fork。
+- **`fork()` 僅在即時工作階段的穩定邊界處切分**：所選前綴結束時不得有開放輪次，且源工作階段必須位於儲存中；[fork API](../../../.agents/notes/implemented/feature/2026-06-30-session-store-fork-api.md) 不支援對已持久化但未載入的工作階段進行 fork。
 - **`SESSION_FORMAT_VERSION` 固定為 `0`**：預發布階段不承諾廣泛相容性；`Session` 只接受當前 seed 形狀，後端拒絕其他任何版本並說明方向（更新的版本提示"由更新的 harness 寫入，請升級"；更舊的版本說明尚無升級路徑）。不認識的事件類型同樣被拒絕，除非信封帶 `ignorable` 標記；版本機制見 [session-log 版本機制 Agent Note](../../../.agents/notes/implemented/architecture/2026-08-10-session-log-version-mechanism.md)。範圍受限的儲存匯入升級應由持久化邊界負責（[政策](../../../AGENTS.md)、[訊息標識機制引入前的訊息復原](../../../.agents/notes/implemented/bug-fix/2026-07-28-load-pre-identity-session-messages.md)）。
 - **`TurnEndReasonMap` 不含 ACP（Agent Client Protocol）命名的 `refusal`／`max_turn_requests` 變體**：受生產方約束；只有當配接器或迴圈首次產生這些變體時才加入。

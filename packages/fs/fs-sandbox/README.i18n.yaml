@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/fs/fs-sandbox/README.md
 README.md: 45e32dec337d8c9c2496188d7300ab574841920a
 README.zh.md: ec793bbb098a27682d64c0411709b64f671b85c9
-README.zh-tw.md: 58f871914004061bdaaffbfe74639bbf329e40e9
+README.zh-tw.md: dc6ccd580881d640b0e7380631ea0ec93b73a91e

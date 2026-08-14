@@ -12,7 +12,7 @@
 4. **loader entry** —— 加了 guard 的外掛程式被塞進模組表，再經 `loader.create` 掛載，於是動態包與靜態包共享同一套啟用門控、fiber effect 清理與狀態投影。解除安裝 = 移除 entry + 失效 factory + 撤下樣式。
 5. **run 編排** —— 一條 `cordis/request-run` 事件問這一頁要不要執行某個定義。回答的那一方按順序把 run 跑完：先 host 半、再取原始碼、再瀏覽器半，最後一次回答帶上結果。使用者按下「執行」本身就是授權，同樣走這條編排，只是沒有要回答的對象；而純 host 定義的 run 到 host 半就結束了 —— 這裡沒有第二半可取、也沒有第二半可裝。
 6. **包內 RPC** —— 包內的 `host.call` 經 `dynamicCordisRunner` Remote namespace（`invoke`）轉給它自己的 host 半，三種路由失敗碼各自變成對應的教學錯誤。兩個方向都只馱 JSON：省略入參會以 `null` 過線（所以 `host.call('listServices')` 合法，handler 收到 `null`），而生成的 codec 拒收的載荷（函式、`undefined`、類實例）會變成一條點明「哪次呼叫 + 約定是什麼」的教學錯誤，而不是 codec 那個光禿禿的欄位名。
-7. **渲染期失敗迴流** —— 槽位登錄檔的 supervision 接縫（`slots.onEntryError`）對頁面上每一次 entry 邊界崩潰都會通知；凡屬於本 runner 落座過的包，那**一次**觀察會分兩個出口：一路上行給撰寫它的工作階段（`reportRenderFailure`，給模型看），一路發布到本包 face 上的 `renderFailures`（給面板那一行看）。歸屬以 component 身份為鍵，在 guard 的 `register` 代理落座時記下 —— 登錄檔原樣保存 component，所以不需要再維護一份與之同步的 entry 臺帳。這條通道純屬事後診斷：不馱任何 settle 權威、絕不觸碰 run 的最終回答，而且報告本身失敗時只吞不拋 —— 不讓一次崩潰變成兩次。
+7. **算繪期失敗迴流** —— 槽位登錄檔的 supervision 接縫（`slots.onEntryError`）對頁面上每一次 entry 邊界崩潰都會通知；凡屬於本 runner 落座過的包，那**一次**觀察會分兩個出口：一路上行給撰寫它的工作階段（`reportRenderFailure`，給模型看），一路發布到本包 face 上的 `renderFailures`（給面板那一行看）。歸屬以 component 身份為鍵，在 guard 的 `register` 代理落座時記下 —— 登錄檔原樣保存 component，所以不需要再維護一份與之同步的 entry 臺帳。這條通道純屬事後診斷：不馱任何 settle 權威、絕不觸碰 run 的最終回答，而且報告本身失敗時只吞不拋 —— 不讓一次崩潰變成兩次。
 
 ## 生命週期
 
@@ -24,8 +24,8 @@
 
 `ctx.dynamicCordisRunner` 就是全部的面:
 
-- `activeRuns` —— 每個定義唯一的運送中活動：`awaiting-approval`（要回答的 requestId，加上這次詢問的工作階段、包名與用途）或 `orchestrating`（這次 run 是為哪個工作階段在跑）。兩條臂都帶工作階段，因為歸組屬於這次 run 而不屬於它的階段；待確認那條還帶著詢問自己的文字，因為 `cordis_define` 什麼都不播 —— 一個請求可以點名上一次登錄檔讀取沒覆蓋到的定義，那時這條活動就是那一行唯一的來源。介面從它渲染、自己不留副本 —— 這正是控制元件能活過 remount 的原因。
-- `renderFailures` —— **本頁**最後一次渲染崩潰，按定義索引（槽位、教學 message、以及這次崩潰是否已把 entry 從格位上摘掉），與 live 集合共用同一條通知通道。它按構造就是「本頁當前」：包 stop、被 retract、或重新裝載成功時即清空，所以介面可以直接照著渲染。host 那邊另存一份「跨頁面最後一次」給模型 —— 兩份的歸屬與壽命本來就不同，介面**不要**改成回讀 host 那份。
+- `activeRuns` —— 每個定義唯一的運送中活動：`awaiting-approval`（要回答的 requestId，加上這次詢問的工作階段、包名與用途）或 `orchestrating`（這次 run 是為哪個工作階段在跑）。兩條臂都帶工作階段，因為歸組屬於這次 run 而不屬於它的階段；待確認那條還帶著詢問自己的文字，因為 `cordis_define` 什麼都不播 —— 一個請求可以點名上一次登錄檔讀取沒覆蓋到的定義，那時這條活動就是那一行唯一的來源。介面從它算繪、自己不留副本 —— 這正是控制元件能活過 remount 的原因。
+- `renderFailures` —— **本頁**最後一次算繪崩潰，按定義索引（槽位、教學 message、以及這次崩潰是否已把 entry 從格位上摘掉），與 live 集合共用同一條通知通道。它按構造就是「本頁當前」：包 stop、被 retract、或重新裝載成功時即清空，所以介面可以直接照著算繪。host 那邊另存一份「跨頁面最後一次」給模型 —— 兩份的歸屬與壽命本來就不同，介面**不要**改成回讀 host 那份。
 - `lastRunError` —— 本頁自己那次嘗試為何失敗，按定義索引。它比活動活得更久：host 只拆失敗請求自己啟動的那半，所以一個頁面可能看著 host 報告為「在跑」的定義，而自己什麼都沒裝上。
 - `approve(requestId)` / `decline(requestId)` / `startUserRun({ agentId, id, hasClientHalf })` —— 兩條入口。三者都冪等（按 requestId，使用者自發的 run 按定義 id），所以連點兩次不會起兩次 run。`hasClientHalf` 是必填：純 host 定義沒有原始碼可取，所以由呼叫方從它正在操作的登錄檔行裡把這個事實說出來，而不是讓編排器從一次失敗的取碼裡反推。可回答的請求必然帶瀏覽器半 —— 純 host 定義是 host 自己起的，它不會去問頁面。
 - `subscribe()` / `getSnapshot()` / `isLoaded(id)` —— 這一頁裝了什麼。`isLoaded` 是頁面本機的事實，永遠不等於 host 說的「在跑」。
@@ -36,7 +36,7 @@
 
 #### 模型看到什麼
 
-本包自己不貢獻任何工具、提示詞或上下文；它為一次 `cordis/request-run` 往返發回的回答，是它撰寫並到達模型的第一樣內容 —— host 把它變成那個被阻塞的 `cordis_run` 的結果。成功時帶上已裝載的 revision，以及（當瀏覽器半掛在這一頁沒有的服務上時）那些服務的名字。失敗時帶一個 reason：使用者拒絕的 `rejected`、`host-half-failed`、或 `client-half-failed`；後者還帶上本包自己的文字 —— 出錯階段（`evaluate` / `module-import` / `activate`）加上閉包、guard 或 fiber 的訊息。guard 的教學錯誤（未聲明的服務、被遮蔽的瀏覽器全域性、回傳值裡沒有 `apply`）正是經這個欄位到達模型的。而裝載之後、React 渲染時才發生的崩潰，走下面那條獨立的事後通道。
+本包自己不貢獻任何工具、提示詞或上下文；它為一次 `cordis/request-run` 往返發回的回答，是它撰寫並到達模型的第一樣內容 —— host 把它變成那個被阻塞的 `cordis_run` 的結果。成功時帶上已裝載的 revision，以及（當瀏覽器半掛在這一頁沒有的服務上時）那些服務的名字。失敗時帶一個 reason：使用者拒絕的 `rejected`、`host-half-failed`、或 `client-half-failed`；後者還帶上本包自己的文字 —— 出錯階段（`evaluate` / `module-import` / `activate`）加上閉包、guard 或 fiber 的訊息。guard 的教學錯誤（未聲明的服務、被遮蔽的瀏覽器全域性、回傳值裡沒有 `apply`）正是經這個欄位到達模型的。而裝載之後、React 算繪時才發生的崩潰，走下面那條獨立的事後通道。
 
 #### token 影響
 
@@ -46,11 +46,11 @@
 
 只追加。回答只作為「本來就運送中的那次請求」的工具結果到達模型、延長歷史尾部；本包撰寫的內容不會重寫或重排更早的請求 token，因此原本可複用的前綴仍然可複用。同一定義的多次執行各自產出各自的結果，而不是替換更早那一個。
 
-### run 落定之後的渲染期失敗
+### run 落定之後的算繪期失敗
 
 #### 模型看到什麼
 
-一個裝載得幹乾淨淨的瀏覽器半，仍可能在 React 渲染時崩潰，而那次崩潰發生在 run 已經被回答之後 —— 否則模型只會被告知「ok」，永遠學不到。凡是本頁落座過的包，其 entry 邊界的每一次崩潰都會發回 host（`reportRenderFailure`）：點名槽位、說明這次崩潰是否已把 entry 從格位上摘掉（`abdicated`：包的 UI 是沒了、而不只是壞了），以及一條寫給作者的 message —— 崩潰文字，外加「文字裡點到了某個被摘掉的瀏覽器全域性、但文字自己沒教」時補上的那句教學：繞過閉包陷阱的 `window.setInterval` 只會崩成 `is not a function`，它自己什麼都解釋不了。host 每包只留最後一條，經 `cordis_inspect` 透給模型；這條通道上的任何東西都不會進入 run 的最終回答。同一次觀察還會落到 `renderFailures` 上給本頁介面用 —— 一個觀察者、兩個出口，因為「跨頁面最後一次崩潰（給模型）」與「這一頁此刻正在顯示什麼」是兩件壽命不同的事實。
+一個裝載得幹乾淨淨的瀏覽器半，仍可能在 React 算繪時崩潰，而那次崩潰發生在 run 已經被回答之後 —— 否則模型只會被告知「ok」，永遠學不到。凡是本頁落座過的包，其 entry 邊界的每一次崩潰都會發回 host（`reportRenderFailure`）：點名槽位、說明這次崩潰是否已把 entry 從格位上摘掉（`abdicated`：包的 UI 是沒了、而不只是壞了），以及一條寫給作者的 message —— 崩潰文字，外加「文字裡點到了某個被摘掉的瀏覽器全域性、但文字自己沒教」時補上的那句教學：繞過閉包陷阱的 `window.setInterval` 只會崩成 `is not a function`，它自己什麼都解釋不了。host 每包只留最後一條，經 `cordis_inspect` 透給模型；這條通道上的任何東西都不會進入 run 的最終回答。同一次觀察還會落到 `renderFailures` 上給本頁介面用 —— 一個觀察者、兩個出口，因為「跨頁面最後一次崩潰（給模型）」與「這一頁此刻正在顯示什麼」是兩件壽命不同的事實。
 
 #### token 影響
 

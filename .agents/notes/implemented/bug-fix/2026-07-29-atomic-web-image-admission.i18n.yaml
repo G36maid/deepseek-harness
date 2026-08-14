@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-29-atomic-web-image-admission.md
-2026-07-29-atomic-web-image-admission.md: 6a387c9e1cd775b06ac08603dd66c85fde68a2b9
-2026-07-29-atomic-web-image-admission.zh.md: cc8701cd32cc379ec598cca1a73b2a0ba958c0cf
-2026-07-29-atomic-web-image-admission.zh-tw.md: 7862a1752da334211ec03207b67699192fe66138

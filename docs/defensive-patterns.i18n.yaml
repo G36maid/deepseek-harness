@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/defensive-patterns.md
 defensive-patterns.md: 506c4a758b0c776980ccaeac2f36609c71a38c2a
 defensive-patterns.zh.md: b4e66287dfb4ba4bd6da77aa4d8d7f0cf49361f4
-defensive-patterns.zh-tw.md: 67b9618c3bba1b4362463d08aba14c74adf491c0
+defensive-patterns.zh-tw.md: 470a6e3084751ad9646709f63aa1e640958803b9

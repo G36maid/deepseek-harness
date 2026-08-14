@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/identity/anonymous-user-id/README.md
 README.md: 6fafe9f21b1bdf409c0a9f5d5cc93536d5a3652d
 README.zh.md: 0cf5b015b15750391f98d1428517ecff7d37c773
-README.zh-tw.md: ff51050e16ca73e566790283c0e2d791491c963d
+README.zh-tw.md: 9efc8c4dc084972146611d6455d8755b2d299b69

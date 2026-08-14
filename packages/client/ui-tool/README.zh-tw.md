@@ -2,11 +2,11 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-Client 工具展示外掛程式。`ui-conversation` 透過 `conversation.chat.node` 的匹配 key 分發每個已排序的 `tool-call` Conversation Node；本包渲染其中的 root 及其 Code Dispatch 子呼叫，並把每個原子呼叫透過 keyed slot `tool.call.toolview` 分發。沒有註冊的工具名稱使用通用卡片。
+Client 工具展示外掛程式。`ui-conversation` 透過 `conversation.chat.node` 的匹配 key 分發每個已排序的 `tool-call` Conversation Node；本包算繪其中的 root 及其 Code Dispatch 子呼叫，並把每個原子呼叫透過 keyed slot `tool.call.toolview` 分發。沒有註冊的工具名稱使用通用卡片。
 
 業務 UI 包只註冊 wire 工具名稱和原子檢視表，不配對工作階段事件、不重建 transcript（文字記錄），也不擁有 root/subcall 拓撲。執行時期仍對 call/result 配對、生命週期和遞迴 `subCalls` 投影擁有最終決定權；conversation view 仍對 ChatFlow 位置擁有最終決定權。
 
-## 渲染約定
+## 算繪約定
 
 `ToolCallTree` 接收一個已經包含遞迴 `subCalls` 的 root `ToolCallBlock`、selection 狀態、工作階段 `cwd`，以及用於開啟檔案和檢查呼叫的 Host 回呼。它遞迴遍歷標準呼叫塊，讓 root 與任意深度的 child 經過同一條原子分發路徑，不訂閱獨立的 parent-to-children map。
 
@@ -36,7 +36,7 @@ owner 載荷為 `ToolCallOwnerProps`：`callId`、`toolName`、凍結的 `block`
 
 ## 模型體驗
 
-無，因為本包只渲染已經記錄的工具呼叫和結果，不改變模型請求、工具執行或工作階段事件。
+無，因為本包只算繪已經記錄的工具呼叫和結果，不改變模型請求、工具執行或工作階段事件。
 
 #### KV Cache 影響
 
@@ -44,6 +44,6 @@ owner 載荷為 `ToolCallOwnerProps`：`callId`、`toolName`、凍結的 `block`
 
 ## 已知限制與後續工作
 
-- Host 不把 `run_code` 暴露為 Code Mode 程序 binding，因此生產事件只產生一層分發；遞迴的執行時期/UI 約定支持巢狀。
+- Host 不把 `run_code` 暴露為 Code Mode 程序 binding，因此生產事件只產生一層分發；遞迴的執行時期/UI 約定支援巢狀。
 - 第一方工具檢視表集中在本包，可以透過 keyed slot 獨立遷移到各自所屬的業務包。
 - 工具文案複用 `ui-conversation` locale namespace。

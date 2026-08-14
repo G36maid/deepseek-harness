@@ -65,11 +65,11 @@ ValidationError: invalid config:
   - $.targets expected array but got not-an-array (at targets)
 ```
 
-外掛程式的 fiber 進入 FAILED 狀態，本教程的啟動器列印錯誤後以狀態碼 1 退出。如果某個外掛程式的設定透過了 schema 驗證，但其中指定的資源或提供方不可用，該外掛程式也應當在能解析該引用時立即拒絕。
+外掛程式的 fiber 進入 FAILED 狀態，本教學的啟動器列印錯誤後以狀態碼 1 結束。如果某個外掛程式的設定透過了 schema 驗證，但其中指定的資源或提供方不可用，該外掛程式也應當在能解析該引用時立即拒絕。
 
 ## 計算得到的設定值
 
-本倉庫使用的 loader 支持 `!!js` 標籤，用於必須在載入時計算的設定值：
+本倉庫使用的 loader 支援 `!!js` 標籤，用於必須在載入時計算的設定值：
 
 ```yaml
 - name: './config-demo.ts'
@@ -77,7 +77,7 @@ ValidationError: invalid config:
     greeting: !!js process.env.DEMO_GREETING ?? 'Hello'
 ```
 
-`!!js` 僅在 `config` 與條目 `disabled` 欄位內有效。`disabled: !!js ...` 在每次掛載決策時基於 loader 上下文求值（本倉庫的擴充），可以按平臺或環境門控一行；其餘元資料（`name`、`id`、`inject` 等）保持靜態，其中的表達式是普通真值資料。詳見 [loader 設定](../cordis-primer.md#loader-configuration)。
+`!!js` 僅在 `config` 與條目 `disabled` 欄位內有效。`disabled: !!js ...` 在每次掛載決策時基於 loader 上下文求值（本倉庫的擴充），可以按平臺或環境門控一行；其餘中繼資料（`name`、`id`、`inject` 等）保持靜態，其中的運算式是普通真值資料。詳見 [loader 設定](../cordis-primer.md#loader-configuration)。
 
 下一章：[組合與 HMR（熱模組替換）](06-composition-and-hmr.md)：將 `cordis.yml` 視為應用。
 

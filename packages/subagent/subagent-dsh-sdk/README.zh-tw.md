@@ -12,7 +12,7 @@ SDK 提供方會在全新的子行程中把每個 subagent 作為完整的 DeepS
 
 返回的 run id 在父級命名空間中生成；子執行時期的工作階段 id 只存在於子行程內部。發布後，提供方擁有一段 SDK 活動，並從子工作階段事件中讀取答案：最後一條完整且非空的 `assistant/message`（記錄 usage 的空內容訊息會被跳過）；若沒有這類訊息，則取累積的 `text-delta` 流。取消或發生錯誤後，部分輸出仍然可用。
 
-`dispose()`（資源釋放）是冪等的：先在本機把結果確定為 `aborted`（協議層面沒有提示詞取消機制），再關閉執行時期，即先發出一次有界的協議 `shutdown` 請求，隨後透過共享的 stdin-EOF → SIGTERM → SIGKILL 階梯使行程實際退出。
+`dispose()`（資源釋放）是冪等的：先在本機把結果確定為 `aborted`（協定層面沒有提示詞取消機制），再關閉執行時期，即先發出一次有界的協定 `shutdown` 請求，隨後透過共享的 stdin-EOF → SIGTERM → SIGKILL 階梯使行程實際結束。
 
 ## 停止原因對映
 
@@ -24,7 +24,7 @@ Provider 不宣告任何啟動期能力（`outputSchema`/`depthLimit`/`toolFilte
 
 ## 設定
 
-| 鍵 | 默認 | 含義 |
+| 鍵 | 預設 | 含義 |
 |---|---|---|
 | `providerName` | `dsh-sdk` | `ctx.subagents` 上的註冊名。 |
 | `command` | 必填 | 每次執行時期 spawn 的可執行文件（子執行時期 bin 或打包後的可執行文件）。 |
@@ -34,9 +34,9 @@ Provider 不宣告任何啟動期能力（`outputSchema`/`depthLimit`/`toolFilte
 | `model` | `deepseek-v4-flash` | 寫入子行程 `initialize` 的模型。 |
 | `maxTokens` | 配接器／提供方路由預設值 | 寫入子行程 `initialize` 的單次請求輸出 token 上限；對子執行時期的根 agent 及其行程內後代生效。 |
 | `env` | `{}` | 在憑據擦除後的父環境之上疊加的顯式子環境（例如子行程自己的 `DEEPSEEK_API_KEY`，或 `DSH_CORDIS_CONFIG`）。 |
-| `shutdownTimeoutMs` | `1000` | dispose 期間協議 `shutdown` 交換的時限。 |
+| `shutdownTimeoutMs` | `1000` | dispose 期間協定 `shutdown` 交換的時限。 |
 | `disposeEofGraceMs` | `6000` | stdin EOF 之後、平臺終止之前的寬限。 |
-| `disposeGraceMs` | `3000` | 終止後的退出確認視窗；POSIX 在 SIGTERM 之後、SIGKILL 之前也等待同樣時長。 |
+| `disposeGraceMs` | `3000` | 終止後的結束確認視窗；POSIX 在 SIGTERM 之後、SIGKILL 之前也等待同樣時長。 |
 
 ```yaml
 - id: subagent-dsh-sdk
@@ -57,7 +57,7 @@ Provider 不宣告任何啟動期能力（`outputSchema`/`depthLimit`/`toolFilte
 
 子行程環境以 [`dsh-subprocess`](../../subprocess/README.md) seam 的 `scrubbedParentEnv()` 為基礎，先移除疑似憑據和名稱為 `DSH_*` 的環境變數，再合併顯式 `config.env` 值。子行程由 SDK 用戶端 spawn，而不是經由 `ctx.subprocess` spawn（這是 subprocess README 中記錄的 SDK 託管傳輸例外），因此本後端會自行執行環境清理。JSON-RPC 協定格式纔是真正的序列化邊界。
 
-本包沒有默認匯出。否則 Cordis loader 解包會隱藏具名 `inject` 元資料；見[事後檢討（postmortem）0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)。
+本包沒有預設匯出。否則 Cordis loader 解包會隱藏具名 `inject` 中繼資料；見[事後檢討（postmortem）0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)。
 
 ## 模型體驗
 
@@ -92,6 +92,6 @@ Provider 不宣告任何啟動期能力（`outputSchema`/`depthLimit`/`toolFilte
 ## 已知限制與暫緩事項
 
 - **每次執行都使用全新的執行時期行程**：不使用行程池；harness 執行時期需要啟動完整的外掛程式樹，因此每次執行的 spawn 成本高於 ACP 後端通常使用的子行程。
-- **不支持選填的啟動時能力**：父級無法在子行程內強制執行 `outputSchema`、深度限制、工具過濾或 persona；應改為設定子行程自身的 `cordis.yml`。
+- **不支援選填的啟動時能力**：父級無法在子行程內強制執行 `outputSchema`、深度限制、工具過濾或 persona；應改為設定子行程自身的 `cordis.yml`。
 - **子行程的 transcript（文字記錄）保留在其自身的工作階段根目錄中**：父級日誌只記錄委派工具呼叫／結果（seam 的子級隔離規則）；流式 `session.event` 通道只用於提取輸出，不會橋接到父級日誌中。
-- **僅支持本機子行程**：解析出的 cwd 是本機路徑；遠端執行時期需要獨立的後端。
+- **僅支援本機子行程**：解析出的 cwd 是本機路徑；遠端執行時期需要獨立的後端。

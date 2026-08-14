@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-28-portable-execution-world-consumers.md
-2026-07-28-portable-execution-world-consumers.md: 94dc9745d5269f57e1ff7244516e945ed4508037
-2026-07-28-portable-execution-world-consumers.zh.md: 4c618965b04552e6d478f978703ef92fdb89d5b8
-2026-07-28-portable-execution-world-consumers.zh-tw.md: 3ce48d8ddafa7cb62b238499bf921538ad67fbd0

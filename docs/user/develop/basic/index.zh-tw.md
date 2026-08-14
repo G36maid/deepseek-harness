@@ -2,11 +2,11 @@
 
 [English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
-本教程會建立一個最小的 Harness 外掛程式，並將其載入到 Web UI 中。請從已完成[從原始碼執行路徑](../../../../README.md#run-from-source)的倉庫檢出開始。
+本教學會建立一個最小的 Harness 外掛程式，並將其載入到 Web UI 中。請從已完成[從原始碼執行路徑](../../../../README.md#run-from-source)的倉庫檢出開始。
 
 ## 建立本機項目
 
-在倉庫根目錄建立本教程使用的臨時項目：
+在倉庫根目錄建立本教學使用的臨時項目：
 
 ```sh
 mkdir -p scratch-plugin/src
@@ -104,7 +104,7 @@ export function apply(ctx: Context) {
 
 ## 外掛程式的三種形態
 
-除了函式形式，外掛程式還支持對象形式和類形式：
+除了函式形式，外掛程式還支援對象形式和類形式：
 
 ### 對象形式
 
@@ -141,4 +141,4 @@ export default class MyService extends Service {
 
 - [開發一個工具](./tool.md) — 瞭解工具定義 DSL
 - [外掛程式設定](./config.md) — 讓外掛程式接受使用者設定
-- [Cordis 框架教程](../../../cordis-tutorial/index.md) — 底層的外掛程式框架，在臨時目錄中動手建置，無需 API 金鑰
+- [Cordis 框架教學](../../../cordis-tutorial/index.md) — 底層的外掛程式框架，在臨時目錄中動手建置，無需 API 金鑰

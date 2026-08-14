@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-spawn-in-process/README.md
 README.md: 8ff5dc78739880310370458e2308911c3bd0c143
 README.zh.md: 1a70d4ca845a25fe0ef834c97bcf6aeb31def7d7
-README.zh-tw.md: 68790c6de50b9a826c6bdf54b8af7d0777e9471e
+README.zh-tw.md: 2798eb48eb45987dec6f0642c70547961cb738e6

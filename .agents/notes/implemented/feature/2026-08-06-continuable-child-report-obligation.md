@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-06-continuable-child-report-obligation.zh.md) | [繁體中文](2026-08-06-continuable-child-report-obligation.zh-tw.md)
+
 
 ## Problem
 

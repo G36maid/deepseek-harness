@@ -6,9 +6,9 @@
 
 ## 為什麼是一行外掛程式，而不是把登錄檔搬下來
 
-工具登錄檔搬不進 preset。它的消費者全在宿主平面——[`dsh-agent-loop`](../agent-loop/README.md) 讀它的調度器，[`dsh-apiproxy`](../../host/apiproxy/README.md) 讀它的 presenter 來渲染工具卡，每個工具外掛程式都往裡註冊——而一個服務只有在**所有**消費者一起下沉時才能下沉。
+工具登錄檔搬不進 preset。它的消費者全在宿主平面——[`dsh-agent-loop`](../agent-loop/README.md) 讀它的調度器，[`dsh-apiproxy`](../../host/apiproxy/README.md) 讀它的 presenter 來算繪工具卡，每個工具外掛程式都往裡註冊——而一個服務只有在**所有**消費者一起下沉時才能下沉。
 
-preset 能擁有的是這份登錄檔的**呈現方式**。`ctx.tools.presentAs()` 只為正在掛載的那個 agent 聲明，於是一個 Code Mode 工作階段可以和多個 native 工作階段同進程並存，各自看到各自的清單。[`dsh-tools`](../tools/README.md) 那一行上的 `mode` 仍然是預設值，供未作聲明的 agent 使用。
+preset 能擁有的是這份登錄檔的**呈現方式**。`ctx.tools.presentAs()` 只為正在掛載的那個 agent 聲明，於是一個 Code Mode 工作階段可以和多個 native 工作階段同行程並存，各自看到各自的清單。[`dsh-tools`](../tools/README.md) 那一行上的 `mode` 仍然是預設值，供未作聲明的 agent 使用。
 
 ## 它做什麼
 

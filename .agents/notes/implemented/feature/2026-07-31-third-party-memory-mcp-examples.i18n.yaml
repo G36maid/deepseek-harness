@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-third-party-memory-mcp-examples.md
-2026-07-31-third-party-memory-mcp-examples.md: 14ae9b502349f82be8c3e6d9067d66bd3e9dc0ce
-2026-07-31-third-party-memory-mcp-examples.zh.md: f727a0f537a7ff2d57b209661093f7b659327210
-2026-07-31-third-party-memory-mcp-examples.zh-tw.md: 7e08c672d9551a9973e5b3d4ee83e8a31cb0bc3c

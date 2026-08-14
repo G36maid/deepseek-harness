@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-primitives/README.md
 README.md: 8b2d05559d76170d6af3032ee1d4dca61c4dc8a5
 README.zh.md: 82ef55d0a145e1b3601e8fbf76e7b8b523c06f0f
-README.zh-tw.md: ab179929c6d517641e2ecc8c565f0ffaa7e368a5
+README.zh-tw.md: 19b39f82c742706c4602857403d35147594cb546

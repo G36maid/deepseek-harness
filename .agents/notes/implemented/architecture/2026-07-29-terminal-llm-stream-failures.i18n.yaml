@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-29-terminal-llm-stream-failures.md
-2026-07-29-terminal-llm-stream-failures.md: 31c2189821cf0852c50e9171611d1a5b2e6ebb9b
-2026-07-29-terminal-llm-stream-failures.zh.md: 7a1beece7e35dca4c34e1403985166a73164dfee
-2026-07-29-terminal-llm-stream-failures.zh-tw.md: 49e21f5cb8d31687c6e45e2c1b59c50f93314489

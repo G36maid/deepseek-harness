@@ -22,7 +22,7 @@
 
 只 mock 開銷高或不確定的邊界（LLM（大型語言模型）配接器、網路、時鐘）；下游一切保持真實。手寫替身只能證明橋接層在搬運位元組，不能證明交付的工具行為符合斷言。橋接工具呼叫測試將指令碼化 mock 模型與真實工具和執行器配合使用：`makeBridgeHarness({ withBash: true })` 接入 `dsh-bash-local` 與 `dsh-tool-bash`，然後執行 `echo`。
 
-復原測試按步驟區分區塊前與區塊後的失敗，並證明失敗區塊不會派生出訊息或工具副作用。覆蓋耗盡、取消、策略組合、持久化、狀態、協議計數、會關閉傳輸的空閒逾時，以及交付的 Loader 組合。
+復原測試按步驟區分區塊前與區塊後的失敗，並證明失敗區塊不會派生出訊息或工具副作用。覆蓋耗盡、取消、策略組合、持久化、狀態、協定計數、會關閉傳輸的空閒逾時，以及交付的 Loader 組合。
 
 ## 驗證外部世界，而非自我報告
 
@@ -31,8 +31,8 @@ e2e 斷言應重新執行命令或從外部重新讀取文件；對 agent 自身
 ## 測試真實入口路徑
 
 - 產品可見的外掛程式必須有一個非單元的真實組合測試。手動建置的 `ctx.plugin(...)` 套件不夠：透過 Loader 和 app/process 啟動僅用於測試的 `cordis.yml`，只 mock 外部服務或非確定性輸入，斷言模型可見的請求/日誌、持久狀態或使用者可見輸出。不要把 opt-in 選項混入交付預設值。
-- 一個守衛只有在回歸真的能讓它失敗時纔有效。對於沒有 `inject` 的外掛程式（bundle/組合外掛程式），Loader 冒煙測試在默認匯出替換必需的具名匯出時仍然綠著——需要新增顯式的 `expect('default' in mod).toBe(false)` 加 `unwrapExports` 往返斷言，並證明它有效：引入回歸、觀察變紅、回退。
-- 「真實入口路徑」指已發布的產物：包的 `bin` 所執行的是建置後的 `lib/bin.js`，並由普通 `node` 執行，從而暴露 tsx 會掩蓋的失敗（結帳競態、模組解析、被吞掉的載入失敗）。同樣的規則適用於非 index 執行時期入口（worker-thread 的同級文件 `lib/worker.cjs`），也適用於多個 bundle 共享的單例模組（`packages/sdk/server/tests/built-scope-carrier.e2e.ts`）。保持建置產物冒煙測試綠色（`packages/examples/*/tests/built-bin.e2e.ts`、`packages/code-runtime/code-runtime-worker-thread/tests/built-lib.e2e.ts`），並斷言真正缺失的設定以非零狀態退出。
+- 一個守衛只有在回歸真的能讓它失敗時纔有效。對於沒有 `inject` 的外掛程式（bundle/組合外掛程式），Loader 冒煙測試在預設匯出替換必需的具名匯出時仍然綠著——需要新增顯式的 `expect('default' in mod).toBe(false)` 加 `unwrapExports` 往返斷言，並證明它有效：引入回歸、觀察變紅、回退。
+- 「真實入口路徑」指已發布的產物：包的 `bin` 所執行的是建置後的 `lib/bin.js`，並由普通 `node` 執行，從而暴露 tsx 會掩蓋的失敗（結帳競態、模組解析、被吞掉的載入失敗）。同樣的規則適用於非 index 執行時期入口（worker-thread 的同級文件 `lib/worker.cjs`），也適用於多個 bundle 共享的單例模組（`packages/sdk/server/tests/built-scope-carrier.e2e.ts`）。保持建置產物冒煙測試綠色（`packages/examples/*/tests/built-bin.e2e.ts`、`packages/code-runtime/code-runtime-worker-thread/tests/built-lib.e2e.ts`），並斷言真正缺失的設定以非零狀態結束。
 
 ## 測試解析：僅限原始碼
 
@@ -41,9 +41,9 @@ e2e 斷言應重新執行命令或從外部重新讀取文件；對 agent 自身
 ## 測試子行程啟動模式
 
 - CI 與已有建置產物的測試通道透過共享雙模式啟動器，從建置後的 `lib/` 執行每個示例或 Cordis 設定子行程。不要為這些子行程手寫 `--import tsx`。
-- 不載入 Cordis 的協議與作業系統 fixture 直接透過 Node 執行使用可擦除文法的 `.ts` 文件，不經過 tsx 或根路徑對映。
+- 不載入 Cordis 的協定與作業系統 fixture 直接透過 Node 執行使用可擦除文法的 `.ts` 文件，不經過 tsx 或根路徑對映。
 - 只有測試對象本身是原始碼路徑解析時，纔可以選擇 `src`；在測試中寫明這一約定。
 
 ## 何時需要快照測試
 
-每項非平凡的模型可見、協議可見或人類可見變更，都必須在同一 PR 中，透過可執行示例所屬的快照套件新增或更新無金鑰場景。包測試、e2e 斷言、mock 與僅測試組合、PR 理由都不能取代組裝後的 transcript；必要時應擴充 harness。ACP 自動化場景使用 `examples/<name>/tests/snapshots/`，即基於 [`dsh-acp-snapshot`](../packages/test-support/acp-snapshot/README.md) 套件工廠的場景表（`examples/acp-agent` 為主套件）；`examples/headless-agent` 擁有內部規範事件 JSONL 快照與重播 fixture。`pwsh-tool-turn` ACP 場景啟動真實 `pwsh`，在無 `pwsh` 的主機上跳過。已完成的互動式終端機旅程使用 `apps/cli/tests/snapshots/` 下由 JSONL 驅動的場景；瞬態呈現使用包內語義矩陣，輸入、Loader 選擇或終端機清理髮生變化時還要新增 PTY 用例。瀏覽器渲染的 Web GUI 旅程使用上述 Web 應用快照套件。新的能力 seam、生命週期變體或 transcript 呈現介面在計畫階段就要列出每個覆蓋層級，並在實作前驗證 harness 能夠表達它們。
+每項非平凡的模型可見、協定可見或人類可見變更，都必須在同一 PR 中，透過可執行示例所屬的快照套件新增或更新無金鑰場景。包測試、e2e 斷言、mock 與僅測試組合、PR 理由都不能取代組裝後的 transcript；必要時應擴充 harness。ACP 自動化場景使用 `examples/<name>/tests/snapshots/`，即基於 [`dsh-acp-snapshot`](../packages/test-support/acp-snapshot/README.md) 套件工廠的場景表（`examples/acp-agent` 為主套件）；`examples/headless-agent` 擁有內部規範事件 JSONL 快照與重播 fixture。`pwsh-tool-turn` ACP 場景啟動真實 `pwsh`，在無 `pwsh` 的主機上跳過。已完成的互動式終端機旅程使用 `apps/cli/tests/snapshots/` 下由 JSONL 驅動的場景；瞬態呈現使用包內語義矩陣，輸入、Loader 選擇或終端機清理髮生變化時還要新增 PTY 用例。瀏覽器算繪的 Web GUI 旅程使用上述 Web 應用快照套件。新的能力 seam、生命週期變體或 transcript 呈現介面在計畫階段就要列出每個覆蓋層級，並在實作前驗證 harness 能夠表達它們。

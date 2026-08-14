@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-09-concrete-prose-names-actors-and-recorded-facts.md
-2026-08-09-concrete-prose-names-actors-and-recorded-facts.md: 49b8a507df4b936c62a0189c1349e2b104c814ac
-2026-08-09-concrete-prose-names-actors-and-recorded-facts.zh.md: 115618d883fcf96b8947bd7576b2a037a600a3bf
-2026-08-09-concrete-prose-names-actors-and-recorded-facts.zh-tw.md: b3cdc98bff6fe2d70ec31a8f426a782f5bb52930

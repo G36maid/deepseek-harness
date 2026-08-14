@@ -6,7 +6,7 @@ spawn 提供方會在當前行程中建立一個全新的子 `Agent`。子 agent
 
 ## 行為
 
-`start(request)` 不傳入 seed，直接委託給 [`startInProcessRun`](../subagent-in-process-driver/README.md)，並在子 agent 發布後才返回。子 agent 獲得父 agent 的工作目錄/工作階段譜系，並默認繼承父 agent 模型（除非覆蓋），但以空對話開始執行。
+`start(request)` 不傳入 seed，直接委託給 [`startInProcessRun`](../subagent-in-process-driver/README.md)，並在子 agent 發布後才返回。子 agent 獲得父 agent 的工作目錄/工作階段譜系，並預設繼承父 agent 模型（除非覆蓋），但以空對話開始執行。
 
 共享驅動器負責深度檢查、persona 與工具過濾器設定、結構化輸出、透過必需的訊號執行取消、單次執行、結果讀取和完全靜止後的 dispose（資源釋放）。啟動遭拒不會留下已發布的子 agent；啟動呼叫兌現後解除安裝提供方，也不會撤銷由持有方擁有的執行。
 
@@ -18,7 +18,7 @@ spawn 聲明 `{ outputSchema: true, depthLimit: true, toolFilter: true, persona:
 
 | 鍵 | 含義 |
 |---|---|
-| `providerName` | `ctx.subagents` 上的登錄檔名稱（默認 `spawn`）。 |
+| `providerName` | `ctx.subagents` 上的登錄檔名稱（預設 `spawn`）。 |
 
 ## 模型體驗
 
@@ -26,7 +26,7 @@ spawn 聲明 `{ outputSchema: true, depthLimit: true, toolFilter: true, persona:
 
 #### 模型看到的內容
 
-全新的子 agent 逐字接收獨立任務內容，默認繼承父 agent 的模型和工作區，並看到帶有已設定子 agent 作用域 persona 遮蔽的全域性提示詞。工具過濾器會為該子 agent 移除全域性協議 schema、可執行工具尋找和 Code Mode SDK 綁定，但保留獨立註冊的指導內容。它不接收任何父 agent 對話訊息；過濾控制的是可見性與組合，並非從父 agent 繼承的權限授予。
+全新的子 agent 逐字接收獨立任務內容，預設繼承父 agent 的模型和工作區，並看到帶有已設定子 agent 作用域 persona 遮蔽的全域性提示詞。工具過濾器會為該子 agent 移除全域性協定 schema、可執行工具尋找和 Code Mode SDK 綁定，但保留獨立註冊的指導內容。它不接收任何父 agent 對話訊息；過濾控制的是可見性與組合，並非從父 agent 繼承的權限授予。
 
 #### Token 影響
 

@@ -6,7 +6,7 @@
 
 ## 摘要
 
-兩個整合錯誤在單元測試全覆蓋的情況下仍然導致 ACP 崩潰：一個默認匯出使 Loader 丟棄了 `inject`，一個經可追蹤代理的選填服務尋找在 shadow 邊界上失敗。手動掛載的測試繞過了這兩條路徑。修復方案增加了無需 API key 的真實 Loader 測試覆蓋，並為外掛程式匯出和選填服務訪問制定了包級規則。
+兩個整合錯誤在單元測試全覆蓋的情況下仍然導致 ACP 崩潰：一個預設匯出使 Loader 丟棄了 `inject`，一個經可追蹤代理的選填服務尋找在 shadow 邊界上失敗。手動掛載的測試繞過了這兩條路徑。修復方案增加了無需 API key 的真實 Loader 測試覆蓋，並為外掛程式匯出和選填服務訪問制定了包級規則。
 
 ## 概述
 
@@ -18,7 +18,7 @@ ACP 伺服器無法建立或載入任何一個工作階段——而這正是編�
 
 ## 時間線
 
-- bridge（RFC 010）落地時有一套完整的單元測試，覆蓋 codec、記憶體傳輸、生成的協議訊息、失敗路徑和 HMR（熱模組替換）；另有一個需要 key 的真實 API e2e 測試和一個無需 key 的 stdout 純淨性 e2e 測試。全部綠色，100% 覆蓋率。
+- bridge（RFC 010）落地時有一套完整的單元測試，覆蓋 codec、記憶體傳輸、生成的協定訊息、失敗路徑和 HMR（熱模組替換）；另有一個需要 key 的真實 API e2e 測試和一個無需 key 的 stdout 純淨性 e2e 測試。全部綠色，100% 覆蓋率。
 - 真實 Zed 工作階段在 `session/new` 上立即失敗，報錯 `cannot get property "agents" without inject`。
 - 調查最初沿著一個 Cordis「traceable/shadow」理論展開（看似合理，且該機制確實存在——見 Bug #2），隨後在 vendor 目錄中的 `reflect.ts` 裡對實際 fiber 遍歷做了插樁，並執行了真實子行程。跟蹤結果顯示，例外在 `apply()` 第 179 行、*外掛程式載入時*拋出，位於 ROOT fiber 且沒有 shadow——推翻了 shadow 理論對 `session/new` 的解釋。
 - 找到根因 #1：一行多餘的 `export default apply`。刪除後 `session/new` 修復。
@@ -47,7 +47,7 @@ unwrapExports(exports: any) {
 }
 ```
 
-存在默認匯出時，`exports.default ?? exports` 解析為**裸 `apply` 函式**。裸函式沒有 `inject`、沒有 `name`、沒有 `Config` 屬性——這些作為*同級*命名匯出存在於模組命名空間上，而 unwrap 到 `.default` 把整個命名空間丟棄了。Loader 隨後基於空的 `inject` 建置了外掛程式的 fiber。
+存在預設匯出時，`exports.default ?? exports` 解析為**裸 `apply` 函式**。裸函式沒有 `inject`、沒有 `name`、沒有 `Config` 屬性——這些作為*同級*命名匯出存在於模組命名空間上，而 unwrap 到 `.default` 把整個命名空間丟棄了。Loader 隨後基於空的 `inject` 建置了外掛程式的 fiber。
 
 因此 `apply` 在一個**沒有注入任何服務**的 fiber 中執行。第一行 `const agents = ctx.agents` 遍歷 fiber 樹（ROOT → Include → Loader → ROOT），在所有 fiber 的 store 中都找不到 `agents`，到達根 fiber（`runtime === null`）後拋出 `cannot get property "agents" without inject`。崩潰發生在*載入時*，而非後續的請求處理器中——請求只是恰好觸發了載入。
 
@@ -57,7 +57,7 @@ unwrapExports(exports: any) {
 
 修復 #1 後，`session/new` 正常工作，但 `session/load` 仍然拋出 `cannot get property "sessionPersistence" without inject`。這個問題*確實*源於 Cordis 的可追蹤代理/shadow 機制，值得精確理解。
 
-`session/load` 呼叫 `agents.resume(...)`，後者委託給 `AgentLoop.resume()`，其中讀取了 `this.ctx.sessionPersistence`。`AgentLoop` 的 `static inject` 故意不包含 `sessionPersistence`——注入它會導致非持久化的演示永遠掛起，等待一個永遠不會載入的後端。該服務由一個獨立的兄弟外掛程式/fiber 提供，以機會性方式讀取。
+`session/load` 呼叫 `agents.resume(...)`，後者委託給 `AgentLoop.resume()`，其中讀取了 `this.ctx.sessionPersistence`。`AgentLoop` 的 `static inject` 故意不包含 `sessionPersistence`——注入它會導致非持久化的示範永遠掛起，等待一個永遠不會載入的後端。該服務由一個獨立的兄弟外掛程式/fiber 提供，以機會性方式讀取。
 
 Cordis 中的服務訪問透過上下文代理（`vendor/cordis/src/reflect.ts`）進行。當透過從另一條 fiber 取得的*可追蹤代理*呼叫服務方法時（此處：bridge fiber 呼叫 `ctx.agents.resume`，登錄檔返回 `this.factory`——即 `AgentLoop`——重新包裝為綁定到呼叫方的新 traceable 代理），`createShadowMethod`（`vendor/cordis/src/utils.ts`）將 `this` 重新綁定到一個 *shadow* 對象，其 `ctx` 攜帶 `[symbols.shadow]` 指向 `AgentLoop` 自身的構造上下文。在 `resume` 內部，`this.ctx.sessionPersistence` 的解析從 shadow 的 fiber 開始遍歷：
 
@@ -108,6 +108,6 @@ if (!ctx.fiber.runtime) return ctx.reflect.get(prop, false)   // ← direct glob
 ## 經驗教訓
 
 - 命名空間外掛程式與 default export 在 Cordis Loader 下互斥。選擇命名空間形式（`name`/`inject`/`Config`/`apply`），不要新增 `export default`——`unwrapExports` 會丟棄命名空間。
-- 對於外掛程式機會性讀取但未在 `static inject` 中聲明的服務，使用 `ctx.get(name)`，絕不使用 `ctx.<name>`。屬性代理透過僅向祖先方向的 fiber 遍歷解析，經由外部 shadow 時會失敗；`ctx.get(name)` 是拓撲無關的尋找（且默認採用嚴格模式——非活躍後端讀取為 `undefined`，不會在 teardown 期間仍將該後端返回給呼叫方）。
+- 對於外掛程式機會性讀取但未在 `static inject` 中聲明的服務，使用 `ctx.get(name)`，絕不使用 `ctx.<name>`。屬性代理透過僅向祖先方向的 fiber 遍歷解析，經由外部 shadow 時會失敗；`ctx.get(name)` 是拓撲無關的尋找（且預設採用嚴格模式——非活躍後端讀取為 `undefined`，不會在 teardown 期間仍將該後端返回給呼叫方）。
 - 手動建置外掛程式的測試無法驗證外掛程式的載入方式。至少一個測試必須端到端地驅動真實的 Loader/export 路徑。當核心操作不呼叫模型時，該測試無需 API key——因此它屬於 CI，而非 key 門控之後。
 - 相信跟蹤結果，不要迷信理論。優雅的 shadow 解釋是真實的，但它是*第二個* bug；*第一個*是一行匯出錯誤，在數小時看似合理但實際錯誤的推理之後，一個 fiber 遍歷的 `console.error` 在幾分鐘內就找到了它。

@@ -2,11 +2,11 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-用戶端 cordis 啟動與不相依性 React 的對象服務：SlotRegistry 包裝 SlotCore 並提供 renderer 資料源；SessionRuntime 擁有 Session 對象、清單與 scope 狀態，以及供已註冊 conversation view target 共用的事件視窗與歷史分頁。WorkspaceRuntime 相依性 SessionRuntime，擁有 Workspace 對象、清單／操作、默認目標派生，以及 New Session 空工作階段複用入口（`connectWorkspace`）。執行時期把共享 Host 流分發給 Session 與 Workspace 所有者，並把每個通用 `host/remote-event` 幀交給 `ctx.remote.$dispatch`；各領域包透過 `ctx.remote.$on` 訂閱自身 owner 事件，並自行決定使哪些快取或工作階段行失效。用戶端工作階段一律由 Host 建立（一次 `session.create` 同時產生 Session、agent（代理）和 cwd）；用戶端不持有任何實體化之前的工作階段狀態——agent scope（host dsh-scope 的用戶端映像檔，以 agent/session 共用 id 為鍵）在工作階段行進入清單映像檔時建立，並隨 prune 銷毀。約定：api-contracts v3 §4。每個 `Session` 持有一個通用的 `ProjectionValueStore`，由歷史記錄尾部的 `projections` 塊播種，並經 `session/projection` 幀按 seq 高者勝更新；領域鍵（含 `todos`）經 `projections.faceOf`／`useProjection` 讀取，不經 `ConversationSnapshot`。該 store 還會透過 `SessionSummary.projectionValues` 發布一份引用穩定的完整值對映，使全域性清單消費端無需為每個工作階段建立訂閱，即可複用同一組投影。
+用戶端 cordis 啟動與不相依性 React 的對象服務：SlotRegistry 包裝 SlotCore 並提供 renderer 資料源；SessionRuntime 擁有 Session 對象、清單與 scope 狀態，以及供已註冊 conversation view target 共用的事件視窗與歷史分頁。WorkspaceRuntime 相依性 SessionRuntime，擁有 Workspace 對象、清單／操作、預設目標派生，以及 New Session 空工作階段複用入口（`connectWorkspace`）。執行時期把共享 Host 流分發給 Session 與 Workspace 所有者，並把每個通用 `host/remote-event` 幀交給 `ctx.remote.$dispatch`；各領域包透過 `ctx.remote.$on` 訂閱自身 owner 事件，並自行決定使哪些快取或工作階段行失效。用戶端工作階段一律由 Host 建立（一次 `session.create` 同時產生 Session、agent（代理）和 cwd）；用戶端不持有任何實體化之前的工作階段狀態——agent scope（host dsh-scope 的用戶端映像檔，以 agent/session 共用 id 為鍵）在工作階段行進入清單映像檔時建立，並隨 prune 銷毀。約定：api-contracts v3 §4。每個 `Session` 持有一個通用的 `ProjectionValueStore`，由歷史記錄尾部的 `projections` 塊播種，並經 `session/projection` 幀按 seq 高者勝更新；領域鍵（含 `todos`）經 `projections.faceOf`／`useProjection` 讀取，不經 `ConversationSnapshot`。該 store 還會透過 `SessionSummary.projectionValues` 發布一份引用穩定的完整值對映，使全域性清單消費端無需為每個工作階段建立訂閱，即可複用同一組投影。
 
 對於每條可到達本機根 Agent 或可繼續子 Agent 的提示詞，執行時期都會取樣瀏覽器當前的 `Intl.DateTimeFormat().resolvedOptions().timeZone`，並只把該值附加到這一次 Session 或 subagent 提示詞 RPC。該值既不快取，也不包含在 Session 建立或 fork 狀態中，因此旅行與並行分頁標籤都能保留訊息本機的來源資訊。瀏覽器若無法提供非空時區，會在本機拒絕該提示詞，而不會悄然使用部署狀態代替。
 
-`bindSettingsScope` 面向單個由領域持有的 namespace，是 Host 側 settings owner seam 的瀏覽器映像檔。它在開始非阻塞初始讀取前建立訂閱，發布 uSES 快照（狀態、分節值、組裝 `base` 層與原始 `user` 層、revision、可寫性、host／記憶體模式），使用已知最新 namespace revision 序列執行 `set` 與 `unset` 寫入，抑制過時發布，並在最新寫入被拒時從 Host 狀態復原；外掛程式釋放時，它會達到完全靜止。默認解碼器會對照該 namespace 自身的序列化 wire schema（經 dsh-client-schema-form 還原）校驗每個分節，因此領域只有在需要比該 schema 進一步收窄時才新增解碼器。回環頁面使用 Host settings API，遠端頁面則停留在記憶體模式。欄位是否被覆蓋，取決於它是否**出現**在 `user` 中——與組裝預設值相同的覆蓋仍然是覆蓋，比較值是看不出來的——而 `unset` 就是表單把某個欄位清回 `base` 的方式。namespace schema、預設值與即時服務歸領域包所有，而非把產品政策放入執行時期。
+`bindSettingsScope` 面向單個由領域持有的 namespace，是 Host 側 settings owner seam 的瀏覽器映像檔。它在開始非阻塞初始讀取前建立訂閱，發布 uSES 快照（狀態、分節值、組裝 `base` 層與原始 `user` 層、revision、可寫性、host／記憶體模式），使用已知最新 namespace revision 序列執行 `set` 與 `unset` 寫入，抑制過時發布，並在最新寫入被拒時從 Host 狀態復原；外掛程式釋放時，它會達到完全靜止。預設解碼器會對照該 namespace 自身的序列化 wire schema（經 dsh-client-schema-form 還原）校驗每個分節，因此領域只有在需要比該 schema 進一步收窄時才新增解碼器。回環頁面使用 Host settings API，遠端頁面則停留在記憶體模式。欄位是否被覆蓋，取決於它是否**出現**在 `user` 中——與組裝預設值相同的覆蓋仍然是覆蓋，比較值是看不出來的——而 `unset` 就是表單把某個欄位清回 `base` 的方式。namespace schema、預設值與即時服務歸領域包所有，而非把產品政策放入執行時期。
 
 ## Slot 聲明注入
 
@@ -16,13 +16,13 @@
 
 ## Workspace 與 Session 清單
 
-Workspace 和 Session 清單各自具有單調的 `pending` → `ready` 基線階段，也有各自的刷新活動／錯誤狀態。清單請求期間到達的增量插入或更新／移除／順序幀與一元變更回顯會在其回應之上重播。每次成功的 Workspace 基線都會重新建立 Host 持久 Workspace 順序，因此重連會接納該用戶端離線期間提交的變更。`WorkspaceRuntime.insertBefore` 會立即安裝樂觀順序；只有最新一元回聲可以替換它，更新的 Host 順序幀優先於舊回聲，而最新請求被拒時會復原最近一次由 Host 確認的順序，不會復原更早且尚未提交的拖拽。已移除的 Workspace id 會保留行程本機刪除標記，避免延遲到達的 changed 幀將其復活。Workspace 新近程度只在兩條基線都 ready 後派生，且絕不改變 Workspace 清單順序。
+Workspace 和 Session 清單各自具有單調的 `pending` → `ready` 基線階段，也有各自的刷新活動／錯誤狀態。清單請求期間到達的增量插入或更新／移除／順序幀與一元變更回顯會在其回應之上重播。每次成功的 Workspace 基線都會重新建立 Host 持久 Workspace 順序，因此重連會接納該用戶端離線期間提交的變更。`WorkspaceRuntime.insertBefore` 會立即安裝樂觀順序；只有最新一元回聲可以替換它，更新的 Host 順序幀優先於舊回聲，而最新請求被拒時會復原最近一次由 Host 確認的順序，不會復原更早且尚未提交的拖曳。已移除的 Workspace id 會保留行程本機刪除標記，避免延遲到達的 changed 幀將其復活。Workspace 新近程度只在兩條基線都 ready 後派生，且絕不改變 Workspace 清單順序。
 
 `SessionSummary.pendingInteraction` 將阻塞 Session 的即時使用者操作分類為 `approval`、`plan-review` 或 `question`。`SessionManager` 依據穩定的請求標識跟蹤可應答請求的 requested/resolved mux 幀，即使 `Session` 對象尚未實例化也不例外；實例化前的緩衝會保留每個仍有效的請求，替換回放產生的重複項，並移除已解決的請求，因此打開 Session 時，清單狀態始終有一個對應的可應答 `PendingWait`。審批與問題並行時，第一個 pending 問題具有更高的呈現優先級，以匹配 composer 路由；只有滿足 plan-review composer 二元呈現約束的請求才會保留獨立的 `plan-review` 狀態。該狀態的作用域限定在連線代次內：斷連時清除，mux 打開時的重播只復原仍處於 pending 的請求。
 
 `WorkspaceRuntime.delete(workspaceId)` 在一元回應成功後從用戶端投影中移除註冊記錄；對應的 `host/workspace-removed` 幀具有冪等性，並負責同步其他分頁標籤。Session 狀態與當前 Session selection 相互獨立，因此 Workspace 消失後，其已納入用戶端投影的 Session 會立即投影到 Ungrouped 下。
 
-`WorkspaceListState.archivedSessionIds` 映像檔 Host 的登錄檔級全域性歸檔集合（一個按 Host 順序的 `readonly SessionId[]`，僅在成員變化時才替換；需要 O(1) 查詢的消費端自建臨時 Set）。它是全快照狀態：`workspace.list` 基線、`archiveSession` 一元回聲和 `host/archived-sessions-changed` 幀各自安裝完整集合。`WorkspaceRuntime.archiveSession(sessionId)` 透過 wire 歸檔；投影層在當前 selection 落入歸檔集合時統一清空為 New Session 檢視表狀態——一條規則同時覆蓋本機回聲、其他分頁標籤的幀、以及重連基線復原出一個離線期間被歸檔的 selection。在 `workspace.list` 請求進行中安裝的集合還會取代該過期基線攜帶的集合。各分組檢視表在所有位置隱藏集合成員，而工作階段行本身仍留在清單 store 中。
+`WorkspaceListState.archivedSessionIds` 映像檔 Host 的登錄檔級全域性封存集合（一個按 Host 順序的 `readonly SessionId[]`，僅在成員變化時才替換；需要 O(1) 查詢的消費端自建臨時 Set）。它是全快照狀態：`workspace.list` 基線、`archiveSession` 一元回聲和 `host/archived-sessions-changed` 幀各自安裝完整集合。`WorkspaceRuntime.archiveSession(sessionId)` 透過 wire 封存；投影層在當前 selection 落入封存集合時統一清空為 New Session 檢視表狀態——一條規則同時覆蓋本機回聲、其他分頁標籤的幀、以及重連基線復原出一個離線期間被封存的 selection。在 `workspace.list` 請求進行中安裝的集合還會取代該過期基線攜帶的集合。各分組檢視表在所有位置隱藏集合成員，而工作階段行本身仍留在清單 store 中。
 
 SlotRegistry 分別為 renderer 提供 `useSessions` 與 `useWorkspaces` 的裸 observable；web-react 建立掛鉤。Workspace 業務狀態不會進入 `SessionListState` 或條目 store。
 
@@ -30,7 +30,7 @@ SlotRegistry 分別為 renderer 提供 `useSessions` 與 `useWorkspaces` 的裸 
 
 `SessionListState.jobsBySession` 按 last-wins 映像檔宿主的 `session/jobs` 幀，以工作階段為鍵，不需要 Session 實例。被清空的集合存為缺失的鍵，因此「缺失」與 `[]` 是同一種表示，消費端永遠不必偵測哨兵值。兩處清理讓它不至於比它所反映的真相活得更久：`session/subscribed` 丟棄該工作階段的映像檔，因為新一代只為非空集合發送 baseline，被留下的清單會變成幽靈；`host/session-removed` 再丟一次，因為 owner 銷毀是在 mux 流上移除記錄的，而移除幀走 host 流，兩者沒有相對順序。
 
-`SessionRuntime.search(query, signal)` 是基於 `session.search` RPC 的無狀態單次操作。它返回經過排序的工作階段／snippet 對，但不會將查詢條件、載入狀態或錯誤狀態寫入共享 Session 清單，因此每個 UI 所有者都自行負責防抖、取消、抑制過時回應和回退呈現。`searchResultLimit` 將 `SESSION_SEARCH_RESULT_LIMIT`——即回應 schema 自身強制執行的上限——作為注入的呈現資料重新公開，使用戶端外掛程式無需複製該值。它是協議常數而非逐連線狀態，因此連線 handle 不攜帶它。
+`SessionRuntime.search(query, signal)` 是基於 `session.search` RPC 的無狀態單次操作。它返回經過排序的工作階段／snippet 對，但不會將查詢條件、載入狀態或錯誤狀態寫入共享 Session 清單，因此每個 UI 所有者都自行負責防抖、取消、抑制過時回應和回退呈現。`searchResultLimit` 將 `SESSION_SEARCH_RESULT_LIMIT`——即回應 schema 自身強制執行的上限——作為注入的呈現資料重新公開，使用戶端外掛程式無需複製該值。它是協定常數而非逐連線狀態，因此連線 handle 不攜帶它。
 
 ## New Session 與 blank 映像檔
 
@@ -58,7 +58,7 @@ Trajectory Definition 組裝出一條按時間順序排列、以用途為判別�
 
 ## Code Mode 子呼叫樹
 
-每個 `ToolCallBlock` 都透過 `subCalls` 按啟動順序遞迴擁有自己的子呼叫。Chat 的 Tool Definition 按 call id 關聯 root call 與 result，把 Code Dispatch 的 start/settlement 記錄摺疊進該 root Context，並投影為一棵 keyed 遞迴樹；child call 不會成為獨立 Chat root。start 落在已載入視窗之外時，其 settlement 仍以 `callTime: null` 渲染。一次 child 更新只複製其祖先鏈，因此未變化的 sibling 保持對象身份。會引入環或超過固定 256 層深度上限的邊會被消費，但不會修改樹。Trajectory 的 Tool Definition 為自己的 target 獨立組裝同一種巢狀資料契約。
+每個 `ToolCallBlock` 都透過 `subCalls` 按啟動順序遞迴擁有自己的子呼叫。Chat 的 Tool Definition 按 call id 關聯 root call 與 result，把 Code Dispatch 的 start/settlement 記錄摺疊進該 root Context，並投影為一棵 keyed 遞迴樹；child call 不會成為獨立 Chat root。start 落在已載入視窗之外時，其 settlement 仍以 `callTime: null` 算繪。一次 child 更新只複製其祖先鏈，因此未變化的 sibling 保持對象身份。會引入環或超過固定 256 層深度上限的邊會被消費，但不會修改樹。Trajectory 的 Tool Definition 為自己的 target 獨立組裝同一種巢狀資料契約。
 
 ## Session 標題投影
 
@@ -89,5 +89,5 @@ reason 為 `max-tokens` 的 `turn/end` 會在該輪位置投影出一個 `turn-m
 ## 已知限制與暫緩事項
 
 - **`loader.unload` 是 stub**：它會拋出 not-implemented；用戶端沒有從 fiber dispose 到註冊與樣式移除的解除安裝鏈。
-- **scope 拆卸由階段驅動，目前只能有一個佔用者**：已 staged 的工作階段精確跟隨 `list.current`（staging 就是打開訊號：事件視窗打開 ⟺ 工作階段位於 stage）；在 staged 狀態下被移除的工作階段，其 scope 會凍結保留，直到 stage 轉向其他工作階段，而非直到真實觀察者數量降為零。解析（`binding()`／`scope()`）只是純尋址，可安全用於渲染；渲染層經 `currentProvideInfo` observable 讀取當前 bundle。並行 pane 落地時，staged 狀態可以擴充為多 pane 清單。
+- **scope 拆卸由階段驅動，目前只能有一個佔用者**：已 staged 的工作階段精確跟隨 `list.current`（staging 就是打開訊號：事件視窗打開 ⟺ 工作階段位於 stage）；在 staged 狀態下被移除的工作階段，其 scope 會凍結保留，直到 stage 轉向其他工作階段，而非直到真實觀察者數量降為零。解析（`binding()`／`scope()`）只是純尋址，可安全用於算繪；算繪層經 `currentProvideInfo` observable 讀取當前 bundle。並行 pane 落地時，staged 狀態可以擴充為多 pane 清單。
 - **外掛程式 bundle 從該包匯入值時必須使用 `/client` 子路徑**：裸包名不在 loader externals 表中，會內聯第二個模組實例；其私有 scope-tag Symbol 永遠無法匹配。

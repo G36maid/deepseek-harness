@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/feedback/command-feedback/README.md
 README.md: 35b0fb2b5c0d2eacd999fa216ba8e6b3dce2ff87
 README.zh.md: a82739b2cda9eefe2916fbde98d30c7e6dcc0418
-README.zh-tw.md: 99491a8b7f0534a36cc5789cae91617dc6c1e9e7
+README.zh-tw.md: 0edbf2b07012d80738ef88acf4ad6e2bd68ad548

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-19-package-owned-invariant-service.zh.md) | [繁體中文](2026-07-19-package-owned-invariant-service.zh-tw.md)
+
 
 ## Problem
 

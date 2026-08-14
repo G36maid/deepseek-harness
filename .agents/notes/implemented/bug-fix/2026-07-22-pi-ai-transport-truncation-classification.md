@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-22-pi-ai-transport-truncation-classification.zh.md) | [繁體中文](2026-07-22-pi-ai-transport-truncation-classification.zh-tw.md)
+
 
 ## Problem
 

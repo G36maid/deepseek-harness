@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/boot/cmdline/README.md
 README.md: 33368b8fd982b64ccd184fcb114abf9549d2d5cd
 README.zh.md: 6791fbfae65c0ebb89db971ebd709f3d2ef54828
-README.zh-tw.md: 1505f9e25c56b5ce7aa1512c7a885fd0e9f0f428
+README.zh-tw.md: 5215f8b1644d843ca9ae02a2761707ebf7420017

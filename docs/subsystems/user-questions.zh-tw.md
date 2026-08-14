@@ -22,7 +22,7 @@ interface AskUserQuestionOption {
 
 ## 呈現意圖
 
-`AskUserQuestionIntent` 選填地聲明一種已知的決策類型。它按 `kind` 打標籤，因此可以增加新的意圖；不認識某個標籤的 UI 渲染通用選項清單。意圖只改變呈現方式——遵循它的 UI 回答的仍是通用 UI 會發送的那些選項標籤，因此呼叫方兩種情況下讀到的回答欄位相同。`approve` 指名肯定選項，而不相依性選項順序。`ask()` 會拒絕兩種無法由類型系統表達的情況：`approve` 未指向該問題自身的任何選項，以及為沒有 `detail` 的問題指定意圖。
+`AskUserQuestionIntent` 選填地聲明一種已知的決策類型。它按 `kind` 打標籤，因此可以增加新的意圖；不認識某個標籤的 UI 算繪通用選項清單。意圖只改變呈現方式——遵循它的 UI 回答的仍是通用 UI 會發送的那些選項標籤，因此呼叫方兩種情況下讀到的回答欄位相同。`approve` 指名肯定選項，而不相依性選項順序。`ask()` 會拒絕兩種無法由類型系統表達的情況：`approve` 未指向該問題自身的任何選項，以及為沒有 `detail` 的問題指定意圖。
 
 ```ts type-equiv
 /**
@@ -46,7 +46,7 @@ type AskUserQuestionIntent = {
 
 ## 問題條目
 
-`AskUserQuestionItem` 是請求中的一個問題。呼叫方提供穩定的 `id`，它會隨答案原樣返回，使批次問題仍可路由。選填的 `detail` 攜帶輔助文字；提供方會將其隨問題渲染，但不會放入選填選項標籤。
+`AskUserQuestionItem` 是請求中的一個問題。呼叫方提供穩定的 `id`，它會隨答案原樣返回，使批次問題仍可路由。選填的 `detail` 攜帶輔助文字；提供方會將其隨問題算繪，但不會放入選填選項標籤。
 
 ```ts type-equiv
 /** One question in a user-questions request. */

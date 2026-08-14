@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-08-pi-ai-per-model-reasoning-declarations.md
-2026-08-08-pi-ai-per-model-reasoning-declarations.md: 872ac135e9b451e49c3a222fae29d8c40bbb2aad
-2026-08-08-pi-ai-per-model-reasoning-declarations.zh.md: b113cf9e598e489b297d6f2e95c8b5a94a80ff91
-2026-08-08-pi-ai-per-model-reasoning-declarations.zh-tw.md: 5cf92d128f60906613067f731474f45bd3626c5f

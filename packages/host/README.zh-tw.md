@@ -6,7 +6,7 @@ dsh Web GUI 的宿主側：所有用戶端形態共享的 API 閘道，以及承
 
 | 包 | 職責 | ctx key |
 |---|---|---|
-| [`apiproxy/`](apiproxy/README.md) | 共享宿主 API 閘道和協議約定 | `ctx.apiProxy` |
+| [`apiproxy/`](apiproxy/README.md) | 共享宿主 API 閘道和協定約定 | `ctx.apiProxy` |
 | [`webserver/`](webserver/README.md) | HTTP 路由載體 | `ctx.webServer` |
 | [`frontend-static/`](frontend-static/README.md) | 佔據 webserver 回退席位的 SPA dist 伺服器 | 消費 `ctx.webServer` |
 | [`directory-picker/`](directory-picker/README.md) | 工作區目錄選擇 seam | `ctx.directoryPicker` |

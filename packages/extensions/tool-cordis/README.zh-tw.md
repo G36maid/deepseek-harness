@@ -8,8 +8,8 @@
 
 兩組配對動詞，外加只讀報告。
 
-- `cordis_inspect`：當前行程執行時期的只讀報告，包括服務、全部存活外掛程式 fiber、已註冊工具、本工作階段的動態包、反射支持的 `api`／`events` 參考，以及瀏覽器半可以向其貢獻 UI 的編譯期 `client` 槽面。精確的 `name` 配合 `what: "api"`、`what: "events"` 或 `what: "client"` 可縮窄報告，並附上完整約定。
-- `cordis_define`：在文法預檢兩個半之後登記一個包（`name`、`purpose`，以及 host 半 `code` 和／或瀏覽器半 `client`）。此時不執行任何東西；使用者會在工作階段裡看到它的卡片和一個啟動控制元件。鑄出的 `dyn-<n>` 標識同時進入結果 value **與**持久的呈現元資料，卡片正是靠後者在 replay 中尋址執行動詞。
+- `cordis_inspect`：當前行程執行時期的只讀報告，包括服務、全部存活外掛程式 fiber、已註冊工具、本工作階段的動態包、反射支援的 `api`／`events` 參考，以及瀏覽器半可以向其貢獻 UI 的編譯期 `client` 槽面。精確的 `name` 配合 `what: "api"`、`what: "events"` 或 `what: "client"` 可縮窄報告，並附上完整約定。
+- `cordis_define`：在文法預檢兩個半之後登記一個包（`name`、`purpose`，以及 host 半 `code` 和／或瀏覽器半 `client`）。此時不執行任何東西；使用者會在工作階段裡看到它的卡片和一個啟動控制元件。鑄出的 `dyn-<n>` 標識同時進入結果 value **與**持久的呈現中繼資料，卡片正是靠後者在 replay 中尋址執行動詞。
 - `cordis_run`：在沙盒中求值 host 半，並把瀏覽器半投遞給每個打開的網頁。對已在執行的包再次執行不會失敗，而是重新投遞當前版本——這正是被刷新過的頁面把包取回來的方式。
 - `cordis_stop`：把 host 半 dispose 到完全靜止，並從各頁面撤回瀏覽器半；定義存續，可以再次執行。
 - `cordis_undefine`：必要時先停止該包，再忘掉定義；它的卡片作為一條已解除安裝記錄留在工作階段裡。
@@ -34,24 +34,24 @@
 
 ## API 報告從哪裡來
 
-`cordis_inspect what:"api"`／`what:"events"` 渲染的是 `src/api-catalog.ts`，即工作區 Cordis 聲明的生成投影：渲染好的方法簽名、原始碼 JSDoc、帶分發模式的 harness 事件，以及這些簽名引用到的類型形狀——全部由與 `docs/subsystems` 同一次 AST 遍歷產出，因此模型讀到的資料與渲染出的文件不可能彼此偏離。它是關於**倉庫**的編譯期事實，所以用 `pnpm run gen-cordis-api` 重新生成、用 `pnpm run verify-cordis-api` 守它的新鮮度。
+`cordis_inspect what:"api"`／`what:"events"` 算繪的是 `src/api-catalog.ts`，即工作區 Cordis 聲明的生成投影：算繪好的方法簽名、原始碼 JSDoc、帶分發模式的 harness 事件，以及這些簽名引用到的類型形狀——全部由與 `docs/subsystems` 同一次 AST 遍歷產出，因此模型讀到的資料與算繪出的文件不可能彼此偏離。它是關於**倉庫**的編譯期事實，所以用 `pnpm run gen-cordis-api` 重新生成、用 `pnpm run verify-cordis-api` 守它的新鮮度。
 
 `src/inspect.ts` 把這份目錄與**活的**服務儲存取交集：**誰在跑**由儲存回答，**每個服務能做什麼**由目錄回答；目錄沒覆蓋到的活服務會被報成可達但沒有簽名，而不是被省略。包程式碼若要在自己原始碼裡用這份清單，就從報告裡抄出來——目錄是關於倉庫的編譯期事實，所以對任一個部署而言，抄出來的清單與現讀的清單說的是同一件事。
 
 有兩項面向模型的判斷住在本包裡，而不住在產物裡，因為反射資料忠於程式碼，而報告必須有用：
 
-- **只展示可呼叫的方法。** 非方法成員是狀態而不是動詞，而它們渲染出來的形式會帶上實作體裡的初始值；以 symbol 為鍵的成員是外掛程式之間的內部 seam，包的 façade 刻意無法觸達，所以點出其中任何一個，都等於宣傳一次根本發不出的呼叫。
-- **只有 host 半夠得到的鍵，才會被點名給模型。** 反射模型覆蓋包聲明的每一個 `ctx.<key>`，其中包括 launcher 提供的 boot 值（`agent`、`headlessIo` 等）與瀏覽器半的服務（`connection`）。`src/curation.ts` 會為每一個這樣的鍵歸類它的 `reach`——`injectable`、`not-a-service` 或 `other-face`——而只有 `injectable` 的鍵能進報告：點名一個包夠不到的鍵，就等於宣傳一次根本發不出的呼叫。這份歸類是作為每條目錄條目上的資料攜帶的，而不是在渲染時才施加，因此這項排除可以單獨測試；同時 `verify-cordis-catalog` 把被歸類的集合釘成「文件投影不渲染的鍵」這個集合本身——新聲明一個鍵會把閘門攔下來，而不是悄悄引誘模型去 `inject` 一個永遠不會到來的東西。一個被歸類、但確實有存活提供方的鍵，仍然會被報成在跑且可 inject：服務 store 纔是「什麼存在」的權威。
+- **只展示可呼叫的方法。** 非方法成員是狀態而不是動詞，而它們算繪出來的形式會帶上實作體裡的初始值；以 symbol 為鍵的成員是外掛程式之間的內部 seam，包的 façade 刻意無法觸達，所以點出其中任何一個，都等於宣傳一次根本發不出的呼叫。
+- **只有 host 半夠得到的鍵，才會被點名給模型。** 反射模型覆蓋包聲明的每一個 `ctx.<key>`，其中包括 launcher 提供的 boot 值（`agent`、`headlessIo` 等）與瀏覽器半的服務（`connection`）。`src/curation.ts` 會為每一個這樣的鍵歸類它的 `reach`——`injectable`、`not-a-service` 或 `other-face`——而只有 `injectable` 的鍵能進報告：點名一個包夠不到的鍵，就等於宣傳一次根本發不出的呼叫。這份歸類是作為每條目錄條目上的資料攜帶的，而不是在算繪時才施加，因此這項排除可以單獨測試；同時 `verify-cordis-catalog` 把被歸類的集合釘成「文件投影不算繪的鍵」這個集合本身——新聲明一個鍵會把閘門攔下來，而不是悄悄引誘模型去 `inject` 一個永遠不會到來的東西。一個被歸類、但確實有存活提供方的鍵，仍然會被報成在跑且可 inject：服務 store 纔是「什麼存在」的權威。
 
-生成常數 `INHERITED_CTX_API` 為 `api` 報告收尾，列出框架繼承來的 `ctx` 面（`ctx.on`、`ctx.effect`、`ctx.loader`、各 timer 輔助方法）：這些成員本身就是 Context，不是某個服務鍵；而框架層住在 pinned vendor 包裡，位於每一個被分析的契約面之外——所以生成器策展這**一層**，並把它同時渲染進本目錄與 `docs/cordis-api/inherited.md`。一個活著、但目錄並不描述的服務，會被報成“在跑、且仍可 inject”，而不是報成不存在。寬泛的 `api`／`events` 報告只渲染摘要與簽名；精確 `name` 會選擇保留的方法／事件 JSDoc，未知或未執行的服務目標會高聲失敗。
+生成常數 `INHERITED_CTX_API` 為 `api` 報告收尾，列出框架繼承來的 `ctx` 面（`ctx.on`、`ctx.effect`、`ctx.loader`、各 timer 輔助方法）：這些成員本身就是 Context，不是某個服務鍵；而框架層住在 pinned vendor 包裡，位於每一個被分析的契約面之外——所以生成器策展這**一層**，並把它同時算繪進本目錄與 `docs/cordis-api/inherited.md`。一個活著、但目錄並不描述的服務，會被報成“在跑、且仍可 inject”，而不是報成不存在。寬泛的 `api`／`events` 報告只算繪摘要與簽名；精確 `name` 會選擇保留的方法／事件 JSDoc，未知或未執行的服務目標會高聲失敗。
 
-## 渲染
+## 算繪
 
-每個工具都渲染 `generic` 卡片（`read`／`execute`／`delete`）；`cordis_define` 以 `rawInput` 攜帶提交的兩個半，並用標籤與用途作為卡片標題。presenter 是 args 的純函式，結果保留默認文字渲染。Web 用戶端註冊自己的 keyed `cordis_define` 行（`@deepseek-ai/dsh-client-ui-cordis`），從呼叫參數與結果元資料裡取標籤、用途和鑄出的標識；沒有該註冊的介面則退回到這張 generic 卡片。
+每個工具都算繪 `generic` 卡片（`read`／`execute`／`delete`）；`cordis_define` 以 `rawInput` 攜帶提交的兩個半，並用標籤與用途作為卡片標題。presenter 是 args 的純函式，結果保留預設文字算繪。Web 用戶端註冊自己的 keyed `cordis_define` 行（`@deepseek-ai/dsh-client-ui-cordis`），從呼叫參數與結果中繼資料裡取標籤、用途和鑄出的標識；沒有該註冊的介面則退回到這張 generic 卡片。
 
 ## 匯出形式
 
-Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無默認匯出（[docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。它注入 `tools` 與 `dynamicCordisRunner`。
+Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無預設匯出（[docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。它注入 `tools` 與 `dynamicCordisRunner`。
 
 ## 模型體驗
 
@@ -77,7 +77,7 @@ Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無默認匯
 
 #### Token 影響
 
-檢查輸出與提交的包程式碼取決於資料，並在壓縮（compaction）前重複傳送；生命週期確認文字很短。`client` 區段的體量由出廠槽數量決定（每座位兩行），每座位細節按需索取，因此默認報告隨槽面成長，而不是隨其文件量成長。
+檢查輸出與提交的包程式碼取決於資料，並在壓縮（compaction）前重複傳送；生命週期確認文字很短。`client` 區段的體量由出廠槽數量決定（每座位兩行），每座位細節按需索取，因此預設報告隨槽面成長，而不是隨其文件量成長。
 
 #### KV Cache 影響
 
@@ -100,5 +100,5 @@ Namespace 外掛程式：命名匯出 `name`／`inject`／`apply`，無默認匯
 ## 已知限制與暫緩事項
 
 - **沙盒只用於約束誠實程式碼，並非安全邊界**：可以訪問沙盒全域性變數上的 host realm helper，因此包程式碼可以觸達 Node；載入該外掛程式時，應當像授予 bash 工具一樣慎重（見 § 信任立場）。
-- **`ctx` façade 不公開 `effect()`**：包程式碼無法註冊訂製 disposer；`on`／`provide`／`tools.register` 是受支持的清理路徑。
+- **`ctx` façade 不公開 `effect()`**：包程式碼無法註冊訂製 disposer；`on`／`provide`／`tools.register` 是受支援的清理路徑。
 - **vm 與確認視窗這兩個邊界屬於 runner**：見它的[已知限制](../cordis-host-runner/README.md#known-limitations-and-deferred-work)；async 的 host 半主體可逃出 `vmTimeoutMs`。

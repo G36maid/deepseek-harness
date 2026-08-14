@@ -22,7 +22,7 @@ import 一個 Client 包——無論值還是類型——都會把它整個 Type
 Client face，而該 face 必須等 Host tsdown 生成 `@deepseek-ai/dsh-goal/remote` 之後才能編譯，
 於是 Host 建置階段變成在等一個由它自己產出的產物。
 
-當某個場景需要 Client 持有的常數或純函式時，改為在此處映像檔一份，並緊挨著一條註釋掉的
+當某個場景需要 Client 持有的常數或純函式時，改為在此處映像檔一份，並緊挨著一條註解掉的
 import 點明源模組。這樣漂移會表現為選擇器未命中或映像檔值過期——是響亮的失敗，絕不會是靜默
 透過。`scaffold.ts` 按此規則映像檔歡迎聲明的 namespace、確認欄位、版本和被斷言的中文文案。
 

@@ -8,16 +8,16 @@ dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 U
 |---|---|
 | [`web/`](web/README.md) | 從用戶端條目圖啟動瀏覽器 shell。 |
 | [`modules/`](modules/README.md) | 載入瀏覽器側用戶端模組。 |
-| [`web-react/`](web-react/README.md) | 連線 shell 執行時期與 React 渲染。 |
+| [`web-react/`](web-react/README.md) | 連線 shell 執行時期與 React 算繪。 |
 | [`connection/`](connection/README.md) | 維護瀏覽器與宿主之間的 RPC 通訊和事件傳遞。 |
 | [`runtime/`](runtime/README.md) | 為工作階段、工作區和 UI 組合提供共享用戶端服務。 |
 | [`hmr/`](hmr/README.md) | 在開發期間刷新用戶端外掛程式。 |
 | [`locale/`](locale/README.md) | 提供本機化偏好與訊息詞典。 |
 | [`schema-form/`](schema-form/README.md) | 為設定編輯器提供 schema 驅動的草稿處理。 |
-| [`test-runtime/`](../test-support/client-runtime/README.md) | 為用戶端功能包提供共享的倉庫測試支持。 |
+| [`test-runtime/`](../test-support/client-runtime/README.md) | 為用戶端功能包提供共享的倉庫測試支援。 |
 | [`ui-slots/`](ui-slots/README.md) | 定義 UI 功能註冊和組合擴充 slot 的方式。 |
 | [`ui-theme/`](ui-theme/README.md) | 應用所選顏色主題。 |
-| [`ui-primitives/`](ui-primitives/README.md) | 提供共享 React 控制元件、圖示和內容渲染器。 |
+| [`ui-primitives/`](ui-primitives/README.md) | 提供共享 React 控制元件、圖示和內容算繪器。 |
 | [`ui-attachment/`](ui-attachment/README.md) | 提供附件展示原子元件：草稿圖片欄、訊息畫廊與燈箱。 |
 | [`ui-layout/`](ui-layout/README.md) | 排列應用的主要區域。 |
 | [`ui-sidebar/`](ui-sidebar/README.md) | 展示工作區與工作階段導覽。 |
@@ -33,8 +33,8 @@ dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 U
 | [`ui-subagent/`](ui-subagent/README.md) | 提供 subagent（子 agent）導覽、子級 transcript（文字記錄）的狀態和內聯引用。 |
 | [`ui-jobs/`](ui-jobs/README.md) | 在工作階段標題欄列出當前工作階段的背景工作。 |
 | [`ui-model-selection/`](ui-model-selection/README.md) | 在對話介面中提供模型選擇。 |
-| [`ui-permission/`](ui-permission-presets/README.md) | 設定默認權限並切換當前工作階段的訪問模式。 |
-| [`ui-plan/`](ui-plan/README.md) | 展示生效中的 plan mode 狀態及其退出控制元件。 |
+| [`ui-permission/`](ui-permission-presets/README.md) | 設定預設權限並切換當前工作階段的訪問模式。 |
+| [`ui-plan/`](ui-plan/README.md) | 展示生效中的 plan mode 狀態及其結束控制元件。 |
 | [`ui-settings-plugins/`](ui-settings-plugins/README.md) | 擁有“外掛程式”設定分區、它的分頁標籤擴充點，以及可設定的宿主平面外掛程式卡片。 |
 | [`ui-user-questions/`](ui-user-questions/README.md) | 展示 agent 請求的互動式問題。 |
 | [`ui-agent-preset/`](ui-agent-preset/README.md) | 選擇工作階段的 agent 預設，並編寫預設組合。 |

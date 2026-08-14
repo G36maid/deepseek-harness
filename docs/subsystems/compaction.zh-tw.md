@@ -2,7 +2,7 @@
 
 [English](compaction.md) | [简体中文](compaction.zh.md) | 繁體中文
 
-壓縮 seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)，與 bash 一樣分為 Service Definition（[dsh-compaction](../../packages/compaction/compaction)，`ctx.compaction`）、Service Provider（例如 [dsh-compaction-basic](../../packages/compaction/compaction-basic) 後端）和麵向使用者的 Consumer（[dsh-command-compact](../../packages/compaction/command-compact)）。壓縮是**一項選填能力**，不屬於 agent loop（代理循環）主幹，因此其詞彙定義在此而非 [core.md](core.md) 中。基於 tokenizer 或範本的後端是實作同一介面的兄弟包。與 bash 不同，該介面必然相依性 `dsh-session` 和 `dsh-llm`：其動詞作用於 agent 所有的 `Session`，而其持久摘要事件使用 `ContentBlock` 詞彙（見[壓縮能力 seam Agent Note](../../.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md)）。
+壓縮 seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)，與 bash 一樣分為 Service Definition（[dsh-compaction](../../packages/compaction/compaction)，`ctx.compaction`）、Service Provider（例如 [dsh-compaction-basic](../../packages/compaction/compaction-basic) 後端）和麵向使用者的 Consumer（[dsh-command-compact](../../packages/compaction/command-compact)）。壓縮是**一項選填能力**，不屬於 agent loop（代理循環）主幹，因此其詞彙定義在此而非 [core.md](core.md) 中。基於 tokenizer 或樣板的後端是實作同一介面的兄弟包。與 bash 不同，該介面必然相依性 `dsh-session` 和 `dsh-llm`：其動詞作用於 agent 所有的 `Session`，而其持久摘要事件使用 `ContentBlock` 詞彙（見[壓縮能力 seam Agent Note](../../.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md)）。
 
 原始碼：[`packages/compaction/compaction/src/types.ts`](../../packages/compaction/compaction/src/types.ts)
 

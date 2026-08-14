@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/host/plugin-inventory/README.md
 README.md: 96b4f8b8ce8224ade3d091cd1aea0e1d406614c7
 README.zh.md: ebf2b0b83e8165eb21a53f1ff124a0e607938bab
-README.zh-tw.md: f2f34dd2d00963de28f05f5d904bd993ba3b57b0
+README.zh-tw.md: c464b16d457b3f05826091da82b52345857bd85e

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/llm/llm/README.md
 README.md: cf8202163c2ec5fd4d268be512245519837c6512
 README.zh.md: b7a3e43f889e4c9bf4a5d5f1b621ea3c52093693
-README.zh-tw.md: d8ef4ec6b6424cc7baa3dbb9076fb6d4d4060cf2
+README.zh-tw.md: f347db32c929b3245ae11187f9223e0c1a3065b7

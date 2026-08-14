@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-`ctx.sessionReferenceResolver` 會把其他工作階段準備為有界、只讀快照，作為帶來源資訊、面向模型的上下文。它消費 `ctx.sessionQuery` 與後端無關的 compact 檢查點標記；不需要 SQLite FTS。支持跨工作階段 mention 的宿主可以主動啟用該服務。
+`ctx.sessionReferenceResolver` 會把其他工作階段準備為有界、只讀快照，作為帶來源資訊、面向模型的上下文。它消費 `ctx.sessionQuery` 與後端無關的 compact 檢查點標記；不需要 SQLite FTS。支援跨工作階段 mention 的宿主可以主動啟用該服務。
 
 ## 公開 API
 
@@ -21,7 +21,7 @@
 | Key | 預設值 | 約定 |
 |---|---:|---|
 | `maxReferences` | `3` | 一條已準備訊息中不同源工作階段的最大數量；必須不大於 `3`。 |
-| `candidateLimit` | `50` | 返回給宿主的默認候選數量。 |
+| `candidateLimit` | `50` | 返回給宿主的預設候選數量。 |
 | `maxReferenceBytes` | `65536` | 一個引用對象的最大序列化 JSON 位元組數。 |
 
 保留會對每個源獨立應用 `maxReferenceBytes`，保留 compact 檢查點與最新訊息，再丟棄較舊的非檢查點單元，並使用 `dsh-output-retention` 頭部／尾部截斷和精確 UTF-8 省略通知。如果某個源的固定序列化欄位本身就超出限額，準備會以 `SESSION_REFERENCE_BUDGET_EXCEEDED` 失敗，而不返回部分上下文。
@@ -44,7 +44,7 @@
 
 ## 已知限制與暫緩事項
 
-- **不支持訊息正文檢索**：候選查詢會檢查摺疊後的標題，但不搜尋訊息主體。非空查詢可能透過 session-query 服務有界、可取消的批次處理檢查每個可見的持久化工作階段日誌；專用標題索引未來可以替換這條發現路徑，而不改變 URI、快照或持久化約定。
+- **不支援訊息正文檢索**：候選查詢會檢查摺疊後的標題，但不搜尋訊息主體。非空查詢可能透過 session-query 服務有界、可取消的批次處理檢查每個可見的持久化工作階段日誌；專用標題索引未來可以替換這條發現路徑，而不改變 URI、快照或持久化約定。
 - **受信任呼叫方邊界**：該服務假設宿主有權讀取 `ctx.sessionQuery` 公開的每個工作階段；它不是面向模型的搜尋工具。
 - **只投影文字**：不會在工作階段間傳播非文字 user 與 assistant 塊。
 - **沒有即時連結**：引用是快照，不是 fork、復原、訂閱或源工作階段變更。

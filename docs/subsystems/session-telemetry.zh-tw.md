@@ -58,7 +58,7 @@ interface SessionTelemetryRecord {
 
 ## 共享披露
 
-該 seam 的確認契約（歸屬 [Service Definition README 的共享披露段](../../packages/session/session-telemetry/README.md#the-sharing-disclosure)）：每個後端都透過 `ctx.sessionTelemetry` 上必需的抽象 `sharing` 成員披露其部署級共享策略，消費端只有在未掛載任何遙測服務時才渲染「未設定」。披露只陳述當前策略，絕不承諾投遞或留存——交接是非阻塞入隊，批次處理、重試與丟失策略仍歸上報 SDK。
+該 seam 的確認契約（歸屬 [Service Definition README 的共享披露段](../../packages/session/session-telemetry/README.md#the-sharing-disclosure)）：每個後端都透過 `ctx.sessionTelemetry` 上必需的抽象 `sharing` 成員披露其部署級共享策略，消費端只有在未掛載任何遙測服務時纔算繪「未設定」。披露只陳述當前策略，絕不承諾投遞或留存——交接是非阻塞入隊，批次處理、重試與丟失策略仍歸上報 SDK。
 
 ```ts type-equiv
 /**

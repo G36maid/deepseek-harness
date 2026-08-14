@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/subprocess.md
 subprocess.md: d04a15b2f113dfa2dad984ed525e2065bfcc43fc
 subprocess.zh.md: ca5b42db31398e31afca13a56aed87d76f16c719
-subprocess.zh-tw.md: fc6deee3c9e2726d1ed1f4abc332923aa17a07ff
+subprocess.zh-tw.md: 8108ddb7f76bc13aebe943f4c6fd273d02f57b10

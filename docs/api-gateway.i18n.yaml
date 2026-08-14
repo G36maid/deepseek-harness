@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/api-gateway.md
 api-gateway.md: a1d2d7839cb0d648a5fe62ba8cd5eedd8518721c
 api-gateway.zh.md: 172b95c34830407131edc70b840323b0a8aaed2a
-api-gateway.zh-tw.md: dfb455b5bba73c9721e011b9ccad1ea6af9eb332
+api-gateway.zh-tw.md: 71ca10b6a553a0fadea4a0a3be8ea11d53b9278a

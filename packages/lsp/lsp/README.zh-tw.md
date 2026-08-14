@@ -12,7 +12,7 @@
 | `@deepseek-ai/dsh-lsp-stdio` | Service Provider：通用本機後端，註冊已設定的 stdio 語言伺服器提供方 |
 | `@deepseek-ai/dsh-tool-lsp` | Consumer：面向模型的 `lsp` 工具，基於 `ctx.lsp` |
 
-該 seam 恰好公開四種語義操作：`goToDefinition`、`findReferences`、`goToImplementation`、`hover`，且沒有通用 JSON-RPC 逃生口，因此任何協議載荷或未經評審的命令／修改都無法透過 `ctx.lsp` 到達提供方。
+該 seam 恰好公開四種語義操作：`goToDefinition`、`findReferences`、`goToImplementation`、`hover`，且沒有通用 JSON-RPC 逃生口，因此任何協定載荷或未經評審的命令／修改都無法透過 `ctx.lsp` 到達提供方。
 
 ## 服務 API（`ctx.lsp`）
 
@@ -27,11 +27,11 @@
 
 ## 詞彙
 
-`LspQueryRequest`（`operation`、`filePath`、`position`、`workspaceRoot`）：每個欄位都必填，因此沒有欄位需要實作預設值，也不存在 `resolve()` 步驟。位置與範圍使用從零開始的 UTF-16，與協議一致；工具擁有從 1 開始的遊標約定。`findReferences` 始終包含聲明，提供方在內部強制執行，因此呼叫方沒有 flag。`LspQueryResult` 是封閉的判別聯合：導覽使用 `{ kind: 'locations'; locations; resolvedWorkspaceUri }`，懸停使用 `{ kind: 'hover'; hover }`（內容或 `null`）；消費端透過 `switch` 實作窮盡檢查，因此新增分支會使編譯失敗，直到完成處理。`resolvedWorkspaceUri` 是提供方的規範工作區 `file:` URI；呼叫方相對化位置 URI 時以它為基準，而不是對可能含符號連結的請求根應用宿主平臺路徑規則。完整約定見 `src/types.ts`；`src/index.ts` 給出 `LspError` code，包括 `LSP_DISPOSED` 和 `LSP_MALFORMED_RESPONSE`。
+`LspQueryRequest`（`operation`、`filePath`、`position`、`workspaceRoot`）：每個欄位都必填，因此沒有欄位需要實作預設值，也不存在 `resolve()` 步驟。位置與範圍使用從零開始的 UTF-16，與協定一致；工具擁有從 1 開始的遊標約定。`findReferences` 始終包含聲明，提供方在內部強制執行，因此呼叫方沒有 flag。`LspQueryResult` 是封閉的判別聯合：導覽使用 `{ kind: 'locations'; locations; resolvedWorkspaceUri }`，懸停使用 `{ kind: 'hover'; hover }`（內容或 `null`）；消費端透過 `switch` 實作窮盡檢查，因此新增分支會使編譯失敗，直到完成處理。`resolvedWorkspaceUri` 是提供方的規範工作區 `file:` URI；呼叫方相對化位置 URI 時以它為基準，而不是對可能含符號連結的請求根應用宿主平臺路徑規則。完整約定見 `src/types.ts`；`src/index.ts` 給出 `LspError` code，包括 `LSP_DISPOSED` 和 `LSP_MALFORMED_RESPONSE`。
 
 ## 模型體驗
 
-透過 `dsh-tool-lsp` 間接影響；該工具擁有面向模型的 `lsp` schema、提示詞與渲染結果，本登錄檔自身不貢獻提示詞或 schema。
+透過 `dsh-tool-lsp` 間接影響；該工具擁有面向模型的 `lsp` schema、提示詞與算繪結果，本登錄檔自身不貢獻提示詞或 schema。
 
 #### KV Cache 影響
 

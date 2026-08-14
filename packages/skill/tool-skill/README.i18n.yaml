@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/skill/tool-skill/README.md
 README.md: d2be89909ac81fb34f653da19e0eebc2a064b4a4
 README.zh.md: fa044f122ae1a674e6c48c0bb37a068ae6ea51d9
-README.zh-tw.md: 3321140b094c8a54943ad722b62b8a600f3e783b
+README.zh-tw.md: 126728f9baffd1f57d1ce4d7b054a2ae1d4b0b0e

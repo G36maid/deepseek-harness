@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-[`@deepseek-ai/dsh-tool-cordis`](../../packages/extensions/tool-cordis/README.md) 的自指示例。agent（代理）可以檢查當前 Cordis 行程，並在記憶體中掛載或解除安裝模型編寫的外掛程式。臨時外掛程式會在解除安裝或行程退出時消失，並可能影響同一行程中的其他工作階段。
+[`@deepseek-ai/dsh-tool-cordis`](../../packages/extensions/tool-cordis/README.md) 的自指示例。agent（代理）可以檢查當前 Cordis 行程，並在記憶體中掛載或解除安裝模型編寫的外掛程式。臨時外掛程式會在解除安裝或行程結束時消失，並可能影響同一行程中的其他工作階段。
 
 ## 執行
 

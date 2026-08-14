@@ -2,11 +2,11 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-透過 `ctx.permissionPresets`（[`PermissionPresetService`](src/index.ts)）提供面向使用者的權限預設。每個設定名稱都會將 `sandbox/mode` 與 `approval/policy` 組成一組；默認項為 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。UI 配接器可以將該表作為單個選擇器公開，而沙盒執行與審批仍分別消費各自的調節項。
+透過 `ctx.permissionPresets`（[`PermissionPresetService`](src/index.ts)）提供面向使用者的權限預設。每個設定名稱都會將 `sandbox/mode` 與 `approval/policy` 組成一組；預設項為 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。UI 配接器可以將該表作為單個選擇器公開，而沙盒執行與審批仍分別消費各自的調節項。
 
 `set(session, name)` 會先在僅寫日誌的 `permissionPresets/preset` 事件中記錄已變更的選擇，再僅對實際值發生變化的調節項呼叫 setter。選擇事件先於調節項事件，並在多個預設共享同一組取值時保留使用者意圖；淨變化為零的選擇不會追加任何內容。`current(events)` 優先返回仍與當前調節項匹配的已記錄選擇，其次返回表中第一個匹配項，否則返回 `custom`。用戶端可以把 `custom` 顯示為當前值，但不能選擇它。
 
-該服務擁有 `permissionPresets` Settings namespace。其 `defaultPreset` 是未來工作階段的預設值：組合項使用 `Config.defaultPreset`；省略時，則推斷與組合後的沙盒和審批預設值匹配的 preset。已提交的 Settings 變更會在下一個工作階段建立時讀取；建立過程將 `permissionPresets/preset`、`sandbox/mode` 和 `approval/policy` 固定到該工作階段中，因此後續變更絕不會改變現有工作階段。復原的 seed，包括由 `session/end-seed` 標記的顯式空 seed，都會保留其有效權限，只補齊缺失的持久事實，而不會採用最新的使用者預設值。掛載服務時還會遍歷所有已存活工作階段，因此 HMR（熱模組替換）會固定外掛程式缺席期間建立的所有工作階段。
+該服務擁有 `permissionPresets` Settings namespace。其 `defaultPreset` 是未來工作階段的預設值：組合項使用 `Config.defaultPreset`；省略時，則推斷與組合後的沙盒和審批預設值匹配的 preset。已提交的 Settings 變更會在下一個工作階段建立時讀取；建立程序將 `permissionPresets/preset`、`sandbox/mode` 和 `approval/policy` 固定到該工作階段中，因此後續變更絕不會改變現有工作階段。復原的 seed，包括由 `session/end-seed` 標記的顯式空 seed，都會保留其有效權限，只補齊缺失的持久事實，而不會採用最新的使用者預設值。掛載服務時還會遍歷所有已存活工作階段，因此 HMR（熱模組替換）會固定外掛程式缺席期間建立的所有工作階段。
 
 該服務要求存在具有約束能力的 `ctx.shell` 執行器和 `ctx.approval`。表中名為 `custom` 的條目會在載入時拋出例外。當組合預設值與任何 preset 都不匹配時，外掛程式要求顯式設定 `defaultPreset`；獨立構造的零事件工作階段仍可能推匯出 `custom`。詳見[沙盒切換設計](../../../.agents/notes/implemented/feature/2026-07-06-sandbox.md)。
 
@@ -14,7 +14,7 @@
 
 ## 模型體驗
 
-間接地，透過 `dsh-user-approval` 和 `dsh-tool-bash`：二者會渲染由此服務的可調參數事件所選擇的審批策略提示詞、切換通知和沙盒工具結果；`permissionPresets/preset` 本身只寫入日誌。
+間接地，透過 `dsh-user-approval` 和 `dsh-tool-bash`：二者會算繪由此服務的可調參數事件所選擇的審批策略提示詞、切換通知和沙盒工具結果；`permissionPresets/preset` 本身只寫入日誌。
 
 #### KV Cache 影響
 

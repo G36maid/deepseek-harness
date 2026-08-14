@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/schedule.md
 schedule.md: 05c762470771ab6e7d320fa5f893c281b8a483d9
 schedule.zh.md: 5310d0bd0c73a5b83b01e7204141da0d204610a9
-schedule.zh-tw.md: 7485d5726f683c52dc1534064485dd457518277f
+schedule.zh-tw.md: 4fa68efad8f976c3c1714dbb044a3ab512daf5a9

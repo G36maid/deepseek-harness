@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/extensions/tool-cordis/README.md
 README.md: fde49911d955351283e6cbf2abb49182dd38c153
 README.zh.md: 3b972baa285473fd681d2d67f45783cd35a7d5d8
-README.zh-tw.md: 2c46d4d38cb1aee55becec232feacd671859c798
+README.zh-tw.md: b86eadceb03f74285c9de5040046ca27ff3c5d0b

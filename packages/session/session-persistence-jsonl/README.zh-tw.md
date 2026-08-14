@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-JSONL 持久工作階段儲存後端：`SessionPersistence` 的一個具體實作（`dsh-session-persistence` seam）。每個工作階段有一個僅附加的邏輯 JSONL 日誌，默認儲存為 `.jsonl.zstd`；停用壓縮時使用原始 `.jsonl`。
+JSONL 持久工作階段儲存後端：`SessionPersistence` 的一個具體實作（`dsh-session-persistence` seam）。每個工作階段有一個僅附加的邏輯 JSONL 日誌，預設儲存為 `.jsonl.zstd`；停用壓縮時使用原始 `.jsonl`。
 
 ## 磁碟版面配置
 
@@ -24,16 +24,16 @@ JSONL 持久工作階段儲存後端：`SessionPersistence` 的一個具體實�
 | 鍵 | 類型 | 說明 |
 |---|---|---|
 | `root` | `string`（必需） | 所有工作階段文件的根目錄。**無預設值**：`process.cwd()` 預設值會隨行程 cwd 變更（bash 呼叫、子行程）而分散文件。現有根必須是可讀目錄；缺失根在第一次實體化時建立。 |
-| `packChunks` | `boolean`（默認 `true`） | 將符合條件的 delta 區塊連續段寫為打包行（在真實程式設計工作階段上測得邏輯日誌約小 60%）。設為 `false` 可用於每事件一行診斷；無論該寫入側開關如何，都能讀取打包行。 |
-| `compression` | `'zstd' \| 'none'` | 默認 `'zstd'`；`'none'` 保留換行分隔 UTF-8 文字。 |
-| `preparedSessionCacheSize` | 正整數（默認 `5`） | 冷歷史檢查後保留、供復原複用的未發布工作階段數量上限。 |
-| `writeBatchMaxDelayMs` | 正整數（默認 `200`） | 空閒的活動事件佇列收到待寫入事件後開啟的固定合併視窗。後續事件不會重設視窗；flush 與 teardown 會繞過它。該值不限制事件迴圈、序列化操作或後端延遲。最大值為 Node 計時器上限 `2_147_483_647` ms。 |
+| `packChunks` | `boolean`（預設 `true`） | 將符合條件的 delta 區塊連續段寫為打包行（在真實程式設計工作階段上測得邏輯日誌約小 60%）。設為 `false` 可用於每事件一行診斷；無論該寫入側開關如何，都能讀取打包行。 |
+| `compression` | `'zstd' \| 'none'` | 預設 `'zstd'`；`'none'` 保留換行分隔 UTF-8 文字。 |
+| `preparedSessionCacheSize` | 正整數（預設 `5`） | 冷歷史檢查後保留、供復原複用的未發布工作階段數量上限。 |
+| `writeBatchMaxDelayMs` | 正整數（預設 `200`） | 空閒的活動事件佇列收到待寫入事件後開啟的固定合併視窗。後續事件不會重設視窗；flush 與 teardown 會繞過它。該值不限制事件迴圈、序列化操作或後端延遲。最大值為 Node 計時器上限 `2_147_483_647` ms。 |
 
 `locate(meta)` 返回已解析項目/工作階段目錄內固定 transcript 的 `{ kind: 'jsonl', path }`。它不執行檔案系統 I/O：可以在目錄或文件存在前返回目標，現有文件也只包含最近一次 flush 完成的前綴。
 
 ## 物理編碼
 
-默認產物是獨立 [Zstandard frame](../../../.agents/notes/implemented/architecture/2026-07-19-zstandard-jsonl-session-logs.md) 的標準拼接：一個僅包含 header 行的帶 checksum frame，後跟每個持久 append 批次一個帶 checksum frame。後端使用 Node 內建 Zstandard API 和默認壓縮等級，不提供等級開關。清單只讀取並驗證 header frame。`compression: 'none'` 在原始表示中保留相同邏輯行。
+預設產物是獨立 [Zstandard frame](../../../.agents/notes/implemented/architecture/2026-07-19-zstandard-jsonl-session-logs.md) 的標準拼接：一個僅包含 header 行的帶 checksum frame，後跟每個持久 append 批次一個帶 checksum frame。後端使用 Node 內建 Zstandard API 和預設壓縮等級，不提供等級開關。清單只讀取並驗證 header frame。`compression: 'none'` 在原始表示中保留相同邏輯行。
 
 一個根只屬於一種編碼。啟動發現和定向尋找會拒絕相反 suffix，錯誤會命名不相容產物，並指示呼叫方選擇匹配 mode 或獨立根。平鋪 `<project>/<id>.jsonl*` 產物也會被拒絕，而不是忽略。不提供遷移、混合根回退或雙寫。
 
@@ -74,4 +74,4 @@ JSONL 儲存不修改即時請求前綴。只有重建歷史、當前 envelope �
 - **壓縮文件不能直接按行讀取**：使用後端載入；或在寫入新根前選擇 `compression: 'none'`，以便外部行 reader 使用。
 - **不刪除工作階段文件**：日誌在 `root` 下累積，直到外部移除（seam 無刪除介面）。
 - **每工作階段一個活動 writer**：append 和修復只在所屬後端實例內協調。在所有者完成完全靜止的 dispose 前，其他後端實例或行程不得寫入同一工作階段；初始同 id 發布仍透過 POSIX 無覆蓋硬連結或 Windows 無替換 write-through rename 保持衝突安全。
-- **POSIX 實體化需要硬連結支持**：第一次 append 使用 `link()`，使同 id 競態失敗，而不覆蓋已提交日誌；Windows 使用無替換 write-through rename。
+- **POSIX 實體化需要硬連結支援**：第一次 append 使用 `link()`，使同 id 競態失敗，而不覆蓋已提交日誌；Windows 使用無替換 write-through rename。

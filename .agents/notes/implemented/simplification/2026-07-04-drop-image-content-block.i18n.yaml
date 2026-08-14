@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-04-drop-image-content-block.md
-2026-07-04-drop-image-content-block.md: c3edbe3eb9363bcd7c02b8969db4674768fcfefc
-2026-07-04-drop-image-content-block.zh.md: 899deed98f2234f7905da2d5b612a501de4cc1e4
-2026-07-04-drop-image-content-block.zh-tw.md: b2d47feb22567c0a2fc8a72ef9d321a9d8208bbf

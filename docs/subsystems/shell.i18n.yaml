@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/shell.md
 shell.md: 2277c3f1b22774e93eef1dc47da87739d52dd514
 shell.zh.md: 0e8a881b2520fa67ca843bcf3297bd5a70c14e32
-shell.zh-tw.md: 50d0ee6090785055f6293fba4ddcd8338fa95c5b
+shell.zh-tw.md: 369982d786348642d32f69fbfdb65932307f1a21

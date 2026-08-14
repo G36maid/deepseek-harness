@@ -4,7 +4,7 @@
 
 這三份**預設關閉的參考設定**透過 [`@deepseek-ai/dsh-mcp-client`](../../packages/mcp/mcp-client/README.md) 將一個記憶系統連線到 DSH。請選擇其中一份，或複製相同的通用 MCP 設定項來連線其他伺服器。
 
-這些第三方設定僅作為互操作參考；收錄不代表 DeepSeek 的認可、推薦、合作關係或持續支持承諾。
+這些第三方設定僅作為互操作參考；收錄不代表 DeepSeek 的認可、推薦、合作關係或持續支援承諾。
 
 ## DSH 負責什麼
 
@@ -41,7 +41,7 @@ npm install --global memorix@1.3.0
 dsh web --patch "$PWD/examples/mcp-memory/memorix.cordis.yml"
 ```
 
-Memorix 無需 LLM（大型語言模型）或 embedding 服務，即可在本機啟發式模式下執行。請在 Memorix 自己的 `~/.memorix/config.toml` 或項目 `memorix.toml` 中設定選填提供方。該示例沿用 DSH 工作目錄中的 Git 項目標識，並使用 Memorix 自身的默認目錄 `~/.memorix/data`。若要覆蓋該目錄，請在啟動 DSH 前設定 `MEMORIX_DATA_DIR`。
+Memorix 無需 LLM（大型語言模型）或 embedding 服務，即可在本機啟發式模式下執行。請在 Memorix 自己的 `~/.memorix/config.toml` 或項目 `memorix.toml` 中設定選填提供方。該示例沿用 DSH 工作目錄中的 Git 項目標識，並使用 Memorix 自身的預設目錄 `~/.memorix/data`。若要覆蓋該目錄，請在啟動 DSH 前設定 `MEMORIX_DATA_DIR`。
 
 ### MCP Reference Memory
 
@@ -61,7 +61,7 @@ go install github.com/Gentleman-Programming/engram/cmd/engram@v1.20.0
 dsh web --patch "$PWD/examples/mcp-memory/engram.cordis.yml"
 ```
 
-Engram 負責儲存和項目選擇：它默認使用 `~/.engram`，從 DSH 工作目錄偵測 Git 項目，並接受 `ENGRAM_DATA_DIR` 或 `ENGRAM_PROJECT` 作為環境覆蓋項。
+Engram 負責儲存和項目選擇：它預設使用 `~/.engram`，從 DSH 工作目錄偵測 Git 項目，並接受 `ENGRAM_DATA_DIR` 或 `ENGRAM_PROJECT` 作為環境覆蓋項。
 
 ## 選填的共用模型指令
 
@@ -73,13 +73,13 @@ Engram 負責儲存和項目選擇：它默認使用 `~/.engram`，從 DSH 工�
 
 ## 驗證寫入、新工作階段召回和使用
 
-請在整個過程中使用一個唯一值，並保持提供方的儲存範圍不變：
+請在整個程序中使用一個唯一值，並保持提供方的儲存範圍不變：
 
 1. 在 DSH 工作階段 A 中提出：`Remember that my validation drink is lapsang-<unique suffix>.`。確認模型呼叫了提供方的寫入工具，並且工具返回成功。
 2. 在同一個仍在執行的 Host 中建立 DSH 工作階段 B。不要複製工作階段 A 的對話。提出：`What is my validation drink? Check memory.`。確認模型呼叫了提供方的搜尋或召回工具，並返回該值。
 3. 繼續在工作階段 B 中提出：`Use that preference to suggest one drink for the meeting.`。確認回答使用了召回的值。
 
-必須新建 DSH 工作階段，但不需要重新啟動 Host。只有 MCP 子行程崩潰後才需要重新啟動或執行 HMR（熱模組替換），因為當前的通用用戶端不會自動重連；其工具註冊會一直保留，直到外掛程式 dispose（資源釋放）或成功重新同步，針對已關閉傳輸的呼叫可能失敗。初始發現過程是非同步的，因此傳送第一條驗證提示詞前，請等待提供方的 `mcp__...` 工具出現。
+必須新建 DSH 工作階段，但不需要重新啟動 Host。只有 MCP 子行程崩潰後才需要重新啟動或執行 HMR（熱模組替換），因為當前的通用用戶端不會自動重連；其工具註冊會一直保留，直到外掛程式 dispose（資源釋放）或成功重新同步，針對已關閉傳輸的呼叫可能失敗。初始發現程序是非同步的，因此傳送第一條驗證提示詞前，請等待提供方的 `mcp__...` 工具出現。
 
 ## 接入其他 MCP 伺服器
 
@@ -98,4 +98,4 @@ Engram 負責儲存和項目選擇：它默認使用 `~/.engram`，從 DSH 工�
         cwd: !!js process.cwd()
 ```
 
-對於遠端伺服器，請改用 `transport: streamable-http`、`url` 和 `headers`。提供方專屬的安裝、身份、認證、模型、embedding、持久化和許可仍由提供方負責。
+對於遠端伺服器，請改用 `transport: streamable-http`、`url` 和 `headers`。提供方專屬的安裝、身份、驗證、模型、embedding、持久化和許可仍由提供方負責。

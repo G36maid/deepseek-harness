@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-05-slot-declaration-injection.md
-2026-08-05-slot-declaration-injection.md: c472e8b5c2a85d5ede535c3d20b6dd7876ed6022
-2026-08-05-slot-declaration-injection.zh.md: 15f461ba5a1d14d990573ffbc1faa32a73b889b7
-2026-08-05-slot-declaration-injection.zh-tw.md: 02e7ae4518e3b7c0065596c54f0126c7ebc6a581

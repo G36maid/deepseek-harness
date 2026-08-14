@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/03-services.md
 03-services.md: 1c054c5ea838fc47277ac0025f6dc187b9c8782f
 03-services.zh.md: 0f0d7235aece434ac3a27ff981fa00870a40403f
-03-services.zh-tw.md: 3556dab24b79beb4da5ba67f61a61002b465f61d
+03-services.zh-tw.md: d4c1e28a34adfb76b39e14d5df9cc449453e4ba0

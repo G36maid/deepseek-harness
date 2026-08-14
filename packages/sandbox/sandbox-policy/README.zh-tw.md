@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-沙盒策略解析的唯一歸屬位置：部署默認 [`SandboxMode`](../sandbox/README.md) 與回退根目錄，加上每個工作階段的持久模式覆蓋和不可變工作區根目錄。每項負責強制執行的能力在每次呼叫時都會收到一項解析完成的模式與根目錄策略；模型在每次請求前會收到當前策略，而不會另收一份能力清單。
+沙盒策略解析的唯一歸屬位置：部署預設 [`SandboxMode`](../sandbox/README.md) 與回退根目錄，加上每個工作階段的持久模式覆蓋和不可變工作區根目錄。每項負責強制執行的能力在每次呼叫時都會收到一項解析完成的模式與根目錄策略；模型在每次請求前會收到當前策略，而不會另收一份能力清單。
 
 ## 為何需要共享歸屬位置
 
@@ -10,7 +10,7 @@
 
 ## 設定
 
-- `mode`：部署默認 `SandboxMode`（`read-only`／`workspace-write`／`danger-full-access`），載入時驗證。預設為 `read-only`（故障安全）。
+- `mode`：部署預設 `SandboxMode`（`read-only`／`workspace-write`／`danger-full-access`），載入時驗證。預設為 `read-only`（故障安全）。
 - `workspaceRoot`：無 agent（代理）的呼叫或沒有 cwd 的工作階段在 `workspace-write` 下可寫入的回退目錄。預設為 `process.cwd()`；無論顯式設定還是採用預設值，都會解析為其絕對檔案系統標識。普通 agent 呼叫改用其工作階段頭中不可變的 `cwd`。
 
 ## 介面

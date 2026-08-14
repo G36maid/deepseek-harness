@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/rejected/feature/2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.md
-2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.md: 1456a39157318be3c55905efac0d7a37f0fe8fd7
-2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh.md: 56db2cb16048334686f667cc7953cea2438ea181
-2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh-tw.md: 69404f75b8a07490334e0060b2448ad5d70da79c

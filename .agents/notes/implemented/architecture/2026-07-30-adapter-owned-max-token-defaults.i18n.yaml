@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-adapter-owned-max-token-defaults.md
-2026-07-30-adapter-owned-max-token-defaults.md: eb2c3f69ea3e745cdf1957c2ad4c0902a3c865c7
-2026-07-30-adapter-owned-max-token-defaults.zh.md: 63cd0dd6457e274e510e5ae54ba6746403fb274f
-2026-07-30-adapter-owned-max-token-defaults.zh-tw.md: c104ef96fee74f7f26da01bf7637c85ed04b345d

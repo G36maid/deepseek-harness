@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/session/session-telemetry/README.md
 README.md: 89a74c5e7cf46c0335ad892b788384e18872d39e
 README.zh.md: be18e44ed62127e98baec5d0f7ccda01038c3a26
-README.zh-tw.md: 6e79457cd023e8ecba3fa3a161e288fe63d5ba54
+README.zh-tw.md: 6667bf6cd5b06c6433e5e0455f35277d776d02e5

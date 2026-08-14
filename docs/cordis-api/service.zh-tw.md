@@ -88,7 +88,7 @@ static readonly extend: unique symbol
 static readonly tracker: unique symbol
 ```
 
-上下文追蹤所用跟蹤器元資料的符號鍵。
+上下文追蹤所用跟蹤器中繼資料的符號鍵。
 
 [原始碼](../../vendor/cordis/src/service.ts#L23)
 

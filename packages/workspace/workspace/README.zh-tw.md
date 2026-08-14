@@ -14,7 +14,7 @@ DeepSeek Harness 的 Workspace 實體登錄檔（`ctx.workspaceRegistry`）：�
 - `ctx.workspaceRegistry.delete(id)`：只移除 Workspace 註冊記錄、對應的持久順序條目及工作階段歸屬記錄。未知 id 返回 `false`，成功移除記錄則返回 `true`。目錄、使用者文件、活躍工作階段和持久化工作階段日誌絕不受影響，因此相關工作階段會進入 Ungrouped。表寫入失敗時會復原原順序和此前發布的實體。
 - `Workspace.attachSession(id)`：對照 workspace 路徑驗證即時或已持久化的工作階段頭 cwd，並將新 id 前置。未知工作階段、缺失／無法解析／非目錄的 cwd 值和不匹配情況都會在不寫入的前提下被拒絕。`detachSession` 只移除候選索引條目。
 - `Workspace.insertSessionBefore(id, before?)`：在手動順序內移動一個已記帳的工作階段，語義類似 DOM 的 insertBefore：插到錨點之前，省略錨點則追加到末尾。工作階段或錨點不在記帳中時拒絕且不寫入；移動到當前位置時直接完成且不寫入。登錄檔中的 Workspace 順序絕不改變。
-- `ctx.workspaceRegistry.archiveSession(id)`/`archivedSessionIds`：覆蓋在 workspace 記帳之上的登錄檔級全域性歸檔集合：被歸檔的工作階段從各分組檢視表中消失，但其工作階段日誌和 `sessionIds` 席位保持不變，未來取消歸檔時可復原原位置。歸檔接受任何即時或已持久化的工作階段（無論已記帳還是 Ungrouped），對已歸檔的 id 直接完成而不寫入，並拒絕未知 id。在該欄位出現之前寫入的狀態解析為一個空集合。
+- `ctx.workspaceRegistry.archiveSession(id)`/`archivedSessionIds`：覆蓋在 workspace 記帳之上的登錄檔級全域性封存集合：被封存的工作階段從各分組檢視表中消失，但其工作階段日誌和 `sessionIds` 席位保持不變，未來取消封存時可復原原位置。封存接受任何即時或已持久化的工作階段（無論已記帳還是 Ungrouped），對已封存的 id 直接完成而不寫入，並拒絕未知 id。在該欄位出現之前寫入的狀態解析為一個空集合。
 - `Workspace.sessionIds`：按持久候選順序提供同步 id 加規範 cwd 成員投影。缺失頭部、無效 cwd 值和不匹配情況都被過濾；下一次 workspace 變更會剪除它們。如果同一儲存介質將一個工作階段索引到兩個 workspace 下、用兩條記錄聲明同一路徑，或偏離持久 workspace 順序，啟動會被拒絕。
 - `Workspace.status()`：未快取的目錄檢查，返回 `'ok' | 'missing-dir'`；目錄缺失絕不會改動記錄。
 

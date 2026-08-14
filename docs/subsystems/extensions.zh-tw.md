@@ -2,7 +2,7 @@
 
 [English](extensions.md) | [简体中文](extensions.zh.md) | 繁體中文
 
-extensions 子系統允許 agent（代理）定義帶版本的 Cordis 包、執行其 host 與瀏覽器兩半，並在編寫程式碼前查詢獲準公開的執行時期元資料。包生命週期與沙盒行為由 [`packages/extensions`](../../packages/extensions/README.md) 包組說明。
+extensions 子系統允許 agent（代理）定義帶版本的 Cordis 包、執行其 host 與瀏覽器兩半，並在編寫程式碼前查詢獲準公開的執行時期中繼資料。包生命週期與沙盒行為由 [`packages/extensions`](../../packages/extensions/README.md) 包組說明。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

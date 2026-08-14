@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/spill/spill/README.md
 README.md: 2ea2873019c7a6cd8851ec8004a5902aeff71cf4
 README.zh.md: 9683d4dd9837fb2c1c506c09a25c525032594b94
-README.zh-tw.md: e46868daf156fdb86c73c99c5ad5fd300476e2d7
+README.zh-tw.md: 8482818f91ca53fbdac5fd1e15f094a38a7a456d

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/jsonrpc-agent/README.md
 README.md: 5008cf3bc8a70919eb7b02e9389153a503b3158a
 README.zh.md: 36b926b9d266c02b12137a09e14d8b0d1f66ecd8
-README.zh-tw.md: fc394e68f94365f81e26dd690d129520c302c04d
+README.zh-tw.md: 94c72c40a5a18c68b45e0a367a5b45cd32d6ada4

@@ -9,7 +9,7 @@
 | [`remotes/`](remotes/README.md) | Host Agent/Session lookup 策略與 Client Remote contribution 裝配 | 無服務；設定 `ctx.typert` 並消費 `ctx.remote` |
 | [`gateway/`](gateway/README.md) | Host Typert 分發器與 Client Remote endpoint | `ctx.typertGateway` / `ctx.remote` |
 
-執行時期相依性方向為 `remotes → gateway → connection → webserver`：BFF 消費共享的 `TypertClientRemote` 約定，Gateway 把傳輸交給 Connection，Connection 再掛載到 HTTP server。Cordis 服務注入與 Client 模組元資料在不讓 Remotes Client 入口匯入具體 Gateway 實作的前提下維持該順序。
+執行時期相依性方向為 `remotes → gateway → connection → webserver`：BFF 消費共享的 `TypertClientRemote` 約定，Gateway 把傳輸交給 Connection，Connection 再掛載到 HTTP server。Cordis 服務注入與 Client 模組中繼資料在不讓 Remotes Client 入口匯入具體 Gateway 實作的前提下維持該順序。
 
 ## 已知限制與延期工作
 

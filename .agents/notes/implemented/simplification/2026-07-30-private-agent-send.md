@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-30-private-agent-send.zh.md) | [繁體中文](2026-07-30-private-agent-send.zh-tw.md)
+
 
 ## Problem
 

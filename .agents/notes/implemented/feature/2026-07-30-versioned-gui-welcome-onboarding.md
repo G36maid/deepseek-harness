@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-30-versioned-gui-welcome-onboarding.zh.md) | [繁體中文](2026-07-30-versioned-gui-welcome-onboarding.zh-tw.md)
+
 
 ## Problem
 

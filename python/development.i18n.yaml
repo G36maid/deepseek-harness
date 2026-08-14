@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write python/development.md
 development.md: 4f8c3b60d087ac23ac8c9df3f61abc24ac588b42
 development.zh.md: 69e24abcc0343098f07716ef78aa6794942c9007
-development.zh-tw.md: 32b0cb775fc6e123c9d2caec2be5cf637b6065c6
+development.zh-tw.md: 6083e10c2f38316b18cb6b0baf53b9a11b388534

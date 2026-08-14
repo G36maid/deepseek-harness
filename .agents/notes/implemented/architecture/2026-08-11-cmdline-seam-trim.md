@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-11-cmdline-seam-trim.zh.md) | [繁體中文](2026-08-11-cmdline-seam-trim.zh-tw.md)
+
 
 ## Problem
 

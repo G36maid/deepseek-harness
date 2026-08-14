@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/proposed/simplification/2026-07-19-make-jsonrpc-directional.md
-2026-07-19-make-jsonrpc-directional.md: 3bcd88675b42aba7748c03bd519da566cf986a27
-2026-07-19-make-jsonrpc-directional.zh.md: 59ae1003f34f3cd6af17cd9907b8072a95a89402
-2026-07-19-make-jsonrpc-directional.zh-tw.md: 4b49327c2b484a90b0118dfd8a15215fe6c89291

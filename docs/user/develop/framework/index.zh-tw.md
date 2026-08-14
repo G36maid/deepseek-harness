@@ -134,4 +134,4 @@ effect cleaned up
 
 - [服務與相依性](./service.md) — 讓外掛程式向其他外掛程式提供能力
 - [事件系統](./events.md) — 在外掛程式之間通訊
-- [Cordis 框架教程](../../../cordis-tutorial/index.md) — 在 Cordis 執行時期上逐步搭出同一套生命週期、服務與事件
+- [Cordis 框架教學](../../../cordis-tutorial/index.md) — 在 Cordis 執行時期上逐步搭出同一套生命週期、服務與事件

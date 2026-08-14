@@ -2,18 +2,18 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-`dsh` 是 DeepSeek Harness 中用於啟動 profile 的命令；profile 由多個外掛程式組合包 patch 層按順序疊加而成，其上再應用使用者自己的覆蓋設定。[`src/args.ts`](src/args.ts) 負責命令文法，[`src/bin.ts`](src/bin.ts) 只載入選中的執行器。無效命令、來自其他模式的選項、設定錯誤和啟動失敗都會以非零狀態退出。
+`dsh` 是 DeepSeek Harness 中用於啟動 profile 的命令；profile 由多個外掛程式組合包 patch 層按順序疊加而成，其上再應用使用者自己的覆蓋設定。[`src/args.ts`](src/args.ts) 負責命令文法，[`src/bin.ts`](src/bin.ts) 只載入選中的執行器。無效命令、來自其他模式的選項、設定錯誤和啟動失敗都會以非零狀態結束。
 
 ## 入口模式
 
 | 命令 | 用途 |
 |---|---|
 | `dsh --profile <name>` | 啟動位於 `$DSH_HOME/profiles/<name>` 的指定 profile。 |
-| `dsh --profile headless "job"` | 執行一個全新的持久化工作階段，列印最終答案並退出。 |
+| `dsh --profile headless "job"` | 執行一個全新的持久化工作階段，列印最終答案並結束。 |
 | `dsh web` | `--profile web` 的別名。 |
 | `dsh plugin --profile <name> <pnpm args>` | 透過在 profile 目錄中轉發給 pnpm 來管理該 profile 的外掛程式。 |
 
-執行命令時所在的目錄將作為默認 workspace 根目錄。`web` 和 `headless` profile 在首次使用時會從隨附範本自動初始化；其他任何 profile 都必須透過 `dsh plugin` 建立。
+執行命令時所在的目錄將作為預設 workspace 根目錄。`web` 和 `headless` profile 在首次使用時會從隨附樣板自動初始化；其他任何 profile 都必須透過 `dsh plugin` 建立。
 
 ## 應用參數
 

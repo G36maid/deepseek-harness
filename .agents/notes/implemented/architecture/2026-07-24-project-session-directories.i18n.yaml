@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-24-project-session-directories.md
-2026-07-24-project-session-directories.md: 63a76238b4c976c6aa7420f5c9c7ce2882f80d73
-2026-07-24-project-session-directories.zh.md: b13b44920855ea974260dca707eb5b9bec6a314d
-2026-07-24-project-session-directories.zh-tw.md: 1e43286a356b617a3da0e92bd6a1054b68ca9d64

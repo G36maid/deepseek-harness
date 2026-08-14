@@ -6,10 +6,10 @@
 
 ## 讀取
 
-- `listSessions(signal?)` 讀取當前持久化元資料，以即時記錄優先的方式合併它們，並按確定性的最新優先順序返回克隆記錄。
+- `listSessions(signal?)` 讀取當前持久化中繼資料，以即時記錄優先的方式合併它們，並按確定性的最新優先順序返回克隆記錄。
 - `readSession(sessionId)` 在執行與復原相同的核心重播驗證後，返回一份完整、脫離儲存的原始日誌；它絕不會將該工作階段放入即時儲存。
-- `filterSessions(filters, signal?)` 對同一份克隆邏輯語料庫應用與提供方無關的工作階段元資料和可用性謂詞。
-- `filterEvents(sessionId, filters)` 提取第一方語義文件，並按 seq 升序應用與提供方無關的元資料和字面文字謂詞。
+- `filterSessions(filters, signal?)` 對同一份克隆邏輯語料庫應用與提供方無關的工作階段中繼資料和可用性謂詞。
+- `filterEvents(sessionId, filters)` 提取第一方語義文件，並按 seq 升序應用與提供方無關的中繼資料和字面文字謂詞。
 - `readTitleSnapshots(sessionIds, signal?)` 從一次即時優先的語料庫觀察中解析唯一 id，將取消訊號傳遞給持久化清單查詢和檢查，並按順序返回每個工作階段的結帳結果，使某個缺失或格式錯誤的標題來源不會導致其他工作階段的結果被丟棄。每個即時來源直接 fold，每個持久化 worker fold 為脫離儲存的 header/標題結果，並在出隊下一個 id 前釋放完整日誌。取消會拒絕整個批次。`readTitleSnapshot(sessionId, signal?)` 是單次觀察檢視表；`readTitle(sessionId, signal?)` 只返回其選填的 folded `session/title`。
 - `listEvents(sessionId)` 載入即時優先的原始日誌，將每個事件分類為 `current`、`shadowed` 或 `log-only`；該分類使用共享 `dsh-session` 表層 fold。
 - `readSurface(sessionId)` 返回一個克隆 header、原始日誌捕獲邊界，以及按模型歷史順序排列的完整摺疊後當前表層。即時工作階段優先於持久化；壓縮（compaction）只會在其替換追加之前或之後被觀察，絕不會出現合成混合。
@@ -17,7 +17,7 @@
 - `traceSession(sessionId, signal?)` 只讀取一次語料庫，返回從直接父級向外的祖先，以及確定性的遞迴後代樹。`complete: false` 標識第一個缺失父級；與目標相連的迴圈會以 `SESSION_QUERY_INVALID_LINEAGE` 失敗。
 - `traceEvent(request, signal?)` 只載入一次邏輯日誌，返回其克隆源 header、直接位置替換和直接引用的源事件連結。`replacementChain` 沿位置替換者跟蹤到最終替換；源事件連結仍不傳遞。
 
-持久化是選填的，可動態掛載或解除安裝。已掛載持久化無法讀取時，跨語料庫清單和血緣跟蹤以 `SESSION_QUERY_PERSISTENCE_FAILED` 失敗；已經成功讀取、但無法透過 Session 校驗的持久化記錄則以 `SESSION_QUERY_CORRUPT_SESSION` 失敗。針對已知即時工作階段的標題讀取、事件跟蹤或事件讀取不會查詢持久化，因此持久化後端的健康狀態無法使當前記憶體狀態變得不可讀。持久化標題和事件操作在載入前先執行清單查詢，並在元資料不匹配時拒絕，而不會組合不一致的觀察。血緣跟蹤的取消訊號會傳遞給持久化清單查詢；事件跟蹤和事件讀取的取消訊號會傳遞給持久化清單查詢和檢查。每項操作都會等待已啟動的後端呼叫結帳，然後使用訊號的精確原因拒絕，即使後端忽略了該訊號。針對已知即時工作階段且預先中止的標題讀取、事件跟蹤或事件讀取會在 fold 或快照之前拒絕，且不查詢持久化。批次標題觀察執行一次元資料清單查詢，使用最多 `persistedInspectConcurrency` 個 worker 檢查唯一持久化 id，並保留每個標題自己觀察到的 header，供下游授權使用。取消不會啟動已排隊檢查，且只在已啟動 worker 結帳後拒絕。`listSessions()` 仍保持輕量，不載入日誌或索引標題。
+持久化是選填的，可動態掛載或解除安裝。已掛載持久化無法讀取時，跨語料庫清單和血緣跟蹤以 `SESSION_QUERY_PERSISTENCE_FAILED` 失敗；已經成功讀取、但無法透過 Session 校驗的持久化記錄則以 `SESSION_QUERY_CORRUPT_SESSION` 失敗。針對已知即時工作階段的標題讀取、事件跟蹤或事件讀取不會查詢持久化，因此持久化後端的健康狀態無法使當前記憶體狀態變得不可讀。持久化標題和事件操作在載入前先執行清單查詢，並在中繼資料不匹配時拒絕，而不會組合不一致的觀察。血緣跟蹤的取消訊號會傳遞給持久化清單查詢；事件跟蹤和事件讀取的取消訊號會傳遞給持久化清單查詢和檢查。每項操作都會等待已啟動的後端呼叫結帳，然後使用訊號的精確原因拒絕，即使後端忽略了該訊號。針對已知即時工作階段且預先中止的標題讀取、事件跟蹤或事件讀取會在 fold 或快照之前拒絕，且不查詢持久化。批次標題觀察執行一次中繼資料清單查詢，使用最多 `persistedInspectConcurrency` 個 worker 檢查唯一持久化 id，並保留每個標題自己觀察到的 header，供下游授權使用。取消不會啟動已排隊檢查，且只在已啟動 worker 結帳後拒絕。`listSessions()` 仍保持輕量，不載入日誌或索引標題。
 
 ## 過濾與提取
 
@@ -27,7 +27,7 @@
 
 ## 全文方法
 
-`SessionQueryEngine.searchSessions(request, exec?)` 按匹配最強的事件對邏輯語料庫分組；`searchEvents(request, exec?)` 搜尋一個邏輯工作階段。這兩個是服務僅有的抽象方法。兩者都返回分頁結果，其延續資訊是由服務持有的帶品牌 `SessionSearchCursor`；接受選填取消，並在不使用提供方專用數值分數的情況下提供摘錄。事件搜尋分頁結果還攜帶來自與命中相同索引世代的克隆目標 header，使授權消費端可將策略綁定到此次載荷觀察。搜尋請求只接受事件元資料過濾器，因為字面文字過濾使用上文所述掃描路徑。
+`SessionQueryEngine.searchSessions(request, exec?)` 按匹配最強的事件對邏輯語料庫分組；`searchEvents(request, exec?)` 搜尋一個邏輯工作階段。這兩個是服務僅有的抽象方法。兩者都返回分頁結果，其延續資訊是由服務持有的帶品牌 `SessionSearchCursor`；接受選填取消，並在不使用提供方專用數值分數的情況下提供摘錄。事件搜尋分頁結果還攜帶來自與命中相同索引世代的克隆目標 header，使授權消費端可將策略綁定到此次載荷觀察。搜尋請求只接受事件中繼資料過濾器，因為字面文字過濾使用上文所述掃描路徑。
 
 該包沒有提供方協調器、回退實作或獨立具體外掛程式。具體服務後端繼承已實作的讀取、過濾和跟蹤，同時負責全文觀察、對帳、排名、遊標世代和查詢執行；第一個實作是 [`@deepseek-ai/dsh-session-query-sqlite`](../session-query-sqlite/README.md)。
 

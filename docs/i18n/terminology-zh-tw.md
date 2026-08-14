@@ -169,57 +169,61 @@
 | 包装脚本 | 包裝指令碼 | wrapper script | 「脚本」→「指令碼」 |
 | wheel 包 | wheel 套件 | wheel | 「包」→「套件」 |
 
-## 机械转换陷阱（OpenCC s2twp 会转错，必须人工校正）
+## 需要替换的词条（机械转换陷阱：OpenCC s2twp 会转错，必须人工校正）
 
-| 简体输入 | OpenCC 实际输出 | 正确繁体 | English 錨點 |
+| 简体中文 | 繁體中文 | English 錨點 | 備註 |
 |---|---|---|---|
-| 登录档 | 登入檔 | 登錄檔 | registry（登录档为 registry 语境，非 login） |
-| 表达式 | 表示式 | 運算式 | expression |
-| 并发 | 併發 | 並行 | concurrency |
-| 并行 | 並行 | 平行 | parallelism |
-| 并行 | 並行 | 平行 | parallel |
-| 布局 | 佈局 | 版面配置 | layout |
-| 参数 | 引數 | 參數 | parameter（同形） |
-| 常量 | 常量 | 常數 | constant |
-| 超时 | 超時 | 逾時 | timeout |
-| 触发器 | 觸發器 | 觸發程序 | trigger |
-| 弹窗 | 彈窗 | 彈出視窗 | popup |
-| 断点 | 斷點 | 中斷點 | breakpoint |
-| 负载均衡 | 負載均衡 | 負載平衡 | load balancing |
-| 高可用 | 高可用 | 高可用性 | high availability |
-| 构建 | 構建 | 建置 | build |
-| 归档 | 歸檔 | 封存 | archive |
-| 滚动 | 滾動 | 捲動 | scroll |
-| 过程 | 過程 | 程序 | process（操作系统语境）；「过程」→「程序」仅限 process 语境 |
-| 恢复 | 恢復 | 復原 | restore |
-| 回调 | 回撥 | 回呼 | callback |
-| 回归 | 迴歸 | 回歸 | regression（同形） |
-| 会话 | 會話 | 工作階段 | session |
-| 进程 | 程序 | 行程 | process |
-| 可伸缩 | 可伸縮 | 可擴充 | scalable |
-| 快捷键 | 快捷鍵 | 快速鍵 | shortcut |
-| 扩展 | 擴充套件 | 擴充 | extension |
-| 垃圾回收 | 垃圾回收 | 記憶體回收 | garbage collection |
-| 垃圾回收器 | 垃圾回收器 | 記憶體回收器 | garbage collector |
-| 连接池 | 連線池 | 連線集區 | connection pool |
-| 令牌 | 令牌 | 權杖 | token（资安语境） |
-| 命名空间 | 名稱空間 | 命名空間 | namespace（同形） |
-| 模板 | 模板 | 樣板 | template |
-| 配置 | 配置 | 設定 | configuration |
-| 权限 | 許可權 | 權限 | permission |
-| 认证 | 認證 | 驗證 | authentication |
-| 事务 | 事務 | 交易 | transaction |
-| 事务日志 | 事務日誌 | 交易日誌 | transaction log |
-| 守护进程 | 守護程序 | 常駐程式 | daemon |
-| 套接字 | 套接字 | Socket | socket（保留英文） |
-| 退出 | 退出 | 結束 | exit |
-| 拖拽 | 拖拽 | 拖曳 | drag |
-| 协议 | 協議 | 協定 | protocol |
-| 渲染 | 渲染 | 算繪 | render |
-| 异常 | 異常 | 例外 | exception |
-| 元数据 | 後設資料 | 中繼資料 | metadata |
-| 云计算 | 雲端計算 | 雲端運算 | cloud computing |
-| 占位符 | 佔位符 | 預留位置 | placeholder |
-| 栈帧 | 棧幀 | 堆疊框架 | stack frame |
-| 重启 | 重啟 | 重新啟動 | restart |
-| 注释 | 註釋 | 註解 | comment |
+| 登录档 | 登錄檔 | registry（登录档为 registry 语境，非 login） | OpenCC 实际输出：登入檔 |
+| 表达式 | 運算式 | expression | OpenCC 实际输出：表示式 |
+| 并发 | 並行 | concurrency | OpenCC 实际输出：併發 |
+| 并行 | 平行 | parallelism | OpenCC 实际输出：並行 |
+| 并行 | 平行 | parallel | OpenCC 实际输出：並行 |
+| 布局 | 版面配置 | layout | OpenCC 实际输出：佈局 |
+| 参数 | 參數 | parameter（同形） | OpenCC 实际输出：引數 |
+| 常量 | 常數 | constant | OpenCC 实际输出：常量 |
+| 超时 | 逾時 | timeout | OpenCC 实际输出：超時 |
+| 触发器 | 觸發程序 | trigger | OpenCC 实际输出：觸發器 |
+| 弹窗 | 彈出視窗 | popup | OpenCC 实际输出：彈窗 |
+| 断点 | 中斷點 | breakpoint | OpenCC 实际输出：斷點 |
+| 负载均衡 | 負載平衡 | load balancing | OpenCC 实际输出：負載均衡 |
+| 高可用 | 高可用性 | high availability | OpenCC 实际输出：高可用 |
+| 构建 | 建置 | build | OpenCC 实际输出：構建 |
+| 归档 | 封存 | archive | OpenCC 实际输出：歸檔 |
+| 滚动 | 捲動 | scroll | OpenCC 实际输出：滾動 |
+| 过程 | 程序 | process（操作系统语境）；「过程」→「程序」仅限 process 语境 | OpenCC 实际输出：過程 |
+| 恢复 | 復原 | restore | OpenCC 实际输出：恢復 |
+| 回调 | 回呼 | callback | OpenCC 实际输出：回撥 |
+| 回归 | 回歸 | regression（同形） | OpenCC 实际输出：迴歸 |
+| 会话 | 工作階段 | session | OpenCC 实际输出：會話 |
+| 进程 | 行程 | process | OpenCC 实际输出：程序 |
+| 可伸缩 | 可擴充 | scalable | OpenCC 实际输出：可伸縮 |
+| 快捷键 | 快速鍵 | shortcut | OpenCC 实际输出：快捷鍵 |
+| 扩展 | 擴充 | extension | OpenCC 实际输出：擴充套件 |
+| 垃圾回收 | 記憶體回收 | garbage collection | OpenCC 实际输出：垃圾回收 |
+| 垃圾回收器 | 記憶體回收器 | garbage collector | OpenCC 实际输出：垃圾回收器 |
+| 连接池 | 連線集區 | connection pool | OpenCC 实际输出：連線池 |
+| 令牌 | 權杖 | token（资安语境） | OpenCC 实际输出：令牌 |
+| 命名空间 | 命名空間 | namespace（同形） | OpenCC 实际输出：名稱空間 |
+| 模板 | 樣板 | template | OpenCC 实际输出：模板 |
+| 配置 | 設定 | configuration | OpenCC 实际输出：配置 |
+| 权限 | 權限 | permission | OpenCC 实际输出：許可權 |
+| 认证 | 驗證 | authentication | OpenCC 实际输出：認證 |
+| 事务 | 交易 | transaction | OpenCC 实际输出：事務 |
+| 事务日志 | 交易日誌 | transaction log | OpenCC 实际输出：事務日誌 |
+| 守护进程 | 常駐程式 | daemon | OpenCC 实际输出：守護程序 |
+| 套接字 | Socket | socket（保留英文） | OpenCC 实际输出：套接字 |
+| 退出 | 結束 | exit | OpenCC 实际输出：退出 |
+| 拖拽 | 拖曳 | drag | OpenCC 实际输出：拖拽 |
+| 协议 | 協定 | protocol | OpenCC 实际输出：協議 |
+| 支持 | 支援 | support | 台湾惯用「支援」；「支持」台湾指支持某观点 |
+| 默认 | 預設 | default | 台湾惯用「預設」 |
+| 演示 | 示範 | demo | 台湾惯用「示範」或「Demo」 |
+| 教程 | 教學 | tutorial | 台湾惯用「教學」；档名与链接目标不转换 |
+| 渲染 | 算繪 | render | OpenCC 实际输出：渲染 |
+| 异常 | 例外 | exception | OpenCC 实际输出：異常 |
+| 元数据 | 中繼資料 | metadata | OpenCC 实际输出：後設資料 |
+| 云计算 | 雲端運算 | cloud computing | OpenCC 实际输出：雲端計算 |
+| 占位符 | 預留位置 | placeholder | OpenCC 实际输出：佔位符 |
+| 栈帧 | 堆疊框架 | stack frame | OpenCC 实际输出：棧幀 |
+| 重启 | 重新啟動 | restart | OpenCC 实际输出：重啟 |
+| 注释 | 註解 | comment | OpenCC 实际输出：註釋 |

@@ -22,9 +22,9 @@
 
 | 設定鍵 | 必填 | 含義 |
 |---|---|---|
-| `thresholdChars` | 否（默認 `8192`） | 合併文字超過此 Unicode 碼點數時剪枝。 |
-| `headChars` | 否（默認 `4096`） | 保留的開頭 Unicode 碼點數。 |
-| `tailChars` | 否（默認 `1024`） | 保留的末尾 Unicode 碼點數。 |
+| `thresholdChars` | 否（預設 `8192`） | 合併文字超過此 Unicode 碼點數時剪枝。 |
+| `headChars` | 否（預設 `4096`） | 保留的開頭 Unicode 碼點數。 |
+| `tailChars` | 否（預設 `1024`） | 保留的末尾 Unicode 碼點數。 |
 
 所有值都必須是整數；閾值必須為正數，頭部／尾部必須為非負數。`headChars + marker + tailChars` 之和不得超過 `thresholdChars`，因此有效設定可以剪枝每個超出預算的結果，不會成長或重複改寫。
 

@@ -2,7 +2,7 @@
 
 Status: rejected — `step/end` is the durable indication that a model step finished, and keeping the symmetric `step/start` / `step/end` pair makes crash repair, invariants, and transcript inspection clearer than inferring completion from adjacent step-scoped events.
 
-English | [简体中文](2026-06-20-drop-durable-step-boundaries.zh.md) | [繁體中文](2026-06-20-drop-durable-step-boundaries.zh-tw.md)
+
 
 ## Problem
 

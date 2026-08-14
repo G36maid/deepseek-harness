@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/adding-an-llm-adapter.md
 adding-an-llm-adapter.md: ff750c9092f83bc82fa7b993e2e56c5a988fd316
 adding-an-llm-adapter.zh.md: e3f3e2874f925d947023365e8fe449220e0a5798
-adding-an-llm-adapter.zh-tw.md: 30c75a274dae2fedfcaf15b59933ef47d61e87fe
+adding-an-llm-adapter.zh-tw.md: 6d784b64eefa4b8519edd05a30123bdf0efc2375

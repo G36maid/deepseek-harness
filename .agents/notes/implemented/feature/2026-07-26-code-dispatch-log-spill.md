@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-26-code-dispatch-log-spill.zh.md) | [繁體中文](2026-07-26-code-dispatch-log-spill.zh-tw.md)
+
 
 > Scope: limiting the `tool/code-dispatch` event's content with the existing spill implementation. The [host foundation note](2026-07-26-code-dispatch-ui-foundation.md) deliberately accepted the unlimited log and deferred spill support to this change; the [live-parallel note](2026-07-26-code-mode-live-parallel-dispatch.md) defines the event pair that this listener processes.
 

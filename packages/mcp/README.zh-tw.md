@@ -1,4 +1,4 @@
-# MCP — 模型上下文協議
+# MCP — 模型上下文協定
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 

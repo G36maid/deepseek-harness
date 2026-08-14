@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-06-26-fsspec-style-fs-seam.zh.md) | [繁體中文](2026-06-26-fsspec-style-fs-seam.zh-tw.md)
+
 
 ## Problem
 

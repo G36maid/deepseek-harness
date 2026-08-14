@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-01-goal-command-input-projection.zh.md) | [繁體中文](2026-08-01-goal-command-input-projection.zh-tw.md)
+
 
 ## Problem
 

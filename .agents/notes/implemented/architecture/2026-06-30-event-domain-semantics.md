@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-06-30-event-domain-semantics.zh.md) | [繁體中文](2026-06-30-event-domain-semantics.zh-tw.md)
+
 
 ## Problem
 

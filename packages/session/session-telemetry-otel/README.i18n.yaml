@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/session/session-telemetry-otel/README.md
 README.md: 107fae2838b53be713c47a92032d9e66a382ee80
 README.zh.md: 56a12818a84535548e8d5a4e2dccfe1fbd062074
-README.zh-tw.md: 276385b6ff3064e905ecc087783cc09c96ae9bfa
+README.zh-tw.md: 98e2d07f85a0020861217b262e71f5962326124d

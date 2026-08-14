@@ -2,22 +2,22 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-這是使用沙盒能力的 [`@deepseek-ai/dsh-shell`](../shell/) 執行器 seam 的 Service Provider。載入它時，應**用它替代** `@deepseek-ai/dsh-bash-local`，並同時載入 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@deepseek-ai/dsh-sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；默認模式和工作區根目錄由後者負責，並與受沙盒約束的檔案系統共享這些設定。無需使用替代工具外掛程式；`dsh-tool-bash` 會偵測執行器的 `sandboxMode` 能力並新增升權欄位。
+這是使用沙盒能力的 [`@deepseek-ai/dsh-shell`](../shell/) 執行器 seam 的 Service Provider。載入它時，應**用它替代** `@deepseek-ai/dsh-bash-local`，並同時載入 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@deepseek-ai/dsh-sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；預設模式和工作區根目錄由後者負責，並與受沙盒約束的檔案系統共享這些設定。無需使用替代工具外掛程式；`dsh-tool-bash` 會偵測執行器的 `sandboxMode` 能力並新增升權欄位。
 
-包根目錄匯出默認與具名的 `SandboxBashExecutor` 外掛程式及其 `Config`；結果分類 helper 保留在內部。
+包根目錄匯出預設與具名的 `SandboxBashExecutor` 外掛程式及其 `Config`；結果分類 helper 保留在內部。
 
 每條命令的限制方式都是：把本執行器即將 spawn 的精確 `['bash', '-c', command]` argv 交給提供方，並直接 spawn 返回的 argv。使用隨附的原生 runner 時，內層 Bash 保留 shell 語義，並且只在 runner 建立約束後才求值 `BASH_ENV`。由哪種平臺 runner 執行限制，以及是否有 runner 可用，屬於提供方職責；若無可用 runner，則按失敗關閉原則拒絕執行並返回結構化 `SANDBOX_UNAVAILABLE` 錯誤，絕不能靜默地無約束執行。本包只負責 bash 側。
 
 | 模式 | 文件影響 |
 |---|---|
-| `read-only`（默認） | 任何位置都不可寫（在 `/dev` 中只有 `/dev/null` 節點可寫，因此 `>/dev/null` 仍可正常工作） |
+| `read-only`（預設） | 任何位置都不可寫（在 `/dev` 中只有 `/dev/null` 節點可寫，因此 `>/dev/null` 仍可正常工作） |
 | `workspace-write` | 只能寫入 `workspaceRoot` + `/tmp`（在 bwrap 下為臨時目錄，在 Landlock 下為宿主 `/tmp`，在 Seatbelt 下為 `/private/tmp` 加每使用者臨時目錄） |
 | `danger-full-access` | 不作限制；絕不諮詢提供方。前臺結果攜帶 `sandbox: { mode, denied: false }`；後臺行程控制代碼不攜帶沙盒事實。 |
 
 語義：
 
 - **拒絕是結果事實。** 如果一次失敗執行的 stderr 包含所選後端自身的拒絕方言，即提供方在每次包裝時加上的特徵（bwrap 下的 EROFS 文字、Landlock 下的 EACCES、Seatbelt 下的 EPERM），則結果報告 `ShellRunResult.sandbox.denied: true`（從已收集的 stderr 尾部進行保守分類）。每次受限制執行還會攜帶執行時模式（`result.sandbox.mode`）與提供方強制執行完整性（`result.sandbox.enforcement`：`full`，或在較舊 Landlock ABI 上為 `partial`）。
-- **Runner 路徑或 syscall 必須匹配。** 行程啟動前，呼叫方擁有的 workdir 必須經獨立驗證可用，Node 必須報告 `ENOENT` 或 `EACCES`，並且錯誤必須符合以下一種形態：`error.path` 等於提供方返回的 `argv[0]`，同時 `syscall` 為 `'spawn'` 或精確的 `'spawn <runner>'`；或者 `error.path` 不存在，同時 `syscall` 為精確的 `'spawn <runner>'`。這樣可以識別缺失的 runner、不可執行的 runner，或 shebang 解釋器不可用的可執行指令碼。沒有精確錯誤路徑的裸 `syscall: 'spawn'`、任何其他錯誤碼、無效或不可用的 workdir、資源失敗、無關 syscall 或無結構拒絕仍保留本機執行器的命令啟動失敗語義。前臺執行會拋出 `SANDBOX_UNAVAILABLE` 並附帶原始 spawn 錯誤詳情，非同步後臺結帳則會標記 `runnerFailed: true` 和 `denied: false`。如果 `SubprocessRuntime` 同步拋出同樣能指明 runner 的 `ENOENT`／`EACCES` 形態，後臺啟動會拋出 `SANDBOX_UNAVAILABLE`；其他同步錯誤原樣傳播。行程啟動後，先按整行精確匹配排除資訊性行，隨後規則的選填退出碼檢查和餘下 stderr 中的一行致命診斷必須同時匹配。匹配結果優先於拒絕；前臺執行會拋出 `SANDBOX_UNAVAILABLE` 並附帶匹配到的致命行，已結帳的後臺行程則會標記 `process.sandbox.runnerFailed`，Bash 結果生成方透過通用 `job_output` 渲染它。無論走哪條路徑，受限制的後臺控制代碼都會保留自身的模式／強制執行事實，並釋放每行程計數。
+- **Runner 路徑或 syscall 必須匹配。** 行程啟動前，呼叫方擁有的 workdir 必須經獨立驗證可用，Node 必須報告 `ENOENT` 或 `EACCES`，並且錯誤必須符合以下一種形態：`error.path` 等於提供方返回的 `argv[0]`，同時 `syscall` 為 `'spawn'` 或精確的 `'spawn <runner>'`；或者 `error.path` 不存在，同時 `syscall` 為精確的 `'spawn <runner>'`。這樣可以識別缺失的 runner、不可執行的 runner，或 shebang 解釋器不可用的可執行指令碼。沒有精確錯誤路徑的裸 `syscall: 'spawn'`、任何其他錯誤碼、無效或不可用的 workdir、資源失敗、無關 syscall 或無結構拒絕仍保留本機執行器的命令啟動失敗語義。前臺執行會拋出 `SANDBOX_UNAVAILABLE` 並附帶原始 spawn 錯誤詳情，非同步後臺結帳則會標記 `runnerFailed: true` 和 `denied: false`。如果 `SubprocessRuntime` 同步拋出同樣能指明 runner 的 `ENOENT`／`EACCES` 形態，後臺啟動會拋出 `SANDBOX_UNAVAILABLE`；其他同步錯誤原樣傳播。行程啟動後，先按整行精確匹配排除資訊性行，隨後規則的選填結束碼檢查和餘下 stderr 中的一行致命診斷必須同時匹配。匹配結果優先於拒絕；前臺執行會拋出 `SANDBOX_UNAVAILABLE` 並附帶匹配到的致命行，已結帳的後臺行程則會標記 `process.sandbox.runnerFailed`，Bash 結果生成方透過通用 `job_output` 算繪它。無論走哪條路徑，受限制的後臺控制代碼都會保留自身的模式／強制執行事實，並釋放每行程計數。
 - **部署回退，每次呼叫策略。** [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/) 為每次工具呼叫解析完整的 `SandboxExecutionPolicy`：呼叫工作階段提供自身的模式覆蓋與不可變 cwd 根目錄，部署設定則為無 agent（代理）呼叫提供回退。已批准的升權只更改該策略的模式，工作階段根目錄仍然附著其上。`resolve()` 把策略帶入 spec，因此來自不同項目的重疊命令會在各自的根目錄與模式下執行、分類和報告。能力事實 `ctx.shell.sandboxMode` 報告已設定的預設值，因此工具層只在裝載該執行器時才公佈升權；靜態 bash 工具描述則單獨負責拒絕與升權引導。
 - **只限制文件影響。** 設計上不限制網路與行程可見性：模式詞彙不會聲稱覆蓋後端未強制執行的範圍。
 - 行程機制（spawn、行程組終止、輸出收集／spill、後臺控制代碼、憑證清理）繼承自 [`dsh-bash-local`](../bash-local/)；runner 選擇位於 [`dsh-sandbox-local`](../../sandbox/sandbox-local/)。
@@ -50,7 +50,7 @@
 
 #### KV Cache 影響
 
-常駐策略變化會在保留的歷史之後追加一份由歸屬方渲染的完整上下文快照，並使既有 system/history 前綴保持逐位元組不變。更改執行器能力會改變 `bash` schema。
+常駐策略變化會在保留的歷史之後追加一份由歸屬方算繪的完整上下文快照，並使既有 system/history 前綴保持逐位元組不變。更改執行器能力會改變 `bash` schema。
 
 ### 間接的 Bash 工具結果
 

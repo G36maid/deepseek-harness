@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/typert/protocol/README.md
 README.md: b898e48e011105e58c481fde783ad7f83ea71bc4
 README.zh.md: 2420763289cdb1d3fe971b769abb7745dca43d6f
-README.zh-tw.md: f74f008562fea7cb4610f1932c4ae7113cd2ea31
+README.zh-tw.md: b371d0ab81898667e04d42cfa1693dd0dc6f1792

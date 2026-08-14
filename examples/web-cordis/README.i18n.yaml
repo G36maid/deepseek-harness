@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/web-cordis/README.md
 README.md: afdb7f885a7c654fed0ddf060182feda8fce27fe
 README.zh.md: 5f0f28752550685226d8671349311757c5381a56
-README.zh-tw.md: 9a3cd6d61a03cf4981d80b3fe05e1e7626a24814
+README.zh-tw.md: 16035eaabd744a238768913763d9aab2f9f7bd25

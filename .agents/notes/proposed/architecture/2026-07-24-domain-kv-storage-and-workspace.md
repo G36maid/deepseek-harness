@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [简体中文](2026-07-24-domain-kv-storage-and-workspace.zh.md) | [繁體中文](2026-07-24-domain-kv-storage-and-workspace.zh-tw.md)
+
 
 ## Problem
 

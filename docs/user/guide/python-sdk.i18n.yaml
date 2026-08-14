@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/guide/python-sdk.md
 python-sdk.md: c6569906f640536f32b86cc8ddc1c8f6ec742c0a
 python-sdk.zh.md: 1213c9b1db5197159c91fbc91a9ebb35d33f4ca3
-python-sdk.zh-tw.md: 1122037b0512bcee49aad0600c27cfbe6883c673
+python-sdk.zh-tw.md: 89775798e0c554259c947f8c69ab39f49e1b34fa

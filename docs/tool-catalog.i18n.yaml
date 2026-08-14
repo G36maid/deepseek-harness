@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/tool-catalog.md
 tool-catalog.md: 50563c97c6cd5496871ea7fa52c4823a56b088fd
 tool-catalog.zh.md: 9aa833c9bdfe40fdf5a287f331a214c947a95898
-tool-catalog.zh-tw.md: 628f64da80d316df42713f5201cdc338e1bd4192
+tool-catalog.zh-tw.md: 2d59a2a211b111d962e4a1ccc2655ad0d8acfab4

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-trajectory/README.md
 README.md: 9a1c8c7d3622807de3bfb67fc29d0e6206e0611f
 README.zh.md: 6877d0a47f43ed2afc7b43b08570158a2339848f
-README.zh-tw.md: d20fffe91c097cd23d858af8dea487daa79424d5
+README.zh-tw.md: fcefd6f6170481524b91e230a0ce2c9a0b9e399f

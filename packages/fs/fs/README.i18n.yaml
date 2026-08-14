@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/fs/fs/README.md
 README.md: 5652dd03b2480863eb686ed272ac7432c03b29a1
 README.zh.md: 373ea868e9557a6b0cc665cabbc16e87ddf8c89d
-README.zh-tw.md: 4c18d51da738df0f78a1397408dfdbe0ac6e5b0b
+README.zh-tw.md: de87ca28d2c6c9417b20f6d45584121c2b42efb8

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-web-install-manifest.md
-2026-08-06-web-install-manifest.md: 10e02caa7b1fdd704808659a35809c3aafc81a59
-2026-08-06-web-install-manifest.zh.md: 623e0db7db044999a4216ffadbaa7cd740b828a5
-2026-08-06-web-install-manifest.zh-tw.md: de7eea313dbc7251749df870816551deeda7ecec

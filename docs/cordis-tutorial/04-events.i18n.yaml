@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/04-events.md
 04-events.md: 786567dc83e5c5a61d40565c15b1c130fb37dec6
 04-events.zh.md: ba56f35243e9a5c819bbedf26d171ea31058d7da
-04-events.zh-tw.md: ff7efa7c0a4373be5394c33b0ef97e21ad10545f
+04-events.zh-tw.md: a6a5177788f046d02879f1389bf8e5f160d838e1

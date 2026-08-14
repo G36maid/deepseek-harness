@@ -2,9 +2,9 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-面向兩種不同生命週期的瀏覽器權限介面。「通用」設定行讀取顯式暴露的 `permission` Settings 描述符，從 host 的動態 `defaultPreset` enum 中推導選項，並攜帶描述符的 revision 寫入一條 `settings.mutate` 路徑操作。它的 observable 經 slot 系統的 `hooks` 格傳遞，因此 React 掛鉤由渲染器綁定；推送的失效通知會重新取得描述符。這個值僅在後續工作階段建立時生效；改變它不會切換當前工作階段。選擇 Full access 時必須先顯式確認風險，該行隨後才會寫入。
+面向兩種不同生命週期的瀏覽器權限介面。「通用」設定行讀取顯式暴露的 `permission` Settings 描述符，從 host 的動態 `defaultPreset` enum 中推導選項，並攜帶描述符的 revision 寫入一條 `settings.mutate` 路徑操作。它的 observable 經 slot 系統的 `hooks` 格傳遞，因此 React 掛鉤由算繪器綁定；推送的失效通知會重新取得描述符。這個值僅在後續工作階段建立時生效；改變它不會切換當前工作階段。選擇 Full access 時必須先顯式確認風險，該行隨後才會寫入。
 
-當前工作階段介面仍是掛在 host `/permission` 命令上的 popupSelect **裝飾**（`ctx.commandUi.decorate`）。裝飾不是第二條命令——host 命令保留斜槓選單行、帶參路徑（`/permission <preset>` 直接切換）與持久生命週期記帳；裝飾只把裸呼叫替換為選擇框：一張扁平預設清單，當前值標記為 active，kebab-case 預設名渲染為 Title Case 標籤（`workspace-write` → `Workspace Write`，與 composer chip 的顯示變換孿生），選中即提交 `/permission <preset>` 命令列。選項與 active 標記讀取工作階段的 `permissions` 投影（與 composer chip 渲染的同一份 host 計算 select），因此兩個當前工作階段介面共享同一讀源與同一寫路徑，推送的投影幀是兩者共同跟隨的唯一確認。裝飾恰在投影 key 存在時可用；無權限組合既不顯示選擇框，也不顯示 Settings 行。
+當前工作階段介面仍是掛在 host `/permission` 命令上的 popupSelect **裝飾**（`ctx.commandUi.decorate`）。裝飾不是第二條命令——host 命令保留斜槓選單行、帶參路徑（`/permission <preset>` 直接切換）與持久生命週期記帳；裝飾只把裸呼叫替換為選擇框：一張扁平預設清單，當前值標記為 active，kebab-case 預設名算繪為 Title Case 標籤（`workspace-write` → `Workspace Write`，與 composer chip 的顯示變換孿生），選中即提交 `/permission <preset>` 命令列。選項與 active 標記讀取工作階段的 `permissions` 投影（與 composer chip 算繪的同一份 host 計算 select），因此兩個當前工作階段介面共享同一讀源與同一寫路徑，推送的投影幀是兩者共同跟隨的唯一確認。裝飾恰在投影 key 存在時可用；無權限組合既不顯示選擇框，也不顯示 Settings 行。
 
 `/client` 匯出面為外掛程式本體（`apply`／`inject`）。
 

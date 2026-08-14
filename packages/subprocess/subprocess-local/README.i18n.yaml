@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/subprocess/subprocess-local/README.md
 README.md: a9ecd45e027786ee8c45bdd05636a2ce35a09403
 README.zh.md: 5751608821f97e750f5d405d439aaeb60d3fc582
-README.zh-tw.md: 810fcd554910b52207b91437207247838ba59ef7
+README.zh-tw.md: 86ed7c4d45455db0ea4a2ce71e3cc440aef50be6

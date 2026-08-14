@@ -2,7 +2,7 @@
 
 [English](04-events.md) | [简体中文](04-events.zh.md) | 繁體中文
 
-服務支持直接呼叫；**事件**讓外掛程式無需知道有哪些外掛程式正在監聽，就能寄出通知。harness 使用事件處理工具結果、模型請求和審批決定等互動。
+服務支援直接呼叫；**事件**讓外掛程式無需知道有哪些外掛程式正在監聽，就能寄出通知。harness 使用事件處理工具結果、模型請求和審批決定等互動。
 
 ## 聲明、寄出與監聽
 
@@ -133,9 +133,9 @@ HELLO
 ** BLOCKED **
 ```
 
-按順序看第二行如何產生：監聽器 1 先執行並呼叫 `next()`，從而呼叫監聽器 2；監聽器 2 看到 `blocked` 後直接返回而不呼叫 `next()`，因此最內層默認邏輯（傳給 `ctx.waterfall` 的函式）從未執行；返回途中，監聽器 1 再把替換訊息轉換為大寫。
+按順序看第二行如何產生：監聽器 1 先執行並呼叫 `next()`，從而呼叫監聽器 2；監聽器 2 看到 `blocked` 後直接返回而不呼叫 `next()`，因此最內層預設邏輯（傳給 `ctx.waterfall` 的函式）從未執行；返回途中，監聽器 1 再把替換訊息轉換為大寫。
 
-由此得到一項紀律：**只負責觀察或標注的 waterfall 監聽器必須呼叫 `next()`**；不呼叫就直接返回代表有意短路。如果日誌監聽器忘記呼叫 `next()`，會悄無聲息地吞掉所有下游的默認行為。這是本倉庫的常設規則（[waterfall 語義](../cordis-primer.md#cordis-waterfall-semantics)）。
+由此得到一項紀律：**只負責觀察或標注的 waterfall 監聽器必須呼叫 `next()`**；不呼叫就直接返回代表有意短路。如果日誌監聽器忘記呼叫 `next()`，會悄無聲息地吞掉所有下游的預設行為。這是本倉庫的常設規則（[waterfall 語義](../cordis-primer.md#cordis-waterfall-semantics)）。
 
 harness 使用 waterfall 處理協作外掛程式可以包裝或回答的決策：[`agent/request`](../subsystems/core.md#agentrequest--waterfall) 允許外掛程式替換模型呼叫設定，[`approval/request`](../subsystems/approval.md#approvalrequest--waterfall) 允許策略代替使用者作答。
 

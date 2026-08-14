@@ -2,7 +2,7 @@
 
 Status: rejected — the separate persistence Service Definition package is the intended modular role split for the durable-persistence capability seam. Folding it into `dsh-session` would reduce package count at the cost of a cleaner backend boundary.
 
-English | [简体中文](2026-06-20-fold-session-persistence-interface.zh.md) | [繁體中文](2026-06-20-fold-session-persistence-interface.zh-tw.md)
+
 
 ## Problem
 

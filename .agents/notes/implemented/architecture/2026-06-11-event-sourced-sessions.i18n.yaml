@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-11-event-sourced-sessions.md
-2026-06-11-event-sourced-sessions.md: c224fe19053b8663f169161c3fdfeaff033ca668
-2026-06-11-event-sourced-sessions.zh.md: 7860d559a826f49fb8915e8283de619ed68af167
-2026-06-11-event-sourced-sessions.zh-tw.md: 9329966acac88564b159c70cbbb4cd7457b0d40b

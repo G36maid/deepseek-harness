@@ -69,7 +69,7 @@ export function apply(ctx: Context) {
 Hello, world!
 ```
 
-交換 `cordis.yml` 中兩行的順序後重新執行，輸出仍然相同。嘗試徹底移除 `./greeter.ts`：消費端會保持 PENDING，不輸出任何內容，既不崩潰，也不會只執行一部分。處於 PENDING 的 fiber 也不會讓 Node 的事件迴圈保持活躍，因此如果組閤中沒有其他執行項，行程會靜默地以狀態碼 0 退出。[第 6 章](06-composition-and-hmr.md)介紹如何診斷這種狀態。
+交換 `cordis.yml` 中兩行的順序後重新執行，輸出仍然相同。嘗試徹底移除 `./greeter.ts`：消費端會保持 PENDING，不輸出任何內容，既不崩潰，也不會只執行一部分。處於 PENDING 的 fiber 也不會讓 Node 的事件迴圈保持活躍，因此如果組閤中沒有其他執行項，行程會靜默地以狀態碼 0 結束。[第 6 章](06-composition-and-hmr.md)介紹如何診斷這種狀態。
 
 ## 載入後仍會跟蹤相依性關係
 

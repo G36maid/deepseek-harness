@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-06-11-vendor-cordis-as-source.zh.md) | [繁體中文](2026-06-11-vendor-cordis-as-source.zh-tw.md)
+
 
 ## Problem
 

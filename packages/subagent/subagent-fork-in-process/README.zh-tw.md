@@ -22,7 +22,7 @@ fork 聲明 `{ outputSchema: true, depthLimit: true, toolFilter: true, persona: 
 
 | 鍵 | 含義 |
 |---|---|
-| `providerName` | `ctx.subagents` 上的登錄檔名稱（默認 `fork`）。 |
+| `providerName` | `ctx.subagents` 上的登錄檔名稱（預設 `fork`）。 |
 執行生命週期、模型繼承與深度跟蹤均為共享行為，見 [`dsh-subagent-spawn-in-process`](../subagent-spawn-in-process/README.md)。
 
 ## 模型體驗
@@ -31,7 +31,7 @@ fork 聲明 `{ outputSchema: true, depthLimit: true, toolFilter: true, persona: 
 
 #### 模型看到的內容
 
-子 agent 先接收由父 agent 已配平的已完成輪次構成的表層前綴，再逐字接收新的任務內容。設定的 persona 會在子 agent 的全新作用域中遮蔽提示詞文字；工具限制會過濾其全域性協議 schema、可執行工具尋找和 Code Mode SDK 綁定，但不影響獨立的指導內容。父 agent 的工具檢視表與權限不會被繼承。選填的結構化輸出請求會新增僅屬於子 agent 的約定。父 agent 當前進行中的輪次會被排除。
+子 agent 先接收由父 agent 已配平的已完成輪次構成的表層前綴，再逐字接收新的任務內容。設定的 persona 會在子 agent 的全新作用域中遮蔽提示詞文字；工具限制會過濾其全域性協定 schema、可執行工具尋找和 Code Mode SDK 綁定，但不影響獨立的指導內容。父 agent 的工具檢視表與權限不會被繼承。選填的結構化輸出請求會新增僅屬於子 agent 的約定。父 agent 當前進行中的輪次會被排除。
 
 #### Token 影響
 

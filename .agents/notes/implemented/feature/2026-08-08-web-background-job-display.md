@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-08-web-background-job-display.zh.md) | [繁體中文](2026-08-08-web-background-job-display.zh-tw.md)
+
 
 ## Problem
 

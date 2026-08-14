@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/host/apiproxy/README.md
 README.md: b9c0e2808f43244ce8fa9e475c3d3e431c561074
 README.zh.md: 8df671484152e604e5c3613db2612d51ac1b0fbc
-README.zh-tw.md: c1948af40cc52fee939a9ba37b42b4ca67c8eee0
+README.zh-tw.md: bbb1ae3436ebb343860d0c6b57e31af56c2b2eee

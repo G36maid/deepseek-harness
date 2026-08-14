@@ -2,7 +2,7 @@
 
 [English](01-first-plugin.md) | [简体中文](01-first-plugin.zh.md) | 繁體中文
 
-在本教程使用的 loader 設定中，Cordis 外掛程式模組透過命名匯出提供 `apply` 函式。Cordis 載入模組時，會用一個 **上下文** 呼叫 `apply`；該上下文就是 `ctx` 對象，外掛程式透過它註冊自己貢獻的所有內容。
+在本教學使用的 loader 設定中，Cordis 外掛程式模組透過命名匯出提供 `apply` 函式。Cordis 載入模組時，會用一個 **上下文** 呼叫 `apply`；該上下文就是 `ctx` 對象，外掛程式透過它註冊自己貢獻的所有內容。
 
 ## 編寫外掛程式
 
@@ -18,11 +18,11 @@ export function apply(ctx: Context) {
 }
 ```
 
-`name` 匯出項是選填的顯示元資料；它用於在診斷資訊中標識外掛程式。
+`name` 匯出項是選填的顯示中繼資料；它用於在診斷資訊中標識外掛程式。
 
 ## 組合應用
 
-本教程的啟動器透過設定組裝應用。建立 `cordis.yml`：
+本教學的啟動器透過設定組裝應用。建立 `cordis.yml`：
 
 ```yaml
 - name: './hello.ts'
@@ -42,7 +42,7 @@ node --import tsx ../../vendor/cordis/bin.js
 hello from my first plugin
 ```
 
-當沒有任何內容繼續執行時期，行程會自行退出。具體過程如下：
+當沒有任何內容繼續執行時期，行程會自行結束。具體程序如下：
 
 1. 啟動器建立根 `Context`，並掛載 **Loader** 外掛程式。
 2. Loader 讀取 `cordis.yml`，解析 `./hello.ts`，然後將其作為子外掛程式掛載。

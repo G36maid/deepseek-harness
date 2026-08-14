@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-directory-picker-browse/README.md
 README.md: 5546e57485eabd0894215848816ebecd9c2f7429
 README.zh.md: cea988c33e177ac3bf8f652aa9c06827d1ca1a87
-README.zh-tw.md: 3ba7615b7e23bf95a282db9aa3070c69a1056083
+README.zh-tw.md: 12ca9315afcabfbddc56b589586643bf4d669f1b

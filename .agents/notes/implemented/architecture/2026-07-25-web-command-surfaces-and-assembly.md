@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-25-web-command-surfaces-and-assembly.zh.md) | [繁體中文](2026-07-25-web-command-surfaces-and-assembly.zh-tw.md)
+
 
 > Scope: the command directory cache and three-kind dispatch (ui-commands), the popup selection flow, the two skill / subagent reference sources, and fixture command routing plus assembly acceptance (the slash-flow snapshot). The carrying wire lives in the [session scope note](2026-07-25-web-client-session-scope-and-provide-channel.md); triggers, the menu, and the input machine live in the [input machine note](2026-07-25-web-input-machine-and-slash-pipeline.md).
 

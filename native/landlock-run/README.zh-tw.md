@@ -4,7 +4,7 @@
 
 一個 [Landlock](https://landlock.io/)「先限制自身、再執行」啟動器，用於在 Linux 上限制子行程。它以按平臺預建置的 npm 包以及一個輕量 JS 入口包的形式發布；入口包負責解析二進位檔案並遵循其 CLI（命令列介面）約定。該啟動器面向需要讓不可信命令在檔案系統允許清單約束下執行、同時保持自身不受限制的 agent harness（代理框架）和其他宿主。
 
-該工具是 **`landlock-run`**：一個「先限制自身、再執行」的 [Landlock](https://landlock.io/) 啟動器（基於原始核心 UAPI 編寫，約 300 行 C11，並與 musl 靜態連結）。它在自身上安裝 Landlock 規則集，再 `exec` 被包裝的命令；該規則集會跨 `execve` 繼承，因此命令及其產生的每個行程都在限制下執行，呼叫行程仍不受限制。它採用失敗閉合：如果核心無法強制執行，則不執行命令並直接退出。
+該工具是 **`landlock-run`**：一個「先限制自身、再執行」的 [Landlock](https://landlock.io/) 啟動器（基於原始核心 UAPI 編寫，約 300 行 C11，並與 musl 靜態連結）。它在自身上安裝 Landlock 規則集，再 `exec` 被包裝的命令；該規則集會跨 `execve` 繼承，因此命令及其產生的每個行程都在限制下執行，呼叫行程仍不受限制。它採用失敗閉合：如果核心無法強制執行，則不執行命令並直接結束。
 
 ## 安裝
 
@@ -41,11 +41,11 @@ if (probe(launcher) !== 'unusable') {
 - `grantArgs({ readOnly?, readWrite? })`：啟動器的授權 argv；未授予的一切都被拒絕。
 - `LAUNCHER_BIN` 和 `LAUNCHER_FAILURE_EXIT`（125）：約定常數。成功完成 exec 的子行程也可能返回 125，因此消費端必須同時看到致命診斷和該狀態，才能將結果歸因為啟動器失敗。
 
-完整的二進位約定（argv 文法、退出碼、報告行）鎖定在 [docs/cli-contract.md](docs/cli-contract.md) 中。
+完整的二進位約定（argv 文法、結束碼、報告行）鎖定在 [docs/cli-contract.md](docs/cli-contract.md) 中。
 
-## 支持範圍
+## 支援範圍
 
-支持 linux-x64 和 linux-arm64，且核心已啟用 Landlock（5.13+；ABI 等級決定強制執行為 `full` 還是 `partial`，詳見 [docs/support-matrix.md](docs/support-matrix.md)）。其他平臺有意不提供對應包：消費端會在這些平臺上執行其他限制後端。
+支援 linux-x64 和 linux-arm64，且核心已啟用 Landlock（5.13+；ABI 等級決定強制執行為 `full` 還是 `partial`，詳見 [docs/support-matrix.md](docs/support-matrix.md)）。其他平臺有意不提供對應包：消費端會在這些平臺上執行其他限制後端。
 
 ## 開發
 

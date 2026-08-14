@@ -31,7 +31,7 @@
 
 已掛載的服務透過 seam 的 [`SessionTelemetrySharingStatus`](../session-telemetry/README.md#the-sharing-disclosure) `sharing` 屬性披露解析後的模式（`full` / `feedback-only` / `disabled`），因此 `/feedback` 的確認文字可以報告工作階段是否以及如何被共享。該披露在構造函式中設定，與採集相互獨立：即使 `DISABLED` 也會披露 `disabled`。
 
-`exporter.url` 在 `FULL` 與 `FEEDBACK_ONLY` 中必填，無預設值，且必須能解析為 `http(s)`；在 `DISABLED` 中可省略且不使用。在上傳模式中，`shutdownTimeoutMillis` 是由 DSH 管理的有限正數外層截止時間，預設值為 3000 ms；`processor.maxExportBatchSize` 不是正整數時也會在外掛程式載入時失敗，因為 SDK 會接受該值，隨後卻在關閉時掛起。兩個 SDK 設定塊都整體透傳（passthrough）：`OTLPExporterNodeConfigBase` 的每個欄位（`headers`、`timeoutMillis`、`compression`、`keepAlive` 等）都會到達匯出器；批次處理、匯出節奏（`scheduledDelayMillis`）、重試、佇列上限，以及持續失敗下的丟失策略，都是透過 `processor` 調節的 SDK 行為。該後端不實作 `flush()`：常規 flush 由批次處理器負責。關閉期間，OTel 會先等待 `exporter.forceFlush()`，再等待受處理器 `exportTimeoutMillis` 限制的完成 promise；如果該傳輸 promise 始終不結帳，本包會在 `shutdownTimeoutMillis` 到期時放棄等待，透過協調器記錄已隔離的關閉失敗，並讓應用繼續拆卸。該截止時間無法取消 SDK 傳輸，因此屆時仍待處理的記錄可能在行程退出時丟失。
+`exporter.url` 在 `FULL` 與 `FEEDBACK_ONLY` 中必填，無預設值，且必須能解析為 `http(s)`；在 `DISABLED` 中可省略且不使用。在上傳模式中，`shutdownTimeoutMillis` 是由 DSH 管理的有限正數外層截止時間，預設值為 3000 ms；`processor.maxExportBatchSize` 不是正整數時也會在外掛程式載入時失敗，因為 SDK 會接受該值，隨後卻在關閉時掛起。兩個 SDK 設定塊都整體透傳（passthrough）：`OTLPExporterNodeConfigBase` 的每個欄位（`headers`、`timeoutMillis`、`compression`、`keepAlive` 等）都會到達匯出器；批次處理、匯出節奏（`scheduledDelayMillis`）、重試、佇列上限，以及持續失敗下的丟失策略，都是透過 `processor` 調節的 SDK 行為。該後端不實作 `flush()`：常規 flush 由批次處理器負責。關閉期間，OTel 會先等待 `exporter.forceFlush()`，再等待受處理器 `exportTimeoutMillis` 限制的完成 promise；如果該傳輸 promise 始終不結帳，本包會在 `shutdownTimeoutMillis` 到期時放棄等待，透過協調器記錄已隔離的關閉失敗，並讓應用繼續拆卸。該截止時間無法取消 SDK 傳輸，因此屆時仍待處理的記錄可能在行程結束時丟失。
 
 ## 哪些資料會離開本機
 
@@ -39,7 +39,7 @@
 
 ## 欄位對映
 
-seam 記錄 → SDK 日誌記錄：`time` → `timestamp`/`observedTimestamp`；`severity` → `severityNumber`/`severityText`（INFO 9 / WARN 13 / ERROR 17）；`body` → 結構化日誌 body；`attributes` 原樣照搬。接收端基於 `(session.id, event.seq)` 去重，並按嚴重等級告警。在 `FULL` 中，接收端還可透過缺少 `shutdown` 記錄偵測崩潰：該標記在工作階段自身 dispose（資源釋放）或應用關閉時寄出；標記之後出現更多事件，說明遙測發生了重載。在 `FEEDBACK_ONLY` 中，已釋放的前綴通常不包含隨後的 `shutdown` 標記，因此缺少該標記不是崩潰訊號。跨譜系（lineage）的流並不自足：復原的工作階段在其自身 id 的流上從上一個行程停止之處繼續；fork 出的工作階段的流從繼承邊界開始，其前綴位於父工作階段的流中，由接收端基於 `session.parent_id` + `session.seed_length` 拼接。復原後的本機日誌可能包含從未匯出的合成關閉事件；協議流忠實於實際交給 SDK 的記錄。
+seam 記錄 → SDK 日誌記錄：`time` → `timestamp`/`observedTimestamp`；`severity` → `severityNumber`/`severityText`（INFO 9 / WARN 13 / ERROR 17）；`body` → 結構化日誌 body；`attributes` 原樣照搬。接收端基於 `(session.id, event.seq)` 去重，並按嚴重等級告警。在 `FULL` 中，接收端還可透過缺少 `shutdown` 記錄偵測崩潰：該標記在工作階段自身 dispose（資源釋放）或應用關閉時寄出；標記之後出現更多事件，說明遙測發生了重載。在 `FEEDBACK_ONLY` 中，已釋放的前綴通常不包含隨後的 `shutdown` 標記，因此缺少該標記不是崩潰訊號。跨譜系（lineage）的流並不自足：復原的工作階段在其自身 id 的流上從上一個行程停止之處繼續；fork 出的工作階段的流從繼承邊界開始，其前綴位於父工作階段的流中，由接收端基於 `session.parent_id` + `session.seed_length` 拼接。復原後的本機日誌可能包含從未匯出的合成關閉事件；協定流忠實於實際交給 SDK 的記錄。
 
 ## 模型體驗
 

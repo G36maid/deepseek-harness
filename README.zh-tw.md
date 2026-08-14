@@ -20,7 +20,7 @@ DeepSeek Harness 目前處於 _開發者預覽_ 階段，正在快速迭代。**
 npx @deepseek-ai/dsh web
 ```
 
-該命令會啟動 Web UI，默認地址為 `http://127.0.0.1:3080`。詳見 [Web UI 指南](docs/user/guide/index.md)。
+該命令會啟動 Web UI，預設地址為 `http://127.0.0.1:3080`。詳見 [Web UI 指南](docs/user/guide/index.md)。
 
 ### 從原始碼執行
 
@@ -34,7 +34,7 @@ pnpm run build
 pnpm dsh web
 ```
 
-## 社區與支持
+## 社區與支援
 
 - 歡迎透過 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交回饋或 bug 報告。
 - 為你的外掛程式倉庫新增 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 話題，便於被發現。

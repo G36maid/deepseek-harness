@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-30-plan-review-presentation-intent.zh.md) | [繁體中文](2026-07-30-plan-review-presentation-intent.zh-tw.md)
+
 
 ## Problem
 

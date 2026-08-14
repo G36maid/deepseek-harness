@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-09-remove-repository-plugin.md
-2026-08-09-remove-repository-plugin.md: 77b978d7f15c99f9e8e6e35aaa80b92bbe6a6128
-2026-08-09-remove-repository-plugin.zh.md: aa3d46fce753d7d3c05c0f6ab7769a89f7c195c6
-2026-08-09-remove-repository-plugin.zh-tw.md: b4d98594e01523d94693a60c003db1e8063cd45a

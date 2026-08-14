@@ -40,7 +40,7 @@
 
 - 使用請求 schema 註冊的 `structured_output` 工具會校驗並暫存模型值。
 - 一個順序為 190 的系統提示詞段會告訴子 agent，該工具呼叫就是終態答案。
-- 兩項貢獻都是普通的子 agent 作用域註冊。專家級 `system-prompt/assemble` 監聽器可以替換它們，因此負責為該子 agent 保留結構化輸出協議。
+- 兩項貢獻都是普通的子 agent 作用域註冊。專家級 `system-prompt/assemble` 監聽器可以替換它們，因此負責為該子 agent 保留結構化輸出協定。
 - `tools/result` 觀察器只會在該次執行的權威最終工具結果成功後提交暫存值；Code Mode 子分派外層的 `run_code` 結果也包括在內。
 - 單調工具防護會在捕獲值後阻止後續呼叫，結構化輸出執行的 `concludeTurn()` 標記則在結果提交後結束輪次。
 
@@ -66,7 +66,7 @@
 
 #### 模型看到的內容
 
-結構化執行會新增下方的結構化輸出指令。它還會新增子 agent 作用域的 `structured_output` 定義，其精確描述為 `Report your final structured result. Call this exactly once, when your answer is complete; the arguments must match this tool's parameter schema exactly.`，參數使用請求的 schema。該僅執行時期存在的定義不在已生成並隨產品發布的[工具包索引](../../../docs/tool-catalog.md#tool-package-map)中。其規範確認值是 `{ recorded: true }`，渲染為 `Structured output recorded.`；後續呼叫會變為 ``Error: structured output already recorded: the run is complete, so `<tool>` is not executed``。
+結構化執行會新增下方的結構化輸出指令。它還會新增子 agent 作用域的 `structured_output` 定義，其精確描述為 `Report your final structured result. Call this exactly once, when your answer is complete; the arguments must match this tool's parameter schema exactly.`，參數使用請求的 schema。該僅執行時期存在的定義不在已生成並隨產品發布的[工具包索引](../../../docs/tool-catalog.md#tool-package-map)中。其規範確認值是 `{ recorded: true }`，算繪為 `Structured output recorded.`；後續呼叫會變為 ``Error: structured output already recorded: the run is complete, so `<tool>` is not executed``。
 
 ##### 結構化輸出指令
 
@@ -113,4 +113,4 @@ When you have your final answer, you MUST report it by calling the `structured_o
 ## 已知限制與暫緩事項
 
 - **執行不公開 `sendMessage`/`resume`**：行程內執行不具備這些選填執行時期能力。
-- **結構化捕獲只接受 `defineTool` schema 子集**：不支持的 JSON Schema 構造會在子 agent 建立前失敗；需要更廣 schema 詞彙的提供方必須採用不同的執行時期。
+- **結構化捕獲只接受 `defineTool` schema 子集**：不支援的 JSON Schema 構造會在子 agent 建立前失敗；需要更廣 schema 詞彙的提供方必須採用不同的執行時期。

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write native/landlock-run/README.md
 README.md: 54962cbe052a5aeb396d85539e0f245035ed4e0c
 README.zh.md: 315bb81718501867179bcb1a7886fdbc99d4ee69
-README.zh-tw.md: 2d456c39b3304aca013065cdd18bb5846bf221e9
+README.zh-tw.md: 850cfd8a274155bc80554f3980279d886e2c1c6f

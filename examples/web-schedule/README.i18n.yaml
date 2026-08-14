@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/web-schedule/README.md
 README.md: 2a71dc854594429fedb1bd2ba956aed7d000ec07
 README.zh.md: c3776e2d3da5bbb1307aedef8ea714daf12f7127
-README.zh-tw.md: e6a3b84d801d3e1ddbd7eedddac0149b59c9664e
+README.zh-tw.md: 69d41439fbe575ca9ed7bbdb2f68e31eb55165cd

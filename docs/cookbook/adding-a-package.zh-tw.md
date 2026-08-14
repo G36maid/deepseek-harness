@@ -2,7 +2,7 @@
 
 [English](adding-a-package.md) | [简体中文](adding-a-package.zh.md) | 繁體中文
 
-為新建 `@deepseek-ai/dsh-<name>` 包提供的逐文件清單。本清單以 bash 和配接器這兩個包為範本進行驗證；如果清單與範本有出入，請在此修正。
+為新建 `@deepseek-ai/dsh-<name>` 包提供的逐文件清單。本清單以 bash 和配接器這兩個包為樣板進行驗證；如果清單與樣板有出入，請在此修正。
 
 ## 1. 建立包
 
@@ -40,11 +40,11 @@ package.json 不變式（由 `pnpm run constraints` / `scripts/check-workspace-c
 
 ## 3. 確定包拓撲
 
-對於可替換的能力，當 Service Definition／Service Provider／Consumer 角色需要獨立演進時，將它們拆分到不同包中（見 docs/architecture.md § "Capability seams"——shell 三元件是範本）。單一用途的外掛程式保持為一個包。
+對於可替換的能力，當 Service Definition／Service Provider／Consumer 角色需要獨立演進時，將它們拆分到不同包中（見 docs/architecture.md § "Capability seams"——shell 三元件是樣板）。單一用途的外掛程式保持為一個包。
 
 ### 使用符合實際的角色名稱
 
-名稱必須描述當前穩定職責。不要用首個實作、可能的未來擴充或 Cordis 基類命名。介面包使用能力名稱。實作包加上能夠區分實作的機制、協議、環境或廠商限定詞。只有同主機執行屬於約定時，才使用 `local`。
+名稱必須描述當前穩定職責。不要用首個實作、可能的未來擴充或 Cordis 基類命名。介面包使用能力名稱。實作包加上能夠區分實作的機制、協定、環境或廠商限定詞。只有同主機執行屬於約定時，才使用 `local`。
 
 一個 engine、runtime、policy、controller、resolver、store 或當前設定使用單數 `ctx` key。registry 或擁有多個具名成員的服務使用複數 key。類的角色與 key 的單複數必須一致。不得讓不相容的 host 與 client 聲明複用同一個 Cordis `Context` key。即使二者使用獨立的執行時期 context，TypeScript 聲明合併仍會同時看到兩種類型。如果自然複數已經屬於另一個端面，就增加職責後綴。
 
@@ -52,23 +52,23 @@ package.json 不變式（由 `pnpm run constraints` / `scripts/check-workspace-c
 |---|---|---|
 | `Controller` | 接受命令或使用者意圖，並改變一項既有領域狀態或展示狀態。 | 執行任意工作、擁有一組 provider，或只把值轉換為展示形式。 |
 | `Store` | 擁有一組資料，主要提供該資料的 CRUD、snapshot 或 subscription 操作。 | 校驗狀態機、裁決權限、分派工作或擁有 provider 優先級。類中有 map 不等於 store。 |
-| `Directory` | 暴露供發現或選擇的條目及其元資料。 | producer 向其中註冊任意實作，或呼叫方透過它執行工作。 |
-| `Presenter` | 將領域值或工具參數純轉換為渲染意圖。 | 執行 I/O、訂閱、修改狀態或擁有生命週期。 |
+| `Directory` | 暴露供發現或選擇的條目及其中繼資料。 | producer 向其中註冊任意實作，或呼叫方透過它執行工作。 |
+| `Presenter` | 將領域值或工具參數純轉換為算繪意圖。 | 執行 I/O、訂閱、修改狀態或擁有生命週期。 |
 | `Registry` | 擁有一組動態具名註冊，以及查詢、重複項或優先級規則、生命週期和釋放。 | 主要約定是分派、執行、取消、策略或編排。 |
 | `Runtime` | 執行即時工作，並跨呼叫擁有分派、取消、provider 協調或操作生命週期。 | 只儲存記錄、返回目錄、解析一個值或保存設定。 |
-| `Resolver` | 根據輸入計算或定位一個答案，但不擁有該答案的生命週期。 | 擁有可變集合或長時間執行的執行過程。 |
+| `Resolver` | 根據輸入計算或定位一個答案，但不擁有該答案的生命週期。 | 擁有可變集合或長時間執行的執行程序。 |
 | `Binder` | 把一個已聲明介面綁定到呼叫方的 context 或生命週期，並返回綁定值。 | 把該值作為集合持有、控制其領域狀態，或只轉換資料。 |
-| `Engine` | 實作領域演算法或有狀態執行模型。 | 只選擇 provider 或跨協議邊界轉發請求。 |
+| `Engine` | 實作領域演算法或有狀態執行模型。 | 只選擇 provider 或跨協定邊界轉發請求。 |
 | `Policy` | 決定允許、選擇、限制或觀察什麼。 | 執行該決定所允許的機制。 |
 | `Executor` | 在一項能力中執行一個明確請求或已解析 spec。 | 擁有廣泛應用生命週期或 provider 目錄。 |
-| `Gateway` | 適配行程、網路、RPC 或 API 邊界。 | 只註冊同進程服務或儲存元資料。 |
+| `Gateway` | 適配行程、網路、RPC 或 API 邊界。 | 只註冊同行程服務或儲存中繼資料。 |
 | `Provider` | 提供一項能力定義的一個實作。存在多個實作時，加上機制或廠商限定詞。 | 表示能力定義、provider registry 或消費端 runtime。 |
 | `Backend` | 在已定義介面之後實作可替換的底層持久化、傳輸或執行。 | 表示面向使用者的服務或一個已返回的即時資源引用。 |
 | `Handle` | 引用一個即時資源，並控制或觀察該資源。 | 建立並管理完整資源池。 |
 | `Config` | 擁有一個已解析設定值，或一項邊界嚴格的設定記錄及其更新約定。 | 儲存通用集合、執行工作或暴露無關設定。 |
 | `Service` | 擁有一項無法用以上更精確角色誠實描述的內聚領域服務。 | 只因為類繼承 Cordis `Service` 而使用該名稱。 |
 
-只對受支持的 Python 與 TypeScript SDK 所使用的 JSON-RPC 用戶端／伺服器協議使用 `SDK`。DeepSeek Harness 本身是 agent harness，不是 SDK 項目。產品拼寫統一使用 `Typert`，不得使用 `TypeRT` 或 `typeRT`。
+只對受支援的 Python 與 TypeScript SDK 所使用的 JSON-RPC 用戶端／伺服器協定使用 `SDK`。DeepSeek Harness 本身是 agent harness，不是 SDK 項目。產品拼寫統一使用 `Typert`，不得使用 `TypeRT` 或 `typeRT`。
 
 ## 4. 編寫包 README
 
@@ -102,7 +102,7 @@ Append-only, prefix-stable, replacing, or independent behavior, including the ex
 - **Consumer-visible gap** — exact missing operation or case, its consequence, and any maintainer constraint.
 ````
 
-根據實作填寫 Model Experience。每個直接、條件、上限、生命週期或輔助的模型上下文條目使用一個 H3，包含上述三個有序 H4 欄位，每個欄位下有一個正文段落。引用包擁有的穩定文字：系統提示詞放在引出它的欄位下，用帶標題的 H5 加 `markdown` 圍欄表示，通常歸入 `What the model sees`；其他短文字以命名佔位符內聯，其他長文字使用相同的巢狀形式。僅概述資料相依性或提供方擁有的文字。工具 schema 條目連結到生成的[工具目錄](../tool-catalog.md)中對應的錨定章節，僅說明該處缺失的差異。當作用域可以隱藏 prompt 或 schema 其中之一而不影響另一個時，將二者分開。填寫 `KV Cache effect` 時，應區分僅附加成長、穩定重複的前綴、替換既有請求 token 和獨立模型請求，並列出會使快取複用失效、且由本包擁有的變化。“不使快取失效”僅表示本包保留了已有的可複用前綴；快取是否可用以及何時淘汰不屬於本包約定。[行文標準](../../.agents/skills/dsh-prose-standard/SKILL.md)約束完整性與歸屬；驗證器強制執行所需章節結構。
+根據實作填寫 Model Experience。每個直接、條件、上限、生命週期或輔助的模型上下文條目使用一個 H3，包含上述三個有序 H4 欄位，每個欄位下有一個正文段落。引用包擁有的穩定文字：系統提示詞放在引出它的欄位下，用帶標題的 H5 加 `markdown` 圍欄表示，通常歸入 `What the model sees`；其他短文字以命名預留位置內聯，其他長文字使用相同的巢狀形式。僅概述資料相依性或提供方擁有的文字。工具 schema 條目連結到生成的[工具目錄](../tool-catalog.md)中對應的錨定章節，僅說明該處缺失的差異。當作用域可以隱藏 prompt 或 schema 其中之一而不影響另一個時，將二者分開。填寫 `KV Cache effect` 時，應區分僅附加成長、穩定重複的前綴、替換既有請求 token 和獨立模型請求，並列出會使快取複用失效、且由本包擁有的變化。“不使快取失效”僅表示本包保留了已有的可複用前綴；快取是否可用以及何時淘汰不屬於本包約定。[行文標準](../../.agents/skills/dsh-prose-standard/SKILL.md)約束完整性與歸屬；驗證器強制執行所需章節結構。
 
 沒有上下文效果或僅有消費端擁有路徑的包使用 [`SENTENCE_MODEL_EXPERIENCE`](../../scripts/verify-package-readme-model-experience.ts) 中經過審計的 `None, as ` 或 `Indirectly, through ` 語句，隨後新增 `KV Cache effect` H4 和一個非空正文段落；與模型無關的通用包可以改為加入 `NO_MODEL_EXPERIENCE_SECTION`。兩種情況都不要展開為對另一個包工作的描述。limitations [allowlist](../../scripts/verify-package-readme-limitations.ts) 獨立管理。[Model Experience Agent Note](../../.agents/notes/implemented/process/2026-07-12-package-model-experience-contract.md) 記錄了設計動機。
 

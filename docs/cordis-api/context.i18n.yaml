@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-api/context.md
 context.md: 320b23de1c8d19e2dacdf0ec9f2361037bcf8048
 context.zh.md: af92dd584c6355b77e543df0f1b527dad13961a2
-context.zh-tw.md: 9d18049f4206721ab4a77b027cdf8b55285d618f
+context.zh-tw.md: ac6b37c562b63cadaaf1706a7aaeec3cd5aaaf6c

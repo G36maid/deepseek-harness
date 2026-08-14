@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/typert.md
 typert.md: 615685146453921f4a4e67ae9927a3b8f7a977f2
 typert.zh.md: 154b1a9ff84f7d2864fb469778b552d4b3133136
-typert.zh-tw.md: 7744f33a1def730eaaa1c64c0173ce0274794f7e
+typert.zh-tw.md: 4a9835c80f1138a314216a22f00660d07553200b

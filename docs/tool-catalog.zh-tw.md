@@ -9,7 +9,7 @@
 
 英文原始檔由系統**生成**，並透過 `pnpm run verify-tool-catalog`（`doc-sync`（文件同步閘門）的一部分）驗證新鮮度；本中文文件作為經評審對側透過雙語配對維護。與 Cordis 目錄（純原始碼 AST 處理）不同，英文生成器會在真實上下文中**啟動**每個工具外掛程式並讀取 `ctx.tools.schemas()`，因為工具 schema 無法透過靜態分析完全確定，例如執行時期展開的枚舉、拼接的描述、由設定決定的名稱以及使用原始 JSON Schema 的 MCP 工具。完整性守衛會 glob 匹配 `packages/*/tool-*`；如果生成器的啟動 manifest（中繼資料清單）遺漏任何包，檢查就會失敗，因此新工具不會在無人察覺的情況下缺少文件。參見[工具 schema 目錄 Agent Note](../.agents/notes/implemented/process/2026-07-02-tool-schema-catalog.md)。
 
-範圍：`packages/*/tool-*` 下已發布的產品工具，每個工具均使用其**默認**設定啟動；但如果某個 Config 欄位是**必填項**且沒有預設值，生成器就必須作出選擇，對應包的說明會記錄本頁展示的是哪個分支。註冊的工具**名稱**可以是載入時設定，例如 `tool-subagent` 的 `toolName`，因此部署可能以不同名稱或額外名稱提供某個包；如果存在隨產品發布的別名，對應包的說明會予以記錄。`examples/` 中的演示工具（例如 `echo`）不在範圍內，這與 Cordis 目錄僅涵蓋包的範圍一致。
+範圍：`packages/*/tool-*` 下已發布的產品工具，每個工具均使用其**預設**設定啟動；但如果某個 Config 欄位是**必填項**且沒有預設值，生成器就必須作出選擇，對應包的說明會記錄本頁展示的是哪個分支。註冊的工具**名稱**可以是載入時設定，例如 `tool-subagent` 的 `toolName`，因此部署可能以不同名稱或額外名稱提供某個包；如果存在隨產品發布的別名，對應包的說明會予以記錄。`examples/` 中的示範工具（例如 `echo`）不在範圍內，這與 Cordis 目錄僅涵蓋包的範圍一致。
 
 ## 工具包對映
 
@@ -28,17 +28,17 @@
 | `@deepseek-ai/dsh-tool-fs` | `edit`、`read`、`read_image`、`write` | `ctx.tools`、`ctx.fs`、`ctx.systemPrompt`、`ctx.attachments (read_image registration)`、`ctx.llm + an image-capable route (read_image execution)` | `tool/call`、`fs/write-intent or fs/edit-intent for mutations`、`fs/observed after read presence/absence or successful file operation`、`durable attachment (read_image)`、`tool/result` | - | 先讀後寫／編輯策略由 `@deepseek-ai/dsh-fs-observation-policy` 新增；它是一個 `fs/*` 事件閘門外掛程式，不會改變 schema。載入這些工具的部署按預期也應載入該外掛程式。沒有 `ctx.attachments` 時 `read_image` 不會註冊；其 schema 與路由無關，執行時除非確切路由的模型聲明影像輸入，否則拒絕。 |
 | `@deepseek-ai/dsh-tool-fs-search` | `glob`、`grep` | `ctx.tools`、`ctx.subprocess`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | glob 和 grep 是無條件可用的發現工具，透過 ctx.subprocess spawn 隨包提供的 ripgrep 二進位檔案（`@vscode/ripgrep`），並作為普通前臺呼叫執行，絕不作為背景工作；無需在宿主機安裝 `rg`，也不經過 shell 層。本目錄使用 `sampleOverCapGlobResults: true`；部署必須顯式選擇該行為。結果超過上限時，會透過選填的 ctx.spillStore 後端保存完整的格式化清單；在共置部署中，如果後端公開本機路徑，返回的定位資訊可供後續讀取／搜尋。 |
 | `@deepseek-ai/dsh-tool-terminal` | `terminal_close`、`terminal_list`、`terminal_open`、`terminal_read`、`terminal_send`、`terminal_signal` | `ctx.tools`、`ctx.terminals`、`ctx.systemPrompt`、`ctx.jobs at call time for run_in_background` | `tool/call`、`tool/result` | - | 這 6 個終端機工具需要選擇啟用，用於補充一次性 bash／檔案系統工具。`terminal_send(run_in_background: true)` 會註冊到 `ctx.jobs`；schema 不包含 TUI、具名按鍵序列、BEL、調整尺寸、自動啟動和跨 agent 共享。 |
-| `@deepseek-ai/dsh-tool-goal` | `create_goal`、`get_goal`、`update_goal` | `ctx.tools`、`ctx.agents`、`ctx.goals`、`ctx.systemPrompt`、`a calling Agent in an authorized open turn` | `tool/call`、`goal/change for mutations`、`tool/result` | - | create、edit、pause 和 resume 要求直接來自人類的根權限；complete 和 blocked 也接受確切的當前 Goal Round。blocked 的默認下限是 3 個獲準的 Round。 |
+| `@deepseek-ai/dsh-tool-goal` | `create_goal`、`get_goal`、`update_goal` | `ctx.tools`、`ctx.agents`、`ctx.goals`、`ctx.systemPrompt`、`a calling Agent in an authorized open turn` | `tool/call`、`goal/change for mutations`、`tool/result` | - | create、edit、pause 和 resume 要求直接來自人類的根權限；complete 和 blocked 也接受確切的當前 Goal Round。blocked 的預設下限是 3 個獲準的 Round。 |
 | `@deepseek-ai/dsh-schedule` | `schedule_create`、`schedule_delete`、`schedule_list` | `ctx.tools`、`ctx.sessions`、Session 持久化、未來建立的 live 根 Agent | `tool/call`、`schedule/change create or delete`、`tool/result` | - | 僅在選擇啟用的 Schedule 外掛程式載入後建立的 live 根 Agent scope 內註冊。版本 1 接受 after_seconds、顯式絕對 at 和有界固定速率 every_seconds，並披露 session-local 交付；管理讀取與變更必須透過共享的 Session 持久化 barrier。 |
 | `@deepseek-ai/dsh-tool-lsp` | `lsp` | `ctx.tools`、`ctx.lsp`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，因此其模型可見 schema 在更換提供方時保持穩定。執行時期要求已註冊提供方，例如 `@deepseek-ai/dsh-lsp-stdio`；如果沒有提供方，查詢會返回結構化 `LSP_UNAVAILABLE` 錯誤，而不會改變 schema。 |
 | `@deepseek-ai/dsh-tool-ralph` | `ralph` | `ctx.tools`、`ctx.workflowEngine`、`ctx.subagents`、`ctx.systemPrompt`、`a calling Agent (exec.agent parents every fresh round)` | `tool/call`、`tool/result`、`workflow and child session events during execution` | - | 固定的前臺工作流程會在每個 Round 啟動一個全新的結構化子級；模型只能選擇不可變目標和選填的 Round 上限。 |
 | `@deepseek-ai/dsh-tool-skill` | `skill` | `ctx.tools`、`ctx.agents`、`ctx.skills` | `tool/call`、`tool/result`、`user/message replacement catalogs via agent.inject()` | - | - |
 | `@deepseek-ai/dsh-tool-session-query` | `session_event_read`、`session_event_search`、`session_event_trace`、`session_search`、`session_trace` | `ctx.tools`、`ctx.systemPrompt`、`ctx.sessionQuery`、`a calling Agent for workspace authority` | `tool/call`、`tool/result` | - | 這 5 個只讀工具會隱藏提供方遊標，並根據不可變的呼叫 agent 工作階段為每個結果授權。該包需要選擇啟用；需要強制截止時間或限制行內輸出的組合還會掛載通用逾時或 spill 策略。 |
-| `@deepseek-ai/dsh-tool-subagent` | `subagent` | `ctx.tools`、`ctx.subagents`、`ctx.systemPrompt` | `tool/call`、`tool/result`、`child session events through the chosen provider` | `subagent`、`subagent_fork` | 註冊的工具名稱取決於載入時 `toolName` 設定（預設為 `subagent`）；上述 schema 對應預設值。隨產品發布的組合會為每個 subagent 後端載入一次該包，因此模型還會看到綁定到 fork 後端的 `subagent_fork`。每個實例的描述、`run_in_background` 參數與 system prompt 策略取決於它自己的 `backgroundMode` 和 `enableRunInBackground`，因此兩個隨附 schema 並不相同：`subagent` 為 `continuable`，省略參數時默認後臺執行，並由 runtime 自動投遞結束結果；`subagent_fork` 保持 `one-shot`，省略參數時默認前景執行。詳見 `packages/bundle/base/cordis.patch.yml` 和 `examples/acp-agent/cordis.yml`。 |
+| `@deepseek-ai/dsh-tool-subagent` | `subagent` | `ctx.tools`、`ctx.subagents`、`ctx.systemPrompt` | `tool/call`、`tool/result`、`child session events through the chosen provider` | `subagent`、`subagent_fork` | 註冊的工具名稱取決於載入時 `toolName` 設定（預設為 `subagent`）；上述 schema 對應預設值。隨產品發布的組合會為每個 subagent 後端載入一次該包，因此模型還會看到綁定到 fork 後端的 `subagent_fork`。每個實例的描述、`run_in_background` 參數與 system prompt 策略取決於它自己的 `backgroundMode` 和 `enableRunInBackground`，因此兩個隨附 schema 並不相同：`subagent` 為 `continuable`，省略參數時預設後臺執行，並由 runtime 自動投遞結束結果；`subagent_fork` 保持 `one-shot`，省略參數時預設前景執行。詳見 `packages/bundle/base/cordis.patch.yml` 和 `examples/acp-agent/cordis.yml`。 |
 | `@deepseek-ai/dsh-tool-subagent-control` | `interrupt_agent`、`list_agents`、`send_message` | `ctx.tools`、`ctx.subagents`、`ctx.agents and ctx.sessionProjections (list_agents only)` | `tool/call`、`tool/result`、`child session events through ctx.subagents` | - | 這些是控制可繼續後臺 subagent 的全域性命名工具：綁定提供方的 `tool-subagent` 實例註冊不同的委派工具；本包註冊一次 `send_message` 和 `interrupt_agent`，另由 `list_agents` 透過單獨載入的 `/list-agents` 外掛程式提供，其目錄行使用 sessionProjections 和即時 Agent 登錄檔。 |
-| `@deepseek-ai/dsh-tool-subagent-report` | `report` | `ctx.subagents`、`ctx.systemPrompt`、`a live continuable in-process child Agent` | `tool/call`、`tool/result`、`a user-role message in the direct parent session` | - | 按可繼續的行程內子級註冊，而非全域性註冊，因此該 schema 僅在這種子級內部可見，並且不受其全域性 `toolFilter` 影響。同一份貢獻還會安裝子級作用域的 `tool:report` 系統提示詞 section，本目錄不渲染該 section。面向父級的 `send_message` 工具單獨安裝。 |
+| `@deepseek-ai/dsh-tool-subagent-report` | `report` | `ctx.subagents`、`ctx.systemPrompt`、`a live continuable in-process child Agent` | `tool/call`、`tool/result`、`a user-role message in the direct parent session` | - | 按可繼續的行程內子級註冊，而非全域性註冊，因此該 schema 僅在這種子級內部可見，並且不受其全域性 `toolFilter` 影響。同一份貢獻還會安裝子級作用域的 `tool:report` 系統提示詞 section，本目錄不算繪該 section。面向父級的 `send_message` 工具單獨安裝。 |
 | `@deepseek-ai/dsh-tool-jobs` | `job_kill`、`job_list`、`job_output` | `ctx.tools`、`ctx.jobs`、`ctx.systemPrompt` | `tool/call`、`tool/result`、`user/message via agent.inject() for background completion notices` | - | 與任務種類無關的背景工作控制器：後臺 bash 命令、PTY 傳送和 subagent 都透過相同的 3 個工具讀取、列出和終止。載入該外掛程式會掛接控制器，從而啟用生產方的 `ctx.jobs.start()`。 |
-| `@deepseek-ai/dsh-tool-todo` | `todo_write` | `ctx.tools`、`owning Agent session` | `tool/call`、`todo/write`、`tool/result` | - | todo_write 是工作階段所有的狀態；UI 將最新的 todo/write 事件渲染為檢查清單。`allowParallelInProgress` 是沒有預設值的必填項，因此本目錄明確選擇 `true`，對應描述允許同時存在多個 `in_progress` 項。選擇 `false` 的部署會獲得同一工具，但描述會要求只能有 1 個活動任務。 |
+| `@deepseek-ai/dsh-tool-todo` | `todo_write` | `ctx.tools`、`owning Agent session` | `tool/call`、`todo/write`、`tool/result` | - | todo_write 是工作階段所有的狀態；UI 將最新的 todo/write 事件算繪為檢查清單。`allowParallelInProgress` 是沒有預設值的必填項，因此本目錄明確選擇 `true`，對應描述允許同時存在多個 `in_progress` 項。選擇 `false` 的部署會獲得同一工具，但描述會要求只能有 1 個活動任務。 |
 | `@deepseek-ai/dsh-tool-workflow` | `workflow` | `ctx.tools`、`ctx.workflowEngine`、`ctx.systemPrompt`、`a calling Agent (exec.agent parents the script children)` | `tool/call`、`tool/result` | - | - |
 | `@deepseek-ai/dsh-tool-web` | `web_fetch`、`web_search` | `ctx.tools`、`ctx.web`、`ctx.systemPrompt` | `tool/call`、`tool/result` | - | web_search 和 web_fetch 將提供方選擇置於 ctx.web 之後，使模型可見 schema 在更換後端時保持穩定。 |
 
@@ -122,7 +122,7 @@ ask_user_question 會暫停工具呼叫，直到當前 UI 提供方返回人類�
 
 ### `run_code`
 
-針對可用工具執行 TypeScript 程序。接受兩個必填參數：`code`，即非同步函式的**函式體**（僅使用可擦除文法；支持頂層 `await` 和 `return`）；以及 `description`，簡要說明該程序做什麼。請根據系統提示詞中的聲明，以 `await tools.name(args)` 形式呼叫工具。只有列印或返回的內容會傳回，請謹慎篩選。
+針對可用工具執行 TypeScript 程序。接受兩個必填參數：`code`，即非同步函式的**函式體**（僅使用可擦除文法；支援頂層 `await` 和 `return`）；以及 `description`，簡要說明該程序做什麼。請根據系統提示詞中的聲明，以 `await tools.name(args)` 形式呼叫工具。只有列印或返回的內容會傳回，請謹慎篩選。
 
 ```json
 {
@@ -181,7 +181,7 @@ ask_user_question 會暫停工具呼叫，直到當前 UI 提供方返回人類�
 
 ### `bash`
 
-執行 bash 命令（`bash -c`）並返回 stdout/stderr。每次呼叫都在新 shell 中執行：呼叫之間不保留任何狀態（cwd、變數、函式），請傳入 `workdir`，不要使用 `cd`。非零退出會報告為 `[exit code: N]`。當前 harness 環境資訊透過託管的 `$DSH_*` 變數公開，需要時請檢查這些變數。命令可能在文件沙盒中執行；被阻止的文件操作報告為 `[sandbox: file access denied under <mode> mode]`，這是策略拒絕，而不是命令缺陷，請勿換一種方式重試。較長的輸出會截斷，只保留尾部；如可用，完整輸出會保存到文件並報告其路徑。對於長時間執行的命令，請設定 `run_in_background: true`：呼叫會立即返回 job id；使用 `job_output` 讀取輸出，使用 `job_kill` 停止任務。
+執行 bash 命令（`bash -c`）並返回 stdout/stderr。每次呼叫都在新 shell 中執行：呼叫之間不保留任何狀態（cwd、變數、函式），請傳入 `workdir`，不要使用 `cd`。非零結束會報告為 `[exit code: N]`。當前 harness 環境資訊透過託管的 `$DSH_*` 變數公開，需要時請檢查這些變數。命令可能在文件沙盒中執行；被阻止的文件操作報告為 `[sandbox: file access denied under <mode> mode]`，這是策略拒絕，而不是命令缺陷，請勿換一種方式重試。較長的輸出會截斷，只保留尾部；如可用，完整輸出會保存到文件並報告其路徑。對於長時間執行的命令，請設定 `run_in_background: true`：呼叫會立即返回 job id；使用 `job_output` 讀取輸出，使用 `job_kill` 停止任務。
 
 ```json
 {
@@ -225,7 +225,7 @@ bash 工具是 bash 執行器 seam 面向模型的消費端。使用 `run_in_bac
 
 ### `pwsh`
 
-執行 PowerShell 命令（`pwsh -Command`）並返回 stdout/stderr。每次呼叫都在新的 pwsh 行程中執行：呼叫之間不保留任何狀態（cwd、變數、函式），請傳入 `workdir`，不要使用 `cd`。路徑採用 Windows 原生形式（`C:\...`）；使用 `$env:NAME` 讀取環境變數。非零退出會報告為 `[exit code: N]`。當前 harness 環境資訊透過託管的 `$env:DSH_*` 變數公開，需要時請檢查這些變數。命令可能在文件沙盒中執行；被阻止的文件操作報告為 `[sandbox: file access denied under <mode> mode]`，這是策略拒絕，而不是命令缺陷，請勿換一種方式重試。較長的輸出會截斷，只保留尾部；如可用，完整輸出會保存到文件並報告其路徑。在 Windows 上，被強制終止的命令會以 `[exit code: 1]` 結帳且不帶訊號標記，請將其視為中斷，而不是命令失敗。對於長時間執行的命令，請設定 `run_in_background: true`：呼叫會立即返回 job id；使用 `job_output` 讀取輸出，使用 `job_kill` 停止任務。
+執行 PowerShell 命令（`pwsh -Command`）並返回 stdout/stderr。每次呼叫都在新的 pwsh 行程中執行：呼叫之間不保留任何狀態（cwd、變數、函式），請傳入 `workdir`，不要使用 `cd`。路徑採用 Windows 原生形式（`C:\...`）；使用 `$env:NAME` 讀取環境變數。非零結束會報告為 `[exit code: N]`。當前 harness 環境資訊透過託管的 `$env:DSH_*` 變數公開，需要時請檢查這些變數。命令可能在文件沙盒中執行；被阻止的文件操作報告為 `[sandbox: file access denied under <mode> mode]`，這是策略拒絕，而不是命令缺陷，請勿換一種方式重試。較長的輸出會截斷，只保留尾部；如可用，完整輸出會保存到文件並報告其路徑。在 Windows 上，被強制終止的命令會以 `[exit code: 1]` 結帳且不帶訊號標記，請將其視為中斷，而不是命令失敗。對於長時間執行的命令，請設定 `run_in_background: true`：呼叫會立即返回 job id；使用 `job_output` 讀取輸出，使用 `job_kill` 停止任務。
 
 ```json
 {
@@ -723,7 +723,7 @@ pwsh 工具是 Windows 組閤中 bash 執行器 seam 的 PowerShell 方言消費
 
 ### `glob`
 
-尋找路徑匹配 glob 模式的文件。只返回匹配的檔案路徑，絕不返回目錄；包括隱藏文件和被忽略的文件，但排除 VCS 元資料目錄。最多按修改時間順序返回 100 條路徑；如果結果更多，則改為返回從頂層條目中抽樣的 100 條路徑，說明已抽樣，並報告完整排序清單的保存位置。該工具不枚舉目錄條目。
+尋找路徑匹配 glob 模式的文件。只返回匹配的檔案路徑，絕不返回目錄；包括隱藏文件和被忽略的文件，但排除 VCS 中繼資料目錄。最多按修改時間順序返回 100 條路徑；如果結果更多，則改為返回從頂層條目中抽樣的 100 條路徑，說明已抽樣，並報告完整排序清單的保存位置。該工具不枚舉目錄條目。
 
 ```json
 {
@@ -783,7 +783,7 @@ glob 和 grep 是無條件可用的發現工具，透過 ctx.subprocess spawn �
 
 ### `terminal_close`
 
-關閉一個持久終端機，並等待其捕獲且所有的行程樹完全退出。
+關閉一個持久終端機，並等待其捕獲且所有的行程樹完全結束。
 
 ```json
 {
@@ -875,7 +875,7 @@ glob 和 grep 是無條件可用的發現工具，透過 ctx.subprocess spawn �
 
 ### `terminal_send`
 
-向持久終端機傳送文字。默認會提交 Enter，並等待提示符、stdin 等待、輸出靜默、逾時或工作階段退出。後臺模式會返回供 job_output／job_kill 使用的 job id。
+向持久終端機傳送文字。預設會提交 Enter，並等待提示符、stdin 等待、輸出靜默、逾時或工作階段結束。後臺模式會返回供 job_output／job_kill 使用的 job id。
 
 ```json
 {
@@ -1034,7 +1034,7 @@ glob 和 grep 是無條件可用的發現工具，透過 ctx.subprocess spawn �
 
 來源：[`packages/goal/tool-goal/src/index.ts`](../packages/goal/tool-goal/src/index.ts)
 
-create、edit、pause 和 resume 要求直接來自人類的根權限；complete 和 blocked 也接受確切的當前 Goal Round。blocked 的默認下限是 3 個獲準的 Round。
+create、edit、pause 和 resume 要求直接來自人類的根權限；complete 和 blocked 也接受確切的當前 Goal Round。blocked 的預設下限是 3 個獲準的 Round。
 
 <a id="deepseek-aidsh-schedule"></a>
 
@@ -1478,7 +1478,7 @@ lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，�
 
 ### `subagent`
 
-將一項自包含任務委派給 subagent（在自身上下文中工作的獨立 agent），用它解除安裝聚焦且獨立的工作，例如研究、限定範圍的實作或分析，以免消耗當前對話的上下文。subagent 會返回結果，但不會返回中間步驟。請提供完整、獨立的提示詞，因為它看不到當前對話。此呼叫默認等待結果。設定 `run_in_background: true` 可返回 job id；使用 `job_output` 收集結果，使用 `job_kill` 停止任務。
+將一項自包含任務委派給 subagent（在自身上下文中工作的獨立 agent），用它解除安裝聚焦且獨立的工作，例如研究、限定範圍的實作或分析，以免消耗當前對話的上下文。subagent 會返回結果，但不會返回中間步驟。請提供完整、獨立的提示詞，因為它看不到當前對話。此呼叫預設等待結果。設定 `run_in_background: true` 可返回 job id；使用 `job_output` 收集結果，使用 `job_kill` 停止任務。
 
 ```json
 {
@@ -1506,7 +1506,7 @@ lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，�
 
 來源：[`packages/subagent/tool-subagent/src/index.ts`](../packages/subagent/tool-subagent/src/index.ts)
 
-註冊的工具名稱取決於載入時 `toolName` 設定（預設為 `subagent`）；上述 schema 對應預設值。隨產品發布的組合會為每個 subagent 後端載入一次該包，因此模型還會看到綁定到 fork 後端的 `subagent_fork`。每個實例的描述、`run_in_background` 參數與 system prompt 策略取決於它自己的 `backgroundMode` 和 `enableRunInBackground`，因此兩個隨附 schema 並不相同：`subagent` 為 `continuable`，省略參數時默認後臺執行，並由 runtime 自動投遞結束結果；`subagent_fork` 保持 `one-shot`，省略參數時默認前景執行。詳見 `packages/bundle/base/cordis.patch.yml` 和 `examples/acp-agent/cordis.yml`。
+註冊的工具名稱取決於載入時 `toolName` 設定（預設為 `subagent`）；上述 schema 對應預設值。隨產品發布的組合會為每個 subagent 後端載入一次該包，因此模型還會看到綁定到 fork 後端的 `subagent_fork`。每個實例的描述、`run_in_background` 參數與 system prompt 策略取決於它自己的 `backgroundMode` 和 `enableRunInBackground`，因此兩個隨附 schema 並不相同：`subagent` 為 `continuable`，省略參數時預設後臺執行，並由 runtime 自動投遞結束結果；`subagent_fork` 保持 `one-shot`，省略參數時預設前景執行。詳見 `packages/bundle/base/cordis.patch.yml` 和 `examples/acp-agent/cordis.yml`。
 
 <a id="deepseek-aidsh-tool-subagent-control"></a>
 
@@ -1608,7 +1608,7 @@ lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，�
 
 來源：[`packages/subagent/tool-subagent-report/src/index.ts`](../packages/subagent/tool-subagent-report/src/index.ts)
 
-按可繼續的行程內子級註冊，而非全域性註冊，因此該 schema 僅在這種子級內部可見，並且不受其全域性 `toolFilter` 影響。同一份貢獻還會安裝子級作用域的 `tool:report` 系統提示詞 section，本目錄不渲染該 section。面向父級的 `send_message` 工具單獨安裝。
+按可繼續的行程內子級註冊，而非全域性註冊，因此該 schema 僅在這種子級內部可見，並且不受其全域性 `toolFilter` 影響。同一份貢獻還會安裝子級作用域的 `tool:report` 系統提示詞 section，本目錄不算繪該 section。面向父級的 `send_message` 工具單獨安裝。
 
 <a id="deepseek-aidsh-tool-jobs"></a>
 
@@ -1654,7 +1654,7 @@ lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，�
 
 ### `job_output`
 
-讀取背景工作。流式任務只返回自上次讀取以來的輸出；最終輸出任務會在結帳後返回結果。每個回應都以 `[status: ...]` 結尾。讀取默認不阻塞；設定 `wait: true` 後，最長等待到設定的上限。
+讀取背景工作。流式任務只返回自上次讀取以來的輸出；最終輸出任務會在結帳後返回結果。每個回應都以 `[status: ...]` 結尾。讀取預設不阻塞；設定 `wait: true` 後，最長等待到設定的上限。
 
 ```json
 {
@@ -1689,7 +1689,7 @@ lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，�
 
 ### `todo_write`
 
-記錄並更新當前工作的結構化任務清單。每次呼叫都要傳送**完整清單**，它會**替換**之前的清單，不支持區域性更新或逐項編輯。請用它規劃多步驟工作並展示進度：開始前為每個具體步驟新增一項 todo。將當前正在處理的每項 todo 標記為 `in_progress`；確實平行執行時期（例如並行 subagent 或後臺命令）可同時標記多項，順序工作則標記 1 項。只要工作尚未完成，就應至少有一項任務為 `in_progress`。某項 todo 完成後立即標記為 `completed`，不要批次標記完成；只有全部工作完成後，纔可以沒有 `in_progress` 項。簡單的單步驟任務無需使用清單。狀態：`pending`（未開始）、`in_progress`（正在處理）、`completed`（已完成）。
+記錄並更新當前工作的結構化任務清單。每次呼叫都要傳送**完整清單**，它會**替換**之前的清單，不支援區域性更新或逐項編輯。請用它規劃多步驟工作並展示進度：開始前為每個具體步驟新增一項 todo。將當前正在處理的每項 todo 標記為 `in_progress`；確實平行執行時期（例如並行 subagent 或後臺命令）可同時標記多項，順序工作則標記 1 項。只要工作尚未完成，就應至少有一項任務為 `in_progress`。某項 todo 完成後立即標記為 `completed`，不要批次標記完成；只有全部工作完成後，纔可以沒有 `in_progress` 項。簡單的單步驟任務無需使用清單。狀態：`pending`（未開始）、`in_progress`（正在處理）、`completed`（已完成）。
 
 ```json
 {
@@ -1731,7 +1731,7 @@ lsp 工具將提供方選擇和語言伺服器子行程置於 ctx.lsp 之後，�
 
 來源：[`packages/todo/tool-todo/src/index.ts`](../packages/todo/tool-todo/src/index.ts)
 
-todo_write 是工作階段所有的狀態；UI 將最新的 todo/write 事件渲染為檢查清單。`allowParallelInProgress` 是沒有預設值的必填項，因此本目錄明確選擇 `true`，對應描述允許同時存在多個 `in_progress` 項。選擇 `false` 的部署會獲得同一工具，但描述會要求只能有 1 個活動任務。
+todo_write 是工作階段所有的狀態；UI 將最新的 todo/write 事件算繪為檢查清單。`allowParallelInProgress` 是沒有預設值的必填項，因此本目錄明確選擇 `true`，對應描述允許同時存在多個 `in_progress` 項。選擇 `false` 的部署會獲得同一工具，但描述會要求只能有 1 個活動任務。
 
 <a id="deepseek-aidsh-tool-workflow"></a>
 
@@ -1741,16 +1741,16 @@ todo_write 是工作階段所有的狀態；UI 將最新的 todo/write 事件渲
 
 執行用於大規模編排 subagent 的 JavaScript 工作流程指令碼。當工作會分散到許多相互獨立的部分時，請使用此工具，例如審查大量文件、執行遷移、開展多角度研究或對發現進行對抗式驗證；此時應將編排寫成指令碼，而不是逐輪委派。
 
-工作流程的身份透過 `meta` 參數以 JSON 形式傳入：必填的 `name`（簡短 kebab-case）和 `description` 字串，以及選填的 `whenToUse` 字串和 `phases` 陣列（`{title, detail?, provider?, model?}`）。`script` 參數只能是純 JavaScript **函式體**，不能是 TypeScript，也不能包含 `export const meta` 語句；meta 是參數而非程式碼。指令碼支持頂層 await；請以 `return <value>` 結尾，該值必須可以 JSON 序列化，並作為此工具的結果。
+工作流程的身份透過 `meta` 參數以 JSON 形式傳入：必填的 `name`（簡短 kebab-case）和 `description` 字串，以及選填的 `whenToUse` 字串和 `phases` 陣列（`{title, detail?, provider?, model?}`）。`script` 參數只能是純 JavaScript **函式體**，不能是 TypeScript，也不能包含 `export const meta` 語句；meta 是參數而非程式碼。指令碼支援頂層 await；請以 `return <value>` 結尾，該值必須可以 JSON 序列化，並作為此工具的結果。
 
 指令碼函式體提供以下掛鉤：
 
-- `agent(prompt, opts?): Promise<any>`：執行一個 subagent 直至完成。不提供 `opts.schema` 時，解析為子級最終文字；提供 `opts.schema` 時，它必須是以對象為根、且**只能**使用 type/properties/required/additionalProperties/items/enum/const/oneOf 的 JSON Schema，不支持 pattern/format/數值邊界，此時解析為透過校驗的對象。子級失敗時解析為 `null`，可使用 `.filter(Boolean)` 過濾。其他選項包括 `label`（顯示名稱）、`phase`（進度組），以及相互獨立的 `provider`／`model` LLM（大型語言模型）目標覆蓋項，兩者可單獨提供。其他任何選項（`effort`／`isolation`／`agentType`）都會明確報錯。
+- `agent(prompt, opts?): Promise<any>`：執行一個 subagent 直至完成。不提供 `opts.schema` 時，解析為子級最終文字；提供 `opts.schema` 時，它必須是以對象為根、且**只能**使用 type/properties/required/additionalProperties/items/enum/const/oneOf 的 JSON Schema，不支援 pattern/format/數值邊界，此時解析為透過校驗的對象。子級失敗時解析為 `null`，可使用 `.filter(Boolean)` 過濾。其他選項包括 `label`（顯示名稱）、`phase`（進度組），以及相互獨立的 `provider`／`model` LLM（大型語言模型）目標覆蓋項，兩者可單獨提供。其他任何選項（`effort`／`isolation`／`agentType`）都會明確報錯。
 - `pipeline(items, ...stages): Promise<any[]>`：讓每個條目分別經過各階段，階段之間**沒有**屏障；多階段工作優先使用它。每個階段接收 `(prev, item, index)`。普通的階段例外會將該**條目**變為 `null`，並跳過它的剩餘階段。
 - `parallel(thunks): Promise<any[]>`：並行執行零參數函式並等待**全部**完成。它會形成屏障，僅當某個階段確實需要彙總全部先前結果時使用。拋出例外的 thunk 解析為 `null`。
 - `phase(title)`：開始一個進度階段；`log(message)`：說明進度；`args`：工具呼叫的 `args` 輸入，原樣提供。
 
-如果誤用掛鉤（參數錯誤、未知選項、不受支持的 schema、觸發上限），拋出的錯誤**總會**終止指令碼，絕不會退化為單個條目的 `null`。
+如果誤用掛鉤（參數錯誤、未知選項、不受支援的 schema、觸發上限），拋出的錯誤**總會**終止指令碼，絕不會退化為單個條目的 `null`。
 
 約束：並行上限和 agent 總數上限均會生效；不提供檔案系統、網路、定時器或 Node.js API。具體工作由 agent 完成，指令碼只負責編排。該執行在前臺執行：整個指令碼完成後，呼叫才會返回。
 

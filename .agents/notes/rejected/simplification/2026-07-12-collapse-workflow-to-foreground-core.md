@@ -2,7 +2,7 @@
 
 Status: rejected — Workflow progress is an intentional observation API; make it useful through a consumer instead of deleting it.
 
-English | [简体中文](2026-07-12-collapse-workflow-to-foreground-core.zh.md) | [繁體中文](2026-07-12-collapse-workflow-to-foreground-core.zh-tw.md)
+
 
 ## Problem
 

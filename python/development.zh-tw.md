@@ -58,12 +58,12 @@ python scripts/build-python-release.py --package runtime --platform macos-arm64 
 pip install --find-links dist-python deepseek-harness-sdk=="$version"
 ```
 
-執行時期分發包僅提供 wheel 套件。發布管線會連同純 SDK wheel 套件一起發布三個平臺 wheel 套件：Linux x64、Linux arm64 和 macOS 14 或更高版本的 arm64。只有與倉庫版本匹配時，才接受 `python-v<repository-version>` 標籤；`0.0.1-rc.1` 之類的倉庫預發布版本在 wheel 套件檔名和元資料中使用規範化的 PEP 440 寫法，例如 `0.0.1rc1`。
+執行時期分發包僅提供 wheel 套件。發布管線會連同純 SDK wheel 套件一起發布三個平臺 wheel 套件：Linux x64、Linux arm64 和 macOS 14 或更高版本的 arm64。只有與倉庫版本匹配時，才接受 `python-v<repository-version>` 標籤；`0.0.1-rc.1` 之類的倉庫預發布版本在 wheel 套件檔名和中繼資料中使用規範化的 PEP 440 寫法，例如 `0.0.1rc1`。
 
 ## 驗證候選發行版
 
-為Pull Request新增 `python-release-dry-run` 標籤，或手動執行 GitHub 的 `Release (Python)` 工作流程並設定 `publish=false`，即可建置全部四個 wheel 套件，在 Python 3.10 和 3.14 上安裝 Linux 發行集合，檢查精確檔名和元資料，執行 PyPI 默認單檔案大小限制，並保留一份帶 SHA-256 雜湊的彙總產物。兩條路徑都沒有登錄檔憑據，Pull Request執行無法進入任何發布作業。
+為Pull Request新增 `python-release-dry-run` 標籤，或手動執行 GitHub 的 `Release (Python)` 工作流程並設定 `publish=false`，即可建置全部四個 wheel 套件，在 Python 3.10 和 3.14 上安裝 Linux 發行集合，檢查精確檔名和中繼資料，執行 PyPI 預設單檔案大小限制，並保留一份帶 SHA-256 雜湊的彙總產物。兩條路徑都沒有登錄檔憑據，Pull Request執行無法進入任何發布作業。
 
-公開發布從私有自動化倉庫執行；包元資料指向獨立的只讀公開原始碼映像檔，該映像檔不執行發布 Actions。私有倉庫把倉庫變數 `PYPI_PUBLISHER_REPOSITORY` 定義為自身的 `owner/name`，並且只在有意發布期間把 `PUBLIC_PYPI_RELEASE_ENABLED` 從 `false` 改為 `true`。
+公開發布從私有自動化倉庫執行；包中繼資料指向獨立的只讀公開原始碼映像檔，該映像檔不執行發布 Actions。私有倉庫把倉庫變數 `PYPI_PUBLISHER_REPOSITORY` 定義為自身的 `owner/name`，並且只在有意發布期間把 `PUBLIC_PYPI_RELEASE_ENABLED` 從 `false` 改為 `true`。
 
 獨立的執行時期與 SDK 作業使 SDK 上傳失敗後可以繼續執行，而無需重新發送不可變的執行時期文件。只有工作流程從設定的發布倉庫、匹配的 `python-v*` 標籤執行，且受保護的 `pypi-runtime` 和 `pypi` 環境分別批准執行時期與 SDK 作業時，才接受 `publish=true`。PyPI Trusted Publishing 仍會提供短期 OIDC 憑據，但公開 attestation 會披露私有發布倉庫身份，因此將其停用。

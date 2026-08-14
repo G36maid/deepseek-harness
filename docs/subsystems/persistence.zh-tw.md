@@ -2,7 +2,7 @@
 
 [English](persistence.md) | [简体中文](persistence.zh.md) | 繁體中文
 
-事件日誌的**持久性 seam**。[session.md](session.md) 描述了記憶體中的 `Session`：僅附加的 `SessionEvent` 日誌即為真源。本頁描述如何使該日誌持久化：抽象的 `SessionPersistence` 服務、它的後端、flush 檢查點、當機復原，以及隨日誌一同儲存的元資料頭。日誌承載的事件詞彙在生成的[持久化日誌事件目錄](../persistence-catalog.md)中逐項列舉。
+事件日誌的**持久性 seam**。[session.md](session.md) 描述了記憶體中的 `Session`：僅附加的 `SessionEvent` 日誌即為真源。本頁描述如何使該日誌持久化：抽象的 `SessionPersistence` 服務、它的後端、flush 檢查點、當機復原，以及隨日誌一同儲存的中繼資料頭。日誌承載的事件詞彙在生成的[持久化日誌事件目錄](../persistence-catalog.md)中逐項列舉。
 
 該 seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)：一個抽象服務（[dsh-session-persistence](../../packages/session/session-persistence)，`ctx.sessionPersistence`）在現有 `SessionEvent` 上定義 locate/create/append、可複用的 Session 準備流程、邏輯 load/inspect、物理後綴讀取，以及輕量的 list/snapshot 觀察——**沒有平行的持久化事件類型**——以及兩個實作同一約定的可互換後端。見 [session-persistence Agent Note](../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)。
 
@@ -38,9 +38,9 @@ interface SessionLocation {
 
 <a id="sessionheader--metadata-beside-the-log"></a>
 
-## `SessionHeader`：日誌旁的元資料
+## `SessionHeader`：日誌旁的中繼資料
 
-每個工作階段的元資料與事件日誌**分開**儲存：格式版本、cwd、血統與 seed 邊界是儲存層關注點而非對話事件，因此不進入 `SessionEventMap`，也不會到達 `deriveMessages()`。header 透過 `session.header` 附加到 `Session` 上。
+每個工作階段的中繼資料與事件日誌**分開**儲存：格式版本、cwd、血統與 seed 邊界是儲存層關注點而非對話事件，因此不進入 `SessionEventMap`，也不會到達 `deriveMessages()`。header 透過 `session.header` 附加到 `Session` 上。
 
 原始碼：[`packages/core/session/src/types.ts`](../../packages/core/session/src/types.ts)
 
@@ -93,7 +93,7 @@ interface SessionHeader {
 
 後端用 `SessionFormatUnsupportedError` 拒絕無法可靠解讀的日誌，它與 `SessionPersistenceCorruptionError` 區分，因為資料沒有損壞。header 的 `version` 比 `SESSION_FORMAT_VERSION` 新時，訊息說明方向（"由更新的 harness 寫入，請升級 harness 後打開"）；比它舊時說明本建置沒有升級路徑。經過 legacy 形狀歸一化後，本建置生成詞彙表（`KNOWN_SESSION_EVENT_TYPES`，由 `gen-persistence-catalog` 生成）之外的事件類型同樣被拒絕，除非該事件的信封帶 `ignorable: true`：靜默跳過一個不認識的必需事件可能改變日誌其餘部分的解讀方式。後端為每個工作階段保留獨立文件時，訊息附上原始日誌路徑，被拒絕的文字仍然可讀。JSONL 後端直接從原始 header 行拒絕外來版本，先於當前 header 形狀校驗和任何事件行解碼，因此結構完全不同的未來格式仍會報告升級方向，絕不會報"損壞"；SQLite 則先由自己的 `SCHEMA_VERSION` pragma 把關整個文件的結構。設計理由與推遲建設的升級器鏈見 [session-log 版本機制 Agent Note](../../.agents/notes/implemented/architecture/2026-08-10-session-log-version-mechanism.md)。
 
-## `CreateSessionOptions`：seed 與元資料
+## `CreateSessionOptions`：seed 與中繼資料
 
 透過 store 建立 `Session` 時會接收 `seed`（初始重播或 fork 歷史）與 `meta`（store 整合進 `SessionHeader` 的儲存層欄位）。store 填充 `version`/`id` 並為 `createdAt` 提供預設值；呼叫方可以提供已校驗的絕對 `cwd`、`parentSession` 譜系、`seedLength` 種子邊界、選填的粗粒度 `origin`、`delegationDepth`、用於組裝該 agent（代理）的 `agentPreset` 以及已有的 `createdAt`。`origin: 'subagent'` 讓產品導覽能夠隱藏重複的 child 行；它不證明描述符有效，也不證明 child 可以復原。
 
@@ -126,7 +126,7 @@ interface CreateSessionOptions {
 
 ## `SessionRawArtifact`——逐字儲存工件文字
 
-後端為單個工作階段自持的工件文字，與其持久化寫入的位元組逐字一致（按物理編碼解碼）。`readRaw` 返回它而不從解析後事件重建，因此後端特定的序列化（chunk 打包、鍵序、換行）得以保留。Consumer 須先檢查 `supportsRawArtifacts`：`false` 表示後端不提供此能力（如 SQLite），而 `readRaw(...) === undefined` 表示受支持的後端沒有該工作階段的已實體化工件。
+後端為單個工作階段自持的工件文字，與其持久化寫入的位元組逐字一致（按物理編碼解碼）。`readRaw` 返回它而不從解析後事件重建，因此後端特定的序列化（chunk 打包、鍵序、換行）得以保留。Consumer 須先檢查 `supportsRawArtifacts`：`false` 表示後端不提供此能力（如 SQLite），而 `readRaw(...) === undefined` 表示受支援的後端沒有該工作階段的已實體化工件。
 
 ```ts type-equiv
 /** A backend's own raw artifact text for one session, verbatim. */
@@ -230,10 +230,10 @@ interface SessionPersistenceSnapshot {
 
 ## 後端
 
-兩者都實作同一個抽象 `SessionPersistence`（在 `SessionEvent` 上執行 locate/create/append/prepare/load/inspect/readFrom/list/listSnapshots，觀察方法選填支持取消），並透過共享的 `runPersistenceContract` 套件：
+兩者都實作同一個抽象 `SessionPersistence`（在 `SessionEvent` 上執行 locate/create/append/prepare/load/inspect/readFrom/list/listSnapshots，觀察方法選填支援取消），並透過共享的 `runPersistenceContract` 套件：
 
-- **[dsh-session-persistence-jsonl](../../packages/session/session-persistence-jsonl)**——每個工作階段一份僅附加的邏輯 JSONL 日誌，默認儲存為帶 checksum 的連續 Zstandard frame，也可設定為原始行；支持崩潰安全的原子寫入、被中斷輪次的復原以及讀取/重播路徑。
-- **[dsh-session-persistence-sqlite](../../packages/session/session-persistence-sqlite)**：基於 `node:sqlite`，每個 `SessionEvent` 一行。行欄位 `(session_id, seq, type, time, data, source_event_seqs, surface_op)` 與事件 1:1 對映（包含選填的 surface 元資料），因此沒有需要保持同步的平行持久化 schema。
+- **[dsh-session-persistence-jsonl](../../packages/session/session-persistence-jsonl)**——每個工作階段一份僅附加的邏輯 JSONL 日誌，預設儲存為帶 checksum 的連續 Zstandard frame，也可設定為原始行；支援崩潰安全的原子寫入、被中斷輪次的復原以及讀取/重播路徑。
+- **[dsh-session-persistence-sqlite](../../packages/session/session-persistence-sqlite)**：基於 `node:sqlite`，每個 `SessionEvent` 一行。行欄位 `(session_id, seq, type, time, data, source_event_seqs, surface_op)` 與事件 1:1 對映（包含選填的 surface 中繼資料），因此沒有需要保持同步的平行持久化 schema。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

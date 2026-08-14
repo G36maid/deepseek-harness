@@ -2,9 +2,9 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-Claude Code／Codex hook 協定格式（wire format）的**共享核心**。它不是 Cordis 外掛程式：不註冊也不注入任何內容。它是一個**庫**，提供兩個橋接外掛程式（`@deepseek-ai/dsh-hooks-claude-code`、`@deepseek-ai/dsh-hooks-codex`）匯入的方言無關原語，使兩者都無需重複實作協議中相同的部分。
+Claude Code／Codex hook 協定格式（wire format）的**共享核心**。它不是 Cordis 外掛程式：不註冊也不注入任何內容。它是一個**庫**，提供兩個橋接外掛程式（`@deepseek-ai/dsh-hooks-claude-code`、`@deepseek-ai/dsh-hooks-codex`）匯入的方言無關原語，使兩者都無需重複實作協定中相同的部分。
 
-Codex 有意重新實作了 Claude Code hook 協議的一個*子集*，包括相同的 `hooks.json` matcher group 結構、相同的退出碼／stdout 輸出約定以及相同的 command hook 執行模式。真正共享的部分位於此處；每個橋接只負責不同的部分。
+Codex 有意重新實作了 Claude Code hook 協定的一個*子集*，包括相同的 `hooks.json` matcher group 結構、相同的結束碼／stdout 輸出約定以及相同的 command hook 執行模式。真正共享的部分位於此處；每個橋接只負責不同的部分。
 
 ## 共享內容（此處）與各方言內容（橋接）
 
@@ -21,7 +21,7 @@ Codex 有意重新實作了 Claude Code hook 協議的一個*子集*，包括相
 
 - **`matcherDiagnostic(matcher, mode)` / `matchesMatcher(matcher, query, mode)`**：缺失、`''` 或 `'*'` 時匹配全部；`claude` mode 將純 `[A-Za-z0-9_|]+` pattern 視為字面量（管道符 = 精確匹配交替），其他 pattern 視為正則；`codex` mode 始終使用未錨定正則。橋接解析器會丟棄沒有 matcher 匹配對象的事件所帶的 matcher 欄位，再用 `matcherDiagnostic` 拒絕事件實際使用的無效正則，並在註冊任何掛鉤之前給出穩定診斷。執行時期謂詞仍會將無效 pattern 隔離為不匹配，因此直接呼叫本庫不會向 agent loop（代理循環）拋例外。
 - **`runHook(bash, hook, options, now)`**：要求並轉發呼叫方擁有的 `options.signal`，將 `options.payload` 序列化到 hook stdin（當且僅當 `options.trailingNewline` 時新增尾隨換行符），在執行器憑證清理後合併 `options.env`（`dsh-shell` 受信任外掛程式介面），遵循 hook 的 `timeoutSec`（否則使用 `options.defaultTimeoutMs`；預設值屬於橋接，其設定預設為 lib 的 `DEFAULT_HOOK_TIMEOUT_MS` 10 分鐘參考值），再解碼結果（將 `options.expectedEventName` 傳遞給 codec）。因此取消會到達執行器的行程組終止與 join 邊界。它絕不拋出例外：執行器拒絕（基礎設施故障）會變為 `HookOutput`，其 `exitCode: undefined`（非阻塞錯誤）。`now` 會被注入，以便測試持續時間。
-- **`parseHookOutput(exitCode, stdout, stderr, expectedEventName?)`** 解碼退出狀態與結構化 stdout。退出碼為 2 時，會以 stderr 內容阻止執行；其他失敗不阻塞。匹配的 hook 特定權限決策會覆蓋殘留頂層決策；事件判別欄位不匹配或缺失只會抑制事件特定欄位。頂層欄位仍與事件無關，成功但非 JSON 的輸出會留給橋接處理。
+- **`parseHookOutput(exitCode, stdout, stderr, expectedEventName?)`** 解碼結束狀態與結構化 stdout。結束碼為 2 時，會以 stderr 內容阻止執行；其他失敗不阻塞。匹配的 hook 特定權限決策會覆蓋殘留頂層決策；事件判別欄位不匹配或缺失只會抑制事件特定欄位。頂層欄位仍與事件無關，成功但非 JSON 的輸出會留給橋接處理。
 - **`mergeHookOutputs(outputs)`**：摺疊在一個點上匹配的每個 hook 結果：權限優先級為 **deny > ask > allow**，從首個 `continue:false` 起，halt 狀態保持不變，阻塞原因用 `\n\n` 連線，`additionalContext`／`systemMessages` 按順序累積。
 - **`createDetachedRuns()`**：跟蹤以 emit 形式脫離執行的點是否完全靜止（沒有擴充點等待它們）。橋接會跟蹤每條執行鏈，包括 hook 執行及其 continuation，並將 `drain()` 註冊為 effect disposer。drain 會觸發 tracker 的 abort `signal`（因此仍在執行的 hook 行程會透過 `runHook` 終止，而不是等待到逾時），隨後在所有已跟蹤鏈結帳後 resolve。因此 `fiber.dispose()` resolve 時，不會殘留任何可能作用於已 dispose（資源釋放）的上下文的脫離 hook 工作（見 [防禦模式](../../../docs/defensive-patterns.md)：dispose 必須達到完全靜止）。
 

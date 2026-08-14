@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/bundle/web-app/README.md
 README.md: 8ba14178ee1ebb0afa11c88041fd3a20dadb2e5b
 README.zh.md: 511936a10a6d4fada1619b952f0603da4cc0292c
-README.zh-tw.md: 8ff6ddc78c0e5b32e6a33150cbd5c16d2171c917
+README.zh-tw.md: 6aebf8613bb211869b10030ae40ccedbafd039d6

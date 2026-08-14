@@ -8,7 +8,7 @@
 
 ## 投影單元
 
-`SessionProjectionMap` 是整條鏈路（host 側單元、協議塊、用戶端掛鉤）的 merge-extensible 類型表；值是協議層 JSON 全量值，渲染歸 slot 體系管，永遠不歸本層。領域為每個 key 貢獻一個 `ProjectionDefinition`：
+`SessionProjectionMap` 是整條鏈路（host 側單元、協定塊、用戶端掛鉤）的 merge-extensible 類型表；值是協定層 JSON 全量值，算繪歸 slot 體系管，永遠不歸本層。領域為每個 key 貢獻一個 `ProjectionDefinition`：
 
 ```ts type-equiv
 /**

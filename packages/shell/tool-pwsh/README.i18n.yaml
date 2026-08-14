@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/shell/tool-pwsh/README.md
 README.md: 3cef6e2f7906ca84f21a3953f2e4ed3df72d7ab0
 README.zh.md: b680b5375c59abd4efbd0ff1dda46aeef652f7a3
-README.zh-tw.md: f0c1680a4c73801bbe75f2d9baed3bf9d5afd4e6
+README.zh-tw.md: 9359a86e392dc66534a229618444547b86eb2517

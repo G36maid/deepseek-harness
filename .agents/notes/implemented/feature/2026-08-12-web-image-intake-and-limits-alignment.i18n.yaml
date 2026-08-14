@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-12-web-image-intake-and-limits-alignment.md
-2026-08-12-web-image-intake-and-limits-alignment.md: b1110d1314107788496af51d0f14f8885908646f
-2026-08-12-web-image-intake-and-limits-alignment.zh.md: 58bb96a8b20aa294128c8be2d84c2ff1df65b872
-2026-08-12-web-image-intake-and-limits-alignment.zh-tw.md: 025ec2fa3bdd5d9490859f7ba89b38abe41fabbd

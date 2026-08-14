@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/test-support/llm-mock-server/README.md
 README.md: fbf85ee0d5294f7e303b9255c5723d52892279ab
 README.zh.md: 783380e7e893bfbe85720b179a3126fd84eabb30
-README.zh-tw.md: bbdebb145da4a87d8e01a959a60874572492b029
+README.zh-tw.md: c8a7f0310594fa1075710f6a03294c0a06f39b41

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/context/tmux-context/README.md
 README.md: 9c6961a289fbac1cce718372b052f348eadbc82f
 README.zh.md: 51eaeaf211c074252a213b3ff98aa6e3b82544f9
-README.zh-tw.md: b0d9c0c36e29ee690adde8722f9ee85371c85536
+README.zh-tw.md: 061dcf44e0af0946cb3eed37785ae01f99018db9

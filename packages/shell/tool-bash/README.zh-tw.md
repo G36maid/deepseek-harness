@@ -6,7 +6,7 @@
 
 需要載入執行器 Service Provider（例如 `@deepseek-ai/dsh-bash-local`）與 [`@deepseek-ai/dsh-shell-env`](../shell-env/README.md) 登錄檔；在每個注入服務就緒之前，外掛程式會保持等待狀態（`inject: ['tools', 'bash', 'systemPrompt', 'bashEnv']`）。工具約定是 bash 方言——請掛載能解析 bash 的執行器。
 
-包根只公開 Cordis 外掛程式約定（`name`、`inject`、`Config`、`apply`）；結果渲染和後臺行程適配仍保留在包內部。
+包根只公開 Cordis 外掛程式約定（`name`、`inject`、`Config`、`apply`）；結果算繪和後臺行程適配仍保留在包內部。
 
 外掛程式還會提供 `tool:bash` 提示詞段落（順序 105）：檢查每個結果中的 `[exit code: N]` 標記，發現失敗時先調查原因再繼續。
 
@@ -24,21 +24,21 @@
 | `sandbox_permissions` | string enum | 僅當已掛載的執行器啟用沙盒時才會公開（`ctx.shell.sandboxMode` 報告一個具有限制作用的預設值）：被拒命令所需的更寬模式，取自封閉的目標詞彙 `workspace-write`/`danger-full-access`（絕不能縮減為執行器預設值；有效模式按工作階段確定，執行時會基於它檢查是否嚴格拓寬，未拓寬的請求直接失敗，不會向任何人發起提示）。 |
 | `justification` | string | 必須與 `sandbox_permissions` 一同提供（缺少任一項都會產生驗證錯誤）：用一句話向使用者解釋此命令為何需要這項更寬權限。 |
 
-執行前，`command`、`workdir` 和 `timeoutMs` 會透過 `ctx.shell.resolve()` 依據執行器設定預設值完成解析，因此 Service Definition（`ShellExecSpec`）收到顯式的 `workdir`/`timeoutMs` 值。工具層會根據呼叫方 agent 的 `session.header.cwd` 應用工作目錄預設值，然後才呼叫 `resolve()`：由於 N 個工作階段共享一個執行器，逐工作階段 cwd 必須來自 `exec.agent`；只有無法取得工作階段 cwd 時，執行器纔回退到自身設定／`process.cwd()`。存在沙盒策略時，工具會複用已經規範化的 `workspaceRoot` 作為工作目錄基準，防止限制邏輯與行程啟動過程對同一個工作階段路徑拼寫產生不同解析結果。
+執行前，`command`、`workdir` 和 `timeoutMs` 會透過 `ctx.shell.resolve()` 依據執行器設定預設值完成解析，因此 Service Definition（`ShellExecSpec`）收到顯式的 `workdir`/`timeoutMs` 值。工具層會根據呼叫方 agent 的 `session.header.cwd` 應用工作目錄預設值，然後才呼叫 `resolve()`：由於 N 個工作階段共享一個執行器，逐工作階段 cwd 必須來自 `exec.agent`；只有無法取得工作階段 cwd 時，執行器纔回退到自身設定／`process.cwd()`。存在沙盒策略時，工具會複用已經規範化的 `workspaceRoot` 作為工作目錄基準，防止限制邏輯與行程啟動程序對同一個工作階段路徑拼寫產生不同解析結果。
 
 ### 託管 shell 環境
 
 每次模型發起的前臺或後臺 bash 呼叫都會透過共享的 [`dsh-shell-env`](../shell-env/README.md) 登錄檔收到新收集的一組可信 `DSH_*` 環境變數：`DSH_HOME`（Harness home 絕對路徑）、`DSH_SHELL=1`、agent 的 `DSH_SESSION_ID`，以及當活躍持久化後端能定位時的 `DSH_SESSION_JSONL`。登錄檔約定——貢獻方註冊、重複鍵／未聲明鍵的顯式報錯機制、內建項保留與貢獻方示例——載於該包的 README。快照透過專用的 `ShellExecRequest.dshEnv` 通道傳遞；本機執行器會先刪除繼承的所有 `DSH_*` 再合併，因此巢狀 harness 和並行的父／子 agent 不會洩漏過時身份，且絕不修改 `process.env`。工具說明只教授通用 `$DSH_*` 約定，不會點名持久化專用變數，也不會新增永久的系統提示詞段落。
 
-結果文字依次包含 stdout、選填的 `[stderr]` 段落和適用的沙盒拒絕、逾時、訊號、退出程式碼及截斷標記。逾時與最終退出狀態分別報告；非零退出仍是由模型解釋的結果，不會成為 `isError`。截斷結果會連結安全的完整 spill 文件，或報告文件不可用。只有 spawn 錯誤和中止等基礎設施故障才會產生 `isError`。
+結果文字依次包含 stdout、選填的 `[stderr]` 段落和適用的沙盒拒絕、逾時、訊號、結束程式碼及截斷標記。逾時與最終結束狀態分別報告；非零結束仍是由模型解釋的結果，不會成為 `isError`。截斷結果會連結安全的完整 spill 文件，或報告文件不可用。只有 spawn 錯誤和中止等基礎設施故障才會產生 `isError`。
 
 已完成前臺行程的規範成功值為 `{ kind: 'foreground', ...ShellRunResult }`，已發布任務則為 `{ kind: 'background', jobId }`。Native renderer 保留上述文字，包括精確的 `started background job <id>`；程序化消費端使用帶類型欄位，無需解析這些字串。執行器的流上限仍是 `ShellRunResult` 的採集限制，並攜帶其 spill 路徑。
 
-當 `run_in_background` 為 true 時，此外掛程式會在 spawn 前預檢 `ctx.jobs.start()`，把呼叫方 agent 註冊為持有者，並將返回的 `ShellProcess` 控制代碼適配為通用的取消／完成／增量輸出掛鉤。任務執行時期負責 job id、跨工作階段隔離、完成通知、等待和 dispose（資源釋放）清理；此外掛程式只把 bash 退出／沙盒事實對映為任務輸出和結果詳情。`enableRunInBackground: false` 會移除該參數，並在執行時拒絕強制後臺呼叫。
+當 `run_in_background` 為 true 時，此外掛程式會在 spawn 前預檢 `ctx.jobs.start()`，把呼叫方 agent 註冊為持有者，並將返回的 `ShellProcess` 控制代碼適配為通用的取消／完成／增量輸出掛鉤。任務執行時期負責 job id、跨工作階段隔離、完成通知、等待和 dispose（資源釋放）清理；此外掛程式只把 bash 結束／沙盒事實對映為任務輸出和結果詳情。`enableRunInBackground: false` 會移除該參數，並在執行時拒絕強制後臺呼叫。
 
 ## UI 展示
 
-工具持有自己的 `presentCall`/`presentResult` 渲染意圖。前臺呼叫是終端機卡片，包含命令、說明、cwd、輸出和解析後的退出狀態。由於卡片以獨立的 pill 展示退出狀態，解析所消耗的 `[exit code: N]` / `[killed by signal: …]` 標記會從輸出中移除；其他所有標記（截斷、逾時、沙盒）都保留在輸出中。後臺啟動只返回 job id，因此使用通用執行卡片；通用 `job_*` 工具持有各自的卡片。這些 presenter 是純函式，可安全重播。
+工具持有自己的 `presentCall`/`presentResult` 算繪意圖。前臺呼叫是終端機卡片，包含命令、說明、cwd、輸出和解析後的結束狀態。由於卡片以獨立的 pill 展示結束狀態，解析所消耗的 `[exit code: N]` / `[killed by signal: …]` 標記會從輸出中移除；其他所有標記（截斷、逾時、沙盒）都保留在輸出中。後臺啟動只返回 job id，因此使用通用執行卡片；通用 `job_*` 工具持有各自的卡片。這些 presenter 是純函式，可安全重播。
 
 ## 工具僅使用具名參數建置請求
 
@@ -46,7 +46,7 @@
 
 ## 權限與升權
 
-除非啟用沙盒的執行器（[`dsh-bash-sandbox`](../bash-sandbox/)）限制命令，否則命令以執行器的完整權限執行。僅拒絕型沙盒會把拒絕作為結果事實報告，並在此渲染為拒絕標記；逐呼叫的允許／拒絕／詢問策略由 `tools/pre-execute` waterfall（瀑布式事件）負責（參見 docs/architecture.md）。
+除非啟用沙盒的執行器（[`dsh-bash-sandbox`](../bash-sandbox/)）限制命令，否則命令以執行器的完整權限執行。僅拒絕型沙盒會把拒絕作為結果事實報告，並在此算繪為拒絕標記；逐呼叫的允許／拒絕／詢問策略由 `tools/pre-execute` waterfall（瀑布式事件）負責（參見 docs/architecture.md）。
 
 需要升權的 bash 呼叫會在執行前解析 `ctx.approval`。`allowed-once` 只對該次呼叫應用請求模式；審批被拒、取消、不可用或缺少審批上下文時，命令完全不會執行，並返回不同的錯誤。發生真實拒絕後，模型可以在同一輪次中使用滿足需要的最窄模式和理由重試同一命令一次；審批提示本身就是徵求同意的步驟。升權絕不能預先推測，停用或拒絕審批即為最終結果。其理由見 [沙盒 Agent Note](../../../.agents/notes/implemented/feature/2026-07-06-sandbox.md)。
 
@@ -80,15 +80,15 @@ Check the [exit code: N] marker on every bash result; investigate failures befor
 
 #### 模型看到的內容
 
-模型會看到生成的 [`bash` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-bash)。僅當此生產方啟用 `run_in_background` 時，該欄位才會出現；僅當已掛載執行器聲明支持沙盒時，`sandbox_permissions` 和 `justification` 才會出現。Agent 作用域的工具限制可以移除該 agent 的定義。
+模型會看到生成的 [`bash` schema](../../../docs/tool-catalog.md#deepseek-aidsh-tool-bash)。僅當此生產方啟用 `run_in_background` 時，該欄位才會出現；僅當已掛載執行器聲明支援沙盒時，`sandbox_permissions` 和 `justification` 才會出現。Agent 作用域的工具限制可以移除該 agent 的定義。
 
 #### Token 影響
 
-工具可見的每個請求都會產生固定 schema 開銷；沙盒支持會增加升權欄位及其條件說明段落。
+工具可見的每個請求都會產生固定 schema 開銷；沙盒支援會增加升權欄位及其條件說明段落。
 
 #### KV Cache 影響
 
-只要可見性、後臺支持和執行器沙盒能力保持不變，前綴即可穩定複用。限制、設定或執行器發生變化時，可能從首個變化的工具定義開始使複用失效。
+只要可見性、後臺支援和執行器沙盒能力保持不變，前綴即可穩定複用。限制、設定或執行器發生變化時，可能從首個變化的工具定義開始使複用失效。
 
 ### 前臺結果
 
@@ -134,6 +134,6 @@ renderer 先輸出依資料而定的 stdout 尾部，再輸出選填的 `[stderr
 
 ## 已知限制與延期工作
 
-- **重播退出狀態 pill 從結果文字解析**：如果輸出最後一行恰好精確為 `[exit code: N]` / `[killed by signal: …]`，工作階段重播將顯示錯誤的 pill，並且該行會從卡片正文中丟失，因為解析會把它當作自己消耗的標記；這是僅影響展示的已知殘留問題。
+- **重播結束狀態 pill 從結果文字解析**：如果輸出最後一行恰好精確為 `[exit code: N]` / `[killed by signal: …]`，工作階段重播將顯示錯誤的 pill，並且該行會從卡片正文中丟失，因為解析會把它當作自己消耗的標記；這是僅影響展示的已知殘留問題。
 - **`bash` 工具不採用 `timeout-policy` 預算**：根據[工具呼叫 timeout-policy Agent Note](../../../.agents/notes/implemented/architecture/2026-07-07-tool-call-timeout-policy.md)，它保留由執行器持有的 `BASH_TIMEOUT` 路徑。
 - **後臺行程沒有執行器逾時**：工作不再需要時，呼叫方必須使用 `job_kill`，或相依性持有者／服務的 dispose。

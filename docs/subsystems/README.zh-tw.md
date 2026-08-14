@@ -24,9 +24,9 @@
 | [session-reference.md](session-reference.md) | 結構化跨工作階段引用：`SessionReferenceInput`/`Candidate`、prepared 訊息上下文、穩定錯誤分類 |
 | [system-prompt.md](system-prompt.md) | 逐次組裝的上下文、工具提供方結果、提示詞段落與協作式組裝 |
 | [tools.md](tools.md) | `ToolDefinition` 完整欄位、schema DSL、`ToolExecution`/`ToolResult`、工具展示 UI 類型，以及受保護的執行管線 |
-| [user-questions.md](user-questions.md) | UI 支持的人工問答 seam：`AskUserQuestionRequest`、answer/options 詞彙、提供方 API、錯誤分類體系 |
+| [user-questions.md](user-questions.md) | UI 支援的人工問答 seam：`AskUserQuestionRequest`、answer/options 詞彙、提供方 API、錯誤分類體系 |
 | [approval.md](approval.md) | 一次性使用者審批 seam：`ApprovalRequest`、`ApprovalOutcome`、逐工作階段策略、審計事件和 answerer 約定 |
-| [attachment.md](attachment.md) | 持久圖片標識與元資料、校驗輸入、經校驗讀取，以及 `AttachmentStore` seam |
+| [attachment.md](attachment.md) | 持久圖片標識與中繼資料、校驗輸入、經校驗讀取，以及 `AttachmentStore` seam |
 | [shell.md](shell.md) | bash 執行器 seam：`ShellExecRequest`/`Spec`、`ShellRunResult`、後臺 `ShellProcess` 控制代碼 |
 | [subprocess.md](subprocess.md) | 子行程 seam：完全顯式的 `SubprocessSpawnSpec`、基於偏移的輸出讀取器、不含分類的 `SubprocessOutcome`，以及受管 `DSH_*` 環境詞彙 |
 | [terminal.md](terminal.md) | 持久化終端機 ID、後端/工作階段約定、傳送就緒狀態、有界讀取與 owner 可見快照 |
@@ -45,7 +45,7 @@
 | [permission-presets.md](permission-presets.md) | 權限預設層：`PresetSpec`/`PresetOption`、派生的 `custom` 狀態、僅記日誌的 `permission/preset` 事件 |
 | [plan.md](plan.md) | 計畫模式：僅記日誌的 `plan/mode` 狀態、待定選擇的沖刷、`PlanModeConfig`、`exit_plan_mode` 審閱流程 |
 | [invariants.md](invariants.md) | 執行時期不變式登錄檔：選擇設定 `Config`、`InvariantInstaller`/`InvariantFailure`、空配套外掛程式約定 |
-| [web-server.md](web-server.md) | HTTP 載體：`WebRouteKind`/`WebRoute`、匹配順序、可認領的回退席位、index 渲染掛接點 |
+| [web-server.md](web-server.md) | HTTP 載體：`WebRouteKind`/`WebRoute`、匹配順序、可認領的回退席位、index 算繪掛接點 |
 | [storage.md](storage.md) | 儲存子系統：後端約定（`StorageBackend`）、`StorageForms`、`DomainSpec`/`Domain`、`domain/changed` |
 | [workspace.md](workspace.md) | 工作區登錄檔：`Workspace`/`WorkspaceId`、註冊與解析、與工作階段 `cwd` 的關係 |
 | [client-modules.md](client-modules.md) | Web 外掛程式表：`dsh.client` 聲明、`WebBootGraph` 線上組合、bundle 路由與 index 轉換 |

@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [简体中文](2026-06-11-architectural-conformance.zh.md) | [繁體中文](2026-06-11-architectural-conformance.zh-tw.md)
+
 
 ## Problem
 

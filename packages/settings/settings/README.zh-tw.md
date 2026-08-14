@@ -6,10 +6,10 @@
 
 ## 服務 API
 
-- `documentPath` — 提供方擁有使用者可編輯文件時，該欄位是文件的絕對路徑；非文件提供方保留 `undefined`。Host 設定配接器據此派生可用性，而瀏覽器協議只暴露一個布林能力，絕不暴露檔案系統目標。
+- `documentPath` — 提供方擁有使用者可編輯文件時，該欄位是文件的絕對路徑；非文件提供方保留 `undefined`。Host 設定配接器據此派生可用性，而瀏覽器協定只暴露一個布林能力，絕不暴露檔案系統目標。
 - `prepareDocument()` — 讓文件做好供原生編輯器打開的準備後返回該路徑。基類實作返回 `documentPath`；文件提供方可先建立缺失的文件。
 - `register(ns, schema, { base?, applies? })` — 返回 owner 的 `SettingsScope`（`get`/`watch`/`update`）。註冊是呼叫方外掛程式 fiber 上的 effect：dispose（資源釋放）該 fiber 即移除 namespace 及其觀察者。schema 拒絕的存量分節會使註冊本身失敗；重複 namespace 立即報錯。
-- `describe(options?)` — 每個 namespace 一條描述（`schema.toJSON()` 封裝、解析值、分離出的 `base`/`user` 層、`applies`），供設定介面使用；欄位出現在 `user` 中即標記其被使用者覆蓋。`describe({ redactSecrets: true })` 從每一層剝離 `role('secret')` 欄位，並附加 `secrets` slot 清單（`{ path, set }`）；每個協議介面都必須傳入它，純遍歷器 `redactSecrets(schema, value)` 已匯出，供其他 wire 使用。
+- `describe(options?)` — 每個 namespace 一條描述（`schema.toJSON()` 封裝、解析值、分離出的 `base`/`user` 層、`applies`），供設定介面使用；欄位出現在 `user` 中即標記其被使用者覆蓋。`describe({ redactSecrets: true })` 從每一層剝離 `role('secret')` 欄位，並附加 `secrets` slot 清單（`{ path, set }`）；每個協定介面都必須傳入它，純遍歷器 `redactSecrets(schema, value)` 已匯出，供其他 wire 使用。
 - `get(ns)` — 解析值；未註冊時為 `undefined`。
 - `update(ns, patch)` — 把普通對象 patch 深合併進使用者分節（絕不合併進 `base`），校驗解析候選值，經提供方持久化後提交。patch 只能包含與 JSON 相容的資料：Date、Map、BigInt、非有限數或迴圈引用會在任何內容持久化前被拒絕，並給出以 `$` 為根的路徑（YAML/JSON 儲存在重載時會靜默改變這類值）。校驗失敗在持久化前拒絕；只讀提供方（`writable: false`）拒絕一切寫入。同一 namespace 的寫入按呼叫順序序列。
 - `replace(ns, section)` — 整體替換使用者分節：這是刻意的重設（`replace({})` 重新繼承 `base` 與 schema 預設值）。
@@ -32,7 +32,7 @@
 
 ## 模型體驗
 
-間接生效：消費端外掛程式從各自 namespace 解析影響模型的值（例如默認模型路由）；效果由各消費端自己的介面文件說明。
+間接生效：消費端外掛程式從各自 namespace 解析影響模型的值（例如預設模型路由）；效果由各消費端自己的介面文件說明。
 
 #### KV Cache 影響
 
@@ -41,5 +41,5 @@
 ## 已知限制與暫緩事項
 
 - **單一使用者層** — 解析只認識 schema 預設值、一個組合 `base` 與一個使用者文件；它尚未記錄每個解析值由哪一層提供。
-- **`redactSecrets` 並非一條可被證明的協議邊界**：walker 只跟隨 `object`/`dict`/`array`，因此只能經由 union、intersection 或 transform 抵達的 `role('secret')` 會被**原樣**返回，且 `secrets` 清單為空；而 `schema.toJSON()` 會把 secret 欄位的 `.default(...)` 一並帶給每個用戶端。這兩種情況都不會被拒絕；機密無法經由被遍歷的容器抵達的 schema，絕不可註冊到暴露於協議的 namespace 上。真正的答案是一個 fail-closed 的 `describeForWire()`——它拒絕自己無法證明安全的 schema，並對序列化封裝與錯誤文字做淨化——此項暫緩。
+- **`redactSecrets` 並非一條可被證明的協定邊界**：walker 只跟隨 `object`/`dict`/`array`，因此只能經由 union、intersection 或 transform 抵達的 `role('secret')` 會被**原樣**返回，且 `secrets` 清單為空；而 `schema.toJSON()` 會把 secret 欄位的 `.default(...)` 一並帶給每個用戶端。這兩種情況都不會被拒絕；機密無法經由被遍歷的容器抵達的 schema，絕不可註冊到暴露於協定的 namespace 上。真正的答案是一個 fail-closed 的 `describeForWire()`——它拒絕自己無法證明安全的 schema，並對序列化封裝與錯誤文字做淨化——此項暫緩。
 - **跨行程並行由提供方定義** — seam 僅在行程內按 namespace 序列化寫入；跨行程並行按提供方行為收斂（本機文件提供方在寫鎖下讀-改-寫，因此 namespace 在並行寫入者下不會丟失，同 namespace 衝突按後寫勝出解決）。

@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-位於 `ctx.sessionQuery` 之上、經工作區授權的模型工具。該 opt-in 包只相依性統一介面，並註冊 `session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read`；已發布的宿主組合默認不掛載它。
+位於 `ctx.sessionQuery` 之上、經工作區授權的模型工具。該 opt-in 包只相依性統一介面，並註冊 `session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read`；已發布的宿主組合預設不掛載它。
 
 ## 設定
 
@@ -15,9 +15,9 @@
 
 `session_search` 始終省略呼叫方工作階段。請求的父 id 會被去重，並在 FTS 前根據呼叫方工作區權限檢查；只有已授權 id 會到達提供方，而缺失猜測和跨工作區猜測的行為完全相同，root 標記仍獨立使用 OR。當前工作階段中的 `session_event_search` 會在呼叫它的步驟之前立即停止，因此當前 assistant 輸出和已記錄工具呼叫無法匹配自身。直接目標在跟蹤、事件或標題讀取前完成授權。血緣輸出會用不含隱藏工作階段 id 的標記替換未授權祖先和後代邊界。
 
-每個可信 `ctx.sessionQuery` 呼叫都會經過一個模型邊界淨化器。首先檢查呼叫方取消，並精確保留。可取得的語料庫診斷資訊和提供方診斷資訊（包括可安全檢查的巢狀原因）會盡力記錄到內部日誌；不可列印的失敗使用固定日誌佔位符。診斷格式化和錯誤分類各自獨立受保護，因此不可列印的原因無法逃逸，也無法阻止已安全分類的外層錯誤；不安全的分類或日誌記錄則回退到固定 `SESSION_QUERY_TOOL_FAILED` 程式碼和訊息。本機參數驗證和授權錯誤保留精確的工具自有訊息。
+每個可信 `ctx.sessionQuery` 呼叫都會經過一個模型邊界淨化器。首先檢查呼叫方取消，並精確保留。可取得的語料庫診斷資訊和提供方診斷資訊（包括可安全檢查的巢狀原因）會盡力記錄到內部日誌；不可列印的失敗使用固定日誌預留位置。診斷格式化和錯誤分類各自獨立受保護，因此不可列印的原因無法逃逸，也無法阻止已安全分類的外層錯誤；不安全的分類或日誌記錄則回退到固定 `SESSION_QUERY_TOOL_FAILED` 程式碼和訊息。本機參數驗證和授權錯誤保留精確的工具自有訊息。
 
-該包刻意不執行位元組或字元截斷，也不匯入 spill 後端。需要限制內聯輸出的部署應掛載 `@deepseek-ai/dsh-spill-policy`，它可在執行後替換已渲染文字，同時保留完整結果。
+該包刻意不執行位元組或字元截斷，也不匯入 spill 後端。需要限制內聯輸出的部署應掛載 `@deepseek-ai/dsh-spill-policy`，它可在執行後替換已算繪文字，同時保留完整結果。
 
 ## 模型體驗
 

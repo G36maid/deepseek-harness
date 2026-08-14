@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-21-instruction-load-all-dedup.md
-2026-07-21-instruction-load-all-dedup.md: 42c88176eab915ef1c3794e986a230b8f038e317
-2026-07-21-instruction-load-all-dedup.zh.md: c0a5425237250944d752d03fa40351106ee7d8a0
-2026-07-21-instruction-load-all-dedup.zh-tw.md: a2f11f5b5e156ce5859c79a5c03a7c8d032fc7e2

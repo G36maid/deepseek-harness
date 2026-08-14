@@ -46,7 +46,7 @@ export function apply(ctx: Context) {
 }
 ```
 
-這裡的每個模式都來自前幾章：`inject: ['tools']`（[第 3 章](03-services.md)）會讓外掛程式等待工具登錄檔就緒；`ctx.tools.register(...)` 會把註冊 disposer 附著到外掛程式（[第 2 章](02-lifecycle-and-effects.md)），因此解除安裝時會註銷工具。`defineTool` 將 `parameters` 規約轉換為向模型展示的 JSON Schema，推導 `args` 的類型，並在 `execute` 執行前校驗模型提供的參數。工具返回由 `output.schema` 聲明的規範值；`output.render` 則作為 Native renderer（原生渲染器），另行生成可持久化的結果內容。
+這裡的每個模式都來自前幾章：`inject: ['tools']`（[第 3 章](03-services.md)）會讓外掛程式等待工具登錄檔就緒；`ctx.tools.register(...)` 會把註冊 disposer 附著到外掛程式（[第 2 章](02-lifecycle-and-effects.md)），因此解除安裝時會註銷工具。`defineTool` 將 `parameters` 規約轉換為向模型展示的 JSON Schema，推導 `args` 的類型，並在 `execute` 執行前校驗模型提供的參數。工具返回由 `output.schema` 聲明的規範值；`output.render` 則作為 Native renderer（原生算繪器），另行生成可持久化的結果內容。
 
 ## 觀察外掛程式
 
@@ -91,7 +91,7 @@ node --import tsx ../../vendor/cordis/bin.js
 tool replied: [{"type":"text","text":"Hello, Cordis!"}]
 ```
 
-logger 會先觸發：`tools/result` 在結果物化過程中寄出，發生在 `execute` 向呼叫方返回的 promise 兌現之前。兩個外掛程式都不知道另一個外掛程式存在，它們由登錄檔服務和事件連線。
+logger 會先觸發：`tools/result` 在結果物化程序中寄出，發生在 `execute` 向呼叫方返回的 promise 兌現之前。兩個外掛程式都不知道另一個外掛程式存在，它們由登錄檔服務和事件連線。
 
 ## 從這裡走向完整 agent（代理）
 

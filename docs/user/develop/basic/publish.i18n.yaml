@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/develop/basic/publish.md
 publish.md: 629b1c7103aa33ac4e21764ef5ef468f0dbcba2e
 publish.zh.md: a14005b06ee7ce0f42e8ecf7fb84d3f91b85fe25
-publish.zh-tw.md: d787ff1c667077f70f42a1e76cc41679b41104c3
+publish.zh-tw.md: 11b3aebe2be4746ad42057490e857bb066dbef68

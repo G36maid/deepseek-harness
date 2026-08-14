@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/session-query/tool-session-query/README.md
 README.md: 78a8f9dabf8fda06e661a9bb9797d68729f15a68
 README.zh.md: 4bc51cd7d2ecc6498ced29e81eb456da18932b3e
-README.zh-tw.md: 1918251203569326d675e2c5e35583931744e71e
+README.zh-tw.md: af7a50df3a6570be1d2b9b5c4762408b2f54207f

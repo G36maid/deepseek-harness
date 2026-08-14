@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/workspace/workspace/README.md
 README.md: e32d47b72c50bec1bba77acce6068e84de633a0c
 README.zh.md: e9fdcb6b24e689e28133cd544899191e5f0cc22a
-README.zh-tw.md: c47531fe38f91bfc51cad4cc71b619f74294b392
+README.zh-tw.md: 677f18de3bb3335eb5a1c2d9cd19fe22bd14b092

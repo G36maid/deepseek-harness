@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/session/session-persistence-sqlite/README.md
 README.md: 9b5b6e87bc83e424b7d49b0fb36c89c252fc95a6
 README.zh.md: 6b7bea40edf8740d68bfee4ffcfb37186b0cf837
-README.zh-tw.md: a97fdd734f1e13cd2035a46c30f5146e4498f3d9
+README.zh-tw.md: 82d6f2bf3268be7cf7335e001a765048d0543db5

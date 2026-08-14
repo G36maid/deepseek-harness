@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-08-client-tool-presentation-ownership.zh.md) | [繁體中文](2026-08-08-client-tool-presentation-ownership.zh-tw.md)
+
 
 ## Problem
 

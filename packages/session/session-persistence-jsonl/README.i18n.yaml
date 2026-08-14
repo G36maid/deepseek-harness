@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/session/session-persistence-jsonl/README.md
 README.md: f15898c46c1fe142ecdcbfdf162114cc470cbe7f
 README.zh.md: 1e0de9ed2f5d8d16ca8d8b2ca1708a748e7ae6fb
-README.zh-tw.md: 2b2ed83551a22548f2865d1813a16fb5b4249f7a
+README.zh-tw.md: 1ade5d630df17426942f7e1577c58e0cb1d134c7

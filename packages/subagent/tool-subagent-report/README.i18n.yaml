@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/subagent/tool-subagent-report/README.md
 README.md: a037696c3b5253622f87fb52aa07ff48efb2df8d
 README.zh.md: 3fedebff3de1f5ab218c396ae289656603647e4b
-README.zh-tw.md: b210a742f19ee42041c649e00aea92abd1c4b276
+README.zh-tw.md: d7f4d6c83533af4d4a20d5fd4c515ed49f1ef170

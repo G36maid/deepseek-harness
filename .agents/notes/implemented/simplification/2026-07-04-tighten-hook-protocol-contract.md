@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-04-tighten-hook-protocol-contract.zh.md) | [繁體中文](2026-07-04-tighten-hook-protocol-contract.zh-tw.md)
+
 
 ## Problem
 

@@ -8,7 +8,7 @@ Web 外掛程式表：[dsh-client-modules](../../packages/client/modules) 中 cl
 
 ## wire
 
-圖是 Node 半與瀏覽器半之間協議層的唯一真源：宿主從掃描到的包組合出 `WebBootEntry` 行，把圖作為 `<head>` 中的第一個指令碼注入（`window.__DSH_BOOT__`，其中 `<` 已轉義，外掛程式可控的字串因此無法逃出 script 元素），殼則在啟動任何東西之前先解析它。沒有有效 manifest 的頁面無法啟動——瀏覽器側的解析器在圖缺失或畸形時大聲拋錯。
+圖是 Node 半與瀏覽器半之間協定層的唯一真源：宿主從掃描到的包組合出 `WebBootEntry` 行，把圖作為 `<head>` 中的第一個指令碼注入（`window.__DSH_BOOT__`，其中 `<` 已轉義，外掛程式可控的字串因此無法逃出 script 元素），殼則在啟動任何東西之前先解析它。沒有有效 manifest 的頁面無法啟動——瀏覽器側的解析器在圖缺失或畸形時大聲拋錯。
 
 ```ts type-equiv
 /**
@@ -50,11 +50,11 @@ interface WebBootGraph {
 
 掃描是單包增量的；不存在全量重掃程式碼路徑。fiber 構造或 dispose（資源釋放）時的每次 cordis `internal/plugin` 發射都把該 fiber 的 entry 名標髒，一次微任務 flush 把每個髒名與即時 loader entry 對帳。啟用趟以全部當前 entry 灌入同一個髒集合併同步 flush，因此初掃與穩態共享一條實作——但失敗姿態相反。啟用時，已載入 entry 中的畸形聲明或缺失 bundle 會聚合為一個大聲的 `AggregateError`，列出每個損壞的包：該 fiber 進入 FAILED，由啟動的大聲失敗 sweep 上報。穩態下，損壞的包只記錄一條警告，且不得殃及其他包。
 
-包元資料——包括「非 client 包」這一否定結論——按名快取且永不過期：外掛程式集合的變更在重新啟動後生效。fiber 重新啟動原樣複用其行與 rev；bundle 內容變更只經 `rebuilt()` 到達圖。
+包中繼資料——包括「非 client 包」這一否定結論——按名快取且永不過期：外掛程式集合的變更在重新啟動後生效。fiber 重新啟動原樣複用其行與 rev；bundle 內容變更只經 `rebuilt()` 到達圖。
 
 ## bundle 路由與 index 轉換
 
-`GET`/`HEAD /plugins/<id>/client.js` 以 `no-cache` 從磁碟提供已註冊的 bundle（錨定一致性的是 rev 查詢參數，而非 HTTP 快取）；其他方法返回 405。未知 id——或已註冊、但 bundle 因尚未建置而不可讀的行——回應一個大聲的 404，而不是讓載體的 SPA 回退把 HTML 當作 JavaScript 寄出。index 轉換在每次 index 渲染時注入當前圖，因此重新整理頁面總是針對即時組合啟動。
+`GET`/`HEAD /plugins/<id>/client.js` 以 `no-cache` 從磁碟提供已註冊的 bundle（錨定一致性的是 rev 查詢參數，而非 HTTP 快取）；其他方法返回 405。未知 id——或已註冊、但 bundle 因尚未建置而不可讀的行——回應一個大聲的 404，而不是讓載體的 SPA 回退把 HTML 當作 JavaScript 寄出。index 轉換在每次 index 算繪時注入當前圖，因此重新整理頁面總是針對即時組合啟動。
 
 ## 服務
 

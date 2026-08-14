@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-11-python-publication-workflow.zh.md) | [繁體中文](2026-08-11-python-publication-workflow.zh-tw.md)
+
 
 ## Problem
 

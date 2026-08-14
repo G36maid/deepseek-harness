@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-10-pre-plugin-theme-bootstrap.zh.md) | [繁體中文](2026-08-10-pre-plugin-theme-bootstrap.zh-tw.md)
+
 
 ## Problem
 

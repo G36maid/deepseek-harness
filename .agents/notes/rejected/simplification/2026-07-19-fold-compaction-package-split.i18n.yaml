@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/rejected/simplification/2026-07-19-fold-compaction-package-split.md
-2026-07-19-fold-compaction-package-split.md: 769899795d4a1503d48c4fa2b1ac99ae0c32746f
-2026-07-19-fold-compaction-package-split.zh.md: e0456cc56b1371d3cddc1d6e41e9f4fe4aa513a1
-2026-07-19-fold-compaction-package-split.zh-tw.md: 46fbc39278f6c601a8faeef57055c4605f77e9db

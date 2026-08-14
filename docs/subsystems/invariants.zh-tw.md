@@ -56,7 +56,7 @@ interface InvariantInstaller {
 
 ## 配套外掛程式約定
 
-每個工作區包都擁有一個 `./invariant` 配套外掛程式（[包約定](../../packages/AGENTS.md)）；發布與註冊是窮盡式的，但刻意不合成斷言。只有當包擁有某個可觀察事件或某種可變資料關係時，配套外掛程式才安裝檢查；否則它匯出一個空安裝器，其起始註釋以 `No runtime invariant:` 開頭，針對該包具體解釋為什麼沒有可檢查項。`pnpm run verify-package-invariants` 機械地拒絕「生成文件」標記、無解釋的空安裝器、遺漏或忽略報告器的非空安裝器、錯誤的註冊名稱，以及不完整的匯出、發布、相依性或打包接線（[機械規則 Agent Note](../../.agents/notes/implemented/architecture/2026-07-19-package-invariant-runtime-contracts.md)）。可執行配套外掛程式的目錄與標準組合方式見[包 README](../../packages/runtime-diagnostics/invariants/README.md)。
+每個工作區包都擁有一個 `./invariant` 配套外掛程式（[包約定](../../packages/AGENTS.md)）；發布與註冊是窮盡式的，但刻意不合成斷言。只有當包擁有某個可觀察事件或某種可變資料關係時，配套外掛程式才安裝檢查；否則它匯出一個空安裝器，其起始註解以 `No runtime invariant:` 開頭，針對該包具體解釋為什麼沒有可檢查項。`pnpm run verify-package-invariants` 機械地拒絕「生成文件」標記、無解釋的空安裝器、遺漏或忽略報告器的非空安裝器、錯誤的註冊名稱，以及不完整的匯出、發布、相依性或打包接線（[機械規則 Agent Note](../../.agents/notes/implemented/architecture/2026-07-19-package-invariant-runtime-contracts.md)）。可執行配套外掛程式的目錄與標準組合方式見[包 README](../../packages/runtime-diagnostics/invariants/README.md)。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-29-web-details-session-lifecycle.md
-2026-07-29-web-details-session-lifecycle.md: a8b0f08108d648c95aeff223012b58e4040d1d2e
-2026-07-29-web-details-session-lifecycle.zh.md: 993a689c33e71a958b8fa5c844c8248916662730
-2026-07-29-web-details-session-lifecycle.zh-tw.md: 597280a640baf19d80e73ee56fd73def61961d12

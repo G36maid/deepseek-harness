@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理）主幹、用戶端透過 [`@deepseek-ai/dsh-acp`](../../acp/acp/README.md) 建立的 agent、JSONL 持久化，以及語義檢查點機制，並透過一個 JSON-RPC stdio bin 對外提供服務。程序化用戶端建立新工作階段；此包不掛載人工互動 UI。
+ACP（Agent Client Protocol）自動化伺服器應用：預設 agent（代理）主幹、用戶端透過 [`@deepseek-ai/dsh-acp`](../../acp/acp/README.md) 建立的 agent、JSONL 持久化，以及語義檢查點機制，並透過一個 JSON-RPC stdio bin 對外提供服務。程序化用戶端建立新工作階段；此包不掛載人工互動 UI。
 
 ## 組合
 
@@ -23,7 +23,7 @@ ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理�
 | `provider` | 必填 | 每個由 ACP 建立的 agent 所用的提供方路由。 |
 | `model` | 必填 | 每個由 ACP 建立的 agent 所用的模型。 |
 | `maxParallelToolCalls` | agent loop（代理循環）預設值 | 正整數工具呼叫並行上限；`1` 表示序列。 |
-| `persona` | 無 | 供 `dsh-system-prompt` 使用的部署 persona 範本。 |
+| `persona` | 無 | 供 `dsh-system-prompt` 使用的部署 persona 樣板。 |
 | `toolOrder` | 字典序 | 供 `dsh-system-prompt` 使用的顯式面向模型工具順序。 |
 | `tools` | `{ mode: 'native' }` | Native、Code Mode 或組合式模型工具傳輸。 |
 | `dshHome` | `$DSH_HOME` 或 `~/.dsh` | bash 與本機 skill（技能）發現共享的 harness 主目錄。 |
@@ -42,11 +42,11 @@ ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理�
 
 ## Bin
 
-`dsh-acp-demo [--config path-to-cordis.yml]`（短形式 `-c`；預設為 `./cordis.yml`）會載入 gitignore 排除的 `.env`，重播模式除外；`DSH_SNAPSHOT=replay` 選擇同級 `cordis.snapshot.yml`；stdin EOF 會在退出前 dispose（資源釋放）上下文並刷新工作階段。Loader 已安裝的選填對等相依性（peer dependency）`node-addon-require-builtin` 使純 Node 下建置後的 bin 可以解析裸外掛程式說明符。診斷使用 stderr，因為 stdout 是 ACP wire。
+`dsh-acp-demo [--config path-to-cordis.yml]`（短形式 `-c`；預設為 `./cordis.yml`）會載入 gitignore 排除的 `.env`，重播模式除外；`DSH_SNAPSHOT=replay` 選擇同級 `cordis.snapshot.yml`；stdin EOF 會在結束前 dispose（資源釋放）上下文並刷新工作階段。Loader 已安裝的選填對等相依性（peer dependency）`node-addon-require-builtin` 使純 Node 下建置後的 bin 可以解析裸外掛程式說明符。診斷使用 stderr，因為 stdout 是 ACP wire。
 
 ## 模型體驗
 
-模型體驗由 `dsh-agent-spine-demo` 和葉節點的面向模型外掛程式間接提供。ACP 提示詞文字會成為普通的已記錄使用者訊息；協議元資料與權限選擇不會進入模型請求。
+模型體驗由 `dsh-agent-spine-demo` 和葉節點的面向模型外掛程式間接提供。ACP 提示詞文字會成為普通的已記錄使用者訊息；協定中繼資料與權限選擇不會進入模型請求。
 
 #### KV Cache 影響
 
@@ -55,5 +55,5 @@ ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理�
 ## 已知限制與暫緩事項
 
 - **JSONL 持久化固定不變**：使用其他後端需要另一種組合。
-- **同級外掛程式可能破壞 stdout**：應用無法阻止另一個 Cordis 設定項寫入非協議位元組。
-- **只支持新建自動化工作階段**：復原和人工互動屬於其他執行入口。
+- **同級外掛程式可能破壞 stdout**：應用無法阻止另一個 Cordis 設定項寫入非協定位元組。
+- **只支援新建自動化工作階段**：復原和人工互動屬於其他執行入口。

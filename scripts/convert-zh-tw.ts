@@ -105,7 +105,25 @@ export function convertChineseMarkdown(markdown: string, corrections?: ZhTwCorre
   // Reinsert the protected switcher lines in order.
   converted = converted.replace(/\u0000ZH_TW_SWITCHER\u0000/g, () => switcherLines.shift() ?? 'SWITCHER')
   const restored = restoreSpans(converted, spans)
-  return fixSwitcher(restored)
+  return fixSwitcher(applyTerminologyOverrides(restored))
+}
+
+/**
+ * Fix zhtw-js output that is Traditional Chinese but mainland-flavored.
+ * zhtw-js converts 进程→進程 (literal) where Taiwan uses 行程, keeps 用户 as
+ * 用戶 where Taiwan uses 使用者 (except the compound 用戶端 = client, which
+ * is the standard Taiwan rendering), and maps 噪声→噪聲 where Taiwan uses
+ * 噪音. Each replacement is unambiguous in the repo corpus: 程序 (program)
+ * is NOT remapped because it legitimately means 程式.
+ */
+function applyTerminologyOverrides(markdown: string): string {
+  return markdown
+    .split('用戶端').join('\u0000ZH_TW_CLIENT\u0000')
+    .split('用戶').join('使用者')
+    .split('\u0000ZH_TW_CLIENT\u0000').join('用戶端')
+    .split('噪聲').join('噪音')
+    .split('存儲').join('儲存')
+    .split('進程').join('行程')
 }
 
 /** Convert one zh-CN file into its `.zh-tw.md` sibling. */

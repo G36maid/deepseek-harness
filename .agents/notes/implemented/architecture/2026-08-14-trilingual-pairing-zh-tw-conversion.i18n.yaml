@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-14-trilingual-pairing-zh-tw-conversion.md
-2026-08-14-trilingual-pairing-zh-tw-conversion.md: 8b2b0055fbbcebd227b78e78cc7c393b4a4bd8b9
-2026-08-14-trilingual-pairing-zh-tw-conversion.zh.md: ed3accc1ad1e713711357dbe52a000986d810bcb
-2026-08-14-trilingual-pairing-zh-tw-conversion.zh-tw.md: d4c3eb1925375bbf8902457aa2efbcebd95c9fc7

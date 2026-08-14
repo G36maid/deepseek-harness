@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-30-settings-write-path-integrity.zh.md) | [繁體中文](2026-07-30-settings-write-path-integrity.zh-tw.md)
+
 
 > Scope: write-path data integrity in `dsh-settings-file` (operation chain, read-modify-write, cross-process writer lock, diff-shaped YAML edits) and observer lifecycle in `dsh-settings` (watch disposal, async listener containment, the JSON-shape write boundary). This note reverses one deferral recorded in the [user-settings seam note](2026-07-28-user-settings-seam.md): the cross-process lockfile now ships.
 

@@ -82,7 +82,7 @@ Chokidar 會監視現有根目錄中直屬 bundle 和平鋪條目的新增與移
 
 ## skill 身份
 
-skill 名稱為 kebab-case（`^[a-z0-9]+(?:-[a-z0-9]+)*$`）。本機提供方接受目錄包（`<name>/SKILL.md`）和扁平 Markdown 文件（`<name>.md`）。巢狀遞迴的 `**/SKILL.md` 發現不受支持。
+skill 名稱為 kebab-case（`^[a-z0-9]+(?:-[a-z0-9]+)*$`）。本機提供方接受目錄包（`<name>/SKILL.md`）和扁平 Markdown 文件（`<name>.md`）。巢狀遞迴的 `**/SKILL.md` 發現不受支援。
 
 ```ts type-equiv
 /** Origin bucket for a skill contribution. The value is prompt-visible metadata, not precedence by itself. */
@@ -91,7 +91,7 @@ type SkillSource = 'project-dsh' | 'project-agents' | 'runtime' | 'user-dsh' | '
 
 ## 摘要、候選項與完整定義
 
-`SkillSummary` 是登錄檔中與呼叫策略無關的摘要形狀。消費端自行選擇渲染哪些條目和欄位；模型工作階段目錄僅使用模型可呼叫 skill 的 `name` 和 `description`，從不使用正文或絕對檔案路徑。`SkillInvocationPolicy` 將兩個獨立呼叫控制規範化為正向布林值，且每個已解析的摘要、候選項和定義都攜帶該策略，而不會把任意 frontmatter 納入領域模型。
+`SkillSummary` 是登錄檔中與呼叫策略無關的摘要形狀。消費端自行選擇算繪哪些條目和欄位；模型工作階段目錄僅使用模型可呼叫 skill 的 `name` 和 `description`，從不使用正文或絕對檔案路徑。`SkillInvocationPolicy` 將兩個獨立呼叫控制規範化為正向布林值，且每個已解析的摘要、候選項和定義都攜帶該策略，而不會把任意 frontmatter 納入領域模型。
 
 ```ts type-equiv
 /** Invocation controls shared by skill discovery consumers. */
@@ -153,7 +153,7 @@ interface SkillCandidate extends SkillSummary {
 }
 ```
 
-`SkillDefinition` 是 `ctx.skills.get()` 返回的完整解析結果，供 `skill` 工具使用。`resourceBase` 告知工具如何為本機、URL 或提供方管理的 skill 渲染相對資源引導。
+`SkillDefinition` 是 `ctx.skills.get()` 返回的完整解析結果，供 `skill` 工具使用。`resourceBase` 告知工具如何為本機、URL 或提供方管理的 skill 算繪相對資源引導。
 
 ```ts type-equiv
 /** Optional provider-specific base used by loaded skill bodies to resolve relative resources. */
@@ -230,7 +230,7 @@ interface Config {
 
 `dsh-tool-skill` 在存活工作階段中第一個觀察到非空完整檢視表的 `agent/pre-step` 注入初始的持久 user-role `<system-reminder>`。目錄只包含已排序的 skill `name` 和規範化、經 XML 轉義的 `description`；不包含正文、路徑、來源、提供方或路由提示。發現透過 `SkillLookupOptions` 轉發該步驟的 abort signal。`catalogDescriptionMaxLength` 是消費端用於 description 上限的設定，預設值為 `500`，整數最小值為 `3`。
 
-在後續每個模型步驟之前，消費端都會應用精確的工具可見性，並對完整快照中 `<available_skills>` 標籤之間精確渲染的條目計算 digest。它以該外掛程式所發布、最新一條可識別且仍可見的目錄訊息中的相同條目作為比較基線。digest 發生變化時，會透過 `agent.inject()` 追加一條持久的完整目錄替換；刪除所有 skill 時會追加一條顯式的空替換。不完整快照會保留上一份可用模型檢視表。如果壓縮（compaction）隱藏了所有歷史目錄訊息，下一份完整快照會重新建立當前目錄；如果檢視表為空且從未發布目錄，則不傳送任何內容。這些目錄訊息屬於工作階段歷史，而非 World State。
+在後續每個模型步驟之前，消費端都會應用精確的工具可見性，並對完整快照中 `<available_skills>` 標籤之間精確算繪的條目計算 digest。它以該外掛程式所發布、最新一條可識別且仍可見的目錄訊息中的相同條目作為比較基線。digest 發生變化時，會透過 `agent.inject()` 追加一條持久的完整目錄替換；刪除所有 skill 時會追加一條顯式的空替換。不完整快照會保留上一份可用模型檢視表。如果壓縮（compaction）隱藏了所有歷史目錄訊息，下一份完整快照會重新建立當前目錄；如果檢視表為空且從未發布目錄，則不傳送任何內容。這些目錄訊息屬於工作階段歷史，而非 World State。
 
 面向模型的 `skill({ name })` 工具校驗 kebab-case 名稱，在與呼叫策略無關的目錄中尋找摘要，並在載入前透過 `isModelInvocable` 拒絕無權訪問的 skill；隨後它根據呼叫方 agent 的 cwd 重新讀取完整定義，並在返回內容前再次檢查策略。該工具將無法解析的 skill 報告為未知或已不可用，並返回包含 `<skill_content name="...">`、`<skill_resources>` 和 `<skill_instructions>` 的工具結果。`resourceBase` 僅按需解析顯式引用的指令碼、參考資料和資產；載入結果不枚舉 skill 目錄。因此，僅修改正文會改變後續工具呼叫，而不會生成目錄訊息或改寫先前工具結果。
 

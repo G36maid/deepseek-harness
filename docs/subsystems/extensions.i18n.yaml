@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/extensions.md
 extensions.md: de3fea43dd2fa8b42a6267ddb2b4723005672b93
 extensions.zh.md: 34ecac6ffafd310647607044711681343497a865
-extensions.zh-tw.md: 6d2228fd93cc63c1f7727e8334c6bae15527629f
+extensions.zh-tw.md: 31612ce037701899c372cb41ab3884afbc45e48c

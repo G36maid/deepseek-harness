@@ -2,7 +2,7 @@
 
 [English](python-sdk.md) | [简体中文](python-sdk.zh.md) | 繁體中文
 
-本教程介紹 Web UI 之外的程序化使用方式：安裝已發布的 Python SDK、執行倉庫內建的 agent（代理）組合，並在自己的程序中呼叫同一套 API。
+本教學介紹 Web UI 之外的程序化使用方式：安裝已發布的 Python SDK、執行倉庫內建的 agent（代理）組合，並在自己的程序中呼叫同一套 API。
 
 ## 前置要求
 
@@ -28,7 +28,7 @@ python -m pip install deepseek-harness-sdk
 
 ## 執行倉庫內建示例
 
-請在環境中設定憑據。如果模型不是由默認 DeepSeek 端點提供，而是透過 OpenAI 相容代理提供，還需要設定 `DEEPSEEK_BASE_URL`。
+請在環境中設定憑據。如果模型不是由預設 DeepSeek 端點提供，而是透過 OpenAI 相容代理提供，還需要設定 `DEEPSEEK_BASE_URL`。
 
 ```sh
 export DEEPSEEK_API_KEY=sk-your-key-here
@@ -78,7 +78,7 @@ with DeepSeekHarness(
 print(result.final_response)
 ```
 
-`DeepSeekHarness` 會延遲啟動內建執行時期，並持續複用，直至退出上下文管理器。複用同一個 harness 與 session id 會保留該工作階段擁有的 Bash 行程，包括其工作目錄、已匯出的變數與 shell 函式。獨立任務應使用新的 session id；只有下一次呼叫需要延續同一段持久化對話時，才複用原有 id。
+`DeepSeekHarness` 會延遲啟動內建執行時期，並持續複用，直至結束上下文管理器。複用同一個 harness 與 session id 會保留該工作階段擁有的 Bash 行程，包括其工作目錄、已匯出的變數與 shell 函式。獨立任務應使用新的 session id；只有下一次呼叫需要延續同一段持久化對話時，才複用原有 id。
 
 ## 瞭解示例組合
 
@@ -99,6 +99,6 @@ print(result.final_response)
 
 `cwd` 用於選擇 agent 可訪問的 workspace，`session_root` 用於保存工作階段日誌和狀態。獨立任務應使用新的 session id；只有下一次呼叫需要延續同一段對話和持久 shell 狀態時，才複用原有 id。
 
-該組合使用 `danger-full-access`。只能在可丟棄的 checkout 或容器內執行：Bash 與編輯器可以修改執行時期行程有權訪問的任何路徑。持久 PTY 後端需要 POSIX 終端機環境，因此該組合不支持 Windows agent。
+該組合使用 `danger-full-access`。只能在可丟棄的 checkout 或容器內執行：Bash 與編輯器可以修改執行時期行程有權訪問的任何路徑。持久 PTY 後端需要 POSIX 終端機環境，因此該組合不支援 Windows agent。
 
 準確的組合內容歸 [`jsonrpc-agent` 示例參考](../../../examples/jsonrpc-agent/README.md)所有。[Python SDK 參考](../../../python/sdk/README.md)介紹生命週期、結果、通知、執行時期選擇和設定；[Cordis primer](../../cordis-primer.md)介紹組合文法。

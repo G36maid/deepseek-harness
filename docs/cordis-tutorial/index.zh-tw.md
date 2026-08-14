@@ -1,10 +1,10 @@
-# Cordis 教程
+# Cordis 教學
 
 [English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
-Cordis 是 DeepSeek Harness 底層的外掛程式框架：它是一個小型執行時期，其中的每項能力，包括工具、LLM（大型語言模型）配接器、文件訪問乃至 agent loop（代理循環）本身，都是掛載到共享上下文中的外掛程式。本教程透過動手實踐講解 Cordis：每一章都是一個可以執行的示例，你將在本倉庫內的臨時目錄中逐步建置它，最後把一個外掛程式接入真實的 harness 服務。
+Cordis 是 DeepSeek Harness 底層的外掛程式框架：它是一個小型執行時期，其中的每項能力，包括工具、LLM（大型語言模型）配接器、文件訪問乃至 agent loop（代理循環）本身，都是掛載到共享上下文中的外掛程式。本教學透過動手實踐講解 Cordis：每一章都是一個可以執行的示例，你將在本倉庫內的臨時目錄中逐步建置它，最後把一個外掛程式接入真實的 harness 服務。
 
-本教程面向 agent 開發者。你不需要深入掌握 TypeScript；下文的 [TypeScript 說明](#typescript-notes)會解釋可能陌生的文法，並且每一章都會給出確切命令和預期輸出。
+本教學面向 agent 開發者。你不需要深入掌握 TypeScript；下文的 [TypeScript 說明](#typescript-notes)會解釋可能陌生的文法，並且每一章都會給出確切命令和預期輸出。
 
 如果你想閱讀精簡的概念參考，而不是逐步實踐，請參閱 [Cordis 入門](../cordis-primer.md)。詳盡的 API 參考見[子系統頁面](../subsystems/core.md)上生成的 `cordis-surface` 區塊，以及 [Cordis 核心 API](../cordis-api/context.md) 頁面。
 
@@ -14,7 +14,7 @@ Cordis 是 DeepSeek Harness 底層的外掛程式框架：它是一個小型執�
 
 ## 準備工作
 
-你需要克隆本倉庫並安裝相依性；[開發指南](../development.md#setup-tutorial)列出了前置條件。本教程不需要 API 金鑰；所有示例均可在無金鑰環境中執行。
+你需要克隆本倉庫並安裝相依性；[開發指南](../development.md#setup-tutorial)列出了前置條件。本教學不需要 API 金鑰；所有示例均可在無金鑰環境中執行。
 
 ```sh
 git clone https://github.com/deepseek-ai/deepseek-harness.git

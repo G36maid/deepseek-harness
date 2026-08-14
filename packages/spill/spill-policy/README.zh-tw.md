@@ -15,7 +15,7 @@
 ## 行為
 
 1. 允許工具執行（透過 `next()` 委託，因此可以限制任何下游掛鉤接受的結果）。
-2. 跳過巢狀執行（存在 `exec.parent`——其持久化副本由下方的 dispatch-log 分支設界）、已接受的值替換（登錄檔必須重新驗證並重新渲染它們）、`read`（避免 `read → spill → read again` 迴圈）以及任何非 `accept` 決策（`block` 的糾正回饋會原樣透過）。
+2. 跳過巢狀執行（存在 `exec.parent`——其持久化副本由下方的 dispatch-log 分支設界）、已接受的值替換（登錄檔必須重新驗證並重新算繪它們）、`read`（避免 `read → spill → read again` 迴圈）以及任何非 `accept` 決策（`block` 的糾正回饋會原樣透過）。
 3. 僅在已接受的內容為**純文字**（全部都是 `text` 塊）時才將其展平；包含任何非文字塊的結果都保持不變。
 4. 如果 UTF-8 大小為 `≤ maxInlineBytes`，則保持不變。
 5. 否則，保存完整文字，並將結果替換為預覽和以下通知。系統會調整大小，使整個替換內容（預覽、空行和通知）不超過 `maxInlineBytes`：先從預算中保留通知所需位元組，再縮小預覽以適配剩餘空間，因此面向模型的結果絕不會超過上限：
@@ -30,11 +30,11 @@
 
 **盡力而為**：沒有工作階段所有者、沒有 `ctx.spillStore` 後端，或 `saveText` 返回拒絕 ⇒ 策略記錄警告並返回原始結果。spill 失敗絕不會將成功呼叫變為 `isError`，也不會隱藏內聯結果。成功替換時只會更改 `content`；規範的程序化值保持不變。
 
-**dispatch-log 分支：**註冊在 `tools/code-dispatch-log` 上的第二個監聽器，把同一套上限、替換管線與盡力而為的回退應用到每個 `run_code` 子呼叫結果的持久化副本上（產物標籤為 `dispatch`，按子呼叫 id 歸檔）。程序的值不受影響，因為它早已完整跨過 worker 邊界；`read` 子呼叫同樣設界：日誌副本不是模型上下文，因此不會發生 read-again 迴圈，而 `read` 恰恰是最容易產生巨型日誌的工具（[原理](../../../.agents/notes/implemented/feature/2026-07-26-code-dispatch-log-spill.md)）。
+**dispatch-log 分支：**註冊在 `tools/code-dispatch-log` 上的第二個監聽器，把同一套上限、替換管線與盡力而為的回退應用到每個 `run_code` 子呼叫結果的持久化副本上（產物標籤為 `dispatch`，按子呼叫 id 封存）。程序的值不受影響，因為它早已完整跨過 worker 邊界；`read` 子呼叫同樣設界：日誌副本不是模型上下文，因此不會發生 read-again 迴圈，而 `read` 恰恰是最容易產生巨型日誌的工具（[原理](../../../.agents/notes/implemented/feature/2026-07-26-code-dispatch-log-spill.md)）。
 
 ## 範圍
 
-該策略只能看到最終格式化的呈現結果，看不到工具的內部資源或規範值。如果提供方已經截斷內容（例如 `web-fetch-http.maxBodyChars`），spill 產物保存的是工具返回的完整格式化結果，而非完整原始源。提供方／資源上限仍然是必需的，並且與該策略相互獨立。`glob`/`grep` 負責對項級呈現結果執行 spill，因為渲染前仍然存在完整的已取得值；bash 流負責在取得時 spill。通用策略預先註冊自己的 waterfall（瀑布式事件）監聽器，然後再委託，因此無論外掛程式載入順序如何，普通工具自身的非同步投影都會在通用位元組限制之前完成。詳見[工具輸出 spill Agent Note](../../../.agents/notes/implemented/architecture/2026-07-08-tool-output-spill-files.md)。
+該策略只能看到最終格式化的呈現結果，看不到工具的內部資源或規範值。如果提供方已經截斷內容（例如 `web-fetch-http.maxBodyChars`），spill 產物保存的是工具返回的完整格式化結果，而非完整原始源。提供方／資源上限仍然是必需的，並且與該策略相互獨立。`glob`/`grep` 負責對項級呈現結果執行 spill，因為算繪前仍然存在完整的已取得值；bash 流負責在取得時 spill。通用策略預先註冊自己的 waterfall（瀑布式事件）監聽器，然後再委託，因此無論外掛程式載入順序如何，普通工具自身的非同步投影都會在通用位元組限制之前完成。詳見[工具輸出 spill Agent Note](../../../.agents/notes/implemented/architecture/2026-07-08-tool-output-spill-files.md)。
 
 ## 模型體驗
 

@@ -2,7 +2,7 @@
 
 [English](adding-a-conversation-node.md) | [简体中文](adding-a-conversation-node.zh.md) | 繁體中文
 
-本教程為 Web Client Chat 檢視表新增一行由業務自行擁有的內容。完成後的外掛程式會把一個持久 Session 事件族關聯成一個 Context，增量構造業務 State，發布類型化 Step 資料，再渲染 keyed Chat Node；整個過程不掃描 Session 視窗或其他已渲染節點。本教程假設 Host 已經記錄這些事件，且該 Client 外掛程式已組裝進 Web bundle；Host 側外部 UI 和 Trajectory 等額外檢視表目標不在本文範圍內。
+本教學為 Web Client Chat 檢視表新增一行由業務自行擁有的內容。完成後的外掛程式會把一個持久 Session 事件族關聯成一個 Context，增量構造業務 State，發布類型化 Step 資料，再算繪 keyed Chat Node；整個程序不掃描 Session 視窗或其他已算繪節點。本教學假設 Host 已經記錄這些事件，且該 Client 外掛程式已組裝進 Web bundle；Host 側外部 UI 和 Trajectory 等額外檢視表目標不在本文範圍內。
 
 [Conversation Node 組裝決策](../../.agents/notes/implemented/architecture/2026-08-09-client-conversation-node-assembly.md)記錄完整的引擎模型和設計理由；本文只說明實作路徑。
 
@@ -20,7 +20,7 @@
 
 跨行程邊界使用生產方擁有的 branded id 類型。把 `SessionEventMap` 合併和 payload 類型放在生產方的純類型匯出中，再由 Client 包透過僅類型副作用匯入該匯出。每個 `(kind, id)` 最多隻能有一條 start 事件。單事件業務可以把事件自身的穩定身份（例如 `event.seq`）作為 Definition 內部 id。
 
-系統支持增量事件。如果生產方能以較低成本寄出 whole-value checkpoint，應優先採用，因為 start 位於已載入視窗之外時它仍可直接使用。每條 delta 都必須攜帶穩定 id，並且按照日誌 `seq` 升序重播時能夠確定性地產生 State；它不能相依性只存在於即時記憶體中的狀態。如果當前歷史視窗只有 update，Assembler 會保留一個 pending Context，並在更早分頁補齊 start 前不構造 State。如果產品必須在 start 尚未載入時渲染，terminal 或 checkpoint 事件就必須攜帶足夠的完整 fallback 狀態，讓 Definition 能直接構造結果；不要透過掃描無關事件復原它。
+系統支援增量事件。如果生產方能以較低成本寄出 whole-value checkpoint，應優先採用，因為 start 位於已載入視窗之外時它仍可直接使用。每條 delta 都必須攜帶穩定 id，並且按照日誌 `seq` 升序重播時能夠確定性地產生 State；它不能相依性只存在於即時記憶體中的狀態。如果當前歷史視窗只有 update，Assembler 會保留一個 pending Context，並在更早分頁補齊 start 前不構造 State。如果產品必須在 start 尚未載入時算繪，terminal 或 checkpoint 事件就必須攜帶足夠的完整 fallback 狀態，讓 Definition 能直接構造結果；不要透過掃描無關事件復原它。
 
 ## 2. 實作 Definition 與類型化 Chat payload
 
@@ -197,7 +197,7 @@ export function apply(ctx: ClientContext): void {
 
 `buildLocationData(context, scope)` 可以把 Definition 擁有的資料發布到引擎擁有的 Turn 或 Step 上。透過 declaration merging 為每個 key 指定精確 value 類型。同一 Location 內的另一個 Node 可以使用受限 slot hook（例如 `useTurnData(key)`）讀取該值，無須取得 Session，也無須掃描 `snapshot.chat.nodes`。
 
-`target` 與 `buildViewNode(context)` 必須同時聲明一項由 target 擁有的渲染貢獻。把 `context.key` 保留為 React 側身份，根據持久排序證據選擇 `anchorSeq`，並且只返回 renderer 可以直接使用的資料。某個 target Node 一旦發布，就要繼續返回同一個 key；需要暫時離開可見流時使用 `visibility: 'hidden'`，不要改為返回 `null` 撤回它。
+`target` 與 `buildViewNode(context)` 必須同時聲明一項由 target 擁有的算繪貢獻。把 `context.key` 保留為 React 側身份，根據持久排序證據選擇 `anchorSeq`，並且只返回 renderer 可以直接使用的資料。某個 target Node 一旦發布，就要繼續返回同一個 key；需要暫時離開可見流時使用 `visibility: 'hidden'`，不要改為返回 `null` 撤回它。
 
 ## 3. 只在 start 時查詢更早的業務 Context
 
@@ -215,11 +215,11 @@ Assembler 會記錄這項相依性。如果後續 older prepend 帶來了更近�
 | prepend 一頁更早歷史 | 只匹配新增的更早事件，按 `(kind, id)` 合併進 Context，保留現有 keyed node，並只重放受影響的 Context 與相依性 | 新發現的 start 會啟用已收集 update；Location 或前序相依性變化也可能重跑 Context |
 | append 一條即時事件 | 每個 Definition 各呼叫一次 `match`，按 key 尋找命中的 Context，只更新該 Context | 對 start 之後的匹配事件執行一次 `update` 並請求一次發布；不掃描已有 Context |
 
-註冊 `D` 個 Definition 時，一條新事件會進行 `D` 次僅當前事件匹配；命中後的 Context key 查詢是常數時間。Definition 程式碼必須維持這個性質：正常 append 熱路徑不得遍歷完整事件視窗、所有 Context、`context.matches` 或已渲染 Node 集合。累計事實放進 State，同 Turn/Step 共享資訊放進 Location data，有索引的前序相依性使用 `reader.previous()`。
+註冊 `D` 個 Definition 時，一條新事件會進行 `D` 次僅當前事件匹配；命中後的 Context key 查詢是常數時間。Definition 程式碼必須維持這個性質：正常 append 熱路徑不得遍歷完整事件視窗、所有 Context、`context.matches` 或已算繪 Node 集合。累計事實放進 State，同 Turn/Step 共享資訊放進 Location data，有索引的前序相依性使用 `reader.previous()`。
 
 `publication` 控制發生 State 變更後何時物化。結構或 terminal 變化使用 `immediate`，高頻可見 delta 使用 `animation-frame`，只為後續發布積累 State 時使用 `none`。引擎仍會按日誌順序應用每條 update；該選項只合併檢視表發布頻率。
 
-## 5. 驗證重播、分頁與渲染
+## 5. 驗證重播、分頁與算繪
 
 新增聚焦測試，證明以下結果：
 

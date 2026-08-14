@@ -104,7 +104,7 @@ interface ShellExecSpec {
 
 ## 前景執行：`ShellRunResult`
 
-一次已完成（或被終止）的前景執行的結果。正交的結果**獨立報告**：一個行程可以同時逾時並以退出碼 0 退出（因為它捕獲了訊號），因此 `timedOut`、`aborted`、`signal` 和 `exitCode` 各自獨立為一個欄位；呼叫方永遠不會把一次被提前中斷的執行誤讀為正常成功。
+一次已完成（或被終止）的前景執行的結果。正交的結果**獨立報告**：一個行程可以同時逾時並以結束碼 0 結束（因為它捕獲了訊號），因此 `timedOut`、`aborted`、`signal` 和 `exitCode` 各自獨立為一個欄位；呼叫方永遠不會把一次被提前中斷的執行誤讀為正常成功。
 
 ```ts type-equiv
 /** The outcome of one completed (or killed) foreground run. */
@@ -218,7 +218,7 @@ interface ShellProcessRead {
 
 ## 服務
 
-`ShellExecutor` 擁有 `resolve`、前臺 `run`、後臺行程 `start` 以及 `sandboxMode` 能力事實。`dsh-bash-local` 擁有命令預設值補全、逾時/中止分類、終端機環境以及後臺讀取合併；行程組、有界收集器、spill 文件、憑據清除與 dispose（資源釋放）後完全靜止歸[子行程服務](subprocess.md)所有。`dsh-tool-bash` 擁有面向模型的渲染，並將後臺控制代碼適配到[通用任務執行時期](jobs.md)。`dsh-shell` 擁有 shell 工具共享的退出狀態約定：匯出的 `parseExitStatus`/`ParsedExitStatus` 是 `dsh-tool-bash` 的 `renderResult` 與 `dsh-tool-pwsh` 的 `renderPwshResult` 所追加的 `[exit code: N]` / `[killed by signal: X]` 標記的逆解析，兩個工具的 `presentResult` 都用它把渲染文字拆分為 terminal 卡的輸出正文與退出狀態 pill。
+`ShellExecutor` 擁有 `resolve`、前臺 `run`、後臺行程 `start` 以及 `sandboxMode` 能力事實。`dsh-bash-local` 擁有命令預設值補全、逾時/中止分類、終端機環境以及後臺讀取合併；行程組、有界收集器、spill 文件、憑據清除與 dispose（資源釋放）後完全靜止歸[子行程服務](subprocess.md)所有。`dsh-tool-bash` 擁有面向模型的算繪，並將後臺控制代碼適配到[通用任務執行時期](jobs.md)。`dsh-shell` 擁有 shell 工具共享的結束狀態約定：匯出的 `parseExitStatus`/`ParsedExitStatus` 是 `dsh-tool-bash` 的 `renderResult` 與 `dsh-tool-pwsh` 的 `renderPwshResult` 所追加的 `[exit code: N]` / `[killed by signal: X]` 標記的逆解析，兩個工具的 `presentResult` 都用它把算繪文字拆分為 terminal 卡的輸出正文與結束狀態 pill。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

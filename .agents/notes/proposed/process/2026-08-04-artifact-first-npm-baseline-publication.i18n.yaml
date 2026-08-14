@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-08-04-artifact-first-npm-baseline-publication.md
-2026-08-04-artifact-first-npm-baseline-publication.md: 537e362c2b25eb51ccadea889411a915abf52c31
-2026-08-04-artifact-first-npm-baseline-publication.zh.md: 88f5f8a436da1d2b2d42d28866e68cd88cdef3ef
-2026-08-04-artifact-first-npm-baseline-publication.zh-tw.md: e0f86b67ab465ce0d18b3a7425ba3d60b88cbe2c

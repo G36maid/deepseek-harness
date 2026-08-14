@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-06-20-unify-agent-and-session-id.md
-2026-06-20-unify-agent-and-session-id.md: dbfc8cf807ed90460d3c863626635cd1fb87222f
-2026-06-20-unify-agent-and-session-id.zh.md: 55d71b53bb35259f70faba2310e0c79802567aaa
-2026-06-20-unify-agent-and-session-id.zh-tw.md: d5e6b759ec4e0efb0160b1c563502cc0e865ee0f

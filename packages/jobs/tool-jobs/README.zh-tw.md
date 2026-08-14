@@ -6,7 +6,7 @@
 
 ## 工具
 
-- `job_output(job_id, wait?, timeout_ms?)` 默認以非阻塞方式讀取。流任務只返回下一個增量；最終輸出任務在終止後返回結果。每個回應都以 `[status: ...]` 結尾。`wait: true` 最多等待到設定上限，逾時時仍讓執行中的任務保持存活。
+- `job_output(job_id, wait?, timeout_ms?)` 預設以非阻塞方式讀取。流任務只返回下一個增量；最終輸出任務在終止後返回結果。每個回應都以 `[status: ...]` 結尾。`wait: true` 最多等待到設定上限，逾時時仍讓執行中的任務保持存活。
 - `job_list()` 以 `<id> [<kind>] <status> — <label>` 返回呼用方可見的任務。
 - `job_kill(job_id, reason?)` 立即請求取消並轉發已記錄的原因。終止任務返回非消費式快照。
 
@@ -18,7 +18,7 @@
 
 ## 完成通知
 
-一項尚未報告的完成會把 `background job <id> (<kind>: <label>) finished [status: ...]. Read its output with job_output.` 交付給確切所有者。應用上限時，即使採用 PTY 支持的 64 位元組下限，穩定 id 前綴和收集命令的優先級也高於可變 label/detail，因此通知仍可操作。kill 或針對已終止任務的 read/wait 會把交付標為已報告並抑制重複通知；排空 owner 或服務的 teardown 取消同樣如此。
+一項尚未報告的完成會把 `background job <id> (<kind>: <label>) finished [status: ...]. Read its output with job_output.` 交付給確切所有者。應用上限時，即使採用 PTY 支援的 64 位元組下限，穩定 id 前綴和收集命令的優先級也高於可變 label/detail，因此通知仍可操作。kill 或針對已終止任務的 read/wait 會把交付標為已報告並抑制重複通知；排空 owner 或服務的 teardown 取消同樣如此。
 
 由哪條通道承載取決於所有者當時在做什麼。繁忙的所有者走注入：通知進入 next-step inbox，而該 inbox 尚有內容時 turn 無法結束，因此同時結帳的多個任務只花掉一步，而不是各佔一輪。空閒的所有者則被 follow-up 喚醒，因為無人領取的待發通知等於模型永遠不會知道的完成。`completionDelivery: quiet` 讓空閒所有者也留在注入通道上，確定性 transcript 需要的正是這一點。
 

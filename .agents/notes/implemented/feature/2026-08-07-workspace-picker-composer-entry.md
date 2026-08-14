@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-07-workspace-picker-composer-entry.zh.md) | [繁體中文](2026-08-07-workspace-picker-composer-entry.zh-tw.md)
+
 
 ## Problem
 

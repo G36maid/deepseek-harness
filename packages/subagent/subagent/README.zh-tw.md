@@ -12,7 +12,7 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 
 | 成員 | 含義 |
 |---|---|
-| `registerProvider(provider)` | 按名稱註冊一個可信的同進程實作。註冊受 effect 作用域約束；移除註冊會阻止新的啟動，但不會撤銷已返回給呼叫方的執行。重複名稱會明確報錯。 |
+| `registerProvider(provider)` | 按名稱註冊一個可信的同行程實作。註冊受 effect 作用域約束；移除註冊會阻止新的啟動，但不會撤銷已返回給呼叫方的執行。重複名稱會明確報錯。 |
 | `getProvider(name)` | 返回提供方；不存在時返回 `undefined`。 |
 | `list()` | 按插入順序返回提供方名稱。 |
 | `start(name, request)` | 校驗普通呼叫方請求，解析其已分離的 `one-shot` 描述符，然後等待提供方發布真正的一次性子 agent。兌現時返回由持有方擁有的 `SubagentRun`；如果呼叫被拒絕，提供方已經清理所有尚未發布的啟動資源。發布後的輪次故障或基礎設施故障則透過該 run 結帳。可繼續子 agent 絕不透過此操作進入。 |
@@ -20,20 +20,20 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 | `followup(parent, childId, content, { source, signal })` | 將來自確切線上直接父級的一條後續訊息作為子 agent 的下一個 FIFO 輪次投遞，術語與 `Agent.followup()` 一致，並返回被接受的 `MessageId`。駐留中的子 agent 由其 inbox 直接接受（喚醒處於 waiting 的 Activation）；不駐留的則從其持久化工作階段冷復原。要求 `ctx.agents`；冷復原還要求工作階段持久化。 |
 | `interrupt(targetSessionId, authority)` | 憑人類出示的持久化父級地址 `{ kind: 'user', parentSessionId }`，或確切線上的祖先 Agent `{ kind: 'ancestor', agent }` 進行授權，中斷一個線上可繼續子級的當前輪次。准入判定同步完成，但取消非同步生效：該操作寄出 `Agent.cancel(cause, { keepInbox: true })` 後立即返回，不等待目標觀察到訊號。尚未領取的待處理 inbox 工作、Activation 和已發布的後代均會保留；已經領取到被中斷輪次中的工作不會重新入隊。目標不存在時視為已接受的空操作；錯誤的父級地址，或過時、指向自身、並非祖先的呼叫方，會以 `UNAUTHORIZED` 被拒絕。 |
 | `reportFrom(child, content, { delivery, signal })` | 從確切線上可繼續 child 向其確切線上直接 parent 投遞一條選中訊息，並返回已接受的穩定 `MessageId`。靜默投遞會注入上下文；喚醒投遞會提交一個後續 parent 輪次。 |
-| `registerContinuableSetup(contribution)` | 把一項選填部署能力組合到每個可繼續 child 尚未發布的作用域中，並支持從駐留 child 立即撤銷。 |
-| `drainContinuableDescendants(parents)` | 在由 host 擁有的確切線上父級 Agent 之下關閉准入，只停止這些父級可見的可繼續後代；等待已在這些根節點下獲準的物化過程完成發布或回滾後，再按子級優先順序釋放所選的各棵樹。該截止狀態會持續到每個確切父級離開登錄檔；無關的父級樹仍線上，管理器全域性准入仍保持開放。 |
+| `registerContinuableSetup(contribution)` | 把一項選填部署能力組合到每個可繼續 child 尚未發布的作用域中，並支援從駐留 child 立即撤銷。 |
+| `drainContinuableDescendants(parents)` | 在由 host 擁有的確切線上父級 Agent 之下關閉准入，只停止這些父級可見的可繼續後代；等待已在這些根節點下獲準的物化程序完成發布或回滾後，再按子級優先順序釋放所選的各棵樹。該截止狀態會持續到每個確切父級離開登錄檔；無關的父級樹仍線上，管理器全域性准入仍保持開放。 |
 | `listChildren(parentSessionId, signal?)` | 按 `createdAt`、再按 id 的順序列出由工作階段支撐的直接 subagent，包括其 `one-shot`／`continuable` 模式、`running`／`inactive` 活動狀態、根據 origin 分類得出的一層 `hasChildren` 提示，以及每個子級的診斷資訊，且不會載入或復原它們。該操作直接讀取線上工作階段儲存和選填的工作階段持久化（沒有持久化時只枚舉線上子級），並要求已掛載 `sessionProjections` 登錄檔；不要求 `ctx.agents`、繼續執行管理器或任何查詢服務。 |
 | `listDescendants(rootSessionId, signal?)` | 從同一份線上優先語料按穩定 pre-order 展平根的完整工作階段樹，並為每個 subagent 條目附加持久 `parentId` 與相對根的 `depth`。普通工作階段與一次性 child 仍作為遍歷節點，因此其下的可繼續後代仍可發現。身份、diagnostic、相依性與取消約定均沿用 `listChildren()`。 |
 
-`SubagentStartRequest.label` 是由工作階段支撐的一次性 child 所使用的選填簡短持久化顯示標籤。面向模型的委派會提供其已有的 `description`；底層呼叫方無需憑空構造展示元資料。可繼續啟動始終攜帶自身的必填標籤。`signal` 是必填項，也是一次性 `start` 的規範取消通道。發布前中止會使 `start()` 在回滾後拒絕；發布後中止會取消已返回 run 的剩餘輪次工作，但不會隱藏其 id。請求還可以選擇模型、要求結構化輸出、限制委派深度、約束子 agent 工具或設定子 agent persona。對於可繼續啟動或後續操作，呼叫方訊號只負責 inbox 接受前的尋找、物化和准入；此後，Activation 由管理器獨立擁有，因此呼叫方取消既不會取消已接受的輪次，也不會 dispose（資源釋放）子 agent。
+`SubagentStartRequest.label` 是由工作階段支撐的一次性 child 所使用的選填簡短持久化顯示標籤。面向模型的委派會提供其已有的 `description`；底層呼叫方無需憑空構造展示中繼資料。可繼續啟動始終攜帶自身的必填標籤。`signal` 是必填項，也是一次性 `start` 的規範取消通道。發布前中止會使 `start()` 在回滾後拒絕；發布後中止會取消已返回 run 的剩餘輪次工作，但不會隱藏其 id。請求還可以選擇模型、要求結構化輸出、限制委派深度、約束子 agent 工具或設定子 agent persona。對於可繼續啟動或後續操作，呼叫方訊號只負責 inbox 接受前的尋找、物化和准入；此後，Activation 由管理器獨立擁有，因此呼叫方取消既不會取消已接受的輪次，也不會 dispose（資源釋放）子 agent。
 
 後續操作的權限來自子 agent 持久化 header 中記錄的確切線上直接父級。冷復原會在重建前檢查該權限，並在最終無 await 的 inbox 准入區間再次檢查，因此在物化期間被註銷或替換的 parent 無法授權投遞。後續操作上的 `source` 記錄誰提供了所投遞的訊息，不授予任何權限。
 
-同進程請求、描述符、結果和事件 payload 都是可信的類型值，並按不可變約定借用。服務不會克隆或凍結它們；序列化和不可信輸入校驗屬於真實的行程、worker、持久化和模型邊界。
+同行程請求、描述符、結果和事件 payload 都是可信的類型值，並按不可變約定借用。服務不會克隆或凍結它們；序列化和不可信輸入校驗屬於真實的行程、worker、持久化和模型邊界。
 
 ## 能力
 
-啟動時功能透過 `provider.capabilities` 聲明，因為服務必須在建立子 agent 前拒絕不受支持的一次性請求：
+啟動時功能透過 `provider.capabilities` 聲明，因為服務必須在建立子 agent 前拒絕不受支援的一次性請求：
 
 - `outputSchema`：強制執行結構化最終結果；
 - `depthLimit`：強制執行 `maxDepth`；
@@ -48,7 +48,7 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 
 ## 持久化描述符
 
-該 Service Definition 擁有版本化的 `subagent/descriptor` 工作階段事件詞彙（`src/descriptor.ts`）：`snapshotSubagentDescriptor()` 會在提供方工作之前校驗並分離記錄，`foldSubagentDescriptor()` 則會在從已載入子 agent 日誌中復原描述符之前，校驗當前版本的完整 payload。每次由本機工作階段支撐的啟動都會追加一個帶有提供方名稱與生命週期 `mode` 的描述符。`one-shot` 描述符可以攜帶呼叫方擁有的選填持久化顯示 `label`；`continuable` 描述符要求其持久化建立標籤，並另外記錄已解析的子 agent `agentOptions.provider`／`model`，以及用於從持久化儲存復原的選填 `persona`／`toolFilter`。這些是顯式欄位，絕不是可透過合併擴充的 `AgentOptions` 對象，因此無關的擴充值不會破壞繼續執行。描述符省略 `subagentDepth`（持久化 header 的 `delegationDepth` 是單調下界）和 `outputSchema`（單次 Activation 的結果約定）。該事件只進入日誌：不含 `surfaceOp`，不進入模型歷史，並由僅附加日誌跨壓縮（compaction）保留。格式錯誤的當前版本 payload 屬於損壞；本執行時期無法對不受支持的版本進行分類。
+該 Service Definition 擁有版本化的 `subagent/descriptor` 工作階段事件詞彙（`src/descriptor.ts`）：`snapshotSubagentDescriptor()` 會在提供方工作之前校驗並分離記錄，`foldSubagentDescriptor()` 則會在從已載入子 agent 日誌中復原描述符之前，校驗當前版本的完整 payload。每次由本機工作階段支撐的啟動都會追加一個帶有提供方名稱與生命週期 `mode` 的描述符。`one-shot` 描述符可以攜帶呼叫方擁有的選填持久化顯示 `label`；`continuable` 描述符要求其持久化建立標籤，並另外記錄已解析的子 agent `agentOptions.provider`／`model`，以及用於從持久化儲存復原的選填 `persona`／`toolFilter`。這些是顯式欄位，絕不是可透過合併擴充的 `AgentOptions` 對象，因此無關的擴充值不會破壞繼續執行。描述符省略 `subagentDepth`（持久化 header 的 `delegationDepth` 是單調下界）和 `outputSchema`（單次 Activation 的結果約定）。該事件只進入日誌：不含 `surfaceOp`，不進入模型歷史，並由僅附加日誌跨壓縮（compaction）保留。格式錯誤的當前版本 payload 屬於損壞；本執行時期無法對不受支援的版本進行分類。
 
 ## 委派深度
 
@@ -62,7 +62,7 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 
 ## 一次性所有權與生命週期
 
-`provider.start(request): Promise<SubagentRun>` 是所有權轉移邊界；委派工具也會在其由 Task 支撐的一次性後臺路徑中使用它。兌現前，提供方擁有設定過程，並且在任何失敗路徑上都必須取消、回滾並使尚未發布的資源完全靜止。兌現後，run 的所有權轉移給呼叫方；呼叫方必須在每條路徑上呼叫 `dispose()`。剩餘提示詞和輪次工作屬於 `SubagentRun.result`。
+`provider.start(request): Promise<SubagentRun>` 是所有權轉移邊界；委派工具也會在其由 Task 支撐的一次性後臺路徑中使用它。兌現前，提供方擁有設定程序，並且在任何失敗路徑上都必須取消、回滾並使尚未發布的資源完全靜止。兌現後，run 的所有權轉移給呼叫方；呼叫方必須在每條路徑上呼叫 `dispose()`。剩餘提示詞和輪次工作屬於 `SubagentRun.result`。
 
 `SubagentRun.result` 兌現為 `{ output, structured?, stopReason }`。子 agent 級失敗會以非 `completed` 原因兌現；只有 seam 無法表示的基礎設施故障纔可以拒絕。`dispose()` 是冪等的，會取消剩餘工作，並等待結果結帳以及子 agent 資源完全靜止。result 的拒絕只透過 `result` 本身報告；只有獨立的資源釋放失敗，才會使 `dispose()` 被拒絕。`output` 與 `subagent/end` 事件的 `lastAssistantMessage` 使用匯出的 `AssistantOutputFold`／`finalAssistantOutput` 輔助函式選取子 agent 最後一條非空 assistant 訊息；若沒有這類訊息，則選取其累積的 assistant 文字。子 agent 兩種輸出均未產生時，`output` 為 `[]`，該事件欄位預設（結果約定歸 [`SubagentResult.output`](../../../docs/subsystems/subagent.md#the-terminal-result-subagentresult) 所有）。
 
@@ -82,7 +82,7 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 
 有兩條順序規則讓這條投遞可靠而非僥倖，它們也正是這件事屬於管理器而非外部 `subagent/end` listener 的原因。第一，傳送發生在子級所有權釋放**之前**，此時父級仍然計入該子級，因此在結構上不可能被判定為已結帳。第二，如果父級本身也是駐留 Activation，該訊息會採用與 report 相同的喚醒准入記帳。這樣，從同步傳送訊息到負責准入該訊息的 microtask 執行之間的視窗，不會被誤判為完全靜止——`Agent.status` 會把上下文維護摺疊成 `idle`，而維護期間的喚醒傳送只會預置一次延後喚醒。缺少其中任一條規則，父級都可能在通知仍留在 inbox 時被 dispose，而 `cancel()` 會清空該 inbox，於是通知被靜默丟失。
 
-空閒父級會以一個普通的後續輪次收到該通知。繁忙父級則被 steer 到其最近的 step 邊界，因此同時結帳的多個子級只消耗一個 step，而不是各自一個輪次；採用 steer 而非 inject 還意味著：即便驅動在狀態讀取與傳送之間退出，該訊息仍會被認領。如果父級所在的譜系已經開始排空，該通知會透過 inject 投遞，且完全不會喚醒父級。對已經完全靜止的父級呼叫 `Agent.followup()` 會開啟新輪次，而 `cancel()` 不會預先阻止之後開啟的輪次；因此在拆卸期間喚醒父級，會讓宿主即將 dispose 的 Agent 多執行一次模型請求，而且樹的每一層各一次，因為每層自己的通知又會喚醒上一層。被 inject 的訊息會送達仍在學取自身 inbox 的父級，而無論如何日誌都會記錄這份記帳；但它不會比該父級自身的 dispose 活得更久：`AgentHandle.dispose()` 是一次 `keepInbox: false` 的 cancel，會持久地取消尚未被認領的通知。因此 resume 後的父級沒有待處理通知可讀：`list_agents` 只告訴它有哪些子級、各自是線上還是僅存於儲存；結局本身留在子級自己的 Session 裡，一次 `send_message` 會透過 resume 該子級把它取回。已離開登錄檔的父級不算錯誤：通知被丟棄，子級自身的 Session 仍是持久記錄。投遞絕不會阻塞或使拆卸失敗——傳送被拒只會記錄日誌，因為為了重試一條通知而保留子級，會把它的整條祖先鏈永久釘在 `waiting` 上。
+空閒父級會以一個普通的後續輪次收到該通知。繁忙父級則被 steer 到其最近的 step 邊界，因此同時結帳的多個子級只消耗一個 step，而不是各自一個輪次；採用 steer 而非 inject 還意味著：即便驅動在狀態讀取與傳送之間結束，該訊息仍會被認領。如果父級所在的譜系已經開始排空，該通知會透過 inject 投遞，且完全不會喚醒父級。對已經完全靜止的父級呼叫 `Agent.followup()` 會開啟新輪次，而 `cancel()` 不會預先阻止之後開啟的輪次；因此在拆卸期間喚醒父級，會讓宿主即將 dispose 的 Agent 多執行一次模型請求，而且樹的每一層各一次，因為每層自己的通知又會喚醒上一層。被 inject 的訊息會送達仍在學取自身 inbox 的父級，而無論如何日誌都會記錄這份記帳；但它不會比該父級自身的 dispose 活得更久：`AgentHandle.dispose()` 是一次 `keepInbox: false` 的 cancel，會持久地取消尚未被認領的通知。因此 resume 後的父級沒有待處理通知可讀：`list_agents` 只告訴它有哪些子級、各自是線上還是僅存於儲存；結局本身留在子級自己的 Session 裡，一次 `send_message` 會透過 resume 該子級把它取回。已離開登錄檔的父級不算錯誤：通知被丟棄，子級自身的 Session 仍是持久記錄。投遞絕不會阻塞或使拆卸失敗——傳送被拒只會記錄日誌，因為為了重試一條通知而保留子級，會把它的整條祖先鏈永久釘在 `waiting` 上。
 
 受繼續執行管理的父級 Activation 會在子 agent 能夠執行之前，把每個子 agent 的工作階段 id 記錄到 `ownedChildren` 集合中，並且只有在每個所擁有的子 agent Activation 完成 `AgentHandle` dispose 之後才會 dispose（子先於父）。拆卸會先自頂向下傳播 Agent 取消，再等待緩慢的後代，而 handle 釋放仍保持 child-first。頂層及其他非繼續執行的 Agent 沒有 Activation，處於該等待圖之外。最終結帳會在 dispose handle 前等待 best-effort 的 `ctx.sessions.flush(child.session)`。監聽器拒絕會被記錄，但不會使 Activation 失敗，因為監聽器參與本身不能標識持久化後端；因此復原時的持久化狀態仍可能缺失或過時。
 
@@ -96,13 +96,13 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 
 可繼續子級不會建立 `SubagentRun` 或 Task。繼續執行管理器為每個駐留子工作階段直接擁有一個僅存在於當前行程的 Activation 和一個留存的 `AgentHandle`，使用 Agent inbox 作為唯一 FIFO，並從持久化描述符冷復原。父到子投遞由確切線上的直接父級身份授權。上報則由確切線上的子級身份授權；管理器根據持久化的 `parentSession` 推導接收方，`MessageSource` 記錄傳送方，但不授予權限。中斷權限被刻意設計得比投遞權限更寬：人類出示持久化直接 parent 地址，因此即使 parent Agent 離線，線上 child 仍可被停止；Activation 物化時記錄的任何確切線上 ancestor 也可以停止其後代，因為停止一個輪次是冪等的，且不投遞任何內容。
 
-當 `ctx.sessionProjections` 可用時，服務會註冊兩個投影單元。`subagentTiming` 會在每個描述符處重設，使 fork 種子中的祖先工作不會計入 child 總量，隨後累加 `turn/start` → `turn/end` 活躍時間，並為未結束的輪次保留同一切面的 `active.since` 和 `active.through` 邊界；在該輪次保持未結束期間，`active.through` 會跟隨最近摺疊的事件，從而為 inactive 消費端提供保守的崩潰上界，又不會混入更新的工作階段元資料。`subagent` 以同樣的 last-wins 重設紀律從 `subagent/descriptor` 事件摺疊持久化身份——模式與建立標籤——因此 fork 種子中的祖先描述符只在 child 自身的描述符覆蓋之前有效；畸形或版本無法識別的載荷摺疊為可序列化的 `null` 哨兵——與沒有描述符的日誌不可區分，且能完好透過每個 JSON 推送幀，讓消費端以之替換掉手中的過時身份而非繼續保留該身份——絕不拋錯。
+當 `ctx.sessionProjections` 可用時，服務會註冊兩個投影單元。`subagentTiming` 會在每個描述符處重設，使 fork 種子中的祖先工作不會計入 child 總量，隨後累加 `turn/start` → `turn/end` 活躍時間，並為未結束的輪次保留同一切面的 `active.since` 和 `active.through` 邊界；在該輪次保持未結束期間，`active.through` 會跟隨最近摺疊的事件，從而為 inactive 消費端提供保守的崩潰上界，又不會混入更新的工作階段中繼資料。`subagent` 以同樣的 last-wins 重設紀律從 `subagent/descriptor` 事件摺疊持久化身份——模式與建立標籤——因此 fork 種子中的祖先描述符只在 child 自身的描述符覆蓋之前有效；畸形或版本無法識別的載荷摺疊為可序列化的 `null` 哨兵——與沒有描述符的日誌不可區分，且能完好透過每個 JSON 推送幀，讓消費端以之替換掉手中的過時身份而非繼續保留該身份——絕不拋錯。
 
 `registerContinuableSetup()` 允許選填包新增子級作用域能力，而無需讓繼續執行管理器知道這些能力的名稱。貢獻會在 Activation 發布前同步安裝，在設定失敗時一並回滾，並隨子級作用域釋放。新授權須等到下一個 Activation，移除貢獻則會立即撤銷每個駐留安裝項。
 
 ## 收集模型
 
-面向模型的工具默認同步收集：先等待子 agent 結果，再 dispose 執行，然後才返回。一次性後臺委派會在工具中註冊普通 Task，其通用狀態、收集和取消工具負責後續互動，並將模型提供的 `description` 持久化為選填顯示標籤。可繼續後臺委派會呼叫 `ctx.subagents.startContinuable()`，只返回持久化子 agent id；子 agent 自 inbox 接受起就擁有自己的輪次，因此沒有 Task、也沒有結果 promise——呼叫方透過 `send_message` 後續操作工具傳送後續工作，`interrupt()` 只停止當前輪次而不 dispose 子 agent，而持久化子 agent 工作階段仍是子 agent 詳細輸出的來源。只有 `ctx.agents` 可用時，繼續執行管理器才會存在，而工作階段持久化按每項繼續執行操作解析。與此獨立，`listChildren()` 枚舉線上工作階段儲存與選填工作階段持久化的線上優先合併——持久化缺席時僅枚舉線上 child，因為那時冷 child 本就無法復原——並由已註冊的 `subagent` 投影單元供給每個 child 的持久化模式與標籤：線上 child 取登錄檔的水位快照；冷 child 先取選填投影快取的持久化行，且僅當其 `seq` 門證明該值摺疊自 child 自身後綴（fork 種子之後——自有描述符一經追加即不可變）才直接採用，否則經一次有界並行的持久化 inspect 再經登錄檔摺疊，且 inspect 結果必須仍指向枚舉時的生命週期（同 id 被重新發布的工作階段降級為 `corrupt` diagnostic）。快取讀取拋出例外時，不會據此作出分類判斷，因為快取只是派生資料；靜默落到該權威重摺。分類結果完全以投影摺疊為準；清單操作本身不解析描述符。取得身份值即產出 child 行；已定局而摺疊未產出身份的候選是 `corrupt` diagnostic，inspect 失敗是瞬時的 `unavailable`（下次清單重試），執行中而暫無身份值的候選整行省略（描述符尚未追加的建立視窗）。它不查詢繼續執行管理器、Agent 註冊資訊、Activation 或提供方。每個 child 行都會根據合併結果中攜帶持久化 `origin: 'subagent'` 的 header 派生讀取時的 `hasChildren` 提示；它不會讀取後代事件日誌，展開後仍以描述符支撐的 child 目錄為權威依據。UI 等服務消費端可以保留兩種模式，並為無標籤的一次性 child 選擇回退展示；面向模型的 `list_agents` 工具只投影 `continuable` 條目，透過線上 Agent 登錄檔細化狀態，並把僅存於儲存的狀態對映為可復原而非終態的 `ready`（`running`／`idle`／`ready`），並在 `descendants` scope 下遍歷 `listDescendants()`。清單操作會把呼叫方的取消訊號轉發到每次持久化讀取，在這些 await 前後檢查取消，並將每次偵測到的中止報告為 `SubagentError` 錯誤碼 `CANCELLED`；投影登錄檔未掛載則以 `SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE` 響亮失敗，工作階段儲存缺失則以 `SUBAGENT_CONTROL_SESSION_STORE_UNAVAILABLE` 響亮失敗。完整約定見[後臺 subagent 任務 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-background-subagent-tasks.md)、[可繼續後臺 subagent Agent Note](../../../.agents/notes/implemented/feature/2026-07-21-continuable-background-subagents.md)、[持久化目錄 Agent Note](../../../.agents/notes/implemented/feature/2026-07-22-durable-subagent-catalog-and-list-agents.md)、[服務合併 Agent Note](../../../.agents/notes/implemented/simplification/2026-07-26-merge-subagent-control-service.md)、[能力 seam Agent Note](../../../.agents/notes/implemented/feature/2026-06-21-subagent-capability-seam.md)和 `src/types.ts`。
+面向模型的工具預設同步收集：先等待子 agent 結果，再 dispose 執行，然後才返回。一次性後臺委派會在工具中註冊普通 Task，其通用狀態、收集和取消工具負責後續互動，並將模型提供的 `description` 持久化為選填顯示標籤。可繼續後臺委派會呼叫 `ctx.subagents.startContinuable()`，只返回持久化子 agent id；子 agent 自 inbox 接受起就擁有自己的輪次，因此沒有 Task、也沒有結果 promise——呼叫方透過 `send_message` 後續操作工具傳送後續工作，`interrupt()` 只停止當前輪次而不 dispose 子 agent，而持久化子 agent 工作階段仍是子 agent 詳細輸出的來源。只有 `ctx.agents` 可用時，繼續執行管理器才會存在，而工作階段持久化按每項繼續執行操作解析。與此獨立，`listChildren()` 枚舉線上工作階段儲存與選填工作階段持久化的線上優先合併——持久化缺席時僅枚舉線上 child，因為那時冷 child 本就無法復原——並由已註冊的 `subagent` 投影單元供給每個 child 的持久化模式與標籤：線上 child 取登錄檔的水位快照；冷 child 先取選填投影快取的持久化行，且僅當其 `seq` 門證明該值摺疊自 child 自身後綴（fork 種子之後——自有描述符一經追加即不可變）才直接採用，否則經一次有界並行的持久化 inspect 再經登錄檔摺疊，且 inspect 結果必須仍指向枚舉時的生命週期（同 id 被重新發布的工作階段降級為 `corrupt` diagnostic）。快取讀取拋出例外時，不會據此作出分類判斷，因為快取只是派生資料；靜默落到該權威重摺。分類結果完全以投影摺疊為準；清單操作本身不解析描述符。取得身份值即產出 child 行；已定局而摺疊未產出身份的候選是 `corrupt` diagnostic，inspect 失敗是瞬時的 `unavailable`（下次清單重試），執行中而暫無身份值的候選整行省略（描述符尚未追加的建立視窗）。它不查詢繼續執行管理器、Agent 註冊資訊、Activation 或提供方。每個 child 行都會根據合併結果中攜帶持久化 `origin: 'subagent'` 的 header 派生讀取時的 `hasChildren` 提示；它不會讀取後代事件日誌，展開後仍以描述符支撐的 child 目錄為權威依據。UI 等服務消費端可以保留兩種模式，並為無標籤的一次性 child 選擇回退展示；面向模型的 `list_agents` 工具只投影 `continuable` 條目，透過線上 Agent 登錄檔細化狀態，並把僅存於儲存的狀態對映為可復原而非終態的 `ready`（`running`／`idle`／`ready`），並在 `descendants` scope 下遍歷 `listDescendants()`。清單操作會把呼叫方的取消訊號轉發到每次持久化讀取，在這些 await 前後檢查取消，並將每次偵測到的中止報告為 `SubagentError` 錯誤碼 `CANCELLED`；投影登錄檔未掛載則以 `SUBAGENT_CONTROL_PROJECTIONS_UNAVAILABLE` 響亮失敗，工作階段儲存缺失則以 `SUBAGENT_CONTROL_SESSION_STORE_UNAVAILABLE` 響亮失敗。完整約定見[後臺 subagent 任務 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-background-subagent-tasks.md)、[可繼續後臺 subagent Agent Note](../../../.agents/notes/implemented/feature/2026-07-21-continuable-background-subagents.md)、[持久化目錄 Agent Note](../../../.agents/notes/implemented/feature/2026-07-22-durable-subagent-catalog-and-list-agents.md)、[服務合併 Agent Note](../../../.agents/notes/implemented/simplification/2026-07-26-merge-subagent-control-service.md)、[能力 seam Agent Note](../../../.agents/notes/implemented/feature/2026-06-21-subagent-capability-seam.md)和 `src/types.ts`。
 
 可繼續 Activation 會等待 best-effort 的最終工作階段 flush，但不會把 listener 參與視為持久性確認。一次性執行保留盡力執行的工作階段檢查點，因此已完成的一次性 child 只有在其工作階段確實進入持久化儲存時，纔可在 dispose 後繼續被發現；如果該檢查點缺失，服務不會根據 Task 歷史虛構目錄條目。
 
@@ -144,11 +144,11 @@ You are a delegated subagent: your permission scope was fixed when you were star
 
 ## 已知限制與暫緩事項
 
-- **ACP 子 agent 仍為一次性，且無法透過追蹤枚舉**：ACP 執行在 parent 工作階段語料中沒有本機 child 工作階段。ACP 的 `prepareContinuable` 需要在提供方專用描述符資料中持久化遠端工作階段 id，以及逐子 agent 的繼續執行能力聲明，因為 ACP 的 `loadSession` 支持按子 agent 協商，而不是透過方法是否存在來確定。遠端提供方還需要一份獨立的 Activation 所有權約定，具備等效的經認證控制和子先於父的完全靜止保證，才能支持可繼續子 agent。
-- **無 host-user 繼續執行**：`followup()` 要求確切線上直接父級。只有 `interrupt()` 接受持久化 parent 地址形式的使用者授權，因為停止一個輪次是冪等的且不投遞任何內容；未來 host 配接器需要具體的經認證互動，才能讓該 seam 獲得使用者投遞能力。
+- **ACP 子 agent 仍為一次性，且無法透過追蹤枚舉**：ACP 執行在 parent 工作階段語料中沒有本機 child 工作階段。ACP 的 `prepareContinuable` 需要在提供方專用描述符資料中持久化遠端工作階段 id，以及逐子 agent 的繼續執行能力聲明，因為 ACP 的 `loadSession` 支援按子 agent 協商，而不是透過方法是否存在來確定。遠端提供方還需要一份獨立的 Activation 所有權約定，具備等效的經驗證控制和子先於父的完全靜止保證，才能支援可繼續子 agent。
+- **無 host-user 繼續執行**：`followup()` 要求確切線上直接父級。只有 `interrupt()` 接受持久化 parent 地址形式的使用者授權，因為停止一個輪次是冪等的且不投遞任何內容；未來 host 配接器需要具體的經驗證互動，才能讓該 seam 獲得使用者投遞能力。
 - **不對當前輪次進行 steering**：可繼續訊息和喚醒式 report 會排入後續輪次，均不會重定向正在進行的輪次。
 - **取消收斂期間存在喚醒缺口**：中斷訊號寄出後、活動 driver 進入 idle 前被接受的喚醒型 follow-up 會保持排隊，直到另一條喚醒傳送到達。Issue #1838 負責 agent-loop 的喚醒鎖存；普通工作階段取消也受此影響。
-- **駐留僅限行程內**：Activation inbox 與所有權圖不會在兩個 harness 行程之間協調；對單個持久化儲存的並行訪問仍然需要持久化郵箱和跨行程租約協議。
+- **駐留僅限行程內**：Activation inbox 與所有權圖不會在兩個 harness 行程之間協調；對單個持久化儲存的並行訪問仍然需要持久化郵箱和跨行程租約協定。
 - **不重播已接受但未記錄的訊息**：只有寫入子 agent 工作階段日誌的訊息才能連同提供該訊息的來源一起重建。崩潰可能丟失從未寫入日誌、已被接受的初始提示詞或後續訊息；此後一條經授權的訊息可以冷復原該子 agent，但丟失的訊息不會自動重播。
 - **沒有持久化的上報 mailbox**：上報需要線上直接父級，提供的是接受標識，不保證恰好一次投遞，也不提供已讀回執。
 - **生命週期事件只供觀察**：影響執行的 `subagent/end` 延續或決策介面仍需等待具體消費端。

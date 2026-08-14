@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-04-remove-tui-package.zh.md) | [繁體中文](2026-08-04-remove-tui-package.zh-tw.md)
+
 
 ## Problem
 

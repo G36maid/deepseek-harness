@@ -27,9 +27,9 @@ effect(execute: () => SyncEffect, label?: string): Disposable<Promise<void>>
 effect(execute: () => Effect, label?: string): AsyncDisposable<Promise<void>>
 ```
 
-在此 fiber 上註冊一個支持清理的作用。
+在此 fiber 上註冊一個支援清理的作用。
 
-`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose（資源釋放），則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支持的結果。
+`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose（資源釋放），則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支援的結果。
 
 - `execute`：作用主體；可接受的結構見 `Effect`。
 - `label`：在 `getEffects()` 診斷資訊中顯示的作用標籤。
@@ -183,9 +183,9 @@ effect(execute: () => SyncEffect, label?: string): Disposable<Promise<void>>
 effect(execute: () => Effect, label?: string): AsyncDisposable<Promise<void>>
 ```
 
-在此 fiber 上註冊一個支持清理的作用。
+在此 fiber 上註冊一個支援清理的作用。
 
-`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose，則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支持的結果。
+`execute` 會立即執行；它產生的清理函式將被收集，並在呼叫返回的清理函式或解除安裝 fiber 時按相反順序執行，以先發生者為準。重複呼叫清理函式不會產生任何效果。如果 fiber 已經 dispose，則拋出 `CordisError('INACTIVE_EFFECT')`；如果結構無效，則拋出 `TypeError`，表示 `execute` 返回了不受支援的結果。
 
 - `execute`：作用主體；可接受的結構見 `Effect`。
 - `label`：在 `getEffects()` 診斷資訊中顯示的作用標籤。
@@ -205,7 +205,7 @@ effect(execute: () => Effect, label?: string): AsyncDisposable<Promise<void>>
 getEffects()
 ```
 
-返回當前已註冊作用的元資料。
+返回當前已註冊作用的中繼資料。
 
 **返回**：每個帶標籤的活動作用對應一棵 `EffectMeta` 樹。
 
@@ -271,7 +271,7 @@ update(config: any, noSave = false)
 - `config`：新的原始設定；在任何內容重新啟動前進行校驗。
 - `noSave`：提示持久化掛鉤不要寫回此變更。
 
-**返回**更新 waterfall 的結果；默認的重新啟動操作返回一個 promise。
+**返回**更新 waterfall 的結果；預設的重新啟動操作返回一個 promise。
 
 [原始碼](../../vendor/cordis/src/fiber.ts#L736)
 
@@ -300,7 +300,7 @@ type Effect<T = any> =
 
 作用返回的函式，用於在資源釋放期間釋放資源。
 
-擁有該函式的 fiber 解除安裝時，清理函式會按註冊的相反順序執行；清理函式可以是非同步的，此時解除安裝過程會等待其完成。
+擁有該函式的 fiber 解除安裝時，清理函式會按註冊的相反順序執行；清理函式可以是非同步的，此時解除安裝程序會等待其完成。
 
 ```ts cordis-catalog
 /**

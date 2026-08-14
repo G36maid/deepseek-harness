@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/storage.md
 storage.md: 5e19f639b14350960670e0e3cfdb454933363ab1
 storage.zh.md: 975e65f4d43771061ccfaba029283ba86380717d
-storage.zh-tw.md: f1efea38f9da6451b2a2553331c06baa00f37d58
+storage.zh-tw.md: 8257a40693c753e431435d58c2877b5349a0cebe

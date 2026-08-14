@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/core/system-prompt/README.md
 README.md: 6d061831539e067e5ea1d3d716e470e15a26f475
 README.zh.md: 0c829c107f76200bf8ec2624451f6f8100b2a2bf
-README.zh-tw.md: 25f48c052597331fa10bad85a5059eb8266afd74
+README.zh-tw.md: 77b34f6cd9a7cf36ce17473677b5bcda1b1f0c77

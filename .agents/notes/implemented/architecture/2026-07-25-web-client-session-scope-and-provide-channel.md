@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-25-web-client-session-scope-and-provide-channel.zh.md) | [繁體中文](2026-07-25-web-client-session-scope-and-provide-channel.zh-tw.md)
+
 
 > Scope: the client Agent scope (actx) and targeted events, the client/host materialization parity model, the blank-session bit and reuse (`connectWorkspace`), the per-session provisioning channel (`sessions.provide`), and the host wire smalls that carry these capabilities (the summary `blank` column, the `host/session-added` frame field, and the `host/commands-changed` frame). The input state machine and the slash pipeline live in the [input machine note](2026-07-25-web-input-machine-and-slash-pipeline.md); the command business surfaces live in the [command surfaces note](2026-07-25-web-command-surfaces-and-assembly.md).
 

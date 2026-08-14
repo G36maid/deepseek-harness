@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/extensions/cordis-host-runner/README.md
 README.md: 286422048c37a72c95720e0f51d8620fb08f76fe
 README.zh.md: 26127c0c8c456f57b36a1827b2b5b929c9bbe186
-README.zh-tw.md: 66bce221a91e388b9aca0f249a4594658395adac
+README.zh-tw.md: 9e069e34f578cebbf317f71ae8324f6125728649

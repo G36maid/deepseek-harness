@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/web-react/README.md
 README.md: 68c9caaff3a457b06b6dde4eb8760034becf3cd4
 README.zh.md: 9cdcd5de73644c651dd12f6282a5d2397fba68bb
-README.zh-tw.md: 331548cd168b6d9475680738aad7bef0c05bdf1b
+README.zh-tw.md: 87ddfe85d551ad0dfdd066d347b14034796083f5

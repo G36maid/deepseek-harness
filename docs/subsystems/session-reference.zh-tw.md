@@ -8,7 +8,7 @@
 
 ## 輸入與候選項
 
-`SessionReferenceInput` 是與宿主無關的選擇。id 具有權威性；label 是隨快照攜帶的顯示元資料。
+`SessionReferenceInput` 是與宿主無關的選擇。id 具有權威性；label 是隨快照攜帶的顯示中繼資料。
 
 ```ts type-equiv
 /** One source session selected by a host. */
@@ -38,7 +38,7 @@ interface SessionReferenceCandidate {
 
 ## 準備後的訊息
 
-準備過程保留可讀的當前訊息內容，並最多返回一個聚合上下文。
+準備程序保留可讀的當前訊息內容，並最多返回一個聚合上下文。
 
 ```ts type-equiv
 /** Direct message content and optional referenced-session context. */
@@ -52,7 +52,7 @@ interface PreparedReferencedMessage {
 
 ## 錯誤
 
-`SessionReferenceError.code` 區分無效設定或輸入、自引用、數量限制、源讀取失敗、預算失敗和取消。宿主協議會把這些 code 對映到各自的錯誤封裝，無需檢查提示詞位元組。
+`SessionReferenceError.code` 區分無效設定或輸入、自引用、數量限制、源讀取失敗、預算失敗和取消。宿主協定會把這些 code 對映到各自的錯誤封裝，無需檢查提示詞位元組。
 
 ```ts type-equiv
 /** Stable failure codes exposed to host adapters. */

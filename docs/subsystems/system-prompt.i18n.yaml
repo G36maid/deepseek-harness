@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/system-prompt.md
 system-prompt.md: d8c547e40bcf8a47f2920b3d5d5459fcd934c4ad
 system-prompt.zh.md: e485b80c7795398d54d6bdf5ceff59920ec7deb9
-system-prompt.zh-tw.md: b927785e9c82c50fec945886d51bd2804f709b4b
+system-prompt.zh-tw.md: 0f91ec733e9fcd10e653bb52ecdde141b113bddc

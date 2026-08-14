@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-06-list-agents-residency-vocabulary.md
-2026-08-06-list-agents-residency-vocabulary.md: c9ba69da1db4c41d0f0552fddfe140208b1bdefe
-2026-08-06-list-agents-residency-vocabulary.zh.md: 4a63e7c9ae2974803ff710515b933e9acaae7b84
-2026-08-06-list-agents-residency-vocabulary.zh-tw.md: 122ad69e05916c54a9b45dcd387cce52aa13adc7

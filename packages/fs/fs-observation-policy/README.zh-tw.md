@@ -22,7 +22,7 @@ await ctx.plugin(FsPolicy)
 
 | 層 | 包 | 角色 |
 |---|---|---|
-| 工具/執行器 | `@deepseek-ai/dsh-tool-fs` | 面向模型的 schema、讀取視窗和文字渲染；透過 `ctx.fs` 讀取/寫入/編輯，並分派 `fs/*` 事件 |
+| 工具/執行器 | `@deepseek-ai/dsh-tool-fs` | 面向模型的 schema、讀取視窗和文字算繪；透過 `ctx.fs` 讀取/寫入/編輯，並分派 `fs/*` 事件 |
 | 策略 | `@deepseek-ai/dsh-fs-observation-policy`（本包） | 透過 `fs/*` 事件閘門提供已觀察狀態、編輯前讀取和版本防護的寫入/編輯（無服務） |
 | 提供方約定 | `@deepseek-ai/dsh-fs` | `ctx.fs`：文字 I/O 與原子變更原語（選填版本防護）；擁有 `fs/*` 事件詞彙 |
 | 提供方 | `@deepseek-ai/dsh-fs-local` | `ctx.fs` 的本機實作 |
@@ -39,11 +39,11 @@ await ctx.plugin(FsPolicy)
 
 ## 已觀察狀態是先前觀察記錄；新鮮度由提供方 CAS 保證
 
-觀測狀態是一張以所有者為弱鍵、記錄各目標的對映表，具有三種邏輯狀態：未見、確認缺失、存在於某個版本。成功讀取文件或變更會記錄存在；`read` 的元資料未命中，或 `str_replace_editor` 的 `view`、`str_replace`、`insert` 命令發生元資料未命中時，都會在返回 `FS_NOT_FOUND` 前記錄缺失。外掛程式不執行檔案系統 I/O：它把該狀態轉換為提供方防護。存在狀態提供觀測到的版本；缺失狀態只允許 `createIfAbsent` 寫入繼續，edit 因沒有版本基準而返回 `FS_NOT_FOUND`。視窗讀取會觀察整個文件的版本，因此只有文件保持不變時才允許後續的定向編輯。外掛程式 dispose（資源釋放）時會丟棄狀態，並且不會跨工作階段持久化。
+觀測狀態是一張以所有者為弱鍵、記錄各目標的對映表，具有三種邏輯狀態：未見、確認缺失、存在於某個版本。成功讀取文件或變更會記錄存在；`read` 的中繼資料未命中，或 `str_replace_editor` 的 `view`、`str_replace`、`insert` 命令發生中繼資料未命中時，都會在返回 `FS_NOT_FOUND` 前記錄缺失。外掛程式不執行檔案系統 I/O：它把該狀態轉換為提供方防護。存在狀態提供觀測到的版本；缺失狀態只允許 `createIfAbsent` 寫入繼續，edit 因沒有版本基準而返回 `FS_NOT_FOUND`。視窗讀取會觀察整個文件的版本，因此只有文件保持不變時才允許後續的定向編輯。外掛程式 dispose（資源釋放）時會丟棄狀態，並且不會跨工作階段持久化。
 
 ## 單 slot、先到者勝
 
-`fs/write-intent`/`fs/edit-intent` slot 只容納一個決策器；本外掛程式會完整決策，不呼叫 `next()`。slot 按註冊順序先到者勝；由本外掛程式擁有 slot 只是默認部署約定，不是事件強制的不變式（更早註冊或透過 `prepend` 註冊的決策器會勝出）。這不是可組合的授權鏈；分層權限/審計/沙盒攔截屬於 `tools/execute`。
+`fs/write-intent`/`fs/edit-intent` slot 只容納一個決策器；本外掛程式會完整決策，不呼叫 `next()`。slot 按註冊順序先到者勝；由本外掛程式擁有 slot 只是預設部署約定，不是事件強制的不變式（更早註冊或透過 `prepend` 註冊的決策器會勝出）。這不是可組合的授權鏈；分層權限/審計/沙盒攔截屬於 `tools/execute`。
 
 ## 不與方法耦合
 

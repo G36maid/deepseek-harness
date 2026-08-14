@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/settings.md
 settings.md: 0d57886adbd167fd9038fec73861b53641906220
 settings.zh.md: d55fade30769d17325c333d96771fc03c39f8acb
-settings.zh-tw.md: 991d5e82641439e0b9491a9d9989aa231e19797a
+settings.zh-tw.md: d0c6f17cc67a7601d7458ee651c336a7cffb2746

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-06-11-supply-chain-and-vendor-drift.md
-2026-06-11-supply-chain-and-vendor-drift.md: 2e21e7aabd177a8a3a4f44f5597177af760b7503
-2026-06-11-supply-chain-and-vendor-drift.zh.md: eefebd1fefcbbc6136a95aee9a865aff9be66e76
-2026-06-11-supply-chain-and-vendor-drift.zh-tw.md: 57181773ef6e84985b724eb042aab2c557fd0de1

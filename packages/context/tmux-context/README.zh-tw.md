@@ -27,9 +27,9 @@ pane_tty=$(tmux display-message -t "$TMUX_PANE" -p '#{pane_tty}') || exit 1
 exec tmux display-message -t "$TMUX_PANE" -p '<format>'
 ```
 
-僅憑 `$TMUX_PANE` 並不足夠：從 tmux shell 啟動的終端機（VS Code 整合終端機、桌面啟動器）會從該祖先進程**繼承** `$TMUX` 與 `$TMUX_PANE`，因此即使行程並不位於那個 pane 中，這些變數依然存在。為此該命令還會把 pane 的 `#{pane_tty}` 與本行程自己的控制終端機（對其 pid 執行 `ps -o tty=`）作比較：真正的 pane 擁有本行程的 tty，而繼承而來的環境指向的是另一個 pane 的 tty。透過 `ctx.shell` 執行會應用部署方的沙盒與策略；外掛程式不擁有任何子行程程式碼。當 `ctx.shell` 缺失、行程不在真實的 tmux pane 內（`$TMUX_PANE` 未設定，或 tty 不匹配 ⇒ 非零退出）或讀取結果格式非法時，本次嘗試為空操作，絕不報錯。由於位置資訊是選填的，執行器的拒絕——`resolve()` 的策略拒絕或 `run()` 的基礎設施故障——會被兜住並記錄為警告，而不會使該輪失敗。
+僅憑 `$TMUX_PANE` 並不足夠：從 tmux shell 啟動的終端機（VS Code 整合終端機、桌面啟動器）會從該祖先行程**繼承** `$TMUX` 與 `$TMUX_PANE`，因此即使行程並不位於那個 pane 中，這些變數依然存在。為此該命令還會把 pane 的 `#{pane_tty}` 與本行程自己的控制終端機（對其 pid 執行 `ps -o tty=`）作比較：真正的 pane 擁有本行程的 tty，而繼承而來的環境指向的是另一個 pane 的 tty。透過 `ctx.shell` 執行會應用部署方的沙盒與策略；外掛程式不擁有任何子行程程式碼。當 `ctx.shell` 缺失、行程不在真實的 tmux pane 內（`$TMUX_PANE` 未設定，或 tty 不匹配 ⇒ 非零結束）或讀取結果格式非法時，本次嘗試為空操作，絕不報錯。由於位置資訊是選填的，執行器的拒絕——`resolve()` 的策略拒絕或 `run()` 的基礎設施故障——會被兜住並記錄為警告，而不會使該輪失敗。
 
-狀態在每個符合條件的輪次拉取——pane 被移動、改名或重新版面配置都會被感知，無需任何 tmux hook 或後臺行程。外掛程式僅在渲染出的 tmux 狀態與上次注入不同時才重新注入，因此位置不變時不會新增任何內容。
+狀態在每個符合條件的輪次拉取——pane 被移動、改名或重新版面配置都會被感知，無需任何 tmux hook 或後臺行程。外掛程式僅在算繪出的 tmux 狀態與上次注入不同時才重新注入，因此位置不變時不會新增任何內容。
 
 ## 時序語義
 
@@ -65,4 +65,4 @@ window active=<0|1>, pane active=<0|1>, layout <window-layout>
 - **僅自身位置**——外掛程式從不採集相鄰 pane 的可見文字。
 - **只有版面配置，沒有尺寸**——省略 pane/window 畫素尺寸；僅報告版面配置樹與活動標志。
 - **製表符分隔欄位**——若 tmux window 名稱包含字面兩字元序列 `\t`，會使讀數分割錯誤並作為非法讀數跳過；常規名稱不受影響。
-- **基於 tty 的 pane 判定**——只有當行程的控制終端機與 `$TMUX_PANE` 的 `#{pane_tty}` 一致時，才視為「位於 tmux 中」。這會有意排除從 tmux 祖先進程繼承 `$TMUX`／`$TMUX_PANE` 的終端機（如 VS Code 整合終端機）。`ps -o tty=` 屬於 POSIX；在其或 `#{pane_tty}` 不可用的環境中，該檢查即為空操作。
+- **基於 tty 的 pane 判定**——只有當行程的控制終端機與 `$TMUX_PANE` 的 `#{pane_tty}` 一致時，才視為「位於 tmux 中」。這會有意排除從 tmux 祖先行程繼承 `$TMUX`／`$TMUX_PANE` 的終端機（如 VS Code 整合終端機）。`ps -o tty=` 屬於 POSIX；在其或 `#{pane_tty}` 不可用的環境中，該檢查即為空操作。

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-26-dependencies-over-hand-rolling.zh.md) | [繁體中文](2026-07-26-dependencies-over-hand-rolling.zh-tw.md)
+
 
 ## Problem
 

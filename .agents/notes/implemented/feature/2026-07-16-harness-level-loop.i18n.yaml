@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-16-harness-level-loop.md
-2026-07-16-harness-level-loop.md: 1797dc9d3383e4b85edfdc117c5de48c38558460
-2026-07-16-harness-level-loop.zh.md: e2515f1f611ba9f8974b19799b57b24d7411d356
-2026-07-16-harness-level-loop.zh-tw.md: a9709468c8c6887e2aba7bdb591d9b65aa0e31cc

@@ -6,7 +6,7 @@ Schedule 擁有持久提醒；這些提醒會作為普通的後續對話輪次�
 
 ## 持久記錄
 
-`ScheduleId` 是[品牌化 id](core.md#branded-ids)，在單個 Session 內唯一且絕不複用。版本 1 支持正的安全整數 `after_seconds` 延時、顯式的絕對 `at` 目標，或至少五分鐘的安全整數 `every_seconds` 間隔。建立操作會將每個初始目標規範化為使用四位年份的 RFC 3339 UTC `scheduledAt`；`after` 記錄會保留提交的延時，`at` 記錄只儲存結果時點，`every` 記錄則保留固定間隔和下一個目標。
+`ScheduleId` 是[品牌化 id](core.md#branded-ids)，在單個 Session 內唯一且絕不複用。版本 1 支援正的安全整數 `after_seconds` 延時、顯式的絕對 `at` 目標，或至少五分鐘的安全整數 `every_seconds` 間隔。建立操作會將每個初始目標規範化為使用四位年份的 RFC 3339 UTC `scheduledAt`；`after` 記錄會保留提交的延時，`at` 記錄只儲存結果時點，`every` 記錄則保留固定間隔和下一個目標。
 
 ```ts type-equiv
 /** Durable one-shot reminder created from a positive delay. */
@@ -91,7 +91,7 @@ Schedule 會拒絕無效偏移量與時區、不帶偏移量的字串、非未�
 
 ## 固定速率輸入與補償
 
-`every_seconds` 是每條記錄單獨擁有且至少為 300 秒的間隔，以建立時間為錨點。它只提供固定速率重複調度：協議不包含日曆規則或 Cron 表達式、重複調度時區、共享冷卻時間或跨記錄准入閘門。
+`every_seconds` 是每條記錄單獨擁有且至少為 300 秒的間隔，以建立時間為錨點。它只提供固定速率重複調度：協定不包含日曆規則或 Cron 運算式、重複調度時區、共享冷卻時間或跨記錄准入閘門。
 
 如果一個 Session 在多個目標到期期間處於 cold 或 busy 狀態，一條 Every 記錄只會貢獻其中最新的一次到期觸發。dispatch 會直接將記錄推進到 dispatch 判斷時刻之後第一個與建立錨點對齊的目標，而不會枚舉、持久化或重播錯過的間隔。如果下一個目標無法落在四位數年份的 UTC 範圍內，最後一次 dispatch 將終結該記錄。
 
@@ -183,4 +183,4 @@ type ScheduleView = ScheduleRecord & {
 
 到期工作會先等待 Agent 完全 idle 並認領 maintenance phase，再重新摺疊狀態、取樣本次判斷、將一個 `followup()` 排入佇列，並追加對應的 dispatch 變更。它絕不會呼叫 `steer()`，也絕不會中斷當前輪次。
 
-獲得准入的一次性提醒或固定速率批次會啟動一個普通的後續輪次，且只透過普通對話 transcript（文字記錄）出現；Schedule 不提供獨立的持久 Web 回執或瀏覽器渲染器。如果 framing 構造或同步佇列准入失敗，則不會記錄 dispatch，提醒仍保持活動。佇列准入後、持久 dispatch 前的狹窄崩潰視窗可能使提醒內容在復原後重複，因此該邊界提供的是盡力而為的至少一次交付，而非恰好一次交付。
+獲得准入的一次性提醒或固定速率批次會啟動一個普通的後續輪次，且只透過普通對話 transcript（文字記錄）出現；Schedule 不提供獨立的持久 Web 回執或瀏覽器算繪器。如果 framing 構造或同步佇列准入失敗，則不會記錄 dispatch，提醒仍保持活動。佇列准入後、持久 dispatch 前的狹窄崩潰視窗可能使提醒內容在復原後重複，因此該邊界提供的是盡力而為的至少一次交付，而非恰好一次交付。

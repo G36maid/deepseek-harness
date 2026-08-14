@@ -2,9 +2,9 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-由 [Exa](https://exa.ai) 支持的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 Exa 的 `POST /search` 端點並請求高亮摘要內容，把扁平 `results[]` 對映為 seam 規範化的 `WebSearchResult`。
+由 [Exa](https://exa.ai) 支援的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 Exa 的 `POST /search` 端點並請求高亮摘要內容，把扁平 `results[]` 對映為 seam 規範化的 `WebSearchResult`。
 
-這是一個**實作**包：它向 `ctx.web` 註冊提供方，不擁有 `ctx.web` 鍵，也不註冊面向模型的工具（後者屬於 `@deepseek-ai/dsh-tool-web`）。與 `@deepseek-ai/dsh-llm-deepseek` 一樣，它是函式／命名空間外掛程式（`inject: ['web']`），負責註冊後端，而非默認匯出服務。
+這是一個**實作**包：它向 `ctx.web` 註冊提供方，不擁有 `ctx.web` 鍵，也不註冊面向模型的工具（後者屬於 `@deepseek-ai/dsh-tool-web`）。與 `@deepseek-ai/dsh-llm-deepseek` 一樣，它是函式／命名空間外掛程式（`inject: ['web']`），負責註冊後端，而非預設匯出服務。
 
 ## 設定
 
@@ -13,7 +13,7 @@
 | `apiKey` | `$EXA_API_KEY` | Exa API 金鑰。為空或缺失時提供方不可用。 |
 | `baseURL` | `https://api.exa.ai` | 端點基址；追加 `/search`。無法解析時提供方不可用。 |
 | `searchType` | `auto` | 以 Exa `type` 傳送的檢索模式：`auto`（由 Exa 決定）、`keyword` 或 `neural`。 |
-| `numResults` | （未設定） | 請求不含 `maxResults` 時使用的默認結果數。未設定時不傳送預設值。必須是正整數。 |
+| `numResults` | （未設定） | 請求不含 `maxResults` 時使用的預設結果數。未設定時不傳送預設值。必須是正整數。 |
 | `highlightsPerResult` | `1` | 每個結果請求的 highlight 句子數（Exa `highlightsPerUrl`）。必須是正整數。 |
 
 ```yaml
@@ -25,7 +25,7 @@
 
 ## 對映
 
-Exa 返回扁平 `results[]`，不返回生成答案，因此省略 `content`。每項結果對映為 `WebSearchSource`：`url` ← `url`、`title` ← `title`、`snippet` ← 第一個非空的 `highlights[]` 條目（沒有高亮摘要的結果缺少可移植的 snippet，會被丟棄）、`publishedAt` ← `publishedDate`。請求的 `maxResults` 優先於已設定的默認 `numResults`，並作為 Exa `numResults` 傳送，以最佳化成本和延遲；最終上限由 seam 強制執行。提供方失敗（HTTP 錯誤、網路失敗、回應體無法解析或結構不符）以 `WebError` `WEB_PROVIDER_ERROR` 呈現；中止請求以 `WEB_ABORTED` 呈現。HTTP 重定向會在訪問 `Location` 指向的目標之前被拒絕，並以 `WEB_PROVIDER_ERROR` 呈現。
+Exa 返回扁平 `results[]`，不返回生成答案，因此省略 `content`。每項結果對映為 `WebSearchSource`：`url` ← `url`、`title` ← `title`、`snippet` ← 第一個非空的 `highlights[]` 條目（沒有高亮摘要的結果缺少可移植的 snippet，會被丟棄）、`publishedAt` ← `publishedDate`。請求的 `maxResults` 優先於已設定的預設 `numResults`，並作為 Exa `numResults` 傳送，以最佳化成本和延遲；最終上限由 seam 強制執行。提供方失敗（HTTP 錯誤、網路失敗、回應體無法解析或結構不符）以 `WebError` `WEB_PROVIDER_ERROR` 呈現；中止請求以 `WEB_ABORTED` 呈現。HTTP 重定向會在訪問 `Location` 指向的目標之前被拒絕，並以 `WEB_PROVIDER_ERROR` 呈現。
 
 ## 模型體驗
 

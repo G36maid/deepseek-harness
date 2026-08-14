@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-01-ask-user-delegated-caller-guard.md
-2026-08-01-ask-user-delegated-caller-guard.md: f877671bb2e178b83406793f443fa01a7433d4df
-2026-08-01-ask-user-delegated-caller-guard.zh.md: 6da9fb25d06e5d302da64e05eb5ab7ad31152a57
-2026-08-01-ask-user-delegated-caller-guard.zh-tw.md: a6bfab3b4c8a0e4d2952e47538eeaa80e45188d8

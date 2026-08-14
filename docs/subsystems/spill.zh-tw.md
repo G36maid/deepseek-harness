@@ -67,7 +67,7 @@ interface SpillRef {
 }
 ```
 
-`SpillLocator` 是後端返回的[品牌化](core.md#branded-ids)面向模型控制代碼。本機後端將它渲染為檔案系統路徑；遠端或資料庫後端可以渲染 URI、鍵或命令 token。消費端將它視為不透明值，並使用 `retrievalHint` 渲染，而不是假定 `read` 始終是正確的檢索機制。
+`SpillLocator` 是後端返回的[品牌化](core.md#branded-ids)面向模型控制代碼。本機後端將它算繪為檔案系統路徑；遠端或資料庫後端可以算繪 URI、鍵或命令 token。消費端將它視為不透明值，並使用 `retrievalHint` 算繪，而不是假定 `read` 始終是正確的檢索機制。
 
 ```ts type-equiv
 /**
@@ -82,7 +82,7 @@ type SpillLocator = Branded<'SpillLocator'>
 
 `SpillStore`（`ctx.spillStore`，定義於 [`packages/spill/spill/src/index.ts`](../../packages/spill/spill/src/index.ts)）是隻有一個方法的抽象服務：`saveText(input) → Promise<SpillRef>`。它持久保存完整的 `content`，並在實際儲存失敗（權限、ENOSPC、後端不可用）時拒絕。該 seam 只負責儲存：不負責保留策略、工具結果替換或檢索／搜尋 API。
 
-本機後端（[dsh-spill-local](../../packages/spill/spill-local)）寫入 `<root>/session-<hash>/<random>-<safeName>`：根目錄是已設定或延遲建立的私有（0700）目錄，工作階段子目錄採用 `sha256(sessionId)`，並透過排他且僅所有者可訪問的寫入（`open(path, 'wx', 0o600)`）防止預先植入的符號連結重定向寫入。其 `locator` 是本機路徑，`retrievalHint` 則告知模型在該路徑上使用 `read` 或 `grep`。策略消費端（[dsh-spill-policy](../../packages/spill/spill-policy)）會把超過 `maxInlineBytes` 的純文字最終結果替換為保留庫生成的首尾預覽和 spill 引用；該過程盡力而為：保存失敗時保留原始內聯結果，而不會把成功的呼叫變成 `isError`。
+本機後端（[dsh-spill-local](../../packages/spill/spill-local)）寫入 `<root>/session-<hash>/<random>-<safeName>`：根目錄是已設定或延遲建立的私有（0700）目錄，工作階段子目錄採用 `sha256(sessionId)`，並透過排他且僅所有者可訪問的寫入（`open(path, 'wx', 0o600)`）防止預先植入的符號連結重定向寫入。其 `locator` 是本機路徑，`retrievalHint` 則告知模型在該路徑上使用 `read` 或 `grep`。策略消費端（[dsh-spill-policy](../../packages/spill/spill-policy)）會把超過 `maxInlineBytes` 的純文字最終結果替換為保留庫生成的首尾預覽和 spill 引用；該程序盡力而為：保存失敗時保留原始內聯結果，而不會把成功的呼叫變成 `isError`。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

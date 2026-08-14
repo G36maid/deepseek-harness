@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-11-workspace-sidebar-order-and-folding.md
-2026-08-11-workspace-sidebar-order-and-folding.md: 925d9bff5df0db09b612023c764ac2f417144761
-2026-08-11-workspace-sidebar-order-and-folding.zh.md: 7c734eb07c6ead617961a3940ec13b0679b95130
-2026-08-11-workspace-sidebar-order-and-folding.zh-tw.md: 362f2c9e5eaa68e5890caeeef31f9eca2042d02a

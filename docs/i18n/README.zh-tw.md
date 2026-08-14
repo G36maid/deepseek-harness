@@ -16,10 +16,10 @@
   foo.zh-tw.md: 5a1bcde28dff65a77c19f2e03d4a812b3456ef09
   ```
 
-  用 blob hash 而不是 commit hash，這樣同一個 PR 裡改動的文件也能算出記錄（`git hash-object foo.md`），一致性是純內容比較。`--write` 會先把這些快照存入本機 Git 對象庫再寫下記錄，未提交的 worktree 內容也不例外；它還會在內容尋址的 `refs/dsh/translation-pairing/snapshots/` ref 下固定每個不同的已存 blob，使垃圾回收無法讓已記錄的復原指針失效。因此記錄的 hash 能還原任一側上次確認時的確切文字，所以失去同步的配對是「按被改一側的 diff 最小化地修補另一側」，從不整篇重譯。日常工作會直接完成這份修補；使用者顯式呼叫擴充工作流程時，可改由 `pnpm run gen-translation-brief <pair>` 以能安全對齊的最窄粒度匯集這次更新，並由 `--apply` 在結構校驗後拼接僅涉及圍欄程式碼區塊的改動（[briefed-updates Agent Note](../../.agents/notes/implemented/process/2026-07-26-briefed-minimal-translation-updates.md)）。兩側對齊後，`pnpm run verify-translation-pairing --write <pair>` 重新記錄兩個 hash；那份 YAML diff 就是「確認一致」這個動作本身，可以被評審，也正因如此，`--write` 要求點名你確認過的配對（`--write --all` 是顯式的全語料形式）。
+  用 blob hash 而不是 commit hash，這樣同一個 PR 裡改動的文件也能算出記錄（`git hash-object foo.md`），一致性是純內容比較。`--write` 會先把這些快照存入本機 Git 對象庫再寫下記錄，未提交的 worktree 內容也不例外；它還會在內容尋址的 `refs/dsh/translation-pairing/snapshots/` ref 下固定每個不同的已存 blob，使記憶體回收無法讓已記錄的復原指針失效。因此記錄的 hash 能還原任一側上次確認時的確切文字，所以失去同步的配對是「按被改一側的 diff 最小化地修補另一側」，從不整篇重譯。日常工作會直接完成這份修補；使用者顯式呼叫擴充工作流程時，可改由 `pnpm run gen-translation-brief <pair>` 以能安全對齊的最窄粒度匯集這次更新，並由 `--apply` 在結構校驗後拼接僅涉及圍欄程式碼區塊的改動（[briefed-updates Agent Note](../../.agents/notes/implemented/process/2026-07-26-briefed-minimal-translation-updates.md)）。兩側對齊後，`pnpm run verify-translation-pairing --write <pair>` 重新記錄兩個 hash；那份 YAML diff 就是「確認一致」這個動作本身，可以被評審，也正因如此，`--write` 要求點名你確認過的配對（`--write --all` 是顯式的全語料形式）。
 
-  當兩個分支都包含同一配對的有效確認時，已安裝的 `dsh-translation-pairing` Git 合併驅動只會在 Git 默認文字合併能分別乾淨合併記錄所指向的英文三方 blob 與中文三方 blob，且合併後的配對仍保留必需的語言切換列和結構簽章時，組合出一份新記錄。中文文件必須保留指向英文的反向連結；普通撰寫的英文源必須保留指向中文的連結，而清單內的生成英文源不作此要求。任何合併驅動無法驗證的結構都保留為普通衝突；`pnpm run resolve-translation-pairing-conflicts` 會對已經停止的合併執行同一套遇錯即保留衝突的操作，暫存每份可安全生成的配對記錄，並在還有其他配對衝突時以非零狀態退出。[自動配對合併 Agent Note](../../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md) 負責記錄該機制與備選方案。
-- **語言切換列。** 中文文件一律在 H1 標題後立即以 `[English](foo.md) | 简体中文` 鏈回英文，繁體中文側以 `[English](foo.md) | [简体中文](foo.zh.md) | 繁體中文` 互鏈。普通撰寫的英文文件在同一位置以 `English | [简体中文](foo.zh.md) | [繁體中文](foo.zh-tw.md)` 互鏈；清單內的生成英文源省略此行，以便與生成器輸出逐位元組一致。發布到 GitHub 以外位置的 README（例如 PyPI 項目元資料）可以改用指向同一對側檔案的規範 `https://github.com/deepseek-ai/deepseek-harness/blob/master/<repository-path>` URL，使切換行在該位置仍可訪問。
+  當兩個分支都包含同一配對的有效確認時，已安裝的 `dsh-translation-pairing` Git 合併驅動只會在 Git 預設文字合併能分別乾淨合併記錄所指向的英文三方 blob 與中文三方 blob，且合併後的配對仍保留必需的語言切換列和結構簽章時，組合出一份新記錄。中文文件必須保留指向英文的反向連結；普通撰寫的英文源必須保留指向中文的連結，而清單內的生成英文源不作此要求。任何合併驅動無法驗證的結構都保留為普通衝突；`pnpm run resolve-translation-pairing-conflicts` 會對已經停止的合併執行同一套遇錯即保留衝突的操作，暫存每份可安全生成的配對記錄，並在還有其他配對衝突時以非零狀態結束。[自動配對合併 Agent Note](../../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md) 負責記錄該機制與備選方案。
+- **語言切換列。** 中文文件一律在 H1 標題後立即以 `[English](foo.md) | 简体中文` 鏈回英文，繁體中文側以 `[English](foo.md) | [简体中文](foo.zh.md) | 繁體中文` 互鏈。普通撰寫的英文文件在同一位置以 `English | [简体中文](foo.zh.md) | [繁體中文](foo.zh-tw.md)` 互鏈；清單內的生成英文源省略此行，以便與生成器輸出逐位元組一致。發布到 GitHub 以外位置的 README（例如 PyPI 項目中繼資料）可以改用指向同一對側檔案的規範 `https://github.com/deepseek-ai/deepseek-harness/blob/master/<repository-path>` URL，使切換行在該位置仍可訪問。
 - **結構與另一側一一對應。** 標題深度與順序、清單類型、有序清單起始編號、清單項數量、表格行列數、連結目標與逐位元組一致的程式碼塊在配對兩側一一對應；完整保持規則見 [translation-rules.md](translation-rules.md)。既有 Markdown 閘門對 `.zh.md` 文件原樣生效（`verify-md-wrap`、`verify-md-links`）。
 
 ## 閘門：verify-translation-pairing
@@ -52,11 +52,11 @@
 - `docs/AGENTS.md`、`.agents/notes/**/AGENTS.md` 以及指向它們的 `CLAUDE.md` 指令符號連結：agent 指令，與根 `AGENTS.md` 一樣只以英文維護。
 - `docs/i18n/terminology.md` 與 [style-samples.md](style-samples.md)：二者本身即為中英對照文件。
 - [terminology-zh-tw.md](terminology-zh-tw.md)：繁體轉換術語表本身即為簡繁對照文件（zh-CN → zh-TW），與 `terminology.md` 一樣排除在配對之外；它是 EN↔zh-CN 真源術語表的轉換側對應物。
-- [translation-prompt.md](translation-prompt.md)：自動翻譯管線的提示詞範本；正文逐字進入模型請求，配對翻譯會改變管線行為。
+- [translation-prompt.md](translation-prompt.md)：自動翻譯管線的提示詞樣板；正文逐字進入模型請求，配對翻譯會改變管線行為。
 - `.agents/notes/archived/`：凍結的歷史三文件配對。[`verify-archived-agent-notes`](../../scripts/verify-archived-agent-notes.ts) 校驗其完整性和內容封存記錄；翻譯維護絕不能重寫這些文件。
 
 **統一要求**：當前及今後納入範圍的每篇文件，合併時都必須構成完整的雙語配對。[scripts/translation-pairing.manifest.json](../../scripts/translation-pairing.manifest.json) 只包含顯式排除項；不存在逐文件推進清單、日期分界或 README 專用政策類別。
 
 ## 分工
 
-日常更新對側檔案時，負責處理的 agent 會先載入 [terminology.md](terminology.md)，再載入 [terminology-zh-tw.md](terminology-zh-tw.md)，然後直接一次性更新且只處理一遍；它不會呼叫翻譯 skill（技能）、生成簡報、執行單獨的翻譯評審輪次，也不會委派給 subagent。擴充版 [dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程保留這些較重的機制，僅供使用者顯式呼叫。閘門負責檢查配對是否完整、記錄的 hash、中文反向連結和普通撰寫源的切換行（生成源按本文規則例外），以及本文列出的結構簽章；翻譯質量、術語和簽名未涵蓋的結構要求仍由評審把關。提示詞約定也有可執行實作：[scripts/translation-prompt.ts](../../scripts/translation-prompt.ts) 會把倉庫內建的範本（注入術語表；範本自帶經人工校準的規則）渲染為英譯中或中譯英兩個方向的提示詞，並解析三段式回應；`doc-sync` 中的 `verify-translation-prompt` 會檢查兩個渲染方向與倉庫內示例。
+日常更新對側檔案時，負責處理的 agent 會先載入 [terminology.md](terminology.md)，再載入 [terminology-zh-tw.md](terminology-zh-tw.md)，然後直接一次性更新且只處理一遍；它不會呼叫翻譯 skill（技能）、生成簡報、執行單獨的翻譯評審輪次，也不會委派給 subagent。擴充版 [dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程保留這些較重的機制，僅供使用者顯式呼叫。閘門負責檢查配對是否完整、記錄的 hash、中文反向連結和普通撰寫源的切換行（生成源按本文規則例外），以及本文列出的結構簽章；翻譯質量、術語和簽名未涵蓋的結構要求仍由評審把關。提示詞約定也有可執行實作：[scripts/translation-prompt.ts](../../scripts/translation-prompt.ts) 會把倉庫內建的樣板（注入術語表；樣板自帶經人工校準的規則）算繪為英譯中或中譯英兩個方向的提示詞，並解析三段式回應；`doc-sync` 中的 `verify-translation-prompt` 會檢查兩個算繪方向與倉庫內示例。

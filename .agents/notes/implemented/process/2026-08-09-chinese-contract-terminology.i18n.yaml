@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-09-chinese-contract-terminology.md
-2026-08-09-chinese-contract-terminology.md: ca9ef73a1f8d56875109e7c49078abb7e60176fc
-2026-08-09-chinese-contract-terminology.zh.md: 9b031255554e1f563adf0d1b72da03d76004d210
-2026-08-09-chinese-contract-terminology.zh-tw.md: fbf4dce7f29632755f2822ecc8e7f420bfd22120

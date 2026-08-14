@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-系統提示詞組裝登錄檔。外掛程式可以貢獻有序段、工具 schema 和具名變數。迴圈在每個步驟組裝一次，並將結果渲染為完整的模型提示詞。此外掛程式擁有靜態 harness 身份和全域性部署 persona；agent（代理）作用域的 persona 會遮蔽全域性預設值。
+系統提示詞組裝登錄檔。外掛程式可以貢獻有序段、工具 schema 和具名變數。迴圈在每個步驟組裝一次，並將結果算繪為完整的模型提示詞。此外掛程式擁有靜態 harness 身份和全域性部署 persona；agent（代理）作用域的 persona 會遮蔽全域性預設值。
 
 ## 設定
 
@@ -10,7 +10,7 @@
 |---|---|---|
 | `includeHarnessIdentity` | `true` | 是否包含順序為 −100 的固定開場白 `You are an AI agent powered by DeepSeek Harness.`。僅當相容性部署擁有完整系統提示詞時設為 false。 |
 | `includeRuntimeContext` | `true` | 是否在組裝中包含有序動態上下文。設為 false 時不會求值上下文提供方，並會在 waterfall 後丟棄 `system-prompt/assemble` 監聽器新增的上下文；其他服務及其強制機制仍然生效。 |
-| `persona` | `''` | 全域性部署 persona 預設值：唯一由設定提供的提示詞片段，渲染為順序為 0 的 `deployment:persona` 段，除非 agent 作用域的貢獻將其遮蔽。它是範本，完整的 `{{…}}` 組會嚴格按已註冊變數解釋（隨附迴圈註冊 `{{model}}`/`{{cwd}}`），目前沒有表達字面量花括號的轉義文法。為空 ⇒ 渲染時刪除該段。 |
+| `persona` | `''` | 全域性部署 persona 預設值：唯一由設定提供的提示詞片段，算繪為順序為 0 的 `deployment:persona` 段，除非 agent 作用域的貢獻將其遮蔽。它是樣板，完整的 `{{…}}` 組會嚴格按已註冊變數解釋（隨附迴圈註冊 `{{model}}`/`{{cwd}}`），目前沒有表達字面量花括號的轉義文法。為空 ⇒ 算繪時刪除該段。 |
 | `toolOrder` | 無 | 顯式指定面向模型的工具順序。該清單由 `ToolSchema.name` 組成，並且必須恰好包含一個 `'<unlisted-tools>'` 其餘項標記（`TOOL_ORDER_REST`）：已列工具按清單位置排列，未列工具則按名稱字典序插入該標記所在的位置。缺席 ⇒ 直接按名稱字典序排列。該順序會在 `system-prompt/assemble` waterfall（瀑布式事件）之前應用於已收集的工具。與段的 `order` 排序一樣，它會規範化登錄檔貢獻的內容；註冊順序只是外掛程式載入時序的產物。修改清單的 waterfall 監聽器對其輸出的確定性負責。設定錯誤會明確失敗：清單沒有恰好一個其餘項或存在重複項，會在載入時拋出；已列名稱沒有對應已註冊工具，會使每次 `assemble()` 被拒絕；工具提供方返回保留的其餘項名稱也會被拒絕。在隨附迴圈下，輪次會在任何模型請求前失敗。為何採用中心清單而非每外掛程式權重，見[顯式面向模型工具順序](../../../.agents/notes/implemented/feature/2026-07-06-explicit-tool-order.md)。 |
 
 ## 服務：`SystemPrompt`（ctx 鍵：`systemPrompt`）
@@ -28,7 +28,7 @@
 
 ### 即時事件
 
-普通段以 `system-prompt/assemble` 的返回結果為準；complete 段則會在 waterfall 之後作為最終提示詞約束生效。替換條目的監聽器必須保留任何已啟用的 Code Mode 或結構化輸出協議。篩選需要在呈現、尋找與執行之間保持一致時，應使用 [`ToolRuntime.restrict()`](../tools/README.md)。登錄檔變更通知不經過篩選。[system-prompt.md](../../../docs/subsystems/system-prompt.md#cordis-surface) 的生成區塊擁有事件簽名和分發約定。
+普通段以 `system-prompt/assemble` 的返回結果為準；complete 段則會在 waterfall 之後作為最終提示詞約束生效。替換條目的監聽器必須保留任何已啟用的 Code Mode 或結構化輸出協定。篩選需要在呈現、尋找與執行之間保持一致時，應使用 [`ToolRuntime.restrict()`](../tools/README.md)。登錄檔變更通知不經過篩選。[system-prompt.md](../../../docs/subsystems/system-prompt.md#cordis-surface) 的生成區塊擁有事件簽名和分發約定。
 
 ### 關鍵類型
 
@@ -64,11 +64,11 @@ You are an AI agent powered by DeepSeek Harness.
 
 #### Token 影響
 
-啟用時，身份是每次請求的固定成本。Persona 與外掛程式文字在每次請求中重複，成本隨渲染內容成長。
+啟用時，身份是每次請求的固定成本。Persona 與外掛程式文字在每次請求中重複，成本隨算繪內容成長。
 
 #### KV Cache 影響
 
-只要身份、persona、變數、段文字與順序的渲染完全相同，前綴就保持穩定。任何變更都可能從第一個變化的系統提示詞 token 起使複用失效。
+只要身份、persona、變數、段文字與順序的算繪完全相同，前綴就保持穩定。任何變更都可能從第一個變化的系統提示詞 token 起使複用失效。
 
 ### 工具 schema
 
@@ -82,7 +82,7 @@ schema token 在每次請求中重複。限制工具會為該 agent 移除其全
 
 #### KV Cache 影響
 
-只要可見 schema 集合、渲染與順序不變，前綴就保持穩定。註冊、限制或重排序可能從第一個變化的 schema token 起使複用失效。
+只要可見 schema 集合、算繪與順序不變，前綴就保持穩定。註冊、限制或重排序可能從第一個變化的 schema token 起使複用失效。
 
 ## 已知限制與暫緩事項
 

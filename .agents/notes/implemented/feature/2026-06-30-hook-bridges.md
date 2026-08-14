@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-06-30-hook-bridges.zh.md) | [繁體中文](2026-06-30-hook-bridges.zh-tw.md)
+
 
 ## Problem
 

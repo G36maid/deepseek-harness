@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-06-buffer-free-feedback-telemetry.md
-2026-08-06-buffer-free-feedback-telemetry.md: ced873e537828d5146656ef29640f84d4b9dffdd
-2026-08-06-buffer-free-feedback-telemetry.zh.md: dbdcb706c7c9246e440cf84ae7c046cce9ab1fbb
-2026-08-06-buffer-free-feedback-telemetry.zh-tw.md: 2377ea7f23c7064ec54e15a50b07e1cfd69c4ae9

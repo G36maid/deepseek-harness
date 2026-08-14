@@ -11,7 +11,7 @@ Web Session 日誌下載控制，使用 `dsh-host-apiproxy` 擁有的 Host 流�
 | `/export` | 記錄一組使用者命令生命週期；提交命令的瀏覽器收到本機執行確認後，下載 `GET /api/session.export?sessionId=<id>&includeDescendants=true`。 |
 | `/export <path>` | 返回錯誤。瀏覽器下載透過瀏覽器的普通下載行為選擇目標位置。 |
 
-該命令只由 Web bundle 掛載。只有 `/export` 返回成功時，本機 `command/executed` 確認才會在提交命令的瀏覽器中觸發斜槓下載；其他分頁標籤仍會渲染持久命令列，但不會重複執行瀏覽器副作用。Header 按鈕直接呼叫同一個控制器。兩種入口都會先發出 `HEAD` 預檢，再把 GET URL 交給瀏覽器下載管理器，JavaScript 不會緩衝 ZIP；它們共用並行摺疊、外掛程式釋放時取消預檢、準備階段錯誤處理、瀏覽器保存行為和同一個 Modal。
+該命令只由 Web bundle 掛載。只有 `/export` 返回成功時，本機 `command/executed` 確認才會在提交命令的瀏覽器中觸發斜槓下載；其他分頁標籤仍會算繪持久命令列，但不會重複執行瀏覽器副作用。Header 按鈕直接呼叫同一個控制器。兩種入口都會先發出 `HEAD` 預檢，再把 GET URL 交給瀏覽器下載管理器，JavaScript 不會緩衝 ZIP；它們共用並行摺疊、外掛程式釋放時取消預檢、準備階段錯誤處理、瀏覽器保存行為和同一個 Modal。
 
 Host 下載端點會在 `readRaw` 前 flush 活動的根 Session，因此斜槓命令觸發的 ZIP 會包含啟動下載的 `command/run` 與 `command/done` 事件對。冷持久化 Session 不需要 flush。
 
@@ -44,6 +44,6 @@ Web bundle 將本包與 `dsh-host-apiproxy`、`dsh-commands`、`dsh-client-ui-co
 
 ## 已知限制與暫緩事項
 
-- 下載端點要求持久化後端具有逐 Session 原始工件。隨附 JSONL 後端支持明文和 zstd 工件；本次改動不包含 SQLite 匯出。
+- 下載端點要求持久化後端具有逐 Session 原始工件。隨附 JSONL 後端支援明文和 zstd 工件；本次改動不包含 SQLite 匯出。
 - 這是瀏覽器下載，不是 Host 路徑寫入。目標位置由瀏覽器選擇，不會返回 Host 路徑或原生資料夾操作。
 - 預檢只報告 ZIP 開始流式傳輸前發現的失敗。瀏覽器接受 GET 後發生的子 Session 或附件讀取失敗由瀏覽器下載管理器報告，不透過彈出視窗報告。

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/terminal.md
 terminal.md: 4f22b1f29f4c9b158568f00a85293b0f8e689d87
 terminal.zh.md: 1d8d90355a9644fda5da817afb664fde2ff2b98c
-terminal.zh-tw.md: 470d87abda31e09de60c787f0bbc7ea5cf62f95c
+terminal.zh-tw.md: e8fc6829109699fd59365ffd143fd6a26f62204c

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-24-empty-model-response-is-retryable.zh.md) | [繁體中文](2026-07-24-empty-model-response-is-retryable.zh-tw.md)
+
 
 ## Problem
 

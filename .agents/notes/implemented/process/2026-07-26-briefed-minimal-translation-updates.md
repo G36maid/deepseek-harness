@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-26-briefed-minimal-translation-updates.zh.md) | [繁體中文](2026-07-26-briefed-minimal-translation-updates.zh-tw.md)
+
 
 ## Problem
 

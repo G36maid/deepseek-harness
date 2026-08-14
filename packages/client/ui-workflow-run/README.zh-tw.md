@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-這個瀏覽器外掛程式把持久化的頂層工作流程執行重建為獨立 Chat 節點。它消費由 [`dsh-tool-workflow`](../../workflow/tool-workflow/README.md) 擁有的四類 `tool-workflow/*` Session 事件，註冊一個 `ConversationNodeDefinition`，並透過 keyed `conversation.chat.node` slot 渲染，不改變現有工作流程工具卡。
+這個瀏覽器外掛程式把持久化的頂層工作流程執行重建為獨立 Chat 節點。它消費由 [`dsh-tool-workflow`](../../workflow/tool-workflow/README.md) 擁有的四類 `tool-workflow/*` Session 事件，註冊一個 `ConversationNodeDefinition`，並透過 keyed `conversation.chat.node` slot 算繪，不改變現有工作流程工具卡。
 
 ## 持久狀態與重播
 
@@ -12,7 +12,7 @@
 
 ## 展示與導覽
 
-執行和每個階段都從當前生命週期事實派生 disclosure 控制。執行自身處於執行中、失敗、已取消或已中斷，或者任一階段包含這些狀態的成員時，執行保持展開；受影響的階段也保持展開。強制展開的標題行只是靜態展開行，不承諾按鈕、鍵盤操作或 `aria-expanded`。階段在全部成員完成時摺疊一次；執行在自身和全部階段都完成時摺疊一次。每個乾淨層級隨後復原普通 disclosure 控制元件，其本機選擇在乾淨狀態的 rerender 中保持；新活動會重新取得控制，remount 則從當前資料派生初始狀態。執行使用 32 畫素 `--dsw-alias-bg-module-platform` 背景行，常駐向右／向下 chevron，並以內聯狀態點加狀態文字表達結局，不使用膠囊。階段使用 32 畫素 disclosure 行，在可伸縮主區顯示標題與成員數，在固定尾部精確顯示聚合狀態且不重複狀態點。成員使用 16 畫素狀態點槽、可省略名稱區和固定 64 畫素狀態列。
+執行和每個階段都從當前生命週期事實派生 disclosure 控制。執行自身處於執行中、失敗、已取消或已中斷，或者任一階段包含這些狀態的成員時，執行保持展開；受影響的階段也保持展開。強制展開的標題行只是靜態展開行，不承諾按鈕、鍵盤操作或 `aria-expanded`。階段在全部成員完成時摺疊一次；執行在自身和全部階段都完成時摺疊一次。每個乾淨層級隨後復原普通 disclosure 控制元件，其本機選擇在乾淨狀態的 rerender 中保持；新活動會重新取得控制，remount 則從當前資料派生初始狀態。執行使用 32 畫素 `--dsw-alias-bg-module-platform` 背景行，常駐向右／向下 chevron，並以內聯狀態點加狀態文字表達結局，不使用膠囊。階段使用 32 畫素 disclosure 行，在可擴充主區顯示標題與成員數，在固定尾部精確顯示聚合狀態且不重複狀態點。成員使用 16 畫素狀態點槽、可省略名稱區和固定 64 畫素狀態列。
 
 只有所有即時事實同時成立時，成員纔可打開子 Session：成員仍在執行、子 id 位於普通 Session 清單、清單行為 `origin: 'subagent'`、`parentId` 等於當前 Session，且清單行仍標記執行。帶底線的成員文字是唯一可見導覽提示；鍵盤聚焦時，名稱區顯示 2 畫素 business-primary 焦點環，右側狀態仍只顯示“執行中”。元件只調用注入的普通 `sessions.open(id)`；遠端、僅地址化、父級不符或終態的行都不可互動。
 

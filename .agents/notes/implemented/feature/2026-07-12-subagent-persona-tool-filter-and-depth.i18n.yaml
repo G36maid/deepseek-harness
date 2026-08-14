@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-12-subagent-persona-tool-filter-and-depth.md
-2026-07-12-subagent-persona-tool-filter-and-depth.md: 7532453791974f369396246f2f06dd93f458d609
-2026-07-12-subagent-persona-tool-filter-and-depth.zh.md: 482aed0fee64b01e15286be50bb1a23e56b0f726
-2026-07-12-subagent-persona-tool-filter-and-depth.zh-tw.md: eb5759ef6bd163d2f12b9fd57098f9f30110e94b

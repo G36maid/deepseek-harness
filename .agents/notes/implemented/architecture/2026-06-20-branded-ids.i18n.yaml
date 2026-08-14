@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-20-branded-ids.md
-2026-06-20-branded-ids.md: f6d608ccecbf8237e5502e0c3a8e5edfb1093dd2
-2026-06-20-branded-ids.zh.md: 0c69fb2f22f91f42db01c95a42db3a00faf91a4c
-2026-06-20-branded-ids.zh-tw.md: 66d9c0a2a9d1bd40b0c35399e507334407e1baf5

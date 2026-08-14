@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-08-pi-ai-per-model-reasoning-declarations.zh.md) | [繁體中文](2026-08-08-pi-ai-per-model-reasoning-declarations.zh-tw.md)
+
 
 ## Problem
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/terminal/tool-terminal/README.md
 README.md: 15909eacfddc167cd4e3e8344233794164b37d2d
 README.zh.md: 39565e54b3117064dfee747f8275087f65e1f115
-README.zh-tw.md: 6b4d9c9d8c257e0220e6b1f983b91867d67c2b9c
+README.zh-tw.md: 491500813a60d398690826cdffd0dddf384382c9

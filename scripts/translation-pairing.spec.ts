@@ -229,7 +229,6 @@ describe('translation scope discovery', () => {
     'future/subtree/readme.md',
     'packages/example/README.zh.md',
     'native/example/README.i18n.yaml',
-    '.agents/notes/proposed/feature.md',
     'docs/guide.md',
     'python/guide.md',
   ])('includes %s', (file) => {
@@ -248,6 +247,8 @@ describe('translation scope discovery', () => {
     'coverage/report/README.md',
     'python/sdk-runtime/src/deepseek_harness_runtime/runtime/dsh-jsonrpc-agent-macos-arm64/README.md',
     'python/sdk-runtime/src/deepseek_harness_runtime/runtime/node/README.md',
+    '.agents/notes/proposed/feature.md',
+    '.agents/skills/example/README.md',
   ])('excludes non-source or non-README path %s', (file) => {
     expect(isTranslationScopeFile(file)).toBe(false)
   })

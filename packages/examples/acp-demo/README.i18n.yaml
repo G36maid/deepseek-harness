@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/examples/acp-demo/README.md
 README.md: 761bc2354b70171feea3253e54d8e007fc845e92
 README.zh.md: be559588a53328ac1f2ff469c7eb67550976a8aa
-README.zh-tw.md: 575fb4c4938635beacb7908303967ff1a9319b68
+README.zh-tw.md: 5f4c65bcba3d098db0aa1644b52e53e46b7eb78f

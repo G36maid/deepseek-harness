@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/storage/storage/README.md
 README.md: fe0f34d373443e40a0fdeff528e61c3bef293ba9
 README.zh.md: aa3031225f0c695ea504c3a18fa2b03a5c5e9605
-README.zh-tw.md: 739bd37deed69c43f4b9473a9d8acedac7149426
+README.zh-tw.md: bd03d18d300b26f50b89e5a4203aabb193269eaa

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-11-workflow-run-status-driven-disclosure.zh.md) | [繁體中文](2026-08-11-workflow-run-status-driven-disclosure.zh-tw.md)
+
 
 ## Problem
 

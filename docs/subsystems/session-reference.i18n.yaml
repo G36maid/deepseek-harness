@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/session-reference.md
 session-reference.md: 648263409060e14ae4d2b66d0f4c9bfa6ec42efd
 session-reference.zh.md: 3326760415cc561f64343af3e0616991f8ae3511
-session-reference.zh-tw.md: 9965cddc3c6cb60dfbadbec9c47e11c364d25dfa
+session-reference.zh-tw.md: f97a7ec06ff3a7a943fd947a1a15d0f0a56c5c76

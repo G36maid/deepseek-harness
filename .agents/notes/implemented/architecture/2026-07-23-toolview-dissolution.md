@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-23-toolview-dissolution.zh.md) | [繁體中文](2026-07-23-toolview-dissolution.zh-tw.md)
+
 
 > Scope: why the standalone tool ring (ToolViewRegistry/ctx.toolviews/outlet) was retired and what replaced it. The [web client architecture note](2026-07-19-gui-web-client-architecture.md) carries the shipped-state narrative this decision produced; the [slot system standard](2026-07-22-slot-type-chain-implementation.md) owns the registration model everything now runs on. The later [Client Tool presentation ownership](2026-08-08-client-tool-presentation-ownership.md) decision supersedes only this note's per-view placement: Tool-name dispatch remains a keyed slot rather than a parallel registry.
 

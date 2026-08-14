@@ -8,13 +8,13 @@
 
 ## fixture 的工作方式
 
-fixture 就是持久化的工作階段日誌（`<scenario>/session.jsonl`）。其 `assistant/chunk` 事件包含每個 `StreamChunk`，因此按 `(turn, step)` 分組即可重建每次 agent loop（代理循環）的 `stream()` 呼叫的區塊序列。壓縮（compaction）摘要器成功時，日誌記錄方式有所不同：當 `compaction/summary` 攜帶 `llmStreamCall: true` 和完整的 `rawOutput` 時，重播會在該事件的位置重建一條規範成功流，其中每個塊各使用一對 `block-start`/`block-end`，帶上已記錄的用量（如有），並以 `stop` 終止。提供方增量的精確切分不屬於持久壓縮結果。不帶該標記的 `rawOutput` 並不意味著發生了本機 LLM 呼叫，因為範本摘要器和遠端摘要器即使未使用此上下文的配接器，也可能保留完整輸出。
+fixture 就是持久化的工作階段日誌（`<scenario>/session.jsonl`）。其 `assistant/chunk` 事件包含每個 `StreamChunk`，因此按 `(turn, step)` 分組即可重建每次 agent loop（代理循環）的 `stream()` 呼叫的區塊序列。壓縮（compaction）摘要器成功時，日誌記錄方式有所不同：當 `compaction/summary` 攜帶 `llmStreamCall: true` 和完整的 `rawOutput` 時，重播會在該事件的位置重建一條規範成功流，其中每個塊各使用一對 `block-start`/`block-end`，帶上已記錄的用量（如有），並以 `stop` 終止。提供方增量的精確切分不屬於持久壓縮結果。不帶該標記的 `rawOutput` 並不意味著發生了本機 LLM 呼叫，因為樣板摘要器和遠端摘要器即使未使用此上下文的配接器，也可能保留完整輸出。
 
-因此，錄制就是「執行一次真實 agent 並收集 `.jsonl`」，由快照 harness 完成；該外掛程式本身不錄制。fixture 的 `request/header` 內容可能被標記化為 `{{system}}`/`{{tools}}`（harness 會在一個場景中固定該內容，並清除其餘場景中的內容）；重播不受影響，因為派生過程只讀取 `assistant/chunk` 和 `compaction/summary` 事件以及第 0 行的工作階段 header。
+因此，錄制就是「執行一次真實 agent 並收集 `.jsonl`」，由快照 harness 完成；該外掛程式本身不錄制。fixture 的 `request/header` 內容可能被標記化為 `{{system}}`/`{{tools}}`（harness 會在一個場景中固定該內容，並清除其餘場景中的內容）；重播不受影響，因為派生程序只讀取 `assistant/chunk` 和 `compaction/summary` 事件以及第 0 行的工作階段 header。
 
 有兩種失敗模式無法僅根據 `assistant/chunk` 重建：在產生任何區塊前直接拋出例外（例如 HTTP 401，此時日誌只有 `turn/end {error}` 而沒有區塊），以及取消或掛起（差異在時序，而非區塊內容）。需要這些行為的場景可提供伴隨檔案（`<scenario>/replay.override.json`）：它可以替換派生指令碼（裸 `ReplayEntry[]`），也可以增補派生指令碼（`{ patches: [{ at, entry }] }`：保留所有從 JSONL 派生的呼叫，只替換指定的從 0 開始計數的呼叫索引；當 `at` 等於派生長度時，則在注入瞬態例外後的重試位置追加一次呼叫）。修補程式索引不得重複。文件載入時會校驗覆寫文件、每個修補程式和條目，以及每個區塊的判別標籤。`hang` 條目可以指定 `readyFile`；當前綴區塊到達迴圈後、開始等待取消前，重播會寫入這個空標記，使外部驅動程式無需觀察展示層更新即可確定性地取消。
 
-指令碼字串可以內嵌 `{{fromRequest:<regex>}}`，用來填入靜態伴隨檔案不可能預知的值——例如模型必須原樣回填到 `update_goal` 的隨機生成 goal id。重播時每個佔位符針對即時請求解析：語料是請求訊息的所有字串葉子按換行拼接的結果，取該模式在語料中的最後一次匹配，用其第一個捕獲組（無捕獲組時用整個匹配）原位替換。模式匹配不到內容、模式非法、佔位符未閉合都會明確報錯。連續右花括號串的最後兩個花括號纔是佔位符結束符，因此模式可以以花括號量詞收尾（如 `[0-9a-f]{4}`），但不能在 `}}` 之後還有後續模式內容。解析作用於所有指令碼條目，包括從已記錄 JSONL 派生的條目——若錄制文字本身合法地含有該字面量標記，需改用不含標記的伴隨檔案表達。
+指令碼字串可以內嵌 `{{fromRequest:<regex>}}`，用來填入靜態伴隨檔案不可能預知的值——例如模型必須原樣回填到 `update_goal` 的隨機生成 goal id。重播時每個預留位置針對即時請求解析：語料是請求訊息的所有字串葉子按換行拼接的結果，取該模式在語料中的最後一次匹配，用其第一個捕獲組（無捕獲組時用整個匹配）原位替換。模式匹配不到內容、模式非法、預留位置未閉合都會明確報錯。連續右花括號串的最後兩個花括號纔是預留位置結束符，因此模式可以以花括號量詞收尾（如 `[0-9a-f]{4}`），但不能在 `}}` 之後還有後續模式內容。解析作用於所有指令碼條目，包括從已記錄 JSONL 派生的條目——若錄制文字本身合法地含有該字面量標記，需改用不含標記的伴隨檔案表達。
 
 ## 巢狀 agent：每工作階段鍵控
 
@@ -59,12 +59,12 @@ fixture 就是持久化的工作階段日誌（`<scenario>/session.jsonl`）。�
 - `installLlmReplay(ctx, config)`：安裝已設定重播配接器或 catch-all `llm/stream` 監聽器；返回 `ReplayHandle`（包含用於保證 HMR（熱模組替換）安全的 `dispose()`，以及清理階段執行的 `assertConsumed()` 檢查；後者確保每個已記錄指令碼都綁定到即時工作階段，且每個已綁定遊標都已耗盡，從而將場景靜默驅動的模型呼叫少於記錄數轉換為明確診斷）。在測試中使用它，可以不透過 Loader 或 env var 驅動重播。
 - `loadSessionScripts(config)`：解析場景中有序的 `SessionScript[]`（主工作階段 + 子工作階段），準備按首次呼叫順序綁定到即時工作階段。
 - `loadReplayScript(config)`：只解析主工作階段的 `ReplayEntry[]`（如果伴隨檔案存在，則使用經校驗的替換或修補程式；否則從 JSONL 派生；fixture 缺失時明確報錯）。
-- `deriveReplayScript(events)` / `parseSessionLog(text)` / `parseSessionHeader(text)` / `resolveScriptedEntry(entry, messages)`：將已記錄工作階段日誌中的普通 loop 區塊和顯式標記的本機壓縮輸出轉換為指令碼、讀取其 header `id`/`createdAt`、並針對單次即時請求解析 `{{fromRequest:...}}` 佔位符的純輔助工具。派生的 assistant 分組必須以 `finish` 區塊結束；沒有該區塊的分組是 `stream()` 拋出例外的指紋，必須改用 override 伴隨檔案表達。
+- `deriveReplayScript(events)` / `parseSessionLog(text)` / `parseSessionHeader(text)` / `resolveScriptedEntry(entry, messages)`：將已記錄工作階段日誌中的普通 loop 區塊和顯式標記的本機壓縮輸出轉換為指令碼、讀取其 header `id`/`createdAt`、並針對單次即時請求解析 `{{fromRequest:...}}` 預留位置的純輔助工具。派生的 assistant 分組必須以 `finish` 區塊結束；沒有該區塊的分組是 `stream()` 拋出例外的指紋，必須改用 override 伴隨檔案表達。
 - 類型 `ReplayEntry` / `ReplayOverrideDoc` / `ReplayOverridePatch` / `SessionScript` / `ReplayConfig` / `ReplayProviderConfig` / `ReplayModelConfig` / `ReplayHandle` / `Config`。
 
 ## 外掛程式匯出形態
 
-命名匯出 `name` / `inject` / `Config` / `apply`，且**沒有默認匯出**：Cordis Loader 的 `unwrapExports` 執行 `exports.default ?? exports`，因此意外的默認匯出會將模組摺疊為函式本身，並丟棄 `inject` 命名空間（見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
+命名匯出 `name` / `inject` / `Config` / `apply`，且**沒有預設匯出**：Cordis Loader 的 `unwrapExports` 執行 `exports.default ?? exports`，因此意外的預設匯出會將模組摺疊為函式本身，並丟棄 `inject` 命名空間（見 [docs/postmortem/0001](../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）。
 
 ## 模型體驗
 

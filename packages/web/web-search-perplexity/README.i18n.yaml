@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/web/web-search-perplexity/README.md
 README.md: febd1eda0db646df41430f8f9194b88a2fb42722
 README.zh.md: e487d021ec23844d7fd386a0566c5ed77dc0170c
-README.zh-tw.md: 56ac26d5bfc41b4c325be11bd38211a27fc8a693
+README.zh-tw.md: 155f30e5318d771672030e1b28500d9a0e7746fd

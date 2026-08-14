@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/web/web-search-exa/README.md
 README.md: 2c27cfa1a5afc5e654cc84e5b1d16d5bb96be071
 README.zh.md: cdd7b25a3d636b10e33b7514b68b674eaf26a0fc
-README.zh-tw.md: d62a7dd2e89a4d0094768beaa2d9ae21d6ca6706
+README.zh-tw.md: 31039b2e52920ec35eb4097cc62e96bd149b7d20

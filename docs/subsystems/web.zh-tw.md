@@ -12,7 +12,7 @@ Web 訪問 seam 是一個[能力 seam](../../.agents/notes/implemented/architect
 
 ## 搜尋請求與結果
 
-面向模型的工具參數僅為一個 `query`；`maxResults` 是消費端自有的上限（`dsh-tool-web` 的 `searchMaxResults` 設定，默認 `8`），透過 seam 傳遞並在返回時強制執行——如果提供方返回超量，seam 截斷 `sources[]` 並設定 `truncated`。
+面向模型的工具參數僅為一個 `query`；`maxResults` 是消費端自有的上限（`dsh-tool-web` 的 `searchMaxResults` 設定，預設 `8`），透過 seam 傳遞並在返回時強制執行——如果提供方返回超量，seam 截斷 `sources[]` 並設定 `truncated`。
 
 ```ts type-equiv
 /**

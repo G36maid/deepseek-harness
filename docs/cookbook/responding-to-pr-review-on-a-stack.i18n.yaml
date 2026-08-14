@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/responding-to-pr-review-on-a-stack.md
 responding-to-pr-review-on-a-stack.md: a9f52019eb4fd298bb7364515af1470e024ea104
 responding-to-pr-review-on-a-stack.zh.md: bb4cbdb225d9c4812b485462ae44ea5825c342c8
-responding-to-pr-review-on-a-stack.zh-tw.md: 03e98e6db9793cdb83c8cbbfd7b5591db11885eb
+responding-to-pr-review-on-a-stack.zh-tw.md: 241f754756ccb7182ec645091d91a3be0fd17c4d

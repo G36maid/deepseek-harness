@@ -6,7 +6,7 @@
 
 來源：[`packages/interaction/commands/src/index.ts`](../../packages/interaction/commands/src/index.ts)
 
-## 輸入元資料
+## 輸入中繼資料
 
 該服務公開一個選填的非結構化輸入提示。命令的可用性由外掛程式組合決定：每個消費登錄檔的配接器都會看到全部生效定義。
 

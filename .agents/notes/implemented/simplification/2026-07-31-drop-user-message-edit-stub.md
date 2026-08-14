@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-31-drop-user-message-edit-stub.zh.md) | [繁體中文](2026-07-31-drop-user-message-edit-stub.zh-tw.md)
+
 
 ## Problem
 

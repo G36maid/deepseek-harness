@@ -2,7 +2,7 @@
 
 [English](README.md) | 简体中文
 
-客户端命令 API（`ctx.commandUi`）：以会话为 key 的命令目录缓存、带 `matchSpace`／`matchEnter` 决策钩子的 `/` 命令 source、三类派发（`execute`／`popupSelect`／`leadingInput`），以及面向业务包的 popupSelect 注册。[Web 命令 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-25-web-command-surfaces-and-assembly.zh.md) 记录了这项决策。
+客户端命令 API（`ctx.commandUi`）：以会话为 key 的命令目录缓存、带 `matchSpace`／`matchEnter` 决策钩子的 `/` 命令 source、三类派发（`execute`／`popupSelect`／`leadingInput`），以及面向业务包的 popupSelect 注册。[Web 命令 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-25-web-command-surfaces-and-assembly.md) 记录了这项决策。
 
 `src/client/contract.ts` 是固定的业务 API 约定：`CommandUiContract.register(name, spec)` 与 `decorate(name, spec)` 是业务包消费的全部内容；`CommandUiSpec{options, onSelect}` 自己提供 popup 数据——外层组件归本包所有，业务包永远见不到它。贡献项是客户端自有命令（与 host 命令同名时会明确报错）；装饰项则为**已存在的** host 命令添加裸调用 popup。host 保留目录行、带参 claim（空格／带参数的 Enter）与生命周期记账，被装饰的名字若在会话目录中无 host 行，则永不触发。命令类型按每次派发派生，绝不在注册时定型：带 `input` 的 host descriptor 是 `leadingInput`，注册了 `CommandUiSpec` 的是 `popupSelect`，其余全部是 `execute`。
 

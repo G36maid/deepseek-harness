@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-11-python-publication-workflow.md
-2026-08-11-python-publication-workflow.md: 9ca716c72828a3bc15ea2da5a798ae559fce9e85
-2026-08-11-python-publication-workflow.zh.md: 232bec32294ce699a850e207ee1c7411c363d394
-2026-08-11-python-publication-workflow.zh-tw.md: 2c4c4b7723cc27101c557052426680725d28e203

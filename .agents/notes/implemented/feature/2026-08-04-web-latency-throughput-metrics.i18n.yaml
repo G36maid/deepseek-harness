@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-04-web-latency-throughput-metrics.md
-2026-08-04-web-latency-throughput-metrics.md: 6c2e56a7ea909a7436956e143524e23f864806e9
-2026-08-04-web-latency-throughput-metrics.zh.md: 32fa6927a10ee1c3e1268258eb5a50a388be56c3
-2026-08-04-web-latency-throughput-metrics.zh-tw.md: a67493adad2e9c0bc3ecbecde0329f83f15b740d

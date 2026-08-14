@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-31-even-out-shipped-tool-rosters.zh.md) | [繁體中文](2026-07-31-even-out-shipped-tool-rosters.zh-tw.md)
+
 
 ## Problem
 

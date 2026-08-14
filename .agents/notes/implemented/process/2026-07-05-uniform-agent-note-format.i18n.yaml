@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-05-uniform-agent-note-format.md
-2026-07-05-uniform-agent-note-format.md: f41133655e4b4d948510e0aaa2fc7af71b3feae1
-2026-07-05-uniform-agent-note-format.zh.md: 8a211d53ebd0b3518bffe5880c13c5e6e23be1fe
-2026-07-05-uniform-agent-note-format.zh-tw.md: 1fed499c5654996c32f5601b87e5fd24a4808e87

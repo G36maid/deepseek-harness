@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-slots/README.md
 README.md: 072139b94c32ff191976391de997f6896bbdfab4
 README.zh.md: d9fdebed08d3164801ab0409cd60835bcffcd6de
-README.zh-tw.md: d2c932597091805ccd91356c2878c28b04594c84
+README.zh-tw.md: 97eba7fded1dfdd02ae12b6dd4f995ef90fc9711

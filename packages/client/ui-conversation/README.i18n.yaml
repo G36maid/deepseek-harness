@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-conversation/README.md
 README.md: c776dc31ae48428d8bac324bc63ca283b4147c18
 README.zh.md: 16d56504a5e0a9c0eb2a0dd63921a7df5026e7f7
-README.zh-tw.md: 72131ff31126166e2530ed7de3bb13b23c9fefdb
+README.zh-tw.md: eed622a726460d265b0190010d95391ece30da71

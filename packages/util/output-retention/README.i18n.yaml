@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/util/output-retention/README.md
 README.md: 8dc79a4b67fb0a6eebccc834f9d067bf8d6797c4
 README.zh.md: 344982e6ef72726a75a04a81d101f70c1e337b30
-README.zh-tw.md: d7917bfb371ae079578b6c52c874ce46cdfc3077
+README.zh-tw.md: c287e42eef0e716343d7ed28fd776929467a2184

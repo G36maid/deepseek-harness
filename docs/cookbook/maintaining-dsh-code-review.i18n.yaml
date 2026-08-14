@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/maintaining-dsh-code-review.md
 maintaining-dsh-code-review.md: a20616bbcb5fa4be6f15e1e63da5ac8c34985eec
 maintaining-dsh-code-review.zh.md: 0ecfc25e33bf3fb36ea3a6c3fd35cce19db38c1a
-maintaining-dsh-code-review.zh-tw.md: 3b1f7d32793a7306939e7ff392001d6eedd7a72c
+maintaining-dsh-code-review.zh-tw.md: 3d1c9115eec8e79300ce9051a4dc2d3b8b358c26

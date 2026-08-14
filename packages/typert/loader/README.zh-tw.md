@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-生成的 Typert 產物所用的 Loader 整合，僅支持 Node。該外掛程式需要 `ctx.loader` 和 `ctx.typert`；它本身不提供登錄檔。
+生成的 Typert 產物所用的 Loader 整合，僅支援 Node。該外掛程式需要 `ctx.loader` 和 `ctx.typert`；它本身不提供登錄檔。
 
 啟用時，該外掛程式會掃描現有的 Loader 設定項。隨後它會監聽 Cordis `internal/plugin` 生命週期通知，解析每個設定項所屬包的 `package.json`，在其匯出 `./typert` 時匯入該子路徑，校驗其 `TYPERT` manifest（中繼資料清單），並註冊該貢獻項，直到設定項或本外掛程式解除安裝。如果匯入操作在設定項或本外掛程式解除安裝後才結束，系統會丟棄其結果。
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/headless-agent/README.md
 README.md: fb3b5cbef55ab8473a37e0adf500d067f76d3350
 README.zh.md: 44008c5f15fb86ad4244eb8aa86fa9a1d892c9de
-README.zh-tw.md: 95859b741ded915caebaad048c36962bb0b2b805
+README.zh-tw.md: 9b5d3a8b698d2fdead7a86c9a73171421c65e045

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-07-workspace-picker-composer-entry.md
-2026-08-07-workspace-picker-composer-entry.md: 1e1ba401253fb60c53bae2b266926815f03ed6d6
-2026-08-07-workspace-picker-composer-entry.zh.md: 035b2cfb5a75ebd5199b3650fdbf658ca0e0a4d3
-2026-08-07-workspace-picker-composer-entry.zh-tw.md: a89acc14fea279ea56a2118956195372ac16539b

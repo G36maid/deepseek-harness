@@ -8,7 +8,7 @@
 
 策略隨呼叫傳遞，而不屬於提供方：兩個消費端可以同時按不同策略施加限制（bash 使用 `read-only`，而受限制的子 agent（代理）保持其狀態目錄可寫）；獲批的升權重試只是使用更寬策略發起的新呼叫。
 
-**只支持與宿主共享檔案系統和核心的限制。** 後端與宿主共享檔案系統和核心（`bwrap`、Landlock、Seatbelt）；`workspaceRoot` 指向檔案系統規範化後的真實主機目錄。系統先解析工作區所指的目錄，再做詞法規範化，因此包含 `symlink/..` 的有效 cwd 會授權 `chdir` 實際到達的目錄，而非無關的詞法父目錄。容器、microVM 與遠端執行器都不是該 seam 的後端：它們會以環境一致的分組替換整個能力 seam 的 Service Provider（`ctx.shell`、`ctx.fs`）。邊界及其設計理由見[沙盒 Agent Note](../../../.agents/notes/implemented/feature/2026-07-06-sandbox.md)。
+**只支援與宿主共享檔案系統和核心的限制。** 後端與宿主共享檔案系統和核心（`bwrap`、Landlock、Seatbelt）；`workspaceRoot` 指向檔案系統規範化後的真實主機目錄。系統先解析工作區所指的目錄，再做詞法規範化，因此包含 `symlink/..` 的有效 cwd 會授權 `chdir` 實際到達的目錄，而非無關的詞法父目錄。容器、microVM 與遠端執行器都不是該 seam 的後端：它們會以環境一致的分組替換整個能力 seam 的 Service Provider（`ctx.shell`、`ctx.fs`）。邊界及其設計理由見[沙盒 Agent Note](../../../.agents/notes/implemented/feature/2026-07-06-sandbox.md)。
 
 實作：[`@deepseek-ai/dsh-sandbox-local`](../sandbox-local/)（Linux：`bwrap`，否則使用相應平臺的 Landlock launcher；macOS：`sandbox-exec`／Seatbelt）。消費端：[`@deepseek-ai/dsh-bash-sandbox`](../../shell/bash-sandbox/)（包裝 `['bash', '-c', command]`）。
 
@@ -37,7 +37,7 @@ sandbox mode "<mode>" is requested but no sandbox backend is usable on this host
 ## 已知限制與暫緩事項
 
 - **文件操作是完整的策略詞彙**：該 seam 不表達網路、行程、系統呼叫、設備或憑據限制。
-- **只支持與宿主共享檔案系統和核心的限制**：容器、microVM 與遠端執行需要替換能力實作，而不是在此處增加提供方。
+- **只支援與宿主共享檔案系統和核心的限制**：容器、microVM 與遠端執行需要替換能力實作，而不是在此處增加提供方。
 - **拒絕報告是一種 stderr 方言**：該 seam 返回後端簽名，而非類型化執行時期拒絕通道，因此需要分類的消費端必須從子行程輸出推斷。
-- **Runner 診斷使用帶內通道**：退出狀態與 stderr 證據無法證明匹配行由哪個行程寫入，因此受限子行程若故意模仿 runner，就可能造成可用性或診斷誤歸因。這無法繞過約束；帶外 runner 狀態通道暫緩實作。
+- **Runner 診斷使用帶內通道**：結束狀態與 stderr 證據無法證明匹配行由哪個行程寫入，因此受限子行程若故意模仿 runner，就可能造成可用性或診斷誤歸因。這無法繞過約束；帶外 runner 狀態通道暫緩實作。
 - **每個上下文只有一個提供方**：同時組合不同沙盒機制需要提供方級階梯或獨立 Cordis 上下文；呼叫方逐呼叫選擇策略，而非後端標識。

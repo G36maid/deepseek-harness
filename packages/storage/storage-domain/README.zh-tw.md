@@ -4,13 +4,13 @@
 
 DeepSeek Harness 儲存中心的領域資料形式：在所有已設定的後端註冊後，公開可注入的 `ctx.storageDomain` 服務及對應的 `ctx.storage.domain` 投影。一個領域透過 `defineDomain`（zod 記錄 schema、從 `z.infer` 派生的類型）聲明一次，透過 `DomainFacility.open` 打開，並由具有最終決定權的記憶體狀態提供服務：讀取同步執行；寫入在每個領域各自的一條鏈上序列化，先在已路由後端達到持久狀態，再更新記憶體並行出 `domain/changed`。打開領域的消費端負責管理控制代碼的生命週期，並透過 `Domain.close()` 釋放它（冪等；通常作為其自身的 `ctx.effect` 資源釋放函式）；外掛程式解除安裝時，該設施會關閉仍處於打開狀態的領域。
 
-設計原理、打開語義和儲存／領域分層見 [Agent Note](../../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.zh.md)。
+設計原理、打開語義和儲存／領域分層見 [Agent Note](../../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md)。
 
 ## 設定
 
 | key | 含義 |
 | --- | --- |
-| `backend` | 每個領域的默認後端名稱（必填；不存在普遍適用的儲存介質）。 |
+| `backend` | 每個領域的預設後端名稱（必填；不存在普遍適用的儲存介質）。 |
 | `routes` | 逐領域覆蓋：領域名稱 → 後端名稱。 |
 
 ## 模型體驗

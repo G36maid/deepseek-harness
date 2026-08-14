@@ -14,17 +14,17 @@
 
 ## 新增目錄提供方
 
-選擇**新增提供方**，選取 Anthropic 或 OpenAI 等提供方，輸入其 API 金鑰並保存。已安裝目錄會提供端點、協議和模型清單。
+選擇**新增提供方**，選取 Anthropic 或 OpenAI 等提供方，輸入其 API 金鑰並保存。已安裝目錄會提供端點、協定和模型清單。
 
-使用原生認證的提供方需要各自的原生憑據。Bedrock、Vertex、Azure 和 Codex 分別使用 AWS 憑據與區域、ADC 項目、`api-version` 和 OAuth；只填寫 API 金鑰欄位無法完成設定。
+使用原生驗證的提供方需要各自的原生憑據。Bedrock、Vertex、Azure 和 Codex 分別使用 AWS 憑據與區域、ADC 項目、`api-version` 和 OAuth；只填寫 API 金鑰欄位無法完成設定。
 
 ## 新增自訂提供方
 
-對於公司閘道、自建伺服器或已安裝目錄中不存在的提供方，選擇**新增自訂提供方**。提供小寫 Provider ID、基礎 URL、API 協議、憑據和至少一個模型。
+對於公司閘道、自建伺服器或已安裝目錄中不存在的提供方，選擇**新增自訂提供方**。提供小寫 Provider ID、基礎 URL、API 協定、憑據和至少一個模型。
 
-![自訂提供方表單：Provider ID、顯示名稱、API 地址、API 協議、API 金鑰](providers-custom-form.zh.png)
+![自訂提供方表單：Provider ID、顯示名稱、API 地址、API 協定、API 金鑰](providers-custom-form.zh.png)
 
-Provider ID 是永久的，因為請求、已保存工作階段、模型預設值和憑據引用都會使用它。如需重新命名提供方，請新增新提供方並刪除舊提供方。顯示名稱、基礎 URL、協議、憑據和模型仍可編輯。
+Provider ID 是永久的，因為請求、已保存工作階段、模型預設值和憑據引用都會使用它。如需重新命名提供方，請新增新提供方並刪除舊提供方。顯示名稱、基礎 URL、協定、憑據和模型仍可編輯。
 
 在**模型目錄**中選擇**取得可用模型**，可查詢表單當前顯示的基礎 URL 和憑據。選擇候選項只會更新草稿；保存前不會儲存提供方。目錄提供方使用已安裝目錄，不發起網路請求。
 
@@ -95,4 +95,4 @@ llm-pi-ai:
 
 ## 進階設定
 
-自動生成的[外掛程式設定目錄](../../config-catalog.md)列出所有受支持的欄位與預設值。[`dsh-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) 和 [`dsh-llm-deepseek`](../../../packages/llm/llm-deepseek/README.md) 參考文件負責直接 `settings.yaml` 設定、目錄解析、推理控制、憑據與配接器錯誤。
+自動生成的[外掛程式設定目錄](../../config-catalog.md)列出所有受支援的欄位與預設值。[`dsh-llm-pi-ai`](../../../packages/llm/llm-pi-ai/README.md) 和 [`dsh-llm-deepseek`](../../../packages/llm/llm-deepseek/README.md) 參考文件負責直接 `settings.yaml` 設定、目錄解析、推理控制、憑據與配接器錯誤。

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/i18n/README.md
 README.md: 37d3478fe1010c67cef239e0bc165b45ec7418fb
 README.zh.md: 62acdd9bfb5294f1b7dbadd3b1fa851220c1be51
-README.zh-tw.md: a27b3f0b5641ba744743214cec2908b753e087c4
+README.zh-tw.md: e66197b4998f5d6df7be6304bfcf0378e49d3d03

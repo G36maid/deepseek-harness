@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/sandbox.md
 sandbox.md: efc562c1fd4a2588ef050200f3a5d2ea03254918
 sandbox.zh.md: 878e332d976da46b2a0371f18abff6000836b404
-sandbox.zh-tw.md: c7a879fea1d52c4968687eb4aa72b7bc72381ccc
+sandbox.zh-tw.md: e09abe92093c53cb953139d78cd3d05e4480a706

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-28-per-subsystem-cordis-surface-regions.md
-2026-07-28-per-subsystem-cordis-surface-regions.md: 2c3919ca6d0ab7d40ff2b30b2eb5c080f8cf8eee
-2026-07-28-per-subsystem-cordis-surface-regions.zh.md: 74ea0d2a5e72f1d9d8df2fd6f0f1a28ea5a2a7b6
-2026-07-28-per-subsystem-cordis-surface-regions.zh-tw.md: 018d07227cdf1a291121c05bd650f51d1220d051

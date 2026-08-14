@@ -21,7 +21,7 @@
 - 把呼叫方的中止訊號（`WEB_ABORTED`）傳播到網路請求與流式讀取。
 - 只跟隨**同源**重定向；跨源重定向以 `WEB_REDIRECT_BLOCKED` 失敗，要求發起新的工具呼叫（沿用 Claude Code 的 WebFetch 模式）。
 - 傳送顯式的產品 `User-Agent`，絕不偽裝成瀏覽器。
-- 不受支持的內容類型（例如二進位）以 `WEB_UNSUPPORTED_CONTENT_TYPE` 拒絕。
+- 不受支援的內容類型（例如二進位）以 `WEB_UNSUPPORTED_CONTENT_TYPE` 拒絕。
 
 ## 設定
 

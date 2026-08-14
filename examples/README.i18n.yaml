@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/README.md
 README.md: b228627c08629bfbfd787b6713eb33b7219bdbf5
 README.zh.md: dceba0bd4c5964938c1cb47d40a32bb8f5f464ca
-README.zh-tw.md: 1ce2caed3b02b5bf9c4813494d302026ee7ddb50
+README.zh-tw.md: 727b83606fc59d27c83864f9cb44b139286a2ae4

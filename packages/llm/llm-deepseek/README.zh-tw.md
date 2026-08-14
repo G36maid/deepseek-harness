@@ -2,11 +2,11 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-harness LLM（大型語言模型）seam 的 DeepSeek chat-completions 配接器：直接 `fetch` + SSE（Server-Sent Events，由 `eventsource-parser` 分幀），將官方協定格式（wire format；真源：API 文件 guides/thinking_mode、guides/tool_calls、api/create-chat-completion）轉換為 `StreamChunk` 協議。
+harness LLM（大型語言模型）seam 的 DeepSeek chat-completions 配接器：直接 `fetch` + SSE（Server-Sent Events，由 `eventsource-parser` 分幀），將官方協定格式（wire format；真源：API 文件 guides/thinking_mode、guides/tool_calls、api/create-chat-completion）轉換為 `StreamChunk` 協定。
 
 同一 seam 的第二個基於庫的實作位於 `@deepseek-ai/dsh-llm-pi-ai`。本包擁有 `deepseek-official` 提供方路由——刻意區別於 pi-ai 的 catalog 名稱 `deepseek`，因此同一組合可以並排掛載兩條 DeepSeek 路徑；而為 `deepseek-official` 本身註冊另一個配接器仍會拋出 `LlmError('DUPLICATE_ADAPTER')`。
 
-包根入口匯出 Cordis 外掛程式約定與 `DeepSeekAdapter`；協議序列化、SSE 解析與區塊轉換 helper 不屬於該根約定。
+包根入口匯出 Cordis 外掛程式約定與 `DeepSeekAdapter`；協定序列化、SSE 解析與區塊轉換 helper 不屬於該根約定。
 
 ## 設定
 
@@ -35,17 +35,17 @@ harness LLM（大型語言模型）seam 的 DeepSeek chat-completions 配接器�
         contextWindow: 512000
 ```
 
-該外掛程式註冊唯一提供方路由 `deepseek-official`，同時註冊解析後的 `retryPolicy`。請求使用 `provider: deepseek-official` 選擇該路由；其 `model` 會作為協議 `model` 字串原樣傳遞，因此更改 DeepSeek 模型不需要生命週期時註冊。省略 `models` 會公佈 `deepseek-v4-flash`（名稱為 `DeepSeek-V4-Flash`）和 `deepseek-v4-pro`（名稱為 `DeepSeek-V4-Pro`），兩者的上下文視窗均為 1,000,000 token；顯式清單會替換這些預設值，`models: []` 則不公佈任何模型。Catalog 設定項透過 `ctx.llm.listModels('deepseek-official')` 公開給 ACP（Agent Client Protocol）編輯器和 Web 選擇器等用戶端，但仍只提供建議：未列出模型 id 仍原樣傳遞。省略設定項 name 預設為其 id。
+該外掛程式註冊唯一提供方路由 `deepseek-official`，同時註冊解析後的 `retryPolicy`。請求使用 `provider: deepseek-official` 選擇該路由；其 `model` 會作為協定 `model` 字串原樣傳遞，因此更改 DeepSeek 模型不需要生命週期時註冊。省略 `models` 會公佈 `deepseek-v4-flash`（名稱為 `DeepSeek-V4-Flash`）和 `deepseek-v4-pro`（名稱為 `DeepSeek-V4-Pro`），兩者的上下文視窗均為 1,000,000 token；顯式清單會替換這些預設值，`models: []` 則不公佈任何模型。Catalog 設定項透過 `ctx.llm.listModels('deepseek-official')` 公開給 ACP（Agent Client Protocol）編輯器和 Web 選擇器等用戶端，但仍只提供建議：未列出模型 id 仍原樣傳遞。省略設定項 name 預設為其 id。
 
 `contextWindow` 對每個已設定模型都選填，不會透過建議 catalog 公開。`ctx.llm.resolveModelInfo('deepseek-official', model).context` 先返回精確模型值，再對不含容量的設定項或未列出原樣傳遞 id 返回 `defaultContextWindow`。配接器預設值為 1,000,000；因此，壓力敏感外掛程式可以獲得由部署決定的容量，不會將模型 selector 視為權威。為 `deepseek-official` 註冊另一個配接器會拋出 `LlmError('DUPLICATE_ADAPTER')`。
 
-`maxTokens` 是配接器為對話請求設定的輸出上限，預設值為 256,000。Catalog 設定項可以自帶 `maxTokens`，它對該模型勝出；不含該上限的設定項以及任何未列出原樣傳遞 id 都解析為 profile 值，因此新增按模型的上限只改變一個模型，而非整條路由。確切模型解析會將勝出值公開為 `defaultMaxTokens`；`LlmRuntime` 會在 agent loop（代理循環）寫入 `request/header` 前，將該值填入 `GenerateOptions.maxTokens`，從而仍可根據持久記錄重建協議請求。顯式的請求值或 `AgentOptions.maxTokens` 值優先，並會序列化為 `max_tokens`。配接器不會根據 `contextWindow` 自動調低該請求預算；上下文或提供方輸出上限較小的部署必須設定與其相容的 `maxTokens`。
+`maxTokens` 是配接器為對話請求設定的輸出上限，預設值為 256,000。Catalog 設定項可以自帶 `maxTokens`，它對該模型勝出；不含該上限的設定項以及任何未列出原樣傳遞 id 都解析為 profile 值，因此新增按模型的上限只改變一個模型，而非整條路由。確切模型解析會將勝出值公開為 `defaultMaxTokens`；`LlmRuntime` 會在 agent loop（代理循環）寫入 `request/header` 前，將該值填入 `GenerateOptions.maxTokens`，從而仍可根據持久記錄重建協定請求。顯式的請求值或 `AgentOptions.maxTokens` 值優先，並會序列化為 `max_tokens`。配接器不會根據 `contextWindow` 自動調低該請求預算；上下文或提供方輸出上限較小的部署必須設定與其相容的 `maxTokens`。
 
-同一確切模型結果會在部署策略允許思考時，為每個原樣傳遞模型在 `reasoning` 下公開有序的 `off`、`high` 和 `max` 推理（reasoning）強度。`reasoningEffort` 選擇部署預設值，省略時回退為 `high`。`agent/request` 可以在每個工作階段步驟替換它；解析後的值會記錄在 `request/header`。`high` 和 `max` 會啟用思考，並序列化為官方頂層 `reasoning_effort`；配接器持有的 `off` 則序列化為 `thinking.type: disabled`，且省略 `reasoning_effort`。不支持的值會在網路 I/O 前以 `UNSUPPORTED_REASONING_EFFORT` 失敗。
+同一確切模型結果會在部署策略允許思考時，為每個原樣傳遞模型在 `reasoning` 下公開有序的 `off`、`high` 和 `max` 推理（reasoning）強度。`reasoningEffort` 選擇部署預設值，省略時回退為 `high`。`agent/request` 可以在每個工作階段步驟替換它；解析後的值會記錄在 `request/header`。`high` 和 `max` 會啟用思考，並序列化為官方頂層 `reasoning_effort`；配接器持有的 `off` 則序列化為 `thinking.type: disabled`，且省略 `reasoning_effort`。不支援的值會在網路 I/O 前以 `UNSUPPORTED_REASONING_EFFORT` 失敗。
 
 `thinking: disabled` 是部署鎖定：它只公佈 `off`，並以 `off` 為預設值。省略 `reasoningEffort` 或將其設定為 `off` 均有效；設定 `high` 或 `max` 會使外掛程式載入失敗，直接按請求啟用思考也會在網路 I/O 前失敗。攜帶 `GenerateOptions.purpose: 'session-title'` 的請求也會強制停用思考並省略已解析的推理強度，將有界輸出保留給可見標題文字，不改變工作階段或壓縮（compaction）預設值。
 
-`streamIdleTimeoutMs` 會限制每次未完成提供方讀取，包括初始 `fetch`，但不計入消費端在區塊間花費的時間。DeepSeek SSE 註釋會作為傳輸活動使尚未完成的讀取重新佈防，但絕不會成為 `StreamChunk` 值或工作階段日誌事件。同一個穩定的 abort 訊號會在整個呼叫期間傳遞給請求與 body reader；過期會停止傳輸並拋出 `LlmError('TIMEOUT')`，較早的呼叫方 abort 則拋出 `LlmError('ABORTED')`。配接器每次 `stream()` 呼叫恰好發起一次提供方請求；它把已設定策略註冊為提供方元資料，再由 `dsh-llm-retry` 在持久化的 agent（代理）步驟邊界單獨執行該策略。
+`streamIdleTimeoutMs` 會限制每次未完成提供方讀取，包括初始 `fetch`，但不計入消費端在區塊間花費的時間。DeepSeek SSE 註解會作為傳輸活動使尚未完成的讀取重新佈防，但絕不會成為 `StreamChunk` 值或工作階段日誌事件。同一個穩定的 abort 訊號會在整個呼叫期間傳遞給請求與 body reader；過期會停止傳輸並拋出 `LlmError('TIMEOUT')`，較早的呼叫方 abort 則拋出 `LlmError('ABORTED')`。配接器每次 `stream()` 呼叫恰好發起一次提供方請求；它把已設定策略註冊為提供方中繼資料，再由 `dsh-llm-retry` 在持久化的 agent（代理）步驟邊界單獨執行該策略。
 
 ## 動態設定（settings + credentials）
 
@@ -66,15 +66,15 @@ DeepSeek 請求身份獨立於應用歸因。憑據解析成功後，每個提�
 
 ## 協定格式說明
 
-- 只支持流式輸出（`stream_options.include_usage` 始終開啟）。`usage` 可能附著在 finish 區塊上，也可能作為尾隨的純 usage 區塊到達；轉接器會將兩者都延遲到 `[DONE]`，因此 `usage` 始終位於 `finish` 之前，`finish` 之後不會出現任何內容。
-- 配接器持有的 `off` 推理強度對映為 `thinking: {type: 'disabled'}`，絕不會以 `reasoning_effort: 'off'` 透過協議傳送。
+- 只支援流式輸出（`stream_options.include_usage` 始終開啟）。`usage` 可能附著在 finish 區塊上，也可能作為尾隨的純 usage 區塊到達；轉接器會將兩者都延遲到 `[DONE]`，因此 `usage` 始終位於 `finish` 之前，`finish` 之後不會出現任何內容。
+- 配接器持有的 `off` 推理強度對映為 `thinking: {type: 'disabled'}`，絕不會以 `reasoning_effort: 'off'` 透過協定傳送。
 - 第一個思考模式區塊攜帶 `reasoning_content: ""`，系統會處理它（不會產生多餘 reasoning 塊）。
 - **推理回傳規則**：對攜帶工具呼叫的 assistant 輪次，會將 `reasoning_content` 序列化回歷史（思考模式 API 必需）；對不含工具呼叫的輪次，它會被丟棄（不會使用，可節省 token）。
 - Cache 計量：`cacheReadTokens` ← `prompt_cache_hit_tokens` / `prompt_tokens_details.cached_tokens`；DeepSeek 不報告 cache-write 指標。
 
 ## 錯誤
 
-非 2xx 回應會拋出穩定 code 的 `LlmError`：`AUTH`（401/403）、`QUOTA`（提供方詳細資訊標識配額、餘額或點數耗盡的回應）、`RATE_LIMIT`（其他 429）、`CONTEXT_WINDOW_EXCEEDED`（提供方 code、type 或 message 標識上下文溢位的 400）、`INVALID_REQUEST`（其他 400）、`SERVER`（5xx），其他情況為 `HTTP_<status>`。其可序列化 `failure` 保留 HTTP 狀態，以及有效的正 `Retry-After` 秒數／日期延遲和存在時的 `x-request-id` / `x-deepseek-request-id`。回應前傳輸失敗（DNS、連線被拒絕、TLS、proxy）會拋出命名已設定端點的 `TRANSPORT`，並將原始拒絕作為 `cause`；呼叫方 abort 拋出 `ABORTED`，仍以 loop 的取消訊號為準。協議違例拋出 `STREAM_CLOSED`（沒有 `[DONE]`）或 `MALFORMED_RESPONSE`（JSON payload 格式錯誤）。未知協議 `finish_reason`（例如 `content_filter`、`insufficient_system_resource`）會變為 `finish {kind: 'error', failure}` 區塊；已完成流如果使用 `stop`（或缺失）finish 但沒有開啟內容區塊，就會變為 `finish {kind: 'error'}`，code 為 `EMPTY_RESPONSE`（默認策略會重試）。
+非 2xx 回應會拋出穩定 code 的 `LlmError`：`AUTH`（401/403）、`QUOTA`（提供方詳細資訊標識配額、餘額或點數耗盡的回應）、`RATE_LIMIT`（其他 429）、`CONTEXT_WINDOW_EXCEEDED`（提供方 code、type 或 message 標識上下文溢位的 400）、`INVALID_REQUEST`（其他 400）、`SERVER`（5xx），其他情況為 `HTTP_<status>`。其可序列化 `failure` 保留 HTTP 狀態，以及有效的正 `Retry-After` 秒數／日期延遲和存在時的 `x-request-id` / `x-deepseek-request-id`。回應前傳輸失敗（DNS、連線被拒絕、TLS、proxy）會拋出命名已設定端點的 `TRANSPORT`，並將原始拒絕作為 `cause`；呼叫方 abort 拋出 `ABORTED`，仍以 loop 的取消訊號為準。協定違例拋出 `STREAM_CLOSED`（沒有 `[DONE]`）或 `MALFORMED_RESPONSE`（JSON payload 格式錯誤）。未知協定 `finish_reason`（例如 `content_filter`、`insufficient_system_resource`）會變為 `finish {kind: 'error', failure}` 區塊；已完成流如果使用 `stop`（或缺失）finish 但沒有開啟內容區塊，就會變為 `finish {kind: 'error'}`，code 為 `EMPTY_RESPONSE`（預設策略會重試）。
 
 ## 模型體驗
 
@@ -111,4 +111,4 @@ loop 保留的回應塊會追加到下一個請求，並保留其較早可複用
 - **settings 的 `models` 清單會整體替換組合清單**：settings 層按欄位合併，而陣列是單個欄位；按條目合併 catalog 需要帶鍵的形狀。
 - **未對映 `tool_choice`**：它不屬於核心詞彙（MVP 取捨，與 pi-ai twin 共享）。
 - **請求使用原始 `fetch`，而非 `@cordisjs/plugin-http`**：沒有共享 proxy／攔截設定；採用暫緩到第二個配接器需要該功能時（`TODO(http)`）。
-- **序列化會將 user 與工具結果內容展平為文字塊**：會跳過外掛程式新增的塊類型，空工具輸出會以字面 `(no output)` 透過協議傳送。
+- **序列化會將 user 與工具結果內容展平為文字塊**：會跳過外掛程式新增的塊類型，空工具輸出會以字面 `(no output)` 透過協定傳送。

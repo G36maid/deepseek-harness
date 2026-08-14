@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/guide/providers.md
 providers.md: 6148b7d2fbdb4142ebb2f0e130e677fb2a1c0a9a
 providers.zh.md: 1a507ebb8e737bdc0d7aba94738f8d08300a09a8
-providers.zh-tw.md: b8f23f42be37b2d787deefd0b7a65fc544f5b6da
+providers.zh-tw.md: 7e483c1e7d67d72649ac862a055f93000a90e3e5

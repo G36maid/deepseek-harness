@@ -32,7 +32,7 @@ Schedule 負責確定性的日曆規範化。落在夏令時缺口內的本機�
 
 每次成功的管理 preflight 還會要求 live owner 重新計算。如果先前的 post-append barrier 返回 `persistence_uncertain`，這會復原所保留的 create 或 delete batch，而無需 Schedule 專屬的持久化重試 timer。
 
-版本 1 的封閉領域錯誤程式碼包括 `invalid_prompt`、`invalid_selector`、`invalid_rule`、`invalid_time_zone`、`not_future`、`time_out_of_range`、`frequency_too_high`、`corrupt_schedule_log`、`persistence_uncertain` 和 `internal_error`。診斷文字保持穩定，不會暴露後端例外。渲染內容是規範值的確定性 JSON；通用工具結果策略仍負責模型可見內容的 spill 行為。
+版本 1 的封閉領域錯誤程式碼包括 `invalid_prompt`、`invalid_selector`、`invalid_rule`、`invalid_time_zone`、`not_future`、`time_out_of_range`、`frequency_too_high`、`corrupt_schedule_log`、`persistence_uncertain` 和 `internal_error`。診斷文字保持穩定，不會暴露後端例外。算繪內容是規範值的確定性 JSON；通用工具結果策略仍負責模型可見內容的 spill 行為。
 
 ## 交付生命週期
 
@@ -111,7 +111,7 @@ reminders_json: <JSON.stringify(reminders)>
 - **僅限工作階段本機交付**：提醒只有在原工作階段 live 時才能準時執行；cold 工作階段不會收到外部通知，只有復原後才會處理 overdue 記錄。
 - **活動驅動的重試**：到期 preflight 被拒絕或 framing／入隊失敗被收容後，記錄仍保持活動，但不會啟動私有重試 timer；後續 Agent 活動或成功的 Schedule preflight 會觸發重新計算。
 - **顯式本機時區**：`at` 絕不會匯入瀏覽器上下文；呼叫方必須把自然語言轉換為帶偏移量的 RFC 3339 字串，或帶 `time_zone` 的本機對象。
-- **固定間隔，而非日曆規則**：`every_seconds` 與建立錨點對齊，且執行頻率不能高於每 5 分鐘一次；協議不包含日曆表達式或 Cron 表達式。
+- **固定間隔，而非日曆規則**：`every_seconds` 與建立錨點對齊，且執行頻率不能高於每 5 分鐘一次；協定不包含日曆表達式或 Cron 運算式。
 - **只追趕最新一次**：逾期 Every 記錄只貢獻其最新一個到期發生時點，因此 Schedule 絕不會重播因錯過間隔而形成的積壓。
 - **存在狹窄的崩潰重複視窗**：同步 follow-up 獲得准入後、dispatch 檢查點完成前發生崩潰，可能使提醒重複；此包不承諾模型完成、使用者確認或副作用恰好執行一次。
 - **載入順序邊界**：外掛程式不會掃描或接管載入時已經 live 的 Agent。

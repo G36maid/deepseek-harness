@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/skills.md
 skills.md: eed08477e36093032237ca9e76c03190836169b0
 skills.zh.md: 078c8bd47772a8e393712e8c18d169eae3c28c12
-skills.zh-tw.md: 7e46b9270284a8390123c965b041b7430a5a1cec
+skills.zh-tw.md: f2a1ce0ed78c8292d819a3911d05d16f80c88b88

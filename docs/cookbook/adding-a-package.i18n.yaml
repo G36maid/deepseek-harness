@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/adding-a-package.md
 adding-a-package.md: af1acc16e457aace855b323ca6c57656670b70e9
 adding-a-package.zh.md: 18eee2dac189bf2450ccaa89cc94760c4cc18136
-adding-a-package.zh-tw.md: e03ba1810c04aa5ff582e5e0c5e24f9bd6d4775b
+adding-a-package.zh-tw.md: 186d343c0f349b8126e210bb2c8d4226525f3d1c

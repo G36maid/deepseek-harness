@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [简体中文](2026-06-11-deterministic-and-stress-testing.zh.md) | [繁體中文](2026-06-11-deterministic-and-stress-testing.zh-tw.md)
+
 
 ## Problem
 

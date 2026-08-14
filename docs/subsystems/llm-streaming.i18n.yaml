@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/llm-streaming.md
 llm-streaming.md: e9d546db504352877b4d46925854758570316bb1
 llm-streaming.zh.md: 9375775a22b910e6223fbde4530e7f3a5a448228
-llm-streaming.zh-tw.md: 32eb6cda8c148b5bf2ab0e47c825c3afb03694e0
+llm-streaming.zh-tw.md: 2fd4154efa97381e177a69c267dc7c9d7640ca49

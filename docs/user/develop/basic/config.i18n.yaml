@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/develop/basic/config.md
 config.md: e1d45b1ee4faa4a5464d15371f750cc595767ce4
 config.zh.md: d4e2d15c44a5051017c77c7f03279a9660ff083f
-config.zh-tw.md: 170c9401c58591ee7039051a90db1ab3913312ca
+config.zh-tw.md: 445bbdc2caf525ec0f33462b5342aad4385de234

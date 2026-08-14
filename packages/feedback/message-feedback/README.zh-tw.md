@@ -80,5 +80,5 @@ Plugin disposal 會先關閉變更接納，排空已進入各個 Session 佇列�
 - **沒有持久 Session 刪除級聯**——Session persistence 沒有刪除介面，且 `session/disposed`/`host/session-removed` 表示 detach 而非持久刪除。因此服務會保留空行，並可能在帶外移除日誌後留下殘留行，而不會在 detach 時刪除仍有效的回饋。
 - **Detach/catalog retirement 視窗**——請求若恰好落在 live detach 之後、persistence catalog 物化 header 之前的極短視窗，可能收到 `session-not-found`；呼叫方應在 retirement materialization 後重試。
 - **Header 身份不是內容指紋**——只有 `{createdAt, cwd}` 不同時才能識別複用；本契約無法區分保留相同 header 身份的克隆日誌。
-- **呼叫方邊界受信任**——`list`/`put`/`delete` 不攜帶已認證的 actor 或審計身份。在加入授權與歸屬資訊前，部署方必須只透過受信任或另行認證的邊界暴露 Host gateway。
-- **目錄與行邊界**——由於 persistence 沒有按 id 讀取元資料的操作，cold 請求會掃描完整的 Session snapshot 目錄。`maxNoteBytes` 只限制單條備注，單個 Session 行的條目數和聚合保留位元組尚無上限；按索引讀取元資料和由部署決定的行邊界，延後到具體消費端明確策略時處理。
+- **呼叫方邊界受信任**——`list`/`put`/`delete` 不攜帶已驗證的 actor 或審計身份。在加入授權與歸屬資訊前，部署方必須只透過受信任或另行驗證的邊界暴露 Host gateway。
+- **目錄與行邊界**——由於 persistence 沒有按 id 讀取中繼資料的操作，cold 請求會掃描完整的 Session snapshot 目錄。`maxNoteBytes` 只限制單條備注，單個 Session 行的條目數和聚合保留位元組尚無上限；按索引讀取中繼資料和由部署決定的行邊界，延後到具體消費端明確策略時處理。

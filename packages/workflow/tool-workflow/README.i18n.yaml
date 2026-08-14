@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/workflow/tool-workflow/README.md
 README.md: 5667e8d4b8cf6cee73454d083269fee46cffaec2
 README.zh.md: 86d148ceec592b7716dca315bf812864e6d369a8
-README.zh-tw.md: 26fd8f6835e63963671e033f773636f3731dbeb3
+README.zh-tw.md: 5f3929f7ddf3babbcfd3f69b68712bd1aba2ecbc

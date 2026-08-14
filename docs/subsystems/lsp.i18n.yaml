@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/lsp.md
 lsp.md: 1c7a552d98c71512d70a4b176ca9a4c1df6a20c9
 lsp.zh.md: 8bf0695717f18c15826cb38b0e6d250f8d788c6b
-lsp.zh-tw.md: 737cbe5c74f48a673b092c3e86ac48acb3336c94
+lsp.zh-tw.md: bc8ae2ee66d8f6c59adf709cc811005b3bcc5d85

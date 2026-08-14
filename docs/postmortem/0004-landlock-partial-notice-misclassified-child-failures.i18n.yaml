@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/postmortem/0004-landlock-partial-notice-misclassified-child-failures.md
 0004-landlock-partial-notice-misclassified-child-failures.md: 099460346c37d2d8464e28b331abe59d86e0fd94
 0004-landlock-partial-notice-misclassified-child-failures.zh.md: 7df04be242790ffb558e4a2e1e279def98bc37eb
-0004-landlock-partial-notice-misclassified-child-failures.zh-tw.md: 3f44ec200a941a85e4d20e5daf61d55ce31517dd
+0004-landlock-partial-notice-misclassified-child-failures.zh-tw.md: f8d3f619a675989d7978a372131050c5e13e5b82

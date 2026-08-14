@@ -48,7 +48,7 @@ export async function runWithDeadline(upstream: AbortSignal | undefined, timeout
 
 將你自己的 `code` 傳給 `timeoutOf`，使分類可在巢狀場景中正確組合。當 `upstream` 本身是 deadline 訊號時，如果該 timer 先觸發，`AbortSignal.any` 會保留它的 `TimeoutReason`。將匹配範圍限定為你的 code，會把外部逾時視為普通的 upstream 取消，而不會聲稱本機 timer 已到期。
 
-對於流式傳輸，建立一個 `idleWatchdog`，將其穩定的 `signal` 傳給傳輸層，並為提供方的每次讀取呼叫 `watchdog.next(iterator)`。當傳輸活動不產生迭代器值時，呼叫 `watchdog.pulse()`。間隔必須為正有限數，且不得超過 `MAX_TIMER_DELAY_MS`；否則 Node 會將其限制為 1 毫秒。它只對尚未完成的讀取請求計時，因此當下游程式碼進行渲染或在請求下一個區塊前以其他方式等待時，timer 不會執行。該原語仍然只會通知，因此傳輸層必須觀察穩定訊號；DeepSeek 和 pi-ai 配接器證明，逾時會關閉它們的真實回應正文或 SDK 請求。
+對於流式傳輸，建立一個 `idleWatchdog`，將其穩定的 `signal` 傳給傳輸層，並為提供方的每次讀取呼叫 `watchdog.next(iterator)`。當傳輸活動不產生迭代器值時，呼叫 `watchdog.pulse()`。間隔必須為正有限數，且不得超過 `MAX_TIMER_DELAY_MS`；否則 Node 會將其限制為 1 毫秒。它只對尚未完成的讀取請求計時，因此當下游程式碼進行算繪或在請求下一個區塊前以其他方式等待時，timer 不會執行。該原語仍然只會通知，因此傳輸層必須觀察穩定訊號；DeepSeek 和 pi-ai 配接器證明，逾時會關閉它們的真實回應正文或 SDK 請求。
 
 ## 哪些操作不設定逾時
 

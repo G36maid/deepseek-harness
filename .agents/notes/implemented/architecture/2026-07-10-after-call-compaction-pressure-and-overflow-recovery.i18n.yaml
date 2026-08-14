@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md
-2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md: 8ba5cd7cc3b85babbf2d2bc629281c670a2d3e35
-2026-07-10-after-call-compaction-pressure-and-overflow-recovery.zh.md: 0e31b4b7524550a70bf90547f38dcdbfb85f9a64
-2026-07-10-after-call-compaction-pressure-and-overflow-recovery.zh-tw.md: a58dbfec1df5a76cb34026079c8837f6631a1037

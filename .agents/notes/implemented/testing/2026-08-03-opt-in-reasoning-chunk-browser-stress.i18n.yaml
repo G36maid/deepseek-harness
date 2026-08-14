@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-08-03-opt-in-reasoning-chunk-browser-stress.md
-2026-08-03-opt-in-reasoning-chunk-browser-stress.md: 503be0f6b824f559ddae74333b4a149d8503f971
-2026-08-03-opt-in-reasoning-chunk-browser-stress.zh.md: c63e5de7aabea33d25837064a15acb348fa3b66b
-2026-08-03-opt-in-reasoning-chunk-browser-stress.zh-tw.md: 6c4685b863a1fe7a838b0e2bd7b0be30c44d1426

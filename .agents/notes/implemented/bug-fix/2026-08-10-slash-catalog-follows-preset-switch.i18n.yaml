@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-10-slash-catalog-follows-preset-switch.md
-2026-08-10-slash-catalog-follows-preset-switch.md: 9e8076bfbf46514e6af5e7169d5d61bfa488282d
-2026-08-10-slash-catalog-follows-preset-switch.zh.md: fb53fdd68a4419c258526990fc926f0504a1366f
-2026-08-10-slash-catalog-follows-preset-switch.zh-tw.md: 5d471b0c89d47d91949eec86462957fd43f2abd0

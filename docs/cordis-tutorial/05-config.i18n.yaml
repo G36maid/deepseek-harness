@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/05-config.md
 05-config.md: a5e683bff84d32ea3db43a3d464478fe0cdaf26e
 05-config.zh.md: 36b0e1a5f6da0eddf0c406ae967c70a9e589cc86
-05-config.zh-tw.md: 2bef2411d2890d0ce41d06d558a20e529e682b99
+05-config.zh-tw.md: 1c47ed5e7cad325c1a8de2e5a60d6e9e5eac4899

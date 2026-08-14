@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-由 [DeepSeek](https://deepseek.com) 支持的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 DeepSeek 的 **Anthropic 相容 Messages API**（`POST {baseURL}/messages`），啟用原生 `web_search_20250305` 伺服器工具，並把 DeepSeek 返回的結構化 `web_search_tool_result` 塊對映為 seam 規範化的 `WebSearchResult`。
+由 [DeepSeek](https://deepseek.com) 支援的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 DeepSeek 的 **Anthropic 相容 Messages API**（`POST {baseURL}/messages`），啟用原生 `web_search_20250305` 伺服器工具，並把 DeepSeek 返回的結構化 `web_search_tool_result` 塊對映為 seam 規範化的 `WebSearchResult`。
 
 這是一個**實作**包：它向 `ctx.web` 註冊提供方，透過選填的 `ctx.credentials` seam 為每次搜尋解析憑據，若存在發起請求的 agent（代理）工作階段，還會在其中記錄該輔助請求，且不註冊面向模型的工具。與 `@deepseek-ai/dsh-llm-deepseek` 一樣，它是函式／命名空間外掛程式（`inject: ['web']`）。Anthropic 協定格式（wire format）是提供方私有細節，並**不**使該提供方相依性 `ctx.llm`。
 
@@ -82,5 +82,5 @@ DeepSeek 返回的提供方生成答案均不被該提供方信任為 `content`�
 
 - **一次搜尋需要完整的 Messages 模型輪次**：會產生延遲與生成 token，並且最多執行 `maxUses` 次伺服器側搜尋；DeepSeek 不公開專用檢索端點。
 - **動態憑據的可用性在操作內部解析**：同步的 `available()` 約定可以確認解析器存在，但無法查詢非同步憑據儲存。因此，選中的無金鑰提供方會使搜尋以 `WEB_PROVIDER_CREDENTIAL_MISSING` 失敗；穩定的 `web_search` schema 仍保持註冊。呼叫方取消在本機與該預檢存在競態，但無法強制任意憑據後端自行停止工作。
-- **超量返回的源仍消耗 token**：協議沒有結果數量旋鈕，`maxResults` 只能由 seam 在事後截斷。
+- **超量返回的源仍消耗 token**：協定沒有結果數量旋鈕，`maxResults` 只能由 seam 在事後截斷。
 - **未引用的結果沒有 `snippet`**：只有 `text` 塊中的引用（`cited_text`）匹配其 URL 時，源才會獲得 snippet。

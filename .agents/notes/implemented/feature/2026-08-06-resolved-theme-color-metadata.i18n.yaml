@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-resolved-theme-color-metadata.md
-2026-08-06-resolved-theme-color-metadata.md: 67a02c5fcf5436575fe3e111e1473c6d85a825ee
-2026-08-06-resolved-theme-color-metadata.zh.md: 83809d91080372427a5cfcc9bcfadf8862673701
-2026-08-06-resolved-theme-color-metadata.zh-tw.md: a0a3e36d2274cf1ad6685cff84cec3feb61c6eca

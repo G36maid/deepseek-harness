@@ -50,7 +50,7 @@ type ApprovalPolicy = 'ask' | 'never'
 
 ## 審批請求
 
-`ApprovalRequest` 以足夠精確的方式標識 agent 和工具操作，以便路由和審計該問題。它有意省略工具參數：應答者透過 `callId` 將提示附加到已流式輸出的工具呼叫上，而非渲染另一份可能漂移的副本。
+`ApprovalRequest` 以足夠精確的方式標識 agent 和工具操作，以便路由和審計該問題。它有意省略工具參數：應答者透過 `callId` 將提示附加到已流式輸出的工具呼叫上，而非算繪另一份可能漂移的副本。
 
 ```ts type-equiv
 /**

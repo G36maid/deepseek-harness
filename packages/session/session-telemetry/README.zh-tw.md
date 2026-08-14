@@ -6,9 +6,9 @@
 
 ## 後端約定
 
-`SessionTelemetrySink` 有三個成員：`emit(record)` 必須入隊且不能阻塞，因為它會在 `session/event` 或顯式權威日誌重播期間同步執行；選填的 `flush()` 是輪次結束後的提示，呼叫方不等待結果，多數後端省略它並使用 SDK 的常規批次處理計畫；`shutdown()` 排空已入隊記錄，並在 SDK 停止後結束，dispose（資源釋放）會等待它。提供 `flush()` 的實作必須安排並行 flush 與 `shutdown()` 最終排空的先後順序。`SessionTelemetryBackend` 將此 API 註冊在 `sessionTelemetry` 上下文鍵下：每個上下文只允許一個實作，重複載入會拋出例外。後端以 `live` 或 `on-demand` 捕獲構造 `SessionTelemetryCoordinator`，並在自己選擇的觸發器中呼叫 `captureSession(session, throughSeq?)`。
+`SessionTelemetrySink` 有三個成員：`emit(record)` 必須入隊且不能阻塞，因為它會在 `session/event` 或顯式權威日誌重播期間同步執行；選填的 `flush()` 是輪次結束後的提示，呼叫方不等待結果，多數後端省略它並使用 SDK 的常規批次處理計畫；`shutdown()` 排空已入隊記錄，並在 SDK 停止後結束，dispose（資源釋放）會等待它。提供 `flush()` 的實作必須安排並行 flush 與 `shutdown()` 最終排空的先後順序。`SessionTelemetryBackend` 將此 API 註冊在 `sessionTelemetry` 上下文鍵下：每個上下文只允許一個實作，重複載入會拋出例外。後端以 `live` 或 `on-demand` 捕獲構造 `SessionTelemetryCoordinator`，並在自己選擇的觸發程序中呼叫 `captureSession(session, throughSeq?)`。
 
-該服務還攜帶必需的 [`SessionTelemetrySharingStatus`](#the-sharing-disclosure) `sharing` 成員：每個後端都必須向面向使用者的確認 surface（`/feedback` 命令的確認文字）披露的部署級共享策略。消費端只有在未掛載任何遙測服務時才渲染「未設定」。seam 擁有該詞彙（`full` | `feedback-only` | `disabled`），因此任何後端都可以披露策略，而無需相依性 OTel 包。
+該服務還攜帶必需的 [`SessionTelemetrySharingStatus`](#the-sharing-disclosure) `sharing` 成員：每個後端都必須向面向使用者的確認 surface（`/feedback` 命令的確認文字）披露的部署級共享策略。消費端只有在未掛載任何遙測服務時纔算繪「未設定」。seam 擁有該詞彙（`full` | `feedback-only` | `disabled`），因此任何後端都可以披露策略，而無需相依性 OTel 包。
 
 <a id="the-sharing-disclosure"></a>
 

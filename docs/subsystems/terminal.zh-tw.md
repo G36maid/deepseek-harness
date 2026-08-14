@@ -6,9 +6,9 @@ PTY 後端、`ctx.terminals` 與面向模型的消費端共享的類型。[持�
 
 ## 標識與就緒
 
-`TerminalSessionId` 是由服務鑄造的branded id。選填名稱是擁有者本機的顯示元資料；授權比較的是擁有該工作階段的確切 `Agent`，而不是名稱或猜測的 id。
+`TerminalSessionId` 是由服務鑄造的branded id。選填名稱是擁有者本機的顯示中繼資料；授權比較的是擁有該工作階段的確切 `Agent`，而不是名稱或猜測的 id。
 
-`TerminalWaitReason` 說明一次傳送為何返回。它與 `TerminalSessionStatus` 無關：一次傳送可能因靜默或逾時而返回，但頂層 shell 仍然存活；`session_exit` 表示該 shell 已退出，而不是某個任意的前臺子行程已退出。
+`TerminalWaitReason` 說明一次傳送為何返回。它與 `TerminalSessionStatus` 無關：一次傳送可能因靜默或逾時而返回，但頂層 shell 仍然存活；`session_exit` 表示該 shell 已結束，而不是某個任意的前臺子行程已結束。
 
 ```ts type-equiv
 /** Why one interactive send returned control to its caller. */

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-11-deepseek-request-user-id-header.md
-2026-08-11-deepseek-request-user-id-header.md: 7aee7b0db737fcdb0a415a3095d41cf8215e0fb7
-2026-08-11-deepseek-request-user-id-header.zh.md: 396c336ba7edbbdd8877c414cefd377b617ccfca
-2026-08-11-deepseek-request-user-id-header.zh-tw.md: c34ca8a5a477dbd9845c0f7df21a3cd399f9e6a6

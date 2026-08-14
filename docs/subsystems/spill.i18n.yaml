@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/spill.md
 spill.md: e065a5c82cd3eca3e1e8c58561e5eb42299a964a
 spill.zh.md: 823168862d8ce382fafea29641478f833d99f16d
-spill.zh-tw.md: fc8847fcfc48ad5940fd48c4f4f9f5367dac2f63
+spill.zh-tw.md: f81a22649c643f81c6363f1999ef6fa4f340b2e0

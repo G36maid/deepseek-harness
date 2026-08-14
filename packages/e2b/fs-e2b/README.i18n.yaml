@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/e2b/fs-e2b/README.md
 README.md: 93c68f15ddb05096d2fc34f543eca01b1fa350c4
 README.zh.md: d371f3f273c94ddd9333f5b0d8c4a1826340bf73
-README.zh-tw.md: f129987a671ba8bcd01113f86ad69c28511cf0b0
+README.zh-tw.md: 1c95286596d7a7e27ab552cf68f2ba087344afb2

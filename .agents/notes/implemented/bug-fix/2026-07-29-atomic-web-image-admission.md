@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-29-atomic-web-image-admission.zh.md) | [繁體中文](2026-07-29-atomic-web-image-admission.zh-tw.md)
+
 
 ## Problem
 

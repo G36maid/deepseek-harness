@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-03-hmr-initial-scan-boot-deadlock.zh.md) | [繁體中文](2026-08-03-hmr-initial-scan-boot-deadlock.zh-tw.md)
+
 
 ## Problem
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/extensions/cordis-client-runner/README.md
 README.md: dff00cd2a0e5ca4c0e7aacbeac20ff673d466f4e
 README.zh.md: d022bd5947d225a56f0b535076425a3129be02bf
-README.zh-tw.md: 0d7c376e3986183613dcb9404c6f6f67a548a256
+README.zh-tw.md: 60bb980a390ee577821f80342c4e56235c9de20b

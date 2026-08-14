@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-02-session-search-not-shipped-default.zh.md) | [繁體中文](2026-08-02-session-search-not-shipped-default.zh-tw.md)
+
 
 ## Problem
 

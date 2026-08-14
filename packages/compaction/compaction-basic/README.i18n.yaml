@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/compaction/compaction-basic/README.md
 README.md: c052191f297cf17d0279a5230d59be3b0ddb0d6e
 README.zh.md: e8bdd4aeadb01f573ff62261e73d8c976c27f994
-README.zh-tw.md: a3698f2b77dcaf63de70342605a7602971026538
+README.zh-tw.md: d3519403778b8ef2064e306401899d06e5e14d2f

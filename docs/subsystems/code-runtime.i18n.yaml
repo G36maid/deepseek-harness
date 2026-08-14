@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/code-runtime.md
 code-runtime.md: cebc6e3c5f74750985bcb77d9a3df8a3997c7a2c
 code-runtime.zh.md: 84760141d738339d1c8baa3d35f92f07eaa4eac4
-code-runtime.zh-tw.md: f030765d2d4633ddc0f262d764c1961b12837b90
+code-runtime.zh-tw.md: 387f00107a5db8eb8d39afc12bfbcc68ed77c3eb

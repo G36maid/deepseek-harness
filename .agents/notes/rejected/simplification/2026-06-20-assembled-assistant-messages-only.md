@@ -2,7 +2,7 @@
 
 Status: rejected — high-fidelity chunk replay, partial failed streams, and snapshot replay currently depend on persisted `assistant/chunk` events. Dropping chunks is only viable with a no-information-loss replay/artifact replacement.
 
-English | [简体中文](2026-06-20-assembled-assistant-messages-only.zh.md) | [繁體中文](2026-06-20-assembled-assistant-messages-only.zh-tw.md)
+
 
 ## Problem
 

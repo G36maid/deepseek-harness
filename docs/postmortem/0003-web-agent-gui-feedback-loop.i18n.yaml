@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/postmortem/0003-web-agent-gui-feedback-loop.md
 0003-web-agent-gui-feedback-loop.md: 77ea8fcac432ece20d4b3dc45d95f8134a51ed94
 0003-web-agent-gui-feedback-loop.zh.md: 0c24b3230d52e86d592c5f1356d1191d124a64d6
-0003-web-agent-gui-feedback-loop.zh-tw.md: 82b01d6ec6890ee631d99e0840a78f550bfa77cf
+0003-web-agent-gui-feedback-loop.zh-tw.md: 3167da263e118ef866f4fba12d8a7ddba9207b37

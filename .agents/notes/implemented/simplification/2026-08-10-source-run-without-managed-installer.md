@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-10-source-run-without-managed-installer.zh.md) | [繁體中文](2026-08-10-source-run-without-managed-installer.zh-tw.md)
+
 
 ## Problem
 

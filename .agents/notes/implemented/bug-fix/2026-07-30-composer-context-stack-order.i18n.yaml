@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-30-composer-context-stack-order.md
-2026-07-30-composer-context-stack-order.md: 243a65e5343e3d51967af5f2b06a621de7b9ff39
-2026-07-30-composer-context-stack-order.zh.md: 6d894b2998381df3480f37c469d320409d3a92d9
-2026-07-30-composer-context-stack-order.zh-tw.md: f503e7a877542aeb0b5343d5d994eed4c9f1023c

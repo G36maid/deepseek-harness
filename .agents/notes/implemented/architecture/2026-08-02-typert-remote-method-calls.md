@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-02-typert-remote-method-calls.zh.md) | [繁體中文](2026-08-02-typert-remote-method-calls.zh-tw.md)
+
 
 ## Problem
 

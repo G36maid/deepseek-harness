@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/lsp/lsp-stdio/README.md
 README.md: da142273bbe54d4cd31465fb1f6fa777c8242981
 README.zh.md: 4f133ff11fcf0f0aef73cee6e1c956aa19491bb4
-README.zh-tw.md: 9a93ff9e311eea2cb53e19c26a31adfde1091d25
+README.zh-tw.md: 72080fb642166fa48fd846d69e37105bf5e0632a

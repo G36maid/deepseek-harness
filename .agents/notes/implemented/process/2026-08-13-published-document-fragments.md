@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-13-published-document-fragments.zh.md) | [繁體中文](2026-08-13-published-document-fragments.zh-tw.md)
+
 
 ## Problem
 

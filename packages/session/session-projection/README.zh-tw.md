@@ -14,7 +14,7 @@
 
 ### 關鍵類型
 
-- `SessionProjectionMap`——整條鏈路唯一的 merge-extensible 類型表（host 側單元、協議塊、React 掛鉤）。值是協議層 JSON 全量值；渲染歸 slot 體系管，永遠不歸本層。
+- `SessionProjectionMap`——整條鏈路唯一的 merge-extensible 類型表（host 側單元、協定塊、React 掛鉤）。值是協定層 JSON 全量值；算繪歸 slot 體系管，永遠不歸本層。
 - `ProjectionDefinition<K, S>`——`{ key, schema, init(), apply(state, event), view(state), stateVersion }`：由三個純同步函式外加若干聲明構成的狀態驅動計算單元（state-driven computation unit），絕不是一個不透明的 getter。
 
 ## 約定
@@ -24,7 +24,7 @@
 - **全量值事件規則（承重）。** 攜帶狀態的日誌事件必須攜帶變更後的完整狀態，絕不攜帶裸增量——這讓每次狀態轉移始終足夠廉價，也讓每個被供給的值自描述（對消費端即 last-wins）。
 - **單元的同步紀律。**`init`/`apply`/`view` 必須是同步的；載體在切出頁面切片的同一 tick 內讀取 `snapshot()`，`asOfSeq` 之所以是一個一致切面正繫於此。誤寫成非同步的 `view` 會返回 Promise，讓邊界的 `schema.parse` 當場大聲失敗。
 - **狀態是純 JSON，`stateVersion` 是其失效錨點。** 持久投影快取（persisted projection cache）儲存 `(sessionId, key, ver, seq, val)` 行；狀態形狀或摺疊語義一旦變化就遞增 `stateVersion`，使過時行被丟棄，而不是被正向 apply 成垃圾。
-- **本層沒有協議詞彙。** 登錄檔只暴露變更流與快照讀取面；載體（api-proxy）據此自鑄各自的幀（`session/projection`）與塊。
+- **本層沒有協定詞彙。** 登錄檔只暴露變更流與快照讀取面；載體（api-proxy）據此自鑄各自的幀（`session/projection`）與塊。
 - **選填能力。** 領域外掛程式在 `ctx.inject(['sessionProjections'], …)` 下註冊，因此不帶登錄檔的 headless 組裝完全不受影響；載體使用 `ctx.get('sessionProjections')`，登錄檔缺席時完全省略自己的塊與幀。
 
 ## 職責

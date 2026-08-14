@@ -24,7 +24,7 @@ npm scope 為 `@deepseek-ai/dsh-*`；Cordis `Service` 子類和函式外掛程�
 | [`terminal/`](terminal/README.md) | 持久 PTY 能力系列：限定所有者範圍的工作階段、本機實作和麵向模型的工具 | 產品：穩定 API |
 | [`code-runtime/`](code-runtime/README.md) | 程式碼執行能力系列：Service Definition + worker 執行緒提供方 + Code Mode Consumer | 產品：穩定 API |
 | [`sandbox/`](sandbox/README.md) | 行程限制 seam；bwrap/Landlock/Seatbelt 後端 | 產品：穩定 API |
-| [`fs/`](fs/README.md) | 檔案系統能力系列：seam、本機實作、面向模型的文件工具、由 bash 支持的發現工具 | 產品：穩定 API |
+| [`fs/`](fs/README.md) | 檔案系統能力系列：seam、本機實作、面向模型的文件工具、由 bash 支援的發現工具 | 產品：穩定 API |
 | [`lsp/`](lsp/README.md) | LSP 能力系列：seam、通用 stdio 提供方和 `lsp` 工具 | 產品：穩定 API |
 | [`skill/`](skill/README.md) | skill（技能）能力系列：提供方登錄檔、本機提供方和麵向模型的目錄／loader | 產品：穩定 API |
 | [`compaction/`](compaction/README.md) | 壓縮（compaction）能力系列：Service Definition + 基礎提供方 + 命令 Consumer | 產品：穩定 API |
@@ -36,27 +36,27 @@ npm scope 為 `@deepseek-ai/dsh-*`；Cordis `Service` 子類和函式外掛程�
 | [`attachment/`](attachment/README.md) | 持久附件標識、校驗、本機內容尋址儲存 | 產品：穩定 API |
 | [`spill/`](spill/README.md) | spill 能力系列：儲存 seam、本機實作、工具結果 spill 策略 | 產品：穩定 API |
 | [`todo/`](todo/README.md) | 面向模型的 `todo_write` 工具 | 產品：穩定 API |
-| [`plan/`](plan/README.md) | Plan 協作狀態，提供直接進入命令與經評審的退出 | 產品：穩定 API |
+| [`plan/`](plan/README.md) | Plan 協作狀態，提供直接進入命令與經評審的結束 | 產品：穩定 API |
 | [`preset/`](preset/README.md) | 由 preset `cordis.yml` 按工作階段組裝 agent | 產品：穩定 API |
 | [`guard/`](guard/README.md) | 迴圈衛生守衛：建議性重複呼叫提醒 + `tools/execute` 截止時間強制執行器 | 產品：穩定 API |
 | [`bundle/`](bundle/README.md) | 可安裝的 `dsh --profile` 修補程式層 | 產品：穩定 API |
 | [`extensions/`](extensions/README.md) | agent 執行時期自修改：即時外掛程式／服務檢查和模型所寫外掛程式掛載／解除安裝（[設計](../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md)） | 產品：穩定 API |
-| [`hooks/`](hooks/README.md) | 掛鉤橋接 + 共享的 Claude Code／Codex 線協議庫 | 產品：穩定 API |
+| [`hooks/`](hooks/README.md) | 掛鉤橋接 + 共享的 Claude Code／Codex 線協定庫 | 產品：穩定 API |
 | [`session/`](session/README.md) | 持久工作階段資料平面：持久化 seam + JSONL/SQLite 後端、投影 seam、基於日誌的標題、工作階段上報 | 產品：穩定 API |
 | [`session-query/`](session-query/README.md) | 工作階段檢索系列：邏輯語料庫、有界讀取、血緣、事件關係、語義過濾和 SQLite 全文搜尋 | 產品：穩定 API |
 | [`settings/`](settings/README.md) | 使用者設定 seam + 基於文件的提供方 | 產品：穩定 API |
 | [`credentials/`](credentials/README.md) | 憑據引用 seam + 環境變數優先於 `.env` 的提供方 | 產品：穩定 API |
 | [`storage/`](storage/README.md) | 非工作階段儲存中樞 + 後端 + 領域形式 | 產品：穩定 API |
 | [`workspace/`](workspace/README.md) | Workspace 實體 | 產品：穩定 API |
-| [`sdk/`](sdk/README.md) | 行程外執行時期 SDK：JSON-RPC 協議、TypeScript 用戶端和伺服器外掛程式 | 產品：穩定 API |
+| [`sdk/`](sdk/README.md) | 行程外執行時期 SDK：JSON-RPC 協定、TypeScript 用戶端和伺服器外掛程式 | 產品：穩定 API |
 | [`acp/`](acp/README.md) | 僅面向自動化的 ACP（Agent Client Protocol）伺服器 | 產品：穩定 API |
 | [`interaction/`](interaction/README.md) | 人機協作平面：批准／互動 seam、權限預設、命令、詢問使用者的工具 | 產品：穩定 API |
 | [`boot/`](boot/README.md) | 共享的 app bin 啟動粘合層 | 產品：穩定 API |
 | [`host/`](host/README.md) | web GUI 宿主半側：API 閘道 + HTTP 路由伺服器 | 產品：穩定 API |
-| [`client/`](client/README.md) | web GUI 瀏覽器半側：shell、協議層、對象服務、slot、`ui-*` 外掛程式 | 產品：穩定 API |
-| [`examples/`](examples/README.md) | 演示組合包（agent-spine + CLI（命令列介面）/ACP/JSON-RPC bin），由葉節點載入 | 支持：示例基礎設施 |
-| [`test-support/`](test-support/README.md) | 支持基礎設施（testkit、不變式、重播、Loader 冒煙測試） | 支持：相容性預期較低 |
-| [`util/`](util/README.md) | 組間共享的低層零相依性工具（`Branded<B>`、Harness home／路徑輔助函式、逾時、留存） | 支持：小型、穩定、無 harness 相依性 |
+| [`client/`](client/README.md) | web GUI 瀏覽器半側：shell、協定層、對象服務、slot、`ui-*` 外掛程式 | 產品：穩定 API |
+| [`examples/`](examples/README.md) | 示範組合包（agent-spine + CLI（命令列介面）/ACP/JSON-RPC bin），由葉節點載入 | 支援：示例基礎設施 |
+| [`test-support/`](test-support/README.md) | 支援基礎設施（testkit、不變式、重播、Loader 冒煙測試） | 支援：相容性預期較低 |
+| [`util/`](util/README.md) | 組間共享的低層零相依性工具（`Branded<B>`、Harness home／路徑輔助函式、逾時、留存） | 支援：小型、穩定、無 harness 相依性 |
 
 新包加入現有組；新組更新其 README 和此表。
 

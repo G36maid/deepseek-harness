@@ -8,17 +8,17 @@
 
 ## 僅限 scope 內使用
 
-在 agent scope 之外掛載本行，會與登錄檔自身的 `deployment:persona` 註冊相撞並明確報錯。這不是需要繞開的限制：部署級人設已經有歸屬，而本行存在的意義正是為某一個 agent 遮蔽它。請把它掛在 preset 組裝內部，由 preset 的掛載過程提供 agent scope。
+在 agent scope 之外掛載本行，會與登錄檔自身的 `deployment:persona` 註冊相撞並明確報錯。這不是需要繞開的限制：部署級人設已經有歸屬，而本行存在的意義正是為某一個 agent 遮蔽它。請把它掛在 preset 組裝內部，由 preset 的掛載程序提供 agent scope。
 
 ## 設定
 
 | 欄位 | 預設值 | 含義 |
 |---|---|---|
-| `text` | 必填 | 作為 `deployment:persona` 段落渲染的人設文字 |
+| `text` | 必填 | 作為 `deployment:persona` 段落算繪的人設文字 |
 | `complete` | `false` | 組裝後將此人設復原為唯一的系統提示詞段落 |
 | `includeRuntimeContext` | `true` | 是否為此 agent 作用域包含動態 runtime-context 快照；false 會抑制所有上下文貢獻，但不停用擁有它們的服務 |
 
-`text` 與任何提示詞段落一樣是範本：完整的 `{{…}}` 組在提示詞**渲染**時（而非組裝時）嚴格解析為已註冊的提示詞變數。空文字同樣佔據該槽位，因此會把部署級人設整個遮蔽掉，然後在渲染時消失。啟用 `complete: true` 時，組裝仍會解析上下文、工具、變數和協作式監聽器，之後提示詞登錄檔將這份確切人設復原為唯一段落；身份、工具引導或監聽器都無法追加提示詞文字。啟用 `includeRuntimeContext: false` 時，此作用域的上下文提供方不會被求值，組裝監聽器新增的上下文也會被丟棄。
+`text` 與任何提示詞段落一樣是樣板：完整的 `{{…}}` 組在提示詞**算繪**時（而非組裝時）嚴格解析為已註冊的提示詞變數。空文字同樣佔據該槽位，因此會把部署級人設整個遮蔽掉，然後在算繪時消失。啟用 `complete: true` 時，組裝仍會解析上下文、工具、變數和協作式監聽器，之後提示詞登錄檔將這份確切人設復原為唯一段落；身份、工具引導或監聽器都無法追加提示詞文字。啟用 `includeRuntimeContext: false` 時，此作用域的上下文提供方不會被求值，組裝監聽器新增的上下文也會被丟棄。
 
 ## 模型體驗
 
@@ -26,7 +26,7 @@
 
 #### What the model sees
 
-位於 order 0 的 `deployment:persona` 段落，緊隨 harness 身份開場白之後，攜帶本行設定的 `text`，其中的提示詞變數已解析。對於其 preset 掛載了本行的 agent，它會替換部署所設定的任何人設。在完整模式下，模型只會看到這個渲染後的段落作為系統提示詞。Runtime context 默認保持啟用。停用後，新建 agent 不會收到來自沙盒策略、批准策略、委派或其他 system-prompt 上下文提供方的 runtime-context 快照。
+位於 order 0 的 `deployment:persona` 段落，緊隨 harness 身份開場白之後，攜帶本行設定的 `text`，其中的提示詞變數已解析。對於其 preset 掛載了本行的 agent，它會替換部署所設定的任何人設。在完整模式下，模型只會看到這個算繪後的段落作為系統提示詞。Runtime context 預設保持啟用。停用後，新建 agent 不會收到來自沙盒策略、批准策略、委派或其他 system-prompt 上下文提供方的 runtime-context 快照。
 
 #### Token effect
 
@@ -38,4 +38,4 @@
 
 ## 已知限制與暫緩事項
 
-- **不支持全域性掛載** —— 提示詞登錄檔擁有未加 scope 的人設槽位，因此本行只能從帶 scope 的組裝中使用。要改變部署級人設，應在 `system-prompt` 行自身的設定中修改。
+- **不支援全域性掛載** —— 提示詞登錄檔擁有未加 scope 的人設槽位，因此本行只能從帶 scope 的組裝中使用。要改變部署級人設，應在 `system-prompt` 行自身的設定中修改。

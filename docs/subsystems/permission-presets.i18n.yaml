@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/permission-presets.md
 permission-presets.md: f4374e83433130c0848c3d9687bb5724fa5ff920
 permission-presets.zh.md: e22b17760346b25abaf923dcc2ff9306c59c5dc9
-permission-presets.zh-tw.md: b60b97c0b244521a1f7092d8680ae0579e5c6337
+permission-presets.zh-tw.md: 16a1ea150bc88f690ec718ecf34d927ae9ef60b6

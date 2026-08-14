@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/session-telemetry.md
 session-telemetry.md: 13d39e54ff56739b7e1881be3e98c8135ffb17bd
 session-telemetry.zh.md: 969cd2b84e455fd37106c682781e7f8329fe8490
-session-telemetry.zh-tw.md: 4222f13fa378a0d7567afc22b460f1fc4c53002f
+session-telemetry.zh-tw.md: 8c7c1628801df55e47fe113698bfb9b038a51823

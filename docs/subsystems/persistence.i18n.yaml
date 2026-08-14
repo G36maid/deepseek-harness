@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/persistence.md
 persistence.md: bf9f3c5c3d0acf1d09d7a081af16c740c7db8251
 persistence.zh.md: 3e06f8117e40ac63ae1dd38285bab68cc60849a6
-persistence.zh-tw.md: 7b022dfeecd55c7085003998149f51a7f4a6522b
+persistence.zh-tw.md: 9cb519f39c2818ac488fd7d42dda1760ae5110b2

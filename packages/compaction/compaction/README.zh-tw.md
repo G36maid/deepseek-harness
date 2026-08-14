@@ -24,7 +24,7 @@
 | `compactNow(agent, signal)` | 即使未達到自動壓力，也顯式壓縮一段有效、平衡的較早範圍。該操作會在讓出控制權前同步預留空閒輪次接納；沒有有效範圍時不寫入任何內容；在摘要前記錄獨立的 `compaction/* { turn: null }` 嘗試；釋放預留前等待其持久性檢查點。預期操作失敗使用 `ManualCompactionError`；取消會原樣重新拋出 abort 原因。 |
 | `compactRegion(start, end, agent, signal?)` | 強制將表層節點 `[start, end]`（包含兩端 seq）從 `agent.session` 摘要為單個替換節點，其源由 `compactCheckpointSource(compactionId)` 建立。如果壓縮已在進行、`start`／`end` 不是表層節點，或 `start` 在表層上位於 `end` 之後，則**拋出例外**。該範圍是表層位置範圍，不是數值 seq 區間：在之前的 replace 將新生成的高 seq 摘要節點放到已遮蔽範圍的位置之後，表層順序不再跟隨 seq 順序。 |
 
-`CompactionResult` 向呼叫方保留原始摘要與記錄操作過程的事件 seq，同時保留已遮蔽範圍與 token 計量；其結構由漂移檢查保障，定義見 [壓縮資料結構參考](../../../docs/subsystems/compaction.md#compactionresult)。
+`CompactionResult` 向呼叫方保留原始摘要與記錄操作程序的事件 seq，同時保留已遮蔽範圍與 token 計量；其結構由漂移檢查保障，定義見 [壓縮資料結構參考](../../../docs/subsystems/compaction.md#compactionresult)。
 
 `compactIfNeeded` 和 `compactNow` 必須傳入 `signal`；`compactRegion` 的該參數選填。透過 `ctx.llm.stream()` 摘要的後端**必須** 將它轉發到呼叫的 `GenerateOptions.signal`，因此 abort 或 fiber dispose（資源釋放）會停止進行中的摘要。自動和顯式範圍標記對會從當前打開的輪次復原其數字形式歸屬。手動標記對不要求存在打開的輪次，並標記 `turn: null`。
 
@@ -50,7 +50,7 @@
 
 這對標記表示取得和釋放鎖的時間點，並非排他的事件容器。手動摘要等待期間，空閒的 `inject()` 可以在 start 與 end 之間追加不相關的上下文。因此，手動穩定性檢查會重新驗證所選 span，而不要求整個表層相等；位置替換會讓該注入上下文在檢查點之後保持可見。自動壓縮則要求其活動輪次內的整個表層保持相等。
 
-`deriveMessages()` 隨後將摘要渲染為 user 角色訊息，再跟上已保留節點。已遮蔽事件仍保留在原始日誌中，因此重播具有確定性。
+`deriveMessages()` 隨後將摘要算繪為 user 角色訊息，再跟上已保留節點。已遮蔽事件仍保留在原始日誌中，因此重播具有確定性。
 
 ## 阻塞
 
@@ -64,7 +64,7 @@
 
 ## 實作後端
 
-繼承 `CompactionEngine`，實作 `compactIfNeeded`、`compactNow` 與 `compactRegion`，再將子類作為外掛程式載入：它會註冊為 `ctx.compaction`。每個成功後端都使用 `compactCheckpointSource(compactionId, sourceCommandId?)` 建立替換 user 訊息的源；必填的 `compactionId` 將檢查點與對應 `compaction/*` 交易關聯，而 `isCompactCheckpointSource()` 可在持久化或克隆後識別該標記，無需相依性後端身份。基於範本或模型的實作可以放在同級包中，不需更改呼叫方或共享 token meter。
+繼承 `CompactionEngine`，實作 `compactIfNeeded`、`compactNow` 與 `compactRegion`，再將子類作為外掛程式載入：它會註冊為 `ctx.compaction`。每個成功後端都使用 `compactCheckpointSource(compactionId, sourceCommandId?)` 建立替換 user 訊息的源；必填的 `compactionId` 將檢查點與對應 `compaction/*` 交易關聯，而 `isCompactCheckpointSource()` 可在持久化或克隆後識別該標記，無需相依性後端身份。基於樣板或模型的實作可以放在同級包中，不需更改呼叫方或共享 token meter。
 
 ## 在 host 程序之外識別檢查點（`./checkpoint`）
 

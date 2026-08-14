@@ -8,7 +8,7 @@
 
 ## 預設表
 
-預設是一個表鍵，對映到一個沙盒／審批組合，外加選填的用戶端展示資訊；默認預設表自帶 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。
+預設是一個表鍵，對映到一個沙盒／審批組合，外加選填的用戶端展示資訊；預設預設表自帶 `workspace-write`（`workspace-write` + `ask`）和 `danger-full-access`（`danger-full-access` + `never`）。
 
 ```ts type-equiv
 /** One preset's sandbox/approval bundle and optional client presentation. */
@@ -47,7 +47,7 @@ interface Config {
 
 `current(events)` 從 knob 派生實際生效的預設，而不是隻看自身事件：它摺疊工作階段的生效沙盒模式（回退到執行器設定的模式）與生效審批策略（先回退到審批服務設定，再回退到 `ask`），優先取仍然匹配的已記錄選擇，其次取聲明順序中第一個匹配的表項，否則返回 `CUSTOM_PRESET`（`'custom'`）。`custom` 只是派生值：用戶端可以把它顯示為當前值，但它絕不是切換目標，也絕不出現在事件 payload 中。
 
-`names` 按預設表聲明順序列出可切換的預設；`optionOf(name)` 為某個表鍵（label 回退為該鍵）或 `custom` 建置用戶端渲染的選項，傳入其他任何名稱都會拋出例外。
+`names` 按預設表聲明順序列出可切換的預設；`optionOf(name)` 為某個表鍵（label 回退為該鍵）或 `custom` 建置用戶端算繪的選項，傳入其他任何名稱都會拋出例外。
 
 ```ts type-equiv
 /** The select-option shape a presentation layer advertises for one preset (or for the derived `custom` state). */

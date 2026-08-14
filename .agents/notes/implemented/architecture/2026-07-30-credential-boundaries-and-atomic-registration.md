@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-30-credential-boundaries-and-atomic-registration.zh.md) | [繁體中文](2026-07-30-credential-boundaries-and-atomic-registration.zh-tw.md)
+
 
 > Scope: hardening the [request-level LLM configuration boundary](2026-07-29-request-level-llm-config-credentials.md) — where a stored credential lives and who can read it, how one request's facts stay one generation, and how a route set changes without a window. Companion to the [settings write-path note](2026-07-30-settings-write-path-integrity.md), whose provider fixes this note applies to `credentials-local` and whose writer lock it promotes into `dsh-atomic-write`.
 

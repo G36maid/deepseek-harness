@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/e2b/subprocess-e2b/README.md
 README.md: 352ec8d6022dd16b448eef1389751a4a413961b7
 README.zh.md: 7935d7566ef2b20585c51cb5bce94f7171700777
-README.zh-tw.md: b7e2d672a28581d899b688359914c42423702587
+README.zh-tw.md: 09b2b230ee755ab9dba1fb25ee29d7ee612fc1e4

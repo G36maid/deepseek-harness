@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/test-support/loader-smoke/README.md
 README.md: b5573600d8909019ce6df9afcffd020aa17e98b1
 README.zh.md: 516a05eb960b5034ef90d64fcb8a1e09ca675d51
-README.zh-tw.md: e1d54d880b5eb7b01948fe8c949fdb8fcf51d2aa
+README.zh-tw.md: c5f452afc979c449ddce9de9f440489c76242e93

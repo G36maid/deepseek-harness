@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-30-web-remote-markdown-images.md
-2026-07-30-web-remote-markdown-images.md: 202ea35dd5e19d36825f65c143c4c71dcecab62d
-2026-07-30-web-remote-markdown-images.zh.md: 1d06b2a2c2bbbf2326860d496bf2ec63a35cc5b5
-2026-07-30-web-remote-markdown-images.zh-tw.md: a88bc2ba915fd2e1a564d8f9432ee122c5e9af88

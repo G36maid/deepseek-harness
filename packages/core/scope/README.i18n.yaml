@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/core/scope/README.md
 README.md: 323b7415069a6e9d8ea8160bda84d086587e2095
 README.zh.md: 2f3f90472b1fe61f2b703c594cb7d255540687fa
-README.zh-tw.md: 7180335d80a177d2321d7818418fe929f6cce196
+README.zh-tw.md: dfbc0ccea25780b54b026d5a137cd7fc503cb059

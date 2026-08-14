@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-28-tool-call-file-open-in-os.md
-2026-07-28-tool-call-file-open-in-os.md: 744c6f19ad663418aeb9812b1a7fc3be08b871fb
-2026-07-28-tool-call-file-open-in-os.zh.md: 314b1df68efe3e422e9250eed07f5cec20ecd7e0
-2026-07-28-tool-call-file-open-in-os.zh-tw.md: 301da1ee903332ba1491fd8f5f1061b9ed15d42b

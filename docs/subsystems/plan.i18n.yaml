@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/plan.md
 plan.md: 4d5e99df2602ffa18800aaf12c290eeb87ade6b2
 plan.zh.md: 5a2f16d1daca8f376aa4beb031ff6addf74beb8b
-plan.zh-tw.md: 455b0aca5454e0f754d5b352ef302a9a2d1fb31d
+plan.zh-tw.md: 51186cec1f8f7909e96a13f70d9269b53eb18f85

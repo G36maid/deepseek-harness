@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/develop/basic/index.md
 index.md: d2e2efd84fdf366156c70c6adc0c3040c6cb9c92
 index.zh.md: e519ba1224884bc60fc2daec7aa1219ee3b6c44e
-index.zh-tw.md: 270b355d45fb30332459345585726115e15bfe43
+index.zh-tw.md: 78a8ff244fe121b3bfd7146fc7069c15574c3885

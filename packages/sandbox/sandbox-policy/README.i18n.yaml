@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/sandbox/sandbox-policy/README.md
 README.md: 82b1f0c87998e947798b4821466743b80cf388fc
 README.zh.md: 2d093644b5b19d446b029b7d60b17991471e0ba2
-README.zh-tw.md: 54306621ef2e4115096f9d775a02c9a1dee17829
+README.zh-tw.md: cc3e4ea205ad8c77730b0805f5c449795b375f59

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-28-sdk-max-output-tokens.md
-2026-07-28-sdk-max-output-tokens.md: d235a8b418a607e7f81f8083978c318c9e8b3c93
-2026-07-28-sdk-max-output-tokens.zh.md: 3f2d2156db95c578021a6d742508743a0324aed9
-2026-07-28-sdk-max-output-tokens.zh-tw.md: 98f27b5b5d9f8eb237b9945f0df79aa282c6cebd

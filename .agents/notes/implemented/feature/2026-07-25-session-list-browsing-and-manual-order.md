@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-25-session-list-browsing-and-manual-order.zh.md) | [繁體中文](2026-07-25-session-list-browsing-and-manual-order.zh-tw.md)
+
 
 ## Problem
 

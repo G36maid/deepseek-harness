@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/util/atomic-write/README.md
 README.md: 3e69773c8818d50f0541f103160c84a7287ec70a
 README.zh.md: 5a9459e8696e681fd0ce9ed26b2052c3e8c83426
-README.zh-tw.md: 95c72a4dde2cf01ad229bae38e587e0e6be1f94b
+README.zh-tw.md: 274098154a1c925260e618f62d4f30073527867c

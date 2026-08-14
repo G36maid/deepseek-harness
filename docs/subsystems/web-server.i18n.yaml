@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/web-server.md
 web-server.md: c094445e052d21600ba454b1e13241c1b423c54f
 web-server.zh.md: fe821236e34ba0981387a40b3cfd5e20b44c5ddb
-web-server.zh-tw.md: da5804b7abccbdc5ec0fd0c88f95fef9318a16df
+web-server.zh-tw.md: c25cc3771975ccee6ea728596d6efb624a84f2dd

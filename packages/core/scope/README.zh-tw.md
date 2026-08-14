@@ -6,7 +6,7 @@
 
 ## 公開 API
 
-- `createScope(ctx: Context, key: ScopeKey, options?): Scope`：在 `ctx` 的 fiber 下建立作用域。可以同步使用（effect 收集受 uid 閘門約束；服務解析會沿建立該作用域的外掛程式相依性範圍繼續尋找）。同進程、帶類型的鍵受信任；處於非活動狀態的建立上下文仍會透過 Cordis 失敗（`INACTIVE_EFFECT`）。`options.parent` 在作用域可用之前經 `bindScopeParent` 綁定其外圍作用域；綁定控制代碼不外洩。
+- `createScope(ctx: Context, key: ScopeKey, options?): Scope`：在 `ctx` 的 fiber 下建立作用域。可以同步使用（effect 收集受 uid 閘門約束；服務解析會沿建立該作用域的外掛程式相依性範圍繼續尋找）。同行程、帶類型的鍵受信任；處於非活動狀態的建立上下文仍會透過 Cordis 失敗（`INACTIVE_EFFECT`）。`options.parent` 在作用域可用之前經 `bindScopeParent` 綁定其外圍作用域；綁定控制代碼不外洩。
 - `bindScopeParent(key, parent): ScopeParentBinding` / `scopeParentOf(key)` / `scopeChainOf(key)`：支撐兩條鏈方向的父關係。綁定僅此一次：已有父級的鍵直接拋錯，只有返回的綁定控制代碼的 `rebind(parent)` 才能重新綁定父級——即空白工作階段 recompose 的操作，僅當舊父之下產出的東西一概不被保留時才合法（這是持有方的約定——該關係看不見工作階段記錄了什麼）。綁定與每次 rebind 都拒絕會閉環的連結。`scopeChainOf` 返回 `[key, parent, …]`，最近者在前。
 - `Scope.ctx`：帶標籤的上下文。透過它進行的註冊既具備作用域可見性，也服從作用域生命週期。派生上下文（一次 `extend`、掛載於其下的 fiber）繼承標籤；巢狀作用域會遮蔽外層標籤（最近的標籤生效）。
 - `Scope.rawDispose`：底層 fiber 的確切 Cordis disposer。組合式（generator）effect 會 yield 此函式，從而把作用域 teardown 巢狀在該 yield 位置（Cordis 按函式標識去重巢狀 effect；yield 一個包裝函式會使作用域 teardown 成為平行的同級操作）。
@@ -24,7 +24,7 @@
 
 ## 設計約定
 
-註冊上下文同時決定可見性和所有權，防止註冊在一個作用域中可見、卻隨另一個作用域 dispose（資源釋放）。作用域用於路由受信任的同進程外掛程式；它們不是沙盒或權限邊界。原理與明確排除的安全目標見 [agent 作用域 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-08-agent-scope-contexts.md#security-and-authority-are-non-goals)。
+註冊上下文同時決定可見性和所有權，防止註冊在一個作用域中可見、卻隨另一個作用域 dispose（資源釋放）。作用域用於路由受信任的同行程外掛程式；它們不是沙盒或權限邊界。原理與明確排除的安全目標見 [agent 作用域 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-08-agent-scope-contexts.md#security-and-authority-are-non-goals)。
 
 感知作用域的服務會定義具體 `ScopeLayer`，聚合各自不同的表與領域輔助函式。`ScopedLayers.effect()` 接受一個返回同步撤銷函式的同步動作，在選填通知前安裝該撤銷函式，並且只有在完整聚合為空時纔回收精確作用域層。`notify` 預設為 `true`；由所提供的回呼決定觀測方失敗是向外拋出還是在內部處理。`EntryValues` 保持內部可見；儲存類從包根而非 `/store` 子路徑匯入；共享儲存不定義登錄檔專屬的篩選或迭代策略。詳見[共享作用域層儲存 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-12-scoped-layers-store.md)。
 
@@ -32,6 +32,6 @@
 
 ## 已知限制與暫緩事項
 
-- **只有感知作用域的表層才會隔離狀態**：登錄檔必須按 `scopeOf()` 歸檔，事件必須透過 `scopeTarget()` 分發；僅僅透過帶作用域的上下文呼叫任意 Cordis 服務，並不會改變該服務仍為上下文全域性這一事實。
-- **一個上下文只攜帶一個最近的作用域鍵**：層級關係存在於鍵級父關係中而非上下文標籤裡；巢狀作用域**上下文**仍遮蔽為單一標籤，多成員策略集仍不受支持。
+- **只有感知作用域的表層才會隔離狀態**：登錄檔必須按 `scopeOf()` 封存，事件必須透過 `scopeTarget()` 分發；僅僅透過帶作用域的上下文呼叫任意 Cordis 服務，並不會改變該服務仍為上下文全域性這一事實。
+- **一個上下文只攜帶一個最近的作用域鍵**：層級關係存在於鍵級父關係中而非上下文標籤裡；巢狀作用域**上下文**仍遮蔽為單一標籤，多成員策略集仍不受支援。
 - **服務可達性來自作用域建立者**：交出 `Scope.ctx` 也會交出建立外掛程式注入的服務範圍，因此，若作用域建立者提供的服務範圍較寬，持有者之後也無法將其收窄。

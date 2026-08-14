@@ -13,7 +13,7 @@
 
 ### 關鍵類型
 
-- `AskUserQuestionRequest`：`{ questions: [{ id, question, detail?, header?, options?, multiSelect?, intent? }], agent?, signal? }`；`detail` 提供輔助文字，提供方會將其隨問題一起渲染，而不會將其變成選項標籤。如提供 `agent`，它必須與登錄檔中的存活執行時期根 agent（代理）是同一對象。
+- `AskUserQuestionRequest`：`{ questions: [{ id, question, detail?, header?, options?, multiSelect?, intent? }], agent?, signal? }`；`detail` 提供輔助文字，提供方會將其隨問題一起算繪，而不會將其變成選項標籤。如提供 `agent`，它必須與登錄檔中的存活執行時期根 agent（代理）是同一對象。
 - `AskUserQuestionOption`：`{ label, description? }`。
 - `AskUserQuestionIntent`：`{ kind: 'plan-review', approve }`；即下文的帶標籤呈現意圖。
 - `AskUserQuestionAnswer`：`{ answers: [{ id, selected, custom? }] }`。
@@ -26,7 +26,7 @@
 
 ### 呈現意圖
 
-`intent` 聲明某個問題本身就是一種已知決策，因此認識該標籤的 UI 可以照此呈現——`plan-review` 表示 `detail` 是一份待審閱的計畫，`dsh-plan-mode` 會在 `exit_plan_mode` 的問題上設定它。意圖只改變呈現：遵循它的 UI 回答的仍是通用 UI 會發送的那些選項標籤，不認識該標籤的 UI 渲染通用選項清單，因此呼叫方兩種情況下讀到的回答欄位相同。`approve` 指名錶示批准的標籤，而不相依性選項順序。有兩項斷言無法透過類型表達，`ask()` 會以 `BAD_INTENT` 拒絕它們：`approve` 未命中該問題自身的任一選項，以及意圖落在沒有 `detail` 的問題上——而 `detail` 正是它自稱在審閱的東西。
+`intent` 聲明某個問題本身就是一種已知決策，因此認識該標籤的 UI 可以照此呈現——`plan-review` 表示 `detail` 是一份待審閱的計畫，`dsh-plan-mode` 會在 `exit_plan_mode` 的問題上設定它。意圖只改變呈現：遵循它的 UI 回答的仍是通用 UI 會發送的那些選項標籤，不認識該標籤的 UI 算繪通用選項清單，因此呼叫方兩種情況下讀到的回答欄位相同。`approve` 指名錶示批准的標籤，而不相依性選項順序。有兩項斷言無法透過類型表達，`ask()` 會以 `BAD_INTENT` 拒絕它們：`approve` 未命中該問題自身的任一選項，以及意圖落在沒有 `detail` 的問題上——而 `detail` 正是它自稱在審閱的東西。
 
 ## 職責
 
@@ -42,5 +42,5 @@
 
 ## 已知限制與暫緩事項
 
-- **每個上下文只能有一個提供方**：不支持路由或扇出到多個 UI；第二次註冊會拋出 `DUPLICATE_PROVIDER`，未註冊任何提供方時，`ask()` 會拋出 `NO_PROVIDER`，而不會降級。
+- **每個上下文只能有一個提供方**：不支援路由或扇出到多個 UI；第二次註冊會拋出 `DUPLICATE_PROVIDER`，未註冊任何提供方時，`ask()` 會拋出 `NO_PROVIDER`，而不會降級。
 - **詞彙僅包含問題表單形態**：可供選擇的選項加選填的自訂文字；更豐富的互動形態（文件選擇器、diff 預覽確認）尚無 seam 詞彙。

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/runtime-diagnostics/invariants/README.md
 README.md: 5d4b4743ccab963a457b0628a7326b282eaea2ba
 README.zh.md: a3c1af410c22ddb113fb05f6a3b0349cc74ae694
-README.zh-tw.md: 8513a63ed6f8db6259d6da7e20368e86a48eb8c6
+README.zh-tw.md: 2c75fbc0a3301c1ca7ee391e9ee56850c4bea4d3

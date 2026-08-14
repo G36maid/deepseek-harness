@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-06-parallel-pre-push-gates.md
-2026-07-06-parallel-pre-push-gates.md: e95e6e9fd8cfee6fc245f0bc8600b9761de1bcd3
-2026-07-06-parallel-pre-push-gates.zh.md: b0a9c32954fb5370305760f169c21176db4d4afa
-2026-07-06-parallel-pre-push-gates.zh-tw.md: 9641f9382be8768e7322cd0f0be6cbdeac6b20c4

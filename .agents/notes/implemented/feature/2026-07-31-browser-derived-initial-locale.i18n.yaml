@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-browser-derived-initial-locale.md
-2026-07-31-browser-derived-initial-locale.md: 5a9b83a4ec02df9976baa5c9a5ee57e00cc5ddd2
-2026-07-31-browser-derived-initial-locale.zh.md: a8c1a9fae2ab7b53b174f32233b16be2a00c46e5
-2026-07-31-browser-derived-initial-locale.zh-tw.md: 9a879ed4b375b98c269fbaec7313eedaeb57d482

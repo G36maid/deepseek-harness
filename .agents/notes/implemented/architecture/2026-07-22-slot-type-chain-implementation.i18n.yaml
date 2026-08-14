@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-22-slot-type-chain-implementation.md
-2026-07-22-slot-type-chain-implementation.md: 254e67643a4db4aed93c7b25e284559258edc049
-2026-07-22-slot-type-chain-implementation.zh.md: 6f41d5761038faceb8942e3ff48fd44253780ebe
-2026-07-22-slot-type-chain-implementation.zh-tw.md: f1e65334c1059869759f3ee81805fc583801319f

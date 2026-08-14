@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/api/gateway/README.md
 README.md: edb653cacb7ea7c634531c3f62fba68feaa5d0b8
 README.zh.md: 37b534b70a6976ae2236cc386af10064fc208298
-README.zh-tw.md: aba2b67e681ca51a38952c04004cba1003cb88d6
+README.zh-tw.md: 288423c13e8c1dae787ef569e414b2e8c4673cc2

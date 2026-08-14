@@ -29,7 +29,7 @@ vendor/<dir>/
 }
 ```
 
-`package.json` 的不變式：`"private": true`（vendored 包永不發布）；改寫 `name` 的 scope（[對映](../rescope.md)），保留上游的 `version`/`exports`/`type`；聲明元資料指向 `lib/types`；發布 `.d.ts` 與 `.d.ts.map` 聲明輸出；在 `peerDependencies` 中列出其 Cordis 相依性（與上游 manifest（中繼資料清單）一致）。傳遞性上游相依性本身也必須被 vendor 或已存在於倉庫中——vendor 一個包往往意味著 vendor 其整條相依性樹（如 `@cordisjs/plugin-http` 會拉入 `@cordisjs/fetch-file`）。
+`package.json` 的不變式：`"private": true`（vendored 包永不發布）；改寫 `name` 的 scope（[對映](../rescope.md)），保留上游的 `version`/`exports`/`type`；聲明中繼資料指向 `lib/types`；發布 `.d.ts` 與 `.d.ts.map` 聲明輸出；在 `peerDependencies` 中列出其 Cordis 相依性（與上游 manifest（中繼資料清單）一致）。傳遞性上游相依性本身也必須被 vendor 或已存在於倉庫中——vendor 一個包往往意味著 vendor 其整條相依性樹（如 `@cordisjs/plugin-http` 會拉入 `@cordisjs/fetch-file`）。
 
 vendored TypeScript 原始碼中的本機相對匯入/匯出在複製後使用顯式 `.ts` 後綴。這是倉庫本機建置與上游的差異：`rewriteRelativeImportExtensions` 輸出 `.js` 執行時期匯入，而聲明文件保留顯式 `.ts` 後綴，使 NodeNext/Node16 的 TypeScript 消費端能夠解析。
 

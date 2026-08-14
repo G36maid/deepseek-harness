@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-29-ask-question-web-presentation.zh.md) | [繁體中文](2026-07-29-ask-question-web-presentation.zh-tw.md)
+
 
 ## Problem
 

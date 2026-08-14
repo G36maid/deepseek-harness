@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/schema-form/README.md
 README.md: 261b2be6d425808c0889eb0fb68e190abc5d5bb5
 README.zh.md: 1922d419b1cb911e8128eee48e78656ce9dab1dd
-README.zh-tw.md: 7c91b266fa33787bb95d338135b852da1836ec3a
+README.zh-tw.md: f5306c358cbaeecc5cda6820c0010870aec39f51

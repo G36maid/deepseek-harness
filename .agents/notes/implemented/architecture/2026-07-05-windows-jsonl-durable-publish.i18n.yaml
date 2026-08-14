@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-05-windows-jsonl-durable-publish.md
-2026-07-05-windows-jsonl-durable-publish.md: fbdb60f24446e03d6a34dd53d662e9f6efa3bf66
-2026-07-05-windows-jsonl-durable-publish.zh.md: 1a8963db49683bb800664736dc97fc691d373f66
-2026-07-05-windows-jsonl-durable-publish.zh-tw.md: 217a619767d9479a3920496faf4faf4fddeef8f0

@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-web-config-plane.md
-2026-07-30-web-config-plane.md: 6bd685aea3846a848c65e4c2a821a9fa140c5a5a
-2026-07-30-web-config-plane.zh.md: c27341e63c43168940df2f5ff1e3a22637c88a88
-2026-07-30-web-config-plane.zh-tw.md: decab47759814568ed7e1d48656354bd34e282fe

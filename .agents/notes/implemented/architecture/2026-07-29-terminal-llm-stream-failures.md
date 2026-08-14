@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-07-29-terminal-llm-stream-failures.zh.md) | [繁體中文](2026-07-29-terminal-llm-stream-failures.zh-tw.md)
+
 
 This note supersedes only the thrown-error identity and call-local sidecar mechanism in [bounded LLM request recovery](2026-06-21-bounded-llm-request-recovery.md) and [after-call context-overflow recovery](2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md). Those notes continue to own structured failure facts, retry policy, durable attempts, and compaction recovery.
 

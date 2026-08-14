@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/rescope.md
 rescope.md: d2aab5d0e8595576576f876601e775f0da02ebf5
 rescope.zh.md: 3321fdf7ff474bf393148ad34979c8aba0dae5a7
-rescope.zh-tw.md: e28f603825cd3d0e177f035505c477f38675592c
+rescope.zh-tw.md: 3c3ac265e7bdf0a43d0bfed2c525c80f7ede3f60

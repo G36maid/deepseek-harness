@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/llm/llm-pi-ai/README.md
 README.md: fe22c973b7768c90f5e70333ab0c428e89ce96e1
 README.zh.md: 7a725159c830f5766856a44a2ba2e4a61c2b7db5
-README.zh-tw.md: f3cb19fd446c8b2fe3e68bc95bef9ba26154fbc6
+README.zh-tw.md: 8fd917a7b2b9c24e474b73fdaa21c79645878cbf

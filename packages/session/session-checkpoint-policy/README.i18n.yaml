@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/session/session-checkpoint-policy/README.md
 README.md: 5619c37950dfa7ce86a958fc500eb641ced2ae4f
 README.zh.md: ab6342e8fe1f3faa80ff5617a9f3519d22268c51
-README.zh-tw.md: ea1f02f0deff17d8303eed247ba5f7098b95f603
+README.zh-tw.md: f3fb5a69c9286530c9d15c956a3e5dc8da9e1d8b

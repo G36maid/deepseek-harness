@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/jobs/jobs-local/README.md
 README.md: 99f36bbb1da2598000f71dc080ed443f1cd47e88
 README.zh.md: 860ff9c5faede28568bb222f1aa39f1a228f69a8
-README.zh-tw.md: 74ea06d0953f8dfa3fbe65c0448903bd4b06d02a
+README.zh-tw.md: 832989abf49cdcd1931b22460e44f27e8ae9d4b3

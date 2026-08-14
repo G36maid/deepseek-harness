@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/compaction.md
 compaction.md: 0cf76a98bf8e93f67d4cf0a96170bfc73a7d129a
 compaction.zh.md: cb3204a83fa7969743cf125d4e0bf1ef87b71f36
-compaction.zh-tw.md: 3a1d14a4253a7c0990618c8edf2a52f7c290d78c
+compaction.zh-tw.md: 01a3ca6a4e1878d71cf68e18eb4b8465e13f07a4

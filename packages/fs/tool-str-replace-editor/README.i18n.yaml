@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/fs/tool-str-replace-editor/README.md
 README.md: 0003043cbf5e2713857605aa4e2e3b956f2e4186
 README.zh.md: 131163a1b342e1ff3753ceaf82f0067a16fe180d
-README.zh-tw.md: a33a453249261933a12655a50056953fa053e51f
+README.zh-tw.md: 7855d08cafb1776a0bcf31a687cc1430a9db4ef5

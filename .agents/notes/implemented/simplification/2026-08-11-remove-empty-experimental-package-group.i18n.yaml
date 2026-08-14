@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-11-remove-empty-experimental-package-group.md
-2026-08-11-remove-empty-experimental-package-group.md: 14c792ad2b6b0b8b0097d3c9640b83e0dc27312f
-2026-08-11-remove-empty-experimental-package-group.zh.md: f80eeb711ec25e20fb44d091e4545333ba648a98
-2026-08-11-remove-empty-experimental-package-group.zh-tw.md: 6bd5c2b21b642f4990e1199f01e95b1a83a3606a

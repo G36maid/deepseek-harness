@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-23-collapse-persistence-flush-state.md
-2026-07-23-collapse-persistence-flush-state.md: 312165c199640a95b11f18cd922309e6341ae825
-2026-07-23-collapse-persistence-flush-state.zh.md: 5105cdd5d79424872bb27d8004e42eb8a3b6f54d
-2026-07-23-collapse-persistence-flush-state.zh-tw.md: 18c19353d42ae064891044c77b8a5226102141fb

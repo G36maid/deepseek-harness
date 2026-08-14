@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-workflow-run/README.md
 README.md: a928352a06afb9b0c5a90a6b3f3bf8367c4bee41
 README.zh.md: 90e928df9843bf4e2251e078f434b72f36e35529
-README.zh-tw.md: cd23db5b15abcd2ec84a1d24e388704037cac82a
+README.zh-tw.md: 09562841d74cc56b10dd748095fa46339c9f48e1

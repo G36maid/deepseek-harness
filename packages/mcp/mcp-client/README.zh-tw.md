@@ -29,7 +29,7 @@ MCP 用戶端橋接外掛程式：連線外部 [Model Context Protocol](https://
       Authorization: !!js '`Bearer ${process.env.MCP_TOKEN}`'
 ```
 
-模型會看到 `mcp__github__create_issue`、`mcp__web__search` 等工具，這與 Claude Code 和 Codex 使用的伺服器限定形狀相同。HMR（熱模組替換）支持熱替換：編輯設定項會觸發中斷連線 + 重新連線，無需重新啟動行程；`serverName` 不變時會生成完全相同的工具名稱。
+模型會看到 `mcp__github__create_issue`、`mcp__web__search` 等工具，這與 Claude Code 和 Codex 使用的伺服器限定形狀相同。HMR（熱模組替換）支援熱替換：編輯設定項會觸發中斷連線 + 重新連線，無需重新啟動行程；`serverName` 不變時會生成完全相同的工具名稱。
 
 ## 設定
 
@@ -42,17 +42,17 @@ MCP 用戶端橋接外掛程式：連線外部 [Model Context Protocol](https://
 | `env` | stdio | 否 | 合併到已清理環境中的額外環境變數 |
 | `cwd` | stdio | 否 | 子行程工作目錄 |
 | `url` | http | 是 | MCP 伺服器 URL |
-| `headers` | http | 否 | 額外標頭（例如認證 token） |
-| `toolCallTimeoutMs` | 兩者 | 否 | 每次 `callTool` 呼叫的逾時（默認 60000） |
-| `failOnStartupError` | 兩者 | 否 | 初始連線或工具同步失敗時拒絕外掛程式啟用（默認 `false`） |
-| `reconnect.enabled` | 兩者 | 否 | 連線丟失後自動重新連線（默認 `true`） |
-| `reconnect.initialDelayMs` | 兩者 | 否 | 首次重連延遲（毫秒）；每次連續失敗嘗試翻倍（默認 500） |
-| `reconnect.maxDelayMs` | 兩者 | 否 | 退避上限（毫秒）；同時也是重設嘗試預算所需的正常執行時期長（默認 30000） |
-| `reconnect.maxAttempts` | 兩者 | 否 | 每次中斷期間連續失敗嘗試次數上限，超出後徹底放棄（默認 10） |
+| `headers` | http | 否 | 額外標頭（例如驗證 token） |
+| `toolCallTimeoutMs` | 兩者 | 否 | 每次 `callTool` 呼叫的逾時（預設 60000） |
+| `failOnStartupError` | 兩者 | 否 | 初始連線或工具同步失敗時拒絕外掛程式啟用（預設 `false`） |
+| `reconnect.enabled` | 兩者 | 否 | 連線丟失後自動重新連線（預設 `true`） |
+| `reconnect.initialDelayMs` | 兩者 | 否 | 首次重連延遲（毫秒）；每次連續失敗嘗試翻倍（預設 500） |
+| `reconnect.maxDelayMs` | 兩者 | 否 | 退避上限（毫秒）；同時也是重設嘗試預算所需的正常執行時期長（預設 30000） |
+| `reconnect.maxAttempts` | 兩者 | 否 | 每次中斷期間連續失敗嘗試次數上限，超出後徹底放棄（預設 10） |
 
 ## 工具命名
 
-每個 MCP 工具都有兩個名稱：透過 `tools/call` 在協議上傳送的原始 MCP 名稱，以及公開名稱 `mcp__<serverName>__<rawName>`，後者註冊到 `ctx.tools`。公開名稱會規範化為 DeepSeek 函式名稱約定（64 個字元、`[A-Za-z0-9_-]`）；如果替換或截斷改變名稱，就會追加 `(serverName, rawName)` 的確定性 12 位十六進位 hash，確保不同工具絕不會摺疊為同一個名稱。名稱是 `(serverName, rawName)` 的純函式：連線順序、重新同步和其他伺服器永遠不會重新命名工具。
+每個 MCP 工具都有兩個名稱：透過 `tools/call` 在協定上傳送的原始 MCP 名稱，以及公開名稱 `mcp__<serverName>__<rawName>`，後者註冊到 `ctx.tools`。公開名稱會規範化為 DeepSeek 函式名稱約定（64 個字元、`[A-Za-z0-9_-]`）；如果替換或截斷改變名稱，就會追加 `(serverName, rawName)` 的確定性 12 位十六進位 hash，確保不同工具絕不會摺疊為同一個名稱。名稱是 `(serverName, rawName)` 的純函式：連線順序、重新同步和其他伺服器永遠不會重新命名工具。
 
 - 發布相同原始名稱（例如 `search`）的兩個伺服器會在各自 namespace 下共存。
 - 存活實例中的重複 `serverName` 會使後加載的外掛程式實例失敗。
@@ -63,9 +63,9 @@ MCP 用戶端橋接外掛程式：連線外部 [Model Context Protocol](https://
 
 - 連線時：外掛程式啟用會等待 `listTools()`，並在組合開始首個輪次前透過 `ctx.tools.register()` 以公開名稱註冊每個工具。初始連線、發現或註冊失敗始終會記錄日誌；`failOnStartupError` 為 true 時拒絕啟用，否則外掛程式仍會啟用但不註冊工具。
 - 監聽 `notifications/tools/list_changed` → 重新同步；取得階段失敗時保留上一世代的註冊，註冊衝突則會回滾本次嘗試的世代，並且不保留該伺服器的任何工具。
-- 工具執行：`client.callTool({ name: rawName, arguments }, { signal })`，支持逾時 + 中止；公開名稱絕不會發給伺服器。
-- 規範成功值是 `{ content: JsonValue[], structuredContent? }`；完整的 JSON MCP 塊會保留給程式設計呼叫方。受支持且已聲明的 `outputSchema` 會驗證 `structuredContent`；不受支持的 schema 詞彙會回退為不受約束的 `JsonValue`。
-- Native／模型渲染保留現有文字投影：文字塊以換行連線，圖片、音訊、資源和不受支持的塊會變成佔位符。
+- 工具執行：`client.callTool({ name: rawName, arguments }, { signal })`，支援逾時 + 中止；公開名稱絕不會發給伺服器。
+- 規範成功值是 `{ content: JsonValue[], structuredContent? }`；完整的 JSON MCP 塊會保留給程式設計呼叫方。受支援且已聲明的 `outputSchema` 會驗證 `structuredContent`；不受支援的 schema 詞彙會回退為不受約束的 `JsonValue`。
+- Native／模型算繪保留現有文字投影：文字塊以換行連線，圖片、音訊、資源和不受支援的塊會變成預留位置。
 - 中斷連線／崩潰時：supervisor 以指數退避（`reconnect.initialDelayMs` 逐次翻倍，上限 `reconnect.maxDelayMs`）重新啟動原始伺服器設定，成功後重新執行發現——復原的世代會替換前一個，因此工具既不會重複也不會洩漏。中斷期間最後一個正常世代保持註冊；針對它的呼叫在復原前會失敗。
 - 重連按中斷預算控制：連續失敗達到 `reconnect.maxAttempts` 次後，該伺服器的工具會被註銷，重連停止，直到 HMR 重載或重新啟動 Host。連線存活超過 `maxDelayMs` 會重設預算，因此偶爾崩潰的伺服器可以無限復原，而崩潰迴圈的伺服器——即使短暫連線成功——仍會耗盡上限而非永遠重新啟動。
 - 重連狀態在日誌中對使用者可見：reconnecting（warn，含嘗試次數和延遲）、recovered（info）、最終失敗和 disabled-loss（error）。dispose（資源釋放）會取消任何待執行的重連。設定 `reconnect.enabled: false` 時，連線丟失後工具保持註冊但呼叫失敗，直到重載——即手動復原行為。
@@ -96,7 +96,7 @@ MCP 用戶端橋接外掛程式：連線外部 [Model Context Protocol](https://
 
 #### 模型看到的內容
 
-公開工具名稱和 JSON 參數會保留在 assistant 歷史中。文字結果塊會以換行連線為一個保留的 Native 文字結果；圖片、音訊、資源和不受支持的塊在其中變為簡短佔位符。它們的完整 JSON 塊及選填結構化內容保留在執行區域性的規範值中；MCP `isError` 會透過登錄檔的錯誤路徑拒絕呼叫。
+公開工具名稱和 JSON 參數會保留在 assistant 歷史中。文字結果塊會以換行連線為一個保留的 Native 文字結果；圖片、音訊、資源和不受支援的塊在其中變為簡短預留位置。它們的完整 JSON 塊及選填結構化內容保留在執行區域性的規範值中；MCP `isError` 會透過登錄檔的錯誤路徑拒絕呼叫。
 
 #### Token 影響
 
@@ -109,7 +109,7 @@ MCP 用戶端橋接外掛程式：連線外部 [Model Context Protocol](https://
 ## 已知限制與暫緩事項
 
 - **只橋接 MCP 的工具能力**：資源和提示詞沒有 harness 消費介面，暫緩實作。
-- **啟動逾時繼承自 MCP SDK**：DSH 尚未公開連線／發現逾時。每次 initialize 請求或分頁 `tools/list` 請求都使用 SDK 默認的 60 秒，因此在初始同步完成期間，無回應的 server 或 cursor chain 可能同時延遲啟用與 teardown。
+- **啟動逾時繼承自 MCP SDK**：DSH 尚未公開連線／發現逾時。每次 initialize 請求或分頁 `tools/list` 請求都使用 SDK 預設的 60 秒，因此在初始同步完成期間，無回應的 server 或 cursor chain 可能同時延遲啟用與 teardown。
 - **重連在傳輸關閉時觸發**：崩潰的 stdio 子行程會觸發重連；Streamable HTTP 失敗透過每次請求以及 SDK 傳輸自身的 SSE（Server-Sent Events）流復原機制暴露，因此不可達的 HTTP 伺服器會按呼叫重試，而非由 supervisor 重新 spawn。
-- **Native 非文字渲染有損**：圖片、音訊與資源載荷在模型上下文中會變成佔位符，即使執行區域性的規範值保留了其 JSON 塊。更豐富的 Native 多媒體投影暫緩實作。
-- **不強制執行不受支持的 MCP 輸出 schema**：已聲明 schema 使用 harness 子集之外的詞彙時，`structuredContent` 會回退到 `JsonValue`。
+- **Native 非文字算繪有損**：圖片、音訊與資源載荷在模型上下文中會變成預留位置，即使執行區域性的規範值保留了其 JSON 塊。更豐富的 Native 多媒體投影暫緩實作。
+- **不強制執行不受支援的 MCP 輸出 schema**：已聲明 schema 使用 harness 子集之外的詞彙時，`structuredContent` 會回退到 `JsonValue`。

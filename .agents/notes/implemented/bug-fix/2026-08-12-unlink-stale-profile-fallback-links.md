@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [简体中文](2026-08-12-unlink-stale-profile-fallback-links.zh.md) | [繁體中文](2026-08-12-unlink-stale-profile-fallback-links.zh-tw.md)
+
 
 ## Problem
 

@@ -12,6 +12,6 @@
 | [`user-questions/`](user-questions/README.md) | 定義與提供方無關的使用者問答 seam。 | `ctx.userQuestions` |
 | [`tool-ask-user/`](tool-ask-user/README.md) | 向模型提供使用者問題。 | （註冊到 `ctx.tools`） |
 
-這些包透過現有的 agent 和工作階段約定整合，而不改變迴圈。互動式應用提供具體的命令、審批和提問配接器；自動化使用 [`acp/`](../acp/README.md)，可執行的演示組合包位於 [`examples/`](../examples/README.md)。產品 [`dsh`](../../apps/cli/README.md) CLI（命令列介面）直接組合這些包。
+這些包透過現有的 agent 和工作階段約定整合，而不改變迴圈。互動式應用提供具體的命令、審批和提問配接器；自動化使用 [`acp/`](../acp/README.md)，可執行的示範組合包位於 [`examples/`](../examples/README.md)。產品 [`dsh`](../../apps/cli/README.md) CLI（命令列介面）直接組合這些包。
 
 子系統參考：[approval.md](../../docs/subsystems/approval.md)、[permission-presets.md](../../docs/subsystems/permission-presets.md)、[user-questions.md](../../docs/subsystems/user-questions.md)與 [commands.md](../../docs/subsystems/commands.md)。僅自動化的 ACP 傳輸是 [`acp/`](../acp/README.md)，SDK 的 JSON-RPC 伺服器端是 [`sdk/server`](../sdk/README.md)，共享 bin 啟動膠水是 [`boot/`](../boot/README.md)。

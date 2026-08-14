@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-13-shared-modal-product-onboarding.md
-2026-08-13-shared-modal-product-onboarding.md: 291577973dbdf804dd7124ff331bc781a808102b
-2026-08-13-shared-modal-product-onboarding.zh.md: 5d4ef6756a0a026864907289ec412c96491c9aa9
-2026-08-13-shared-modal-product-onboarding.zh-tw.md: 4f119a653bc80db8a67433ee07f4c5928b78ac51

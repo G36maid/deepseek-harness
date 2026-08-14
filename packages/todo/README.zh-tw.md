@@ -8,6 +8,6 @@
 |---|---|---|
 | [`tool-todo/`](tool-todo/README.md) | 儲存並公開工作階段的 todo 清單。 | （註冊到 `ctx.tools`） |
 
-子級 README 負責工具、持久化和渲染約定。
+子級 README 負責工具、持久化和算繪約定。
 
 事件載荷記錄在 [docs/subsystems/session.md](../../docs/subsystems/session.md)。

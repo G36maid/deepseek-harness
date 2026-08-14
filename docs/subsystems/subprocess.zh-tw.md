@@ -2,7 +2,7 @@
 
 [English](subprocess.md) | [简体中文](subprocess.zh.md) | 繁體中文
 
-子行程 seam 分為 Service Definition（[dsh-subprocess](../../packages/subprocess/subprocess)，`ctx.subprocess`）與 Service Provider（[dsh-subprocess-local](../../packages/subprocess/subprocess-local)）；它的 Consumer 是其他能力 seam 與行程外後端：[bash 執行器家族](shell.md)使用收集模式的批次輸出，LSP 使用原始協議管道，PTY 後端使用終端機原語，ACP（Agent Client Protocol）subagent 後端則使用透過管道傳輸的 ndjson，並讓 stderr 採用 inherit。該 seam 擁有受管的 `DSH_*` 環境命名空間、共享的憑據清除（`scrubbedParentEnv`）與 `CollectedOutput` 形狀；[dsh-shell](../../packages/shell/shell) 重匯出這套詞彙，使 bash 消費端保持單一匯入入口。
+子行程 seam 分為 Service Definition（[dsh-subprocess](../../packages/subprocess/subprocess)，`ctx.subprocess`）與 Service Provider（[dsh-subprocess-local](../../packages/subprocess/subprocess-local)）；它的 Consumer 是其他能力 seam 與行程外後端：[bash 執行器家族](shell.md)使用收集模式的批次輸出，LSP 使用原始協定管道，PTY 後端使用終端機原語，ACP（Agent Client Protocol）subagent 後端則使用透過管道傳輸的 ndjson，並讓 stderr 採用 inherit。該 seam 擁有受管的 `DSH_*` 環境命名空間、共享的憑據清除（`scrubbedParentEnv`）與 `CollectedOutput` 形狀；[dsh-shell](../../packages/shell/shell) 重匯出這套詞彙，使 bash 消費端保持單一匯入入口。
 
 原始碼：[`packages/subprocess/subprocess/src/types.ts`](../../packages/subprocess/subprocess/src/types.ts) 與 [`packages/subprocess/subprocess/src/index.ts`](../../packages/subprocess/subprocess/src/index.ts)
 
@@ -38,7 +38,7 @@ interface CollectedOutput {
 
 ## Node 風格的 stdio 處置方式（disposition）
 
-每條流的處置方式都顯式給出，由各消費端自行選擇：原始管道用於協議分幀（LSP JSON-RPC、ACP ndjson），inherit 用於直通的診斷輸出，收集模式用於有界的批次輸出；其中 spill 文件是選填的，因此診斷尾部（語言伺服器的 stderr）可以只在記憶體中緩衝，不留下任何文件。
+每條流的處置方式都顯式給出，由各消費端自行選擇：原始管道用於協定分幀（LSP JSON-RPC、ACP ndjson），inherit 用於直通的診斷輸出，收集模式用於有界的批次輸出；其中 spill 文件是選填的，因此診斷尾部（語言伺服器的 stderr）可以只在記憶體中緩衝，不留下任何文件。
 
 ```ts type-equiv
 /**
@@ -218,7 +218,7 @@ interface SubprocessCollectedOutputs {
 ```
 
 
-## 結果只承載退出事實
+## 結果只承載結束事實
 
 `done` 報告 Node close 事件的詞彙，不攜帶原因分類：服務會在中止時終止行程，但絕不判定原因（呼叫方讀取歸自己所有的 deadline 訊號，例如 bash 執行器的 `timedOut`/`aborted` 拆分）。收集到的輸出在結帳後仍可經 `handle.collected` 讀取，因此批次與流式呼叫方共用一條訪問路徑。
 
@@ -246,7 +246,7 @@ interface SubprocessOutcome {
 
 ## 服務行為
 
-抽象的 [`SubprocessRuntime`](../../packages/subprocess/subprocess/src/index.ts) Service Definition 規定執行世界坐標、可執行文件尋找、普通 `spawn` 與 `spawnTerminal`。[`LocalSubprocessRuntime`](../../packages/subprocess/subprocess-local/src/index.ts) 以 detached 行程樹、按處置方式接線、憑據清除、`node-pty`、平臺行程檢查，以及先終止再等待退出的資源釋放提供這些能力。Service Definition 約定見 [`dsh-subprocess`](../../packages/subprocess/subprocess/README.md)，本機機制見 [`dsh-subprocess-local`](../../packages/subprocess/subprocess-local/README.md)。
+抽象的 [`SubprocessRuntime`](../../packages/subprocess/subprocess/src/index.ts) Service Definition 規定執行世界坐標、可執行文件尋找、普通 `spawn` 與 `spawnTerminal`。[`LocalSubprocessRuntime`](../../packages/subprocess/subprocess-local/src/index.ts) 以 detached 行程樹、按處置方式接線、憑據清除、`node-pty`、平臺行程檢查，以及先終止再等待結束的資源釋放提供這些能力。Service Definition 約定見 [`dsh-subprocess`](../../packages/subprocess/subprocess/README.md)，本機機制見 [`dsh-subprocess-local`](../../packages/subprocess/subprocess-local/README.md)。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

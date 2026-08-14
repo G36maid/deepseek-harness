@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-07-shared-feedback-telemetry-user-id.md
-2026-08-07-shared-feedback-telemetry-user-id.md: c30ae9b2d56bb4e2c1a4d8f59e427732d2e5c9c8
-2026-08-07-shared-feedback-telemetry-user-id.zh.md: 487e0f1d9a90109ba366fcff61ac7f3758591941
-2026-08-07-shared-feedback-telemetry-user-id.zh-tw.md: df16cea0f1e267ac7b63af2bf67d2f32832e18b1

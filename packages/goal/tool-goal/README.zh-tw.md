@@ -8,11 +8,11 @@
 
 - `get_goal()` 返回當前 goal 或 `null`，包括比較並設定 id／revision、持久 phase、Goal Round 的已准入數／上限、任何 blocker reason，以及當前行程本機續行啟用狀態。
 - `create_goal(objective, max_goal_rounds?)` 根據人類直接發起的頂層輪次建立一個 goal。模型可以推斷長期執行的 goal 意圖，而無需精確命令短語；非人類輪次和 subagent 會在執行時被拒絕。
-- `update_goal(goal_id, revision, action, objective?, max_goal_rounds?, blocked_reason?)` 支持 `edit`、`pause`、`resume`、`complete` 和 `blocked`。替換值只屬於 `edit`；`blocked_reason` 只有在 action 為 `blocked` 時才必填，並以穩定程式碼 `model-reported` 持久化。嚴格 schema 下的空字串和零填儲值視為省略，而有意義的值仍限定到各自 action。
+- `update_goal(goal_id, revision, action, objective?, max_goal_rounds?, blocked_reason?)` 支援 `edit`、`pause`、`resume`、`complete` 和 `blocked`。替換值只屬於 `edit`；`blocked_reason` 只有在 action 為 `blocked` 時才必填，並以穩定程式碼 `model-reported` 持久化。嚴格 schema 下的空字串和零填儲值視為省略，而有意義的值仍限定到各自 action。
 
 所有呼叫都互斥，因此模型排序的批次能觀察到更早變更及其新 revision。UI 用戶端會收到純通用卡片：`get_goal` 使用 read，變更使用 other。變更卡片選擇第一個有意義的 action 值，否則顯示 goal id，因此已接受的填儲值絕不會產生空輸入。
 
-3 個規範值都與已經渲染給 Native 呼叫方的緊湊 JSON 一致：`{ goal: null }` 或 `{ goal: { id, revision, objective, phase, roundsStarted, maxGoalRounds, blockedReason? }, activation }`。因此，程式設計消費端無需解析渲染後的 JSON，即可收到相同領域結構。
+3 個規範值都與已經算繪給 Native 呼叫方的緊湊 JSON 一致：`{ goal: null }` 或 `{ goal: { id, revision, objective, phase, roundsStarted, maxGoalRounds, blockedReason? }, activation }`。因此，程式設計消費端無需解析算繪後的 JSON，即可收到相同領域結構。
 
 自主 Goal Round 成功報告 `complete` 或 `blocked` 時，會用 `concludeTurn()` 標記該次工具執行，使物理輪次在該步驟後停止。人類直接變更絕不會導致這種停止：assistant 可以確認變更，迴圈仍可接收並行的人類 steering（中途引導）。
 

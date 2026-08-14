@@ -2,11 +2,11 @@
 
 [English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
-本文分為兩部分：先參考三種角色能力模式的概念，再透過進階教程建置一項能力。請先完成[基礎外掛程式路徑](../basic/)和[服務教程](../framework/service.md)。
+本文分為兩部分：先參考三種角色能力模式的概念，再透過進階教學建置一項能力。請先完成[基礎外掛程式路徑](../basic/)和[服務教學](../framework/service.md)。
 
 ## 概念參考
 
-當一項能力足夠通用，需要支持可替換的提供方時（例如 Bash 執行），harness 會區分三種角色：**Service Definition**、**Service Provider** 和 **Consumer**。角色需要獨立演進或替換時，將它們放入不同包；否則一個包可以承擔多個角色。完整能力構成其 seam。任何單一角色都不是 seam。
+當一項能力足夠通用，需要支援可替換的提供方時（例如 Bash 執行），harness 會區分三種角色：**Service Definition**、**Service Provider** 和 **Consumer**。角色需要獨立演進或替換時，將它們放入不同包；否則一個包可以承擔多個角色。完整能力構成其 seam。任何單一角色都不是 seam。
 
 ## 以 Bash 為例
 
@@ -55,7 +55,7 @@
 
 當前內建系列及其包連結由[能力 seam 參考](../../../capability-seams.md)負責。
 
-## 教程：開發三種角色的能力
+## 教學：開發三種角色的能力
 
 ### 第一步：編寫 Service Definition
 

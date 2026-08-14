@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/attachment.md
 attachment.md: 4e11a335c307828aff2da15df1fb08c21e96a1b1
 attachment.zh.md: 06c6e996f3900957a24d11d73ebf781bc10e5bfa
-attachment.zh-tw.md: 15d7ead8c64694d3806f051e3334dd78d8a8793e
+attachment.zh-tw.md: 1a5df5060ae3439f3bff190c8c17d5d1842b1a6d

@@ -10,11 +10,11 @@ TypeScript 項目分析器和模型驅動的 Typert 生成器。在生成任何�
 
 每個 face 包含包匯出、Cordis 服務與事件、顯式標記的對象與 schema，以及涵蓋其可達聲明的類型圖。類型圖保留聲明標識、泛型參數及應用、顯式繼承、條件類型與對映類型、匯入屬性、abstract 修飾符和原始碼 JSDoc。服務和 `@typert object` 對外介面僅暴露公共實例成員；構造函式、靜態成員與非公共成員均被排除。
 
-`WorkspaceAnalyzer` 默認採用 `check` 模式，遇到 TypeScript 文法或語義診斷、可達公開聲明缺少類型標注、跨包私有引用，以及模型無法無損保留的可達聲明合併時，分析會失敗。`write` 模式會插入型別檢查器推匯出的類型標注，重建該程序，並返回無診斷的檢查模式模型。
+`WorkspaceAnalyzer` 預設採用 `check` 模式，遇到 TypeScript 文法或語義診斷、可達公開聲明缺少類型標注、跨包私有引用，以及模型無法無損保留的可達聲明合併時，分析會失敗。`write` 模式會插入型別檢查器推匯出的類型標注，重建該程序，並返回無診斷的檢查模式模型。
 
 ## 產物生成與選擇性發布
 
-`FaceModelEmitter` 只消費模型。它會生成可執行 JavaScript，其中包含受支持的 Zod schema 和一個 `TYPERT` contribution；同時生成聲明文件，透過包的公開匯出將其中的 schema 標注為 `z.ZodType<SourceType>`。遇到不支持的 Zod 投影時，生成會失敗，不會展平或弱化源類型。
+`FaceModelEmitter` 只消費模型。它會生成可執行 JavaScript，其中包含受支援的 Zod schema 和一個 `TYPERT` contribution；同時生成聲明文件，透過包的公開匯出將其中的 schema 標注為 `z.ZodType<SourceType>`。遇到不支援的 Zod 投影時，生成會失敗，不會展平或弱化源類型。
 
 `WorkspaceTypertGenerator` 會遍歷從 Cordis `Context` 或 `Events` 擴充聲明及顯式 `@typert` 聲明可達的包公開匯出，以發現貢獻方。發布產物時，它要求宿主側產物位於 `lib/typert.host.{js,d.ts}` 並以 `package/typert` 暴露，用戶端側產物位於 `lib/typert.client.{js,d.ts}` 並以 `package/client/typert` 暴露。生成的聲明將 `TYPERT` 暴露為 `unknown`，因此參與貢獻的業務包無需相依性執行時期登錄檔。
 
@@ -22,7 +22,7 @@ TypeScript 項目分析器和模型驅動的 Typert 生成器。在生成任何�
 
 ## 本倉庫的 Cordis 投影
 
-包根匯出中包含本倉庫 Cordis 目錄使用的模型驅動提取邏輯、完整性檢查和確定性文字渲染器。它們接受 `CordisCatalogPolicy`；由倉庫持有的類型連結、基礎類型／豁免類型分類和繼承的 Cordis 條目仍位於 `scripts/gen-cordis-catalog.ts`，並由呼叫方顯式傳入。因此，生成器包只包含投影機制，不會隱式複製本倉庫的文件分類體系。
+包根匯出中包含本倉庫 Cordis 目錄使用的模型驅動提取邏輯、完整性檢查和確定性文字算繪器。它們接受 `CordisCatalogPolicy`；由倉庫持有的類型連結、基礎類型／豁免類型分類和繼承的 Cordis 條目仍位於 `scripts/gen-cordis-catalog.ts`，並由呼叫方顯式傳入。因此，生成器包只包含投影機制，不會隱式複製本倉庫的文件分類體系。
 
 ## 模型體驗
 
@@ -36,6 +36,6 @@ TypeScript 項目分析器和模型驅動的 Typert 生成器。在生成任何�
 
 - 系統會跳過包匯出中的模式匹配；參與貢獻的包需要具體的匯出目標。
 - 跨 face 的具名重新匯出和星號重新匯出會生成連結；在 `TypeTargetModel` 能夠不經展平便表示模組命名空間之前，命名空間重新匯出會失敗。
-- Zod 產物生成元件僅支持 TypeScript 類型圖中有意限定的部分。泛型 schema 聲明，以及以條件類型或對映類型為 schema 根的計算構造，都會失敗，直到存在明確的 schema 工廠策略。
+- Zod 產物生成元件僅支援 TypeScript 類型圖中有意限定的部分。泛型 schema 聲明，以及以條件類型或對映類型為 schema 根的計算構造，都會失敗，直到存在明確的 schema 工廠策略。
 - 跨 face 連結會在模型中表示以供分析，但當前生成的 schema 均不需要跨 face 的執行時期 Zod 匯入。
-- 發現過程會遍歷從具體公開匯出可達的原始檔；既未匯出、也未由該圖匯入的聲明會按設計排除在包模型之外。
+- 發現程序會遍歷從具體公開匯出可達的原始檔；既未匯出、也未由該圖匯入的聲明會按設計排除在包模型之外。

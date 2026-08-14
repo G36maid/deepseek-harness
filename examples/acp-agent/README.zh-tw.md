@@ -9,13 +9,13 @@ pnpm run demo:acp             # needs DEEPSEEK_API_KEY (repo-root .env or env)
 pnpm run demo:code-mode       # same protocol with the Code Mode tool transport
 ```
 
-該葉節點載入 ACP 應用、DeepSeek 配接器、受沙盒限制的 bash 與檔案系統棧、一次性批准策略、壓縮（compaction）、subagent、工作流程、掛鉤、派生工作階段查詢索引和重複守衛。應用為每次 `session/new` 建立一個新 agent，將工作階段持久化到 JSONL，並保持 stdout 只含協議內容。選填 overlay 可新增工作階段查詢、檔案系統 spill 儲存、Code Mode 或 Web 抓取。
+該葉節點載入 ACP 應用、DeepSeek 配接器、受沙盒限制的 bash 與檔案系統棧、一次性批准策略、壓縮（compaction）、subagent、工作流程、掛鉤、派生工作階段查詢索引和重複守衛。應用為每次 `session/new` 建立一個新 agent，將工作階段持久化到 JSONL，並保持 stdout 只含協定內容。選填 overlay 可新增工作階段查詢、檔案系統 spill 儲存、Code Mode 或 Web 抓取。
 
-## 協議通道
+## 協定通道
 
 Stdout 只攜帶以換行分隔的 ACP JSON-RPC。`@deepseek-ai/dsh-acp-demo` 不安裝 stdout logger；該葉節點新增的元件必須使用 stderr 輸出診斷資訊。
 
-自動化約定（支持的方法、基線提示詞內容、已提交文字輸出，以及有意缺少的 UI 介面）位於 [`@deepseek-ai/dsh-acp`](../../packages/acp/acp/README.md)。
+自動化約定（支援的方法、基線提示詞內容、已提交文字輸出，以及有意缺少的 UI 介面）位於 [`@deepseek-ai/dsh-acp`](../../packages/acp/acp/README.md)。
 
 ## 工作階段 workspace 與權限
 

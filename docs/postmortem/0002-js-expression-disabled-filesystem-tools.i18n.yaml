@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/postmortem/0002-js-expression-disabled-filesystem-tools.md
 0002-js-expression-disabled-filesystem-tools.md: cf5b019fa5a758d1f77554154dec91475a396fcd
 0002-js-expression-disabled-filesystem-tools.zh.md: b418c02a388bc17ebe118100717902f32db42a8b
-0002-js-expression-disabled-filesystem-tools.zh-tw.md: 95b4a9755e847af414920d5c6048ef57dcefb6f0
+0002-js-expression-disabled-filesystem-tools.zh-tw.md: df9f0357874ad43da4a79316be39d7805ead636e

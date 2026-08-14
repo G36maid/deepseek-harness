@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-11-background-first-continuable-delegation.md
-2026-08-11-background-first-continuable-delegation.md: 68b7726b0b8ead6bde0e888a80a835e230dc28b5
-2026-08-11-background-first-continuable-delegation.zh.md: 279fcbd46960a76e2fec6df773bc5f6364215692
-2026-08-11-background-first-continuable-delegation.zh-tw.md: 777573b4c91fbc96895f4fdf2b084209515d80fd

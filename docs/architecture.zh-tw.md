@@ -2,7 +2,7 @@
 
 [English](architecture.md) | [简体中文](architecture.zh.md) | 繁體中文
 
-改動 `packages/` 下的任何內容之前，請先閱讀本文。本文假定你已瞭解 Cordis；如果尚未瞭解，請先閱讀[入門](cordis-primer.md)或[教程](cordis-tutorial/index.md)。
+改動 `packages/` 下的任何內容之前，請先閱讀本文。本文假定你已瞭解 Cordis；如果尚未瞭解，請先閱讀[入門](cordis-primer.md)或[教學](cordis-tutorial/index.md)。
 
 建議使用 agent（代理）探索程式碼庫並理解其架構。
 
@@ -16,7 +16,7 @@
 
 執行中的 `dsh` 是一棵外掛程式樹，由啟動時按序疊加的各層組合而成。
 
-**profile** 是存放在 Harness home 中的具名組裝。它列出自己疊放的組合包，存放自己安裝的樹外外掛程式，並保存使用者自己的 `cordis.patch.yml`。`web` 和 `headless` 作為範本隨發行版交付。
+**profile** 是存放在 Harness home 中的具名組裝。它列出自己疊放的組合包，存放自己安裝的樹外外掛程式，並保存使用者自己的 `cordis.patch.yml`。`web` 和 `headless` 作為樣板隨發行版交付。
 
 **組合包**是 Cordis 設定項及其掛載程式碼的分發格式，因此它插入的內容始終可被其上各層 patch。
 
@@ -46,7 +46,7 @@ dsh --profile web --dump-config
 | [`core/system-prompt`](subsystems/system-prompt.md) | 提示詞片段與工具 schema 的組裝 | `ctx.systemPrompt` |
 | [`core/tools`](subsystems/tools.md) | 作用域化的工具登錄檔和帶把關的執行管線 | `ctx.tools` |
 | [`core/agent`](subsystems/core.md) | `Agent` 介面、活躍 agent 登錄檔和 `agent/*` 事件 | `ctx.agents` |
-| [`core/agent-loop`](subsystems/core.md) | 實作該介面的默認驅動器 | `ctx.agentLoop` |
+| [`core/agent-loop`](subsystems/core.md) | 實作該介面的預設驅動器 | `ctx.agentLoop` |
 | [`core/scope`](subsystems/scope.md) | 按 agent 劃分作用域的註冊原語 | 庫，無 ctx 鍵 |
 | [`llm/llm`](subsystems/llm-streaming.md) | 訊息與流式詞彙表，以及配接器 seam | `ctx.llm` |
 
@@ -97,7 +97,7 @@ turn/end
 
 工作階段日誌是模型所見上下文的來源。`deriveMessages()` 從中投影出模型歷史，原始 `assistant/chunk` 事件則保證重播和 UI 保真。fork、復原、transcript（文字記錄）、遙測和持久化都派生自該事件串流。
 
-**模型可見即已記錄。** 抵達模型請求的一切都必須能從日誌重建，並由一項執行時期不變數斷言這一點。因此，新增一項模型可見輸入就需要新增一個工作階段事件：擴充 `SessionEventMap` 並從日誌渲染。
+**模型可見即已記錄。** 抵達模型請求的一切都必須能從日誌重建，並由一項執行時期不變數斷言這一點。因此，新增一項模型可見輸入就需要新增一個工作階段事件：擴充 `SessionEventMap` 並從日誌算繪。
 
 ## 能力 seam
 
@@ -122,9 +122,9 @@ seam 正是替換一個提供方就能改變整個產品的原因。檔案系統
 | 限制所啟動的行程 | 使用 `ctx.sandbox` 後端；消費端在啟動行程前包裝 argv |
 | 攔截請求、工具或輪次 | 使用相應的 `agent/*` 或 `tools/*` 事件；`agent/turn-stopping` 會停止輪次 |
 | 新增模型可見上下文 | 呼叫 `agent.inject()`；它會落到下一次獲準的請求中 |
-| 新增 UI 或編輯器整合 | 驅動 `ctx.agents` 並從 `session/event` 渲染 |
+| 新增 UI 或編輯器整合 | 驅動 `ctx.agents` 並從 `session/event` 算繪 |
 | 新增 Web Client Chat 節點 | 註冊 `ConversationNodeDefinition` + keyed renderer |
-| 新增持久工作階段狀態 | 擴充 `SessionEventMap`；從日誌渲染和重播 |
+| 新增持久工作階段狀態 | 擴充 `SessionEventMap`；從日誌算繪和重播 |
 | 生成工作階段標題 | 註冊唯一的 `ctx.sessionTitle` 提供方 |
 | 管理同工作階段目標 | 使用 `ctx.goals`；透過 `agent/*` 續跑 |
 | fork 活躍工作階段 | `ctx.sessions.fork(source, boundary?, childSessionId?)` |

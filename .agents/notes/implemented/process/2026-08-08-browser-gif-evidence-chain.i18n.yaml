@@ -1,7 +1,0 @@
-# Language-pair consistency record (docs/i18n/README.md): the git blob hash of each
-# side as of the last confirmed-consistent state. All languages carry equal authority;
-# after editing either side, bring the other along and re-record with:
-#   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-08-browser-gif-evidence-chain.md
-2026-08-08-browser-gif-evidence-chain.md: 497c1e496390b6159a5052de8aa1a98e5fa8a52e
-2026-08-08-browser-gif-evidence-chain.zh.md: 1f67db28eac4cb876ce341a7f25b329cef011985
-2026-08-08-browser-gif-evidence-chain.zh-tw.md: acc11c2cc7881289eb9d60db081f8c17af1284d9

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/invariants.md
 invariants.md: fcc72300313ad0d4d88d8e7e0c95496021fa5631
 invariants.zh.md: 8ef9bf00fd1e85fa4096493caeffd2204c3d37a8
-invariants.zh-tw.md: 9c8d3b63aee94ff838ea8a61c39d019185fb4a1f
+invariants.zh-tw.md: 8b0a3fe51126fe0f841281e6c0d1afe3be472b12

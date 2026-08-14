@@ -4,7 +4,7 @@ Status: implemented
 
 > Token-system update (2026-07-22): the framework rulings here (CSS Modules + clsx, no component library, no tailwind, tokens-only colors) remain in force, but the two-layer `--bg-*`/`--text-*` token table and its `web-ui/src/style/global.css` home were replaced by the `--dsw-*` static+alias sheets in `packages/client/ui-theme/src/styles/` (dark = `body[data-ds-dark-theme]` override) — the sheets themselves are the token authority.
 
-English | [简体中文](2026-07-19-web-styling-system.zh.md) | [繁體中文](2026-07-19-web-styling-system.zh-tw.md)
+
 
 > Division of labor: this RFC fixes the framework and constraints (rarely changes); [docs/web-styling.md](../../../../docs/web-styling.md) is the living spec (authoritative token values, the coding-rule checklist, the deviation record — it evolves with the implementation). Token changes and new rules go there; only changes to the framework itself come back here (overturning it requires a new RFC).
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-api/registry.md
 registry.md: e6ddce5700ab071c2a4fedae19d99e2cb6e994ec
 registry.zh.md: c0d7ae6771868442401c2bb66eeeafa1e7586261
-registry.zh-tw.md: d6094ea93c3daa0db29cadf274164d055bc7602f
+registry.zh-tw.md: 51bb7f22fff71c9f8810fb1993c592ff4bf69271

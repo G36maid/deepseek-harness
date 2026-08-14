@@ -5,7 +5,7 @@
 
 [English](tool-execution-pipeline.md) | [简体中文](tool-execution-pipeline.zh.md) | 繁體中文
 
-此圖展示策略、掛鉤、沙盒、檔案系統守衛、結果重寫、最終結果觀察和 UI 渲染在不改變迴圈的情況下何時執行。`tools/pre-execute` waterfall（瀑布式事件）首先執行，隨後是單調守衛，然後執行 `tools/execute` 和 `tools/post-execute` waterfall；這三個 waterfall 可以改寫一次呼叫。由定義自身控制的 `finalizeContent` 和 `tools/result` 在此之後執行。
+此圖展示策略、掛鉤、沙盒、檔案系統守衛、結果重寫、最終結果觀察和 UI 算繪在不改變迴圈的情況下何時執行。`tools/pre-execute` waterfall（瀑布式事件）首先執行，隨後是單調守衛，然後執行 `tools/execute` 和 `tools/post-execute` waterfall；這三個 waterfall 可以改寫一次呼叫。由定義自身控制的 `finalizeContent` 和 `tools/result` 在此之後執行。
 
 ```mermaid
 flowchart TD

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/acp-agent/README.md
 README.md: a5cbc1135aef529c6d8abd05d37cb32bbb7b99bc
 README.zh.md: 95901535a4a17fce5578166868702ffbd1aad7a0
-README.zh-tw.md: 5378f759b4fb557aa0d15c0b902a9332b2ac3e85
+README.zh-tw.md: 1137bc00a81146523708f5fe518b188a7ed6816d
