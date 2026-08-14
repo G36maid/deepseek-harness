@@ -2,7 +2,7 @@
 
 [English](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk/README.md) | [简体中文](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk/README.zh.md) | 繁體中文
 
-透過 JSON-RPC stdio 驅動程式 DeepSeek Harness 的 Python 子行程 SDK。執行時期繼承常規的 DeepSeek Harness 環境變數（如 `DEEPSEEK_BASE_URL` 與 `DEEPSEEK_API_KEY`），呼叫方可以直接使用真實模型端點，也可以把這些變數指向本機代理。
+透過 JSON-RPC stdio 驅動 DeepSeek Harness 的 Python 子行程 SDK。執行時期繼承常規的 DeepSeek Harness 環境變數（如 `DEEPSEEK_BASE_URL` 與 `DEEPSEEK_API_KEY`），呼叫方可以直接使用真實模型端點，也可以把這些變數指向本機代理。
 
 請從 PyPI 安裝 `deepseek-harness-sdk` 分發包；匯入模組仍為 `deepseek_harness`：
 

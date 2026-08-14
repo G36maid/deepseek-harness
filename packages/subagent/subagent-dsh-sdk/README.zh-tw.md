@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-SDK 提供方會在全新的子行程中把每個 subagent 作為完整的 DeepSeek Harness 執行時期執行，並經由 [TypeScript SDK 用戶端](../../sdk/client/README.md) 透過 stdio JSON-RPC 驅動程式。它是 [`subagent-acp`](../subagent-acp/README.md) 之外的第二個行程外後端，差異在協定格式（wire format）和子行程約定：ACP（Agent Client Protocol）後端能驅動程式任何 Agent Client Protocol agent（代理）；本後端專門驅動程式 harness SDK 執行時期（`dsh-jsonrpc-agent` bin 或打包後的可執行文件），因此子行程是一個完整的對等 harness，擁有由 `cordis.yml` 決定的組合、工作階段持久化、模型路由和工具。
+SDK 提供方會在全新的子行程中把每個 subagent 作為完整的 DeepSeek Harness 執行時期執行，並經由 [TypeScript SDK 用戶端](../../sdk/client/README.md) 透過 stdio JSON-RPC 驅動。它是 [`subagent-acp`](../subagent-acp/README.md) 之外的第二個行程外後端，差異在協定格式（wire format）和子行程約定：ACP（Agent Client Protocol）後端能驅動任何 Agent Client Protocol agent（代理）；本後端專門驅動 harness SDK 執行時期（`dsh-jsonrpc-agent` bin 或打包後的可執行文件），因此子行程是一個完整的對等 harness，擁有由 `cordis.yml` 決定的組合、工作階段持久化、模型路由和工具。
 
 ## 啟動與所有權
 

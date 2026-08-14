@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-15-llm-model-catalog-and-acp-selection.md
 2026-07-15-llm-model-catalog-and-acp-selection.md: c639597f928ee6f3dbeba33d4f83ab443a0be156
 2026-07-15-llm-model-catalog-and-acp-selection.zh.md: 6af880222e22d945f25e5d66808a027f889ddaac
-2026-07-15-llm-model-catalog-and-acp-selection.zh-tw.md: 1c0255fecfe6f351e7855fba29a537479b78a1ed
+2026-07-15-llm-model-catalog-and-acp-selection.zh-tw.md: 427714ded9ca775926cba0829080aed750b8d450

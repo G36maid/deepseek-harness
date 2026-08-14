@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-04-declaring-a-provider-from-the-models-page.md
 2026-08-04-declaring-a-provider-from-the-models-page.md: 902e34869528112c60102d800f4f2be5da1e8cc8
 2026-08-04-declaring-a-provider-from-the-models-page.zh.md: cdb1f9472b784736b8fed8ef80112c3b5247abc2
-2026-08-04-declaring-a-provider-from-the-models-page.zh-tw.md: 18b93d38dea33330f8e4f3e469cae87e9d950f45
+2026-08-04-declaring-a-provider-from-the-models-page.zh-tw.md: 190a802a324a0708feb99f4a695946ea10317418

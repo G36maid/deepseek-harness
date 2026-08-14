@@ -30,7 +30,7 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**把 meter 留在 preset，改為給投影登錄檔分層。** 這是更精確的修法，代價也大得多：`snapshot`、`checkpoint` 與主動驅動程式都需要一次「工作階段 → 作用域」的解析，而冷讀在沒有 api-proxy 的 `presenterScopeFor` 時並不具備。相對於一個完全沒有 per-preset 狀態的 Service，這不成比例，因此改為把通則寫在登錄檔上。
+**把 meter 留在 preset，改為給投影登錄檔分層。** 這是更精確的修法，代價也大得多：`snapshot`、`checkpoint` 與主動驅動都需要一次「工作階段 → 作用域」的解析，而冷讀在沒有 api-proxy 的 `presenterScopeFor` 時並不具備。相對於一個完全沒有 per-preset 狀態的 Service，這不成比例，因此改為把通則寫在登錄檔上。
 
 **對未加入的 agent 否決發布。** 大聲勝過靜默，登錄檔也支持這麼做——同步的 `agent/created` 監聽器拋出會把建立整體回滾。否決的理由是：在名單之外組裝 agent 是合法的——`recompose` 寫明瞭它隨後綁定的那個裸 agent，而 ACP 橋、SDK server 與 headless bundle 今天都會建立一個。否決會把能力缺口變成一次故障。
 

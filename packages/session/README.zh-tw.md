@@ -29,7 +29,7 @@
 
 ## 標題
 
-從工作階段日誌派生持久工作階段標題，並支持選填的模型驅動程式提供方。
+從工作階段日誌派生持久工作階段標題，並支持選填的模型驅動提供方。
 
 | 包 | 職責 | ctx 鍵 |
 |---|---|---|
@@ -38,7 +38,7 @@
 | [`session-title-first-prompt-llm/`](session-title-first-prompt-llm/README.md) | 根據第一條合格的人類訊息生成工作階段標題 | 註冊到 `ctx.sessionTitle` |
 | [`session-title-all-prompts-llm/`](session-title-all-prompts-llm/README.md) | 根據所有合格的人類訊息生成工作階段標題 | 註冊到 `ctx.sessionTitle` |
 
-部署可以註冊一個模型驅動程式提供方；未註冊時，服務仍保留確定性回退機制。
+部署可以註冊一個模型驅動提供方；未註冊時，服務仍保留確定性回退機制。
 
 ## 遙測
 

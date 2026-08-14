@@ -50,5 +50,5 @@
 - **字形級圖示是重新繪製的近似版本**：魚形標志（以及 ui-conversation 持有的閃光圖示）來自字體字形，而本機設計資料無法匯出其向量幾何；在獲得精確匯出路徑前，使用手工重建版本代替。
 - **Pill 與 Input 沒有設計來源**：兩個原子元件均自行定義；與其相似的側邊欄搜尋欄位和檢視表標籤條由消費端組合，不是這些原子元件。
 - **StateDot 沒有 `Active` 變體**：支持的狀態為 done、warning、ongoing 和 error。
-- **面向使用者的文案經 label props 本機化，預設值為原中文字面量**：這些原子元件是 zero-cordis 的，拿不到 `ctx.locale`，因此 `HoverCard`（`copyLabel`/`copiedLabel`）、`TerminalBlock`（`labels`）、`JsonTree`（`labels`）、`CodeBlock`（`copyLabel`/`copiedLabel`）、`MarkdownText`（`codeLabels`）、`JsonBlock`（`truncatedLabel`）、`ConnectionBanner`（`label`）和 `Modal`（`closeLabel`）都把文案作為選填 props 接收。已本機化的外掛程式用自己的 `t` 席位傳入字典驅動程式的 label；什麼都不傳的消費端得到的就是這些預設值。`WebBlock` 尚未跟進這一模式：它的來源清單截斷提示與 fetch 截斷提示、以及空搜尋提示仍是內聯中文，待同樣的 label-prop 處理。
+- **面向使用者的文案經 label props 本機化，預設值為原中文字面量**：這些原子元件是 zero-cordis 的，拿不到 `ctx.locale`，因此 `HoverCard`（`copyLabel`/`copiedLabel`）、`TerminalBlock`（`labels`）、`JsonTree`（`labels`）、`CodeBlock`（`copyLabel`/`copiedLabel`）、`MarkdownText`（`codeLabels`）、`JsonBlock`（`truncatedLabel`）、`ConnectionBanner`（`label`）和 `Modal`（`closeLabel`）都把文案作為選填 props 接收。已本機化的外掛程式用自己的 `t` 席位傳入字典驅動的 label；什麼都不傳的消費端得到的就是這些預設值。`WebBlock` 尚未跟進這一模式：它的來源清單截斷提示與 fetch 截斷提示、以及空搜尋提示仍是內聯中文，待同樣的 label-prop 處理。
 - **`TerminalBlock` 不是終端機模擬器**：它渲染已結束或仍在執行的命令輸出，而不是互動式工作階段：SGR 顏色與屬性會被遵循，進度行所用的行內遊標移動同樣被遵循——回車、退格、行內擦除、製表位與字元寬度。絕對遊標定位、清屏與備用螢幕序列會被剝離。基礎 16 色中的洋紅與青色沒有對應 token，保持字面 rgb。

@@ -147,7 +147,7 @@ export type SubagentListEntry =
 
 **mode/label 進 SessionHeader。** 零讀保證最強——清單只看 header 就能成行。但 header 形狀變更傳導兩個 persistence backend 與 header 相容檢查；SQLite 存量直接拒收，JSONL 存量只能 unknown 降級或 backfill。讀時現算對存量的答案是「第一次清單一次 `inspect` 現算」，不碰持久格式。
 
-**projection-cache 階梯（`cachedSnapshot ?? coldSnapshot` 加 fail-soft 寫回）。** 機製成立——session-projection-cache 的 checkpoint 階梯本就為冷讀設計。但 checkpoint 寫回是一套由清單驅動程式的派生資料持久化與失效編排（floor/identity/putSoft）；被否的是這套編排作為主機制。定稿的第三級階梯後來以只讀方式機會性複用該快取作第二級——無寫回、無編排、缺席即跳過。
+**projection-cache 階梯（`cachedSnapshot ?? coldSnapshot` 加 fail-soft 寫回）。** 機製成立——session-projection-cache 的 checkpoint 階梯本就為冷讀設計。但 checkpoint 寫回是一套由清單驅動的派生資料持久化與失效編排（floor/identity/putSoft）；被否的是這套編排作為主機制。定稿的第三級階梯後來以只讀方式機會性複用該快取作第二級——無寫回、無編排、缺席即跳過。
 
 **給 persistence 加有界讀原語搶救存量。** 為一次性問題新開 persistence 原語；被讀時 `inspect` 整讀取代——存量第一次被清單時的整讀就是取值本身。
 
@@ -155,7 +155,7 @@ export type SubagentListEntry =
 
 **徹底刪除 diagnostic 行。** 刪除把庫損壞的可見性外溢為行靜默消失，wire/tool/GUI 反要各自承擔約定與快照變更；而保留只需清單側按投影值缺席與 activity 派生分類，零成本。庫裡的壞、死子工作階段必須可見是 diagnostic 存在的原始動機，保留後消費面整體零改動。
 
-**registry 計算失敗通道（per-unit 容錯加 `failures` 附加欄位）。** 為把損壞、版本不認識報告給消費端，由 registry 捕獲 unit 例外並在 snapshot 旁附 per-key 失敗態。被否：failure 不是值，也不必是通道——unit 永不拋錯，缺席本身就是訊號，「大不了算出來沒有」，如何呈現是消費端要考慮的事。一個獨立觀察：vendor cordis 的 `emit`（[vendor/cordis/src/events.ts](../../../../vendor/cordis/src/events.ts)）對 listener 拋錯零捕獲，投影驅動程式掛在 `session/event` 上時 unit 例外會沿 emit 逃逸——這加重了「unit 永不拋錯」紀律的分量，但 emit 容錯的修復不屬於本記錄範圍。
+**registry 計算失敗通道（per-unit 容錯加 `failures` 附加欄位）。** 為把損壞、版本不認識報告給消費端，由 registry 捕獲 unit 例外並在 snapshot 旁附 per-key 失敗態。被否：failure 不是值，也不必是通道——unit 永不拋錯，缺席本身就是訊號，「大不了算出來沒有」，如何呈現是消費端要考慮的事。一個獨立觀察：vendor cordis 的 `emit`（[vendor/cordis/src/events.ts](../../../../vendor/cordis/src/events.ts)）對 listener 拋錯零捕獲，投影驅動掛在 `session/event` 上時 unit 例外會沿 emit 逃逸——這加重了「unit 永不拋錯」紀律的分量，但 emit 容錯的修復不屬於本記錄範圍。
 
 **值隨 query 索引 preparation 落庫。** 投影值在 sqlite backend 的對帳重建裡摺疊落進 session 索引行，讀穩態零日誌：`projectionsFor` 批次讀面、行值隨 `(key → stateVersion)` 註冊集儲存的失效對帳與 SCHEMA bump。整體退役：方向反了——查詢基礎設施被迫認識領域詞彙（投影列、註冊集對帳），而唯一消費端 subagent 清單讀時現算即可滿足；消費端歸零後，這套派生持久化沒有存在理由。`SESSION_QUERY_PROJECTIONS_UNAVAILABLE` 隨讀面一並刪除。
 

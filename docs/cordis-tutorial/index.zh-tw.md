@@ -8,7 +8,7 @@ Cordis 是 DeepSeek Harness 底層的外掛程式框架：它是一個小型執�
 
 如果你想閱讀精簡的概念參考，而不是逐步實踐，請參閱 [Cordis 入門](../cordis-primer.md)。詳盡的 API 參考見[子系統頁面](../subsystems/core.md)上生成的 `cordis-surface` 區塊，以及 [Cordis 核心 API](../cordis-api/context.md) 頁面。
 
-如果你要為 harness 本身編寫外掛程式——由 `cordis.yml` 載入、在 Web UI 中驅動程式，而不是下面這個啟動器——請從[第一個 Harness 外掛程式](../user/develop/basic/index.md)開始。
+如果你要為 harness 本身編寫外掛程式——由 `cordis.yml` 載入、在 Web UI 中驅動，而不是下面這個啟動器——請從[第一個 Harness 外掛程式](../user/develop/basic/index.md)開始。
 
 <a id="setup"></a>
 

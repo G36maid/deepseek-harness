@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-05-context-form-vocabulary.md
 2026-08-05-context-form-vocabulary.md: e7afaea7c57f10eb4753146400ca28773a0423df
 2026-08-05-context-form-vocabulary.zh.md: 22d9d7b79c341f011bb36ef2056492ac581bd042
-2026-08-05-context-form-vocabulary.zh-tw.md: 33135f33421c259fbbd2b408ab49854e762ce99b
+2026-08-05-context-form-vocabulary.zh-tw.md: d1997562676def36645abf4cac638e13f70b08f9

@@ -14,7 +14,7 @@ subagent 啟動時，父 agent 當前的工具呼叫輪次仍未結束：其日�
 
 ## 啟動與能力
 
-`start(request)` 將已完成輪次的初始內容傳給 [`startInProcessRun`](../subagent-in-process-driver/README.md)，並等待子 agent 發布。共享驅動程式器負責取消、深度、訂製、結果讀取和 dispose（資源釋放）。
+`start(request)` 將已完成輪次的初始內容傳給 [`startInProcessRun`](../subagent-in-process-driver/README.md)，並等待子 agent 發布。共享驅動器負責取消、深度、訂製、結果讀取和 dispose（資源釋放）。
 
 fork 聲明 `{ outputSchema: true, depthLimit: true, toolFilter: true, persona: true }`，與 spawn 相同。
 

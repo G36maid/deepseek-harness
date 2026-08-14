@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-當 `max-tokens` 步驟只組裝了工具呼叫塊時，agent loop（代理循環）會追加一條空內容的 `assistant/message`，因為 `BlockAssembler.blocks()` 會丟棄被截斷的工具呼叫；這則訊息僅記錄 usage。三個消費端獨立選取子 agent 的輸出，並把這條 usage 記錄當成輸出。行程內驅動程式的 `readResult` 與 continuable Activation 的 `subagent/end` capture 不加過濾地選取最後一條 `assistant/message`，SDK 後端的觀察器則讓任何 `assistant/message` 優先於累積的文字。在被 max-tokens 截斷的多步輪次中，最後那條空訊息導致 `SubagentResult.output`、工具結果、遙測與 `subagent/end.lastAssistantMessage` 都漏掉真實的部分回答。行程內驅動程式也沒有流式文字兜底，因此被取消的子 agent 若其唯一文字只存在於 `assistant/chunk` 事件中，也會報告 `[]`。
+當 `max-tokens` 步驟只組裝了工具呼叫塊時，agent loop（代理循環）會追加一條空內容的 `assistant/message`，因為 `BlockAssembler.blocks()` 會丟棄被截斷的工具呼叫；這則訊息僅記錄 usage。三個消費端獨立選取子 agent 的輸出，並把這條 usage 記錄當成輸出。行程內驅動的 `readResult` 與 continuable Activation 的 `subagent/end` capture 不加過濾地選取最後一條 `assistant/message`，SDK 後端的觀察器則讓任何 `assistant/message` 優先於累積的文字。在被 max-tokens 截斷的多步輪次中，最後那條空訊息導致 `SubagentResult.output`、工具結果、遙測與 `subagent/end.lastAssistantMessage` 都漏掉真實的部分回答。行程內驅動也沒有流式文字兜底，因此被取消的子 agent 若其唯一文字只存在於 `assistant/chunk` 事件中，也會報告 `[]`。
 
 ## 決策
 

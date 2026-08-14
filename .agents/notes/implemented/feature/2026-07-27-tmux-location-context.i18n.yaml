@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-27-tmux-location-context.md
 2026-07-27-tmux-location-context.md: 12c3f43a38ffbd668ee2ac3a92a9f1e94f4b8357
 2026-07-27-tmux-location-context.zh.md: 00eb63faf761af2b2a6e61b2fe8019102f611c36
-2026-07-27-tmux-location-context.zh-tw.md: 41ef995756e89a86981d6350ddf05642f77c93e2
+2026-07-27-tmux-location-context.zh-tw.md: ffc1b41f6de551ca03407a0cf5907a6d4416c741

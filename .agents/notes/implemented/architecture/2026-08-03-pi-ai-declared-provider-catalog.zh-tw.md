@@ -51,7 +51,7 @@ pi-ai 的 `Models` 自帶一套憑據概念——按提供方 ID 索引的 `Cred
 - **保留 `createProvider()` 但不建 `Models` 集合**，改由 `provider.streamSimple(model, ctx, {apiKey})` 發起。改動最小且憑據路徑原封不動，但 `createProvider` 的 `auth` 是必填欄位，這條路上它永遠不會被呼叫——一份因簽名而必填、卻沒有呼叫方的實作。它還讓 `refreshModels` 需要手工構造 `RefreshModelsContext`，並使配接器始終不在 pi-ai 真正支持的執行時期上。
 - **catalog 路由複用已安裝提供方，只有聲明式路由走 `createProvider()`**，且兩者不共享解析。對 catalog 行為零風險，但 catalog 物化、端點覆蓋與每模型設定這三件事都要各寫兩遍，而改指協議的 catalog 路由還得在解析中途跳到另一條路徑。已採納的拆法把不對稱收斂在提供方構造這一處——那裡的不對稱是 pi-ai 不暴露已構造提供方的 API 實作所強加的。
 - **讓每條路由都經 `createProvider()` 重建**，包括 catalog 路由。完全對稱，但已構造的 `Provider` 不暴露自己的 `api`，於是協議表會成為「哪些提供方能用」的天花板——Bedrock 經獨立入口載入其 Smithy 模組，會因此靜默失效。
-- **完整暴露 pi-ai 的 `Model` 形狀**（成本、輸入模態、`thinkingLevelMap`、`compat`）。可設定性最大，但這些欄位當時沒有任何讀取方，因此配了價格或模態什麼也不會改變，卻看起來像是受支持的。這條否決裡由消費端驅動程式的那一半後來逐欄位兌現了，每次都等到出現真實讀取方：[[2026-08-08-pi-ai-per-model-reasoning-declarations]] 在選擇器與分派真正消費之後開放了推理（以 `reasoningEfforts` 的形態，而非裸 `thinkingLevelMap`）和兩個推理分派 `compat` 開關；[[2026-08-12-pi-ai-route-default-input-modalities]] 在圖片准入點開始讀取之後開放了模態（以 `input` 與 `defaultInput` 的形態，而非裸 `Model.input` 直通）。成本仍因原有理由保持關閉。
+- **完整暴露 pi-ai 的 `Model` 形狀**（成本、輸入模態、`thinkingLevelMap`、`compat`）。可設定性最大，但這些欄位當時沒有任何讀取方，因此配了價格或模態什麼也不會改變，卻看起來像是受支持的。這條否決裡由消費端驅動的那一半後來逐欄位兌現了，每次都等到出現真實讀取方：[[2026-08-08-pi-ai-per-model-reasoning-declarations]] 在選擇器與分派真正消費之後開放了推理（以 `reasoningEfforts` 的形態，而非裸 `thinkingLevelMap`）和兩個推理分派 `compat` 開關；[[2026-08-12-pi-ai-route-default-input-modalities]] 在圖片准入點開始讀取之後開放了模態（以 `input` 與 `defaultInput` 的形態，而非裸 `Model.input` 直通）。成本仍因原有理由保持關閉。
 
 - **保留單個可變 `Models` 集合併重新同步。** 分配更少，且對每個同步完成解析的操作都是正確的；唯獨對那個不同步的操作恰恰是錯的：`stream()` 會在捕獲模型與派發模型之間 await 一次憑據。
 - **用「先 dispose 再註冊」模擬目錄原子替換。** 無需改 seam，且在新集合有效時確實可用——而那正是從不需要原子性的那種情形。

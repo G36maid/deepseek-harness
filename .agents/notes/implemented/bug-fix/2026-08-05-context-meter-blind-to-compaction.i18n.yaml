@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-05-context-meter-blind-to-compaction.md
 2026-08-05-context-meter-blind-to-compaction.md: 550ab1dad6db3cd26f4c9d8f280095a2fb9daf4e
 2026-08-05-context-meter-blind-to-compaction.zh.md: ef728d1c3c787f1760b789a152101b9caeaffa4c
-2026-08-05-context-meter-blind-to-compaction.zh-tw.md: 6097eb35992f1ac01a0efebcaffe4405c1b352ce
+2026-08-05-context-meter-blind-to-compaction.zh-tw.md: fd429936c120609c3cf1e9969c2e15834f8ab111

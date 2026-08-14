@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-30-web-queue-steer-action.md
 2026-07-30-web-queue-steer-action.md: f03251f667f4b7efcccfa2f7f0e7b7702ea931a5
 2026-07-30-web-queue-steer-action.zh.md: 130a6a70820c9fe7e4d804354df5d747f5162258
-2026-07-30-web-queue-steer-action.zh-tw.md: 218a6361b0eba9846ba26e1d6c9b20a9f82c47e4
+2026-07-30-web-queue-steer-action.zh-tw.md: 8c5de26e0c2f8976870126a596395cba7d67329b

@@ -95,7 +95,7 @@ interface SettingsScope<T> {
 
 ## 描述符
 
-`describe()` 為設定介面序列化每個已註冊 namespace：schemastery 的 `toJSON()` 封裝結構驅動程式 schema 渲染的表單，解析值填充表單，分離出的 `base`/`user` 層讓表單按欄位是否出現在 user 層標注「使用者已覆蓋」。`describe({ redactSecrets: true })`——每個對外傳輸介面都必須傳入——從三層剝離 `role('secret')` 欄位並枚舉其 `{path, set}` slot，頁面因此能渲染只寫輸入框而永遠收不到機密值。
+`describe()` 為設定介面序列化每個已註冊 namespace：schemastery 的 `toJSON()` 封裝結構驅動 schema 渲染的表單，解析值填充表單，分離出的 `base`/`user` 層讓表單按欄位是否出現在 user 層標注「使用者已覆蓋」。`describe({ redactSecrets: true })`——每個對外傳輸介面都必須傳入——從三層剝離 `role('secret')` 欄位並枚舉其 `{path, set}` slot，頁面因此能渲染只寫輸入框而永遠收不到機密值。
 
 ```ts type-equiv
 /** One registered namespace as surfaced to configuration UIs. */

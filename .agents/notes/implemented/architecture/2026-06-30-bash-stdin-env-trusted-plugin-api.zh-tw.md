@@ -20,7 +20,7 @@ Status: implemented
 
 2. **`env` 在憑證擦除之後合併，因此呼叫方顯式設定的條目即使具有憑證形態的名稱也會勝出。** 後續的託管命名空間決策負責管理 `DSH_*`：這類環境條目會被移除，受信的 `dshEnv` 最後合併，因此普通 `env` 條目永遠無法頂掉託管值。完整順序為 `scrub(process.env, including DSH_*)` → `ENV_OVERRIDES` → 普通 `env` → `dshEnv`。
 
-3. **`stdin`/`env` 在已解析 spec 上是 required-absent-OK（普通 optional），而非像 `owner` 那樣 required-but-nullable。** `owner` 之所以是 required-but-nullable，是因為*靜默*缺失的 owner 會產生一個無主、跨工作階段可讀的任務——一個安全隱患，顯式的 `undefined` 可以防範。`stdin`/`env` 沒有這種風險：缺失意味著「無 stdin / 無額外 env」，這是安全的常規情況（所有模型驅動程式的呼叫都如此）。因此它們保持普通 optional，與 `signal` 一致。
+3. **`stdin`/`env` 在已解析 spec 上是 required-absent-OK（普通 optional），而非像 `owner` 那樣 required-but-nullable。** `owner` 之所以是 required-but-nullable，是因為*靜默*缺失的 owner 會產生一個無主、跨工作階段可讀的任務——一個安全隱患，顯式的 `undefined` 可以防範。`stdin`/`env` 沒有這種風險：缺失意味著「無 stdin / 無額外 env」，這是安全的常規情況（所有模型驅動的呼叫都如此）。因此它們保持普通 optional，與 `signal` 一致。
 
 `dsh-bash-local` 僅在有位元組需要寫入時才建立 stdin 管道；否則 fd 0 仍為 `/dev/null`，保持先前行為。它寫入位元組後關閉管道。子行程未讀取即退出時產生的 `EPIPE` 被忽略，因為命令退出碼和輸出決定結果。
 

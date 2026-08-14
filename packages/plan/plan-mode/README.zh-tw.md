@@ -18,11 +18,11 @@
 
 組合 `ctx.commands` 時，該包會註冊 `/plan [message]`，並將參數恰好為 `off` 的情況保留給直接退出。不帶參數的 `/plan` 會啟用 plan mode；任何其他非空參數都會先啟用 plan mode，再透過 `agent.steer()` 提交，因此它會在 plan 引導下成為下一步驟的常規已記錄使用者訊息。`/plan off` 會選擇停用狀態，不傳送模型輸入；它還可以在啟用 plan mode 的待處理選擇由輪內 pre-step 追加之前將其取消。
 
-Web 用戶端使用該外掛程式提供的 `/plan` 命令；其他入口可以直接驅動程式同一服務，無需定義第二套 mode 詞彙。
+Web 用戶端使用該外掛程式提供的 `/plan` 命令；其他入口可以直接驅動同一服務，無需定義第二套 mode 詞彙。
 
 ## 工作階段投影
 
-當組合掛載 `ctx.sessionProjections`（[`@deepseek-ai/dsh-session-projection`](../../session/session-projection/README.md)）時，本包會在一個注入的子外掛程式中註冊 `plan` 投影單元。該單元摺疊兩類事件：名為 `plan` 且攜帶已記錄 `args` 的 `command/run` 記錄會設定目標狀態（`off` → 未啟用，其餘 → 啟用），`plan/mode` 會提交已記錄狀態並清除該目標；其他任何事件都返回同一個狀態引用。`view` 推導 `{ active, pending }`，其中 `pending` 僅在尚未落實的選擇與已記錄狀態不同時為 true。該值完全由日誌重播得出，因此 host 重新啟動、其他分頁標籤和冷讀都能僅憑日誌復原它。`/plan` 處理器會在任何可能失敗的路徑之前呼叫 `set()`，因此處理器失敗時不會留下缺少對應 plan 選擇的已記錄命令。key 由 `src/types.ts` 透過聲明合併加入 `SessionProjectionMap`：host 消費端經 `./types` 取得，client 聚合經 `./client` 取得。框架負責驅動程式該單元，載體透過歷史尾頁和 `session/projection` 推送幀提供其值。未掛載登錄檔的組合不受影響。
+當組合掛載 `ctx.sessionProjections`（[`@deepseek-ai/dsh-session-projection`](../../session/session-projection/README.md)）時，本包會在一個注入的子外掛程式中註冊 `plan` 投影單元。該單元摺疊兩類事件：名為 `plan` 且攜帶已記錄 `args` 的 `command/run` 記錄會設定目標狀態（`off` → 未啟用，其餘 → 啟用），`plan/mode` 會提交已記錄狀態並清除該目標；其他任何事件都返回同一個狀態引用。`view` 推導 `{ active, pending }`，其中 `pending` 僅在尚未落實的選擇與已記錄狀態不同時為 true。該值完全由日誌重播得出，因此 host 重新啟動、其他分頁標籤和冷讀都能僅憑日誌復原它。`/plan` 處理器會在任何可能失敗的路徑之前呼叫 `set()`，因此處理器失敗時不會留下缺少對應 plan 選擇的已記錄命令。key 由 `src/types.ts` 透過聲明合併加入 `SessionProjectionMap`：host 消費端經 `./types` 取得，client 聚合經 `./client` 取得。框架負責驅動該單元，載體透過歷史尾頁和 `session/projection` 推送幀提供其值。未掛載登錄檔的組合不受影響。
 
 ## 設定
 

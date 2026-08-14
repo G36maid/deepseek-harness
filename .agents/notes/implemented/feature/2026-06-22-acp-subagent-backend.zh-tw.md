@@ -10,7 +10,7 @@ subagent seam（[seam Agent Note](2026-06-21-subagent-capability-seam.md)）的�
 
 ## 決策
 
-`@deepseek-ai/dsh-subagent-acp` 註冊一個 `SubagentProvider`，將每個子 agent 執行在一個透過 spawn 啟動的子行程中，並以 ACP *用戶端*身份驅動程式它。它是現有伺服器端橋接 `@deepseek-ai/dsh-acp`（ACP *agent*）的方向反轉孿生體：橋接應答 `initialize`/`newSession`/`prompt`；本後端呼叫它們並實作 `Client` 回呼（`sessionUpdate`、`requestPermission`）。將設定的 spawn 命令指向 `acp-agent` 示例，即可讓 harness 與自身行程通訊。
+`@deepseek-ai/dsh-subagent-acp` 註冊一個 `SubagentProvider`，將每個子 agent 執行在一個透過 spawn 啟動的子行程中，並以 ACP *用戶端*身份驅動它。它是現有伺服器端橋接 `@deepseek-ai/dsh-acp`（ACP *agent*）的方向反轉孿生體：橋接應答 `initialize`/`newSession`/`prompt`；本後端呼叫它們並實作 `Client` 回呼（`sessionUpdate`、`requestPermission`）。將設定的 spawn 命令指向 `acp-agent` 示例，即可讓 harness 與自身行程通訊。
 
 ### 每次執行啟動全新行程
 
@@ -34,7 +34,7 @@ ACP `StopReason` → harness `SubagentStopReason`：`end_turn`→`completed`、`
 
 ### 安全：清洗子行程環境
 
-子 agent 是獨立行程，因此會繼承環境變數。形如憑證的環境變數（`/KEY|PASSWORD|SECRET|TOKEN/i`）默認不轉發——父 harness 自身的金鑰不得隱式洩露到 spawn 啟動的行程中（與 bash 執行器採用的策略相同）。子 agent 自己的憑證（它需要模型金鑰）透過 `config.env` 顯式提供，在清洗之後疊加，因此有意傳入的 `DEEPSEEK_API_KEY` 得以保留，而偶然存在的 `AWS_SECRET_ACCESS_KEY` 則不會。子行程的 stderr 繼承到父行程的 stderr（診斷資訊自然浮現）；spawn 等級的 `error` 事件（如命令不存在時的 ENOENT）被捕獲並與 ACP 驅動程式競速，因此錯誤命令的結果為 `error` 而非以未處理錯誤崩潰父行程。
+子 agent 是獨立行程，因此會繼承環境變數。形如憑證的環境變數（`/KEY|PASSWORD|SECRET|TOKEN/i`）默認不轉發——父 harness 自身的金鑰不得隱式洩露到 spawn 啟動的行程中（與 bash 執行器採用的策略相同）。子 agent 自己的憑證（它需要模型金鑰）透過 `config.env` 顯式提供，在清洗之後疊加，因此有意傳入的 `DEEPSEEK_API_KEY` 得以保留，而偶然存在的 `AWS_SECRET_ACCESS_KEY` 則不會。子行程的 stderr 繼承到父行程的 stderr（診斷資訊自然浮現）；spawn 等級的 `error` 事件（如命令不存在時的 ENOENT）被捕獲並與 ACP 驅動競速，因此錯誤命令的結果為 `error` 而非以未處理錯誤崩潰父行程。
 
 ## 測試
 

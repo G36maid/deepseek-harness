@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-20-gui-testing-system.md
 2026-07-20-gui-testing-system.md: 13a270c4134aadee70c153aede2ac04a88df2881
 2026-07-20-gui-testing-system.zh.md: a01d0e5638b0e19ddc4ba88a27f056f93a49ffff
-2026-07-20-gui-testing-system.zh-tw.md: 0d76ae8c65cf62be049354baa74208c47d758f42
+2026-07-20-gui-testing-system.zh-tw.md: c367737b1c44233f7776bed7c6fa057701cfe774

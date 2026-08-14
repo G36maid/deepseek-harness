@@ -71,7 +71,7 @@ Notifier 微任务合批 ──► ConversationSnapshot 缓存 ──uSES──�
 - **Session**（session.ts）：懶建、常駐——建成後在後臺持續喫幀，切走切回秒顯。操作面：`prompt`/`cancel`（RPC 透傳；失敗落進快照的 `promptError`）、`open`（拉尾頁 history，冪等）、`loadOlder`（向上翻頁，防重入）、`resync`（重連 = 清視窗重跑 open）。訂閱面：`subscribe`/`getSnapshot`（恆返快取引用）——`implements ObservableSnapshot<ConversationSnapshot>`，構造時掛 `useSelector = bindSnapshotSelector(this)`，Session 本身就是 uSES 源。幀分發是一個 switch：`session/event` 幀按 seq 去重（唯一去重鍵），open 運送中時緩衝，否則追加 + 增量投影；open/縫合按 seq 合併 live 緩衝並去重，`subscribed.lastSeq` 超出視窗尾則回補一次。
 - **ConversationSnapshot**（conversation.ts）：頂層不可變快照約定。`chat` 包含結構化 `order`、identity 穩定的 keyed Node reader、Turn/Step index 和 timeline；`nodes`、`partial`、`runningCalls`、`turnTimings`、`turnEnds` 是未遷移 Trajectory 消費端使用的相容 slice。pending interaction、queue、running、removed、open state、paging 和 prompt error 仍是 Session 資訊。**引用紀律**（memo 與 uSES 的前提）：未變化的子結構和 Node value 保持引用；單個業務更新只替換對應 key 的 value，除非它的順序或 Location 發生變化。React 仍只訂閱 Session 這一處 observable source，並由框架提供的 `useSession(selector)` 隔離 Node 與 Location 聚合更新。
 - **SessionManager**（manager.ts）：實例簇 + 幀總入口 + 工作階段清單。帶 sessionId 的幀只投已存在實例（mux 廣播不得把每個工作階段都實例化）；例外是審批/問答 `requested` 幀——它們不落 history、open 無法回補，故緩衝進 `pendingBuffers`，實例化時重播。
-- **Notifier**（notifier.ts）：兩條通知通道，按變更來源取用。`markDirty()`（默認；幀驅動程式一律用它）按微任務合批——N 次變更、一次通知、一次重渲染；flush 先重建快照快取再通知。`notifyNow()`（僅使用者手勢的直接回響）同 tick 重建並通知——受控輸入的回響若延到微任務，DOM 會回滾、遊標跳尾。幀驅動程式程式碼用 notifyNow 會讓合批塌回逐幀渲染；禁。
+- **Notifier**（notifier.ts）：兩條通知通道，按變更來源取用。`markDirty()`（默認；幀驅動一律用它）按微任務合批——N 次變更、一次通知、一次重渲染；flush 先重建快照快取再通知。`notifyNow()`（僅使用者手勢的直接回響）同 tick 重建並通知——受控輸入的回響若延到微任務，DOM 會回滾、遊標跳尾。幀驅動程式碼用 notifyNow 會讓合批塌回逐幀渲染；禁。
 - **ConversationNodeAssembler**（`runtime/src/client/conversation/`）：Session 擁有的增量引擎在原始事件上執行各自獨立註冊的 Definition。`match(event)` 無須掃描 Context 即選填出 `(kind, id)`；start/update 構造 Definition state；引擎計算的 Location 攜帶 Turn/Step 關閉資訊；向前查詢 Context 時記錄相依性，並由後續 prepend 修復；`buildViewNode(target)` 只物化 dirty Context。Chat builder 保留結構順序和 per-key value identity，`useSession` selector 負責消費隔離，Assistant token 發布則合併到每個 animation frame 一次。[Conversation Node 決策](2026-08-09-client-conversation-node-assembly.md)擁有組裝邊界，[Tool 展示所有權](2026-08-08-client-tool-presentation-ownership.md)擁有 Tool 遞迴渲染。
 - **ConnectionController**（在 `packages/client/connection`）：開 mux/host 雙流、for-await 泵入，代際圍欄之內指數退避重連（500ms 翻倍至 10s 封頂、抖動、無限重試）；sinks 單向注入（Controller 不認識 Session）。重連 = 重建：`onConnected` → 清單刷新 + 各已打開工作階段 resync。對象層只面向 `IApiClient`；Web 承載以 HTTP POST 載兩個 client→server 象限、以[每邏輯流一條 WebSocket](2026-08-04-websocket-downlink-carrier.md)載兩個 server→client 象限，用戶端類族歸分層筆記屬地。
 
@@ -112,7 +112,7 @@ src/client/
 - **新 slot**：見 [slot 體系標準筆記](2026-07-22-slot-type-chain-implementation.md)——約定合併進 `SlotMap`，在父 entry 的 `children` 裡聲明，經自動注入的 `renderSlot` prop 渲染。永不全域性匯出元件。
 - **消費新幀類型**：純傳輸 session frame → Session 分發 switch；host 級 frame → Manager 路由表；已記錄的 conversation 業務事件 → Definition 加 keyed view renderer，不增加 Session 業務分支。
 - **狀態住哪**：業務資料（事件、流式、待答）→ 永遠對象層；父知道的 → renderSlot 現場的 owner props；單元件私有（滾動、搜尋詞、展開集）→ 元件狀態；跨 entry 共享或跨重掛載存活（選中、草稿、面板寬）→ entry 聲明的 store（[slot 體系標準](2026-07-22-slot-type-chain-implementation.md)）。
-- **通知通道**：幀驅動程式/非同步 = `markDirty` 合批；受控輸入需要同 tick 的使用者手勢直接回響 = `notifyNow`。
+- **通知通道**：幀驅動/非同步 = `markDirty` 合批；受控輸入需要同 tick 的使用者手勢直接回響 = `notifyNow`。
 
 ## Consequences
 

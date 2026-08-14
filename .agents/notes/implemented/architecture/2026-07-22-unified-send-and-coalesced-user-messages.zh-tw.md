@@ -6,15 +6,15 @@ Status: implemented
 
 ## 問題
 
-agent（代理）的對外驅動程式介面逐漸長出三個近乎平行的動詞——`send`、`steer`、`inject`——各自帶有獨立的選項類型、獨立的即時事件敘事，以及獨立的持久事件。`send` 和 `steer` 都會把一條凍結的 inbox 記錄入隊並行出 `agent/queued`；`inject` 則繞過 inbox，寫入一條獨立的 `context/message` 持久事件。這三個動詞實際上只沿兩條獨立的軸變化：一個佇列項加入哪個佇列（一個全新的輪次，還是當前活躍的輪次），以及這個佇列項是否讓模型執行。把這個 2×2 編碼成三個手寫方法，掩蓋了其中的對稱性，讓「排入一個輪次但不喚醒驅動程式器」無法表達，也讓 `cancel()` 無從在保留排隊工作的前提下中止一個輪次。
+agent（代理）的對外驅動介面逐漸長出三個近乎平行的動詞——`send`、`steer`、`inject`——各自帶有獨立的選項類型、獨立的即時事件敘事，以及獨立的持久事件。`send` 和 `steer` 都會把一條凍結的 inbox 記錄入隊並行出 `agent/queued`；`inject` 則繞過 inbox，寫入一條獨立的 `context/message` 持久事件。這三個動詞實際上只沿兩條獨立的軸變化：一個佇列項加入哪個佇列（一個全新的輪次，還是當前活躍的輪次），以及這個佇列項是否讓模型執行。把這個 2×2 編碼成三個手寫方法，掩蓋了其中的對稱性，讓「排入一個輪次但不喚醒驅動器」無法表達，也讓 `cancel()` 無從在保留排隊工作的前提下中止一個輪次。
 
 另外，`context/message` 與 `user/message` 已經趨同：對外介面把二者都原樣投影為 user 角色內容，唯一真正的區別是注入的上下文攜帶非 user `source` 且「不是提示詞」。一個投影對應兩種事件類型，意味著每個消費端都要根據事件類型分支來回答「這是不是一條人類提示詞？」，而 goal 系統把這種類型區分當作側通道使用（第 0 個 Round 的狀態變更是 `context/message`，已准入的 Round 是 `user/message`）。
 
 ## 決策
 
-**一個原語，三個預設別名。** `Agent` 介面的 `send(message, target, wakeup)` 覆蓋（`target` × `wakeup`）矩陣。完整的 `UserMessage` 持有標識、角色、模型可見 `content` 與生產方 `source`；其餘參數只持有路由策略。`followup`（`next-turn`/wakeup）、`steer`（`next-step`/wakeup）和 `inject`（`next-step`/no-wakeup）都接收這一則訊息並固定策略。`wakeup` 會在 agent 空閒時保留一個驅動程式器；已經活躍的驅動程式器不會獲得第二次保留，只有在抵達後續 pre-step 邊界時才能領取該輸入。`next-turn`/no-wakeup（入隊但不喚醒）可以表達，只是沒有別名，也沒有當前呼叫方。
+**一個原語，三個預設別名。** `Agent` 介面的 `send(message, target, wakeup)` 覆蓋（`target` × `wakeup`）矩陣。完整的 `UserMessage` 持有標識、角色、模型可見 `content` 與生產方 `source`；其餘參數只持有路由策略。`followup`（`next-turn`/wakeup）、`steer`（`next-step`/wakeup）和 `inject`（`next-step`/no-wakeup）都接收這一則訊息並固定策略。`wakeup` 會在 agent 空閒時保留一個驅動器；已經活躍的驅動器不會獲得第二次保留，只有在抵達後續 pre-step 邊界時才能領取該輸入。`next-turn`/no-wakeup（入隊但不喚醒）可以表達，只是沒有別名，也沒有當前呼叫方。
 
-**inject 是不會喚醒的 next-step 投遞。** 它始終把完整訊息追加到 next-step inbox，並在持久 `agent/inbox/spliced` 事件中記錄該插入。驅動程式器會在後續 pre-step 領取它，並且只有最終決策把它放入進入步驟的批次時，才會將其記錄為模型可見的 `user/message`；空閒注入會保持待處理，直到其他投遞喚醒驅動程式器。必填的 `UserMessage.source` 會保留呼叫方提供的源欄位。
+**inject 是不會喚醒的 next-step 投遞。** 它始終把完整訊息追加到 next-step inbox，並在持久 `agent/inbox/spliced` 事件中記錄該插入。驅動器會在後續 pre-step 領取它，並且只有最終決策把它放入進入步驟的批次時，才會將其記錄為模型可見的 `user/message`；空閒注入會保持待處理，直到其他投遞喚醒驅動器。必填的 `UserMessage.source` 會保留呼叫方提供的源欄位。
 
 **context/message 已移除。** 注入的上下文在 inbox 中使用同一個 `UserMessage` 值，並在獲準時成為 `user/message` 事件；上下文生產方顯式提供合適的非 `user` 類別 `source`，類型化 source 變體攜帶持久化的生產方專用欄位。對外介面、派生邏輯和 `SurfaceEventType` 都不再包含 `context/message`；需要判斷「這是不是一條人類提示詞？」的消費端改為讀取 `source.kind === 'user'`，而不是事件類型。
 
@@ -24,11 +24,11 @@ agent（代理）的對外驅動程式介面逐漸長出三個近乎平行的動
 
 **Inbox 變更只有一份持久投影和三種最小即時通知。** 每次 append、prepend、編輯、刪除、取消與領取都會記錄規範化的 `agent/inbox/spliced` 坐標。插入會發出 `agent/inbox/inserted { message }`；普通刪除攜帶持久 `outcome: 'canceled'`，並行出 `agent/inbox/discarded { message }`；迴圈的原子 `claim()` 會記錄純刪除 splice，隨後寄出 `agent/inbox/claimed { message, turn }`。`MessageId` 是唯一的單次出現標識，並在兩個待處理清單間保持唯一。即時載荷刻意不攜帶 placement、outcome 或批次封套，因為這些事實由持久 splice 持有。
 
-**pre-step 會領取 next-step 輸入，但不會為它單獨建立輪次。** steering（中途引導）和注入始終進入同一個 next-step inbox；steering 會喚醒驅動程式器，注入則不會。在輪次邊界，驅動程式器會原子領取待處理的 next-step 輸入，再領取一條排隊提示詞；在步驟之間則只領取 next-step 輸入。領取會記錄純刪除 splice，並針對每則訊息寄出一次 `agent/inbox/claimed { message, turn }`。隨後 `agent/pre-step` 會拒絕擬議步驟，或返回進入步驟的完整批次。拒絕與監聽器失敗都會讓已領取批次保持已刪除；領取後纔到達的輸入會等待後續邊界。
+**pre-step 會領取 next-step 輸入，但不會為它單獨建立輪次。** steering（中途引導）和注入始終進入同一個 next-step inbox；steering 會喚醒驅動器，注入則不會。在輪次邊界，驅動器會原子領取待處理的 next-step 輸入，再領取一條排隊提示詞；在步驟之間則只領取 next-step 輸入。領取會記錄純刪除 splice，並針對每則訊息寄出一次 `agent/inbox/claimed { message, turn }`。隨後 `agent/pre-step` 會拒絕擬議步驟，或返回進入步驟的完整批次。拒絕與監聽器失敗都會讓已領取批次保持已刪除；領取後纔到達的輸入會等待後續邊界。
 
 **一條已接受訊息只保留一種表示。** 持久的使用者角色輸入和附加的模型可見上下文都直接使用帶標識且凍結的 `UserMessage`。迴圈把該值與私有路由狀態存放在一起，不會將其標識、內容或來源複製到另一種公開形狀中。steering、注入和工具產生的上下文都會在 next-step inbox 中保留各自帶標識的訊息。[帶標識的不可變訊息值決策](2026-07-28-identified-immutable-message-values.md)取代了本記錄此前的 `UserMessageData`/`AgentMessage` 層級，並將這一表示擴充到 assistant 訊息和工具結果訊息。
 
-**空閒喚醒在插入之後發生。** 會喚醒的傳送會先插入輸入，再於返回前進入 running 驅動程式器。首次 pre-step 可能立即領取該輸入；因此，後續同步傳送會加入正在執行的迴圈，並等待更晚的邊界。自喚醒開始，取消就歸屬於 running 輪次訊號，中間不會插入獨立的預執行 phase。
+**空閒喚醒在插入之後發生。** 會喚醒的傳送會先插入輸入，再於返回前進入 running 驅動器。首次 pre-step 可能立即領取該輸入；因此，後續同步傳送會加入正在執行的迴圈，並等待更晚的邊界。自喚醒開始，取消就歸屬於 running 輪次訊號，中間不會插入獨立的預執行 phase。
 
 **cancel 新增 keepInbox。** `cancel(cause, { keepInbox? })`；呼叫方顯式選擇 cause，且 `keepInbox: true` 會中止活躍輪次，同時保留排隊項和 steering 項（不寄出 discard 事件，尚未啟動的工作也不會被丟棄）。
 

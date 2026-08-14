@@ -280,7 +280,7 @@ SSRF/私有網路防護（阻斷私有、回環、鏈路本機、多播及其他
 
 ## 測試
 
-每一層在自己的邊界處固定：`dsh-web` 中的註冊/選擇/截斷/abort 約定與 `WebError` 碼；每個提供方基於錄制的 fixture（測試前置資料）的請求/回應對映（Perplexity fixture 包含純 URL 引用，以保持選填 source 欄位的誠實性），加上每個真實提供方的自跳過帶金鑰冒煙測試；`web-fetch-http` 中的真實本機 HTTP 行為；`dsh-tool-web` 中透過真實工具登錄檔的啟用驅動程式註冊、結構化執行錯誤和結果格式化。一個真實 Loader 冒煙測試守護兩種匯出形狀（[事後檢討（postmortem） 0001](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）：`dsh-web` 是默認匯出的服務，而提供方和 `tool-web` 是命名空間外掛程式，誤加 `export default` 會丟失 `inject`。
+每一層在自己的邊界處固定：`dsh-web` 中的註冊/選擇/截斷/abort 約定與 `WebError` 碼；每個提供方基於錄制的 fixture（測試前置資料）的請求/回應對映（Perplexity fixture 包含純 URL 引用，以保持選填 source 欄位的誠實性），加上每個真實提供方的自跳過帶金鑰冒煙測試；`web-fetch-http` 中的真實本機 HTTP 行為；`dsh-tool-web` 中透過真實工具登錄檔的啟用驅動註冊、結構化執行錯誤和結果格式化。一個真實 Loader 冒煙測試守護兩種匯出形狀（[事後檢討（postmortem） 0001](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)）：`dsh-web` 是默認匯出的服務，而提供方和 `tool-web` 是命名空間外掛程式，誤加 `export default` 會丟失 `inject`。
 
 ## 曾考慮的替代方案
 

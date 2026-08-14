@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-manager-owned-subagent-settlement-delivery.md
 2026-08-06-manager-owned-subagent-settlement-delivery.md: 064e90e03d8e3ec5695a4b15513946898a50d743
 2026-08-06-manager-owned-subagent-settlement-delivery.zh.md: 114c322e59738cb98aa692fcc11641e6c7ea9e2a
-2026-08-06-manager-owned-subagent-settlement-delivery.zh-tw.md: e0d7b206eac9c62c2d947fcb1bab8bad664a27ca
+2026-08-06-manager-owned-subagent-settlement-delivery.zh-tw.md: 1fc3627ccf303934bfcf833e06e6614fec72ea44

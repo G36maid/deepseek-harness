@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-14-provider-routed-llm-adapters.md
 2026-07-14-provider-routed-llm-adapters.md: e7028127bca468b9385c854e36a61f6a48a609ff
 2026-07-14-provider-routed-llm-adapters.zh.md: 54888888a546971dc33da0fd8064c4d89dc48b97
-2026-07-14-provider-routed-llm-adapters.zh-tw.md: 4f4b10c0ddeb100d62b765af09e714fb9c5225f8
+2026-07-14-provider-routed-llm-adapters.zh-tw.md: ef02bccff49fc96197e431760219740b97f2e714

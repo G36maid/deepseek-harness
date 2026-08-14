@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-stdio JSON-RPC 對外服務介面（`@deepseek-ai/dsh-sdk-jsonrpc-server`，見[單文件可執行 Agent Note](../architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md)）當時只有一個用戶端：Python SDK。想要同樣「把 harness 作為子行程驅動程式」能力的 TypeScript 消費端——倉庫測試、自動化，尤其是一個其子行程是*完整 harness 執行時期*（而非通用 ACP agent（代理））的 subagent 後端——沒有可匯入的內容：請求/通知載荷形狀只以匿名對象字面量存在於伺服器內部，傳輸類也躺在伺服器外掛程式包裡。
+stdio JSON-RPC 對外服務介面（`@deepseek-ai/dsh-sdk-jsonrpc-server`，見[單文件可執行 Agent Note](../architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md)）當時只有一個用戶端：Python SDK。想要同樣「把 harness 作為子行程驅動」能力的 TypeScript 消費端——倉庫測試、自動化，尤其是一個其子行程是*完整 harness 執行時期*（而非通用 ACP agent（代理））的 subagent 後端——沒有可匯入的內容：請求/通知載荷形狀只以匿名對象字面量存在於伺服器內部，傳輸類也躺在伺服器外掛程式包裡。
 
 ## 決策
 
@@ -23,9 +23,9 @@ stdio JSON-RPC 對外服務介面（`@deepseek-ai/dsh-sdk-jsonrpc-server`，見[
 
 四層，依[測試政策](../../../../docs/testing.md)：
 
-- **免金鑰單元**——`sdk-client` 透過真實 stdio 驅動程式指令碼化偽執行時期（`tests/fake-runtime.ts`，環境變數指令碼化、純協議——即 Python `test_client.py` 的模式）；`subagent-dsh-sdk` 經真實提供方驅動程式同一偽執行時期。三個包全部 100% 逐文件覆蓋。
+- **免金鑰單元**——`sdk-client` 透過真實 stdio 驅動指令碼化偽執行時期（`tests/fake-runtime.ts`，環境變數指令碼化、純協議——即 Python `test_client.py` 的模式）；`subagent-dsh-sdk` 經真實提供方驅動同一偽執行時期。三個包全部 100% 逐文件覆蓋。
 - **免金鑰 Loader 組合**——`subagent-dsh-sdk/tests/loader-composition.e2e.ts` 啟動僅測試用 cordis.yml（`examples/jsonrpc-agent/tests/fixtures/subagent/subagent-dsh-sdk/`），其中子行程是真實的第二個 harness 執行時期、帶自己的 cordis.yml；斷言父工具結果與子行程自己持久化的 transcript（文字記錄）都攜帶父工作階段 cwd。子啟動經 `resolveExampleLaunch` 解析，src/lib 兩種模式都成立。
-- **免金鑰快照**——`examples/jsonrpc-agent/tests/sdk.snapshot.ts` 是 jsonrpc 示例的第一個快照套件：真實 `dsh-jsonrpc-agent` 執行時期經真實 `dsh-sdk-client` 驅動程式，在新的 `cordis.snapshot.yml` 覆蓋層後經 `llm-replay` 重播已錄制 fixture（測試前置資料）（經 `DSH_CORDIS_CONFIG` 顯式傳入；jsonrpc bin 自身不做快照設定切換）。三個場景——文字輪次、bash 工具、spawn subagent——各自釘住規範化通知流、SDK 輪次結果與持久化的父+子日誌。這也補上了單文件可執行 Note 的 Python 側快照在 vitest 側留下的協議層缺口。
+- **免金鑰快照**——`examples/jsonrpc-agent/tests/sdk.snapshot.ts` 是 jsonrpc 示例的第一個快照套件：真實 `dsh-jsonrpc-agent` 執行時期經真實 `dsh-sdk-client` 驅動，在新的 `cordis.snapshot.yml` 覆蓋層後經 `llm-replay` 重播已錄制 fixture（測試前置資料）（經 `DSH_CORDIS_CONFIG` 顯式傳入；jsonrpc bin 自身不做快照設定切換）。三個場景——文字輪次、bash 工具、spawn subagent——各自釘住規範化通知流、SDK 輪次結果與持久化的父+子日誌。這也補上了單文件可執行 Note 的 Python 側快照在 vitest 側留下的協議層缺口。
 - **帶金鑰 e2e**——快照套件的 `DSH_SNAPSHOT=record` 模式即真實 API 路徑（已提交 fixture 由它產出）；組合 e2e 設計上無需金鑰。
 
 ## 考慮過的替代方案
@@ -40,10 +40,10 @@ stdio JSON-RPC 對外服務介面（`@deepseek-ai/dsh-sdk-jsonrpc-server`，見[
 
 **匯出源模組、規範化輔助函式和訂閱投遞端操作。** 這些都是呼叫方不需要的實作細節；暴露它們會讓呼叫方不得不理解用戶端如何校驗與分發協議輸入。各包根轉而枚舉受支持的用戶端介面與協議介面，用戶端則只重新匯出呼叫方必須區分的那一種協議錯誤。
 
-**複用 `dsh-acp-snapshot` 的 `runScenario` 做 SDK 快照。** 那個 harness 說 ACP（`ClientSideConnection`、`InputStep` 指令碼）。SDK 套件的全部意義就是以 *SDK 用戶端*為入口；它複用 normalize/refresh 庫層（`normalizeSessionLog`、`refreshFixtureReplacements`……），不動 ACP 驅動程式器。
+**複用 `dsh-acp-snapshot` 的 `runScenario` 做 SDK 快照。** 那個 harness 說 ACP（`ClientSideConnection`、`InputStep` 指令碼）。SDK 套件的全部意義就是以 *SDK 用戶端*為入口；它複用 normalize/refresh 庫層（`normalizeSessionLog`、`refreshFixtureReplacements`……），不動 ACP 驅動器。
 
 ## 後果
 
-**收益**：SDK 執行時期協議現在擁有伺服器與兩個用戶端 SDK 共享的、編譯器校驗的具名類型；TypeScript 消費端獲得與 Python 相同的子行程驅動程式能力，且帶類型化錯誤與結構化輪次原因，包根也只暴露歸呼叫方所有的操作；subagent seam 獲得一個 harness 原生的行程外後端，其子行程是完整對等體（自有設定、持久化、工具）——正是 seam Agent Note 所設想的遞迴組合方式；jsonrpc 示例終於有了快照覆蓋，而且走的就是 SDK 路徑本身。
+**收益**：SDK 執行時期協議現在擁有伺服器與兩個用戶端 SDK 共享的、編譯器校驗的具名類型；TypeScript 消費端獲得與 Python 相同的子行程驅動能力，且帶類型化錯誤與結構化輪次原因，包根也只暴露歸呼叫方所有的操作；subagent seam 獲得一個 harness 原生的行程外後端，其子行程是完整對等體（自有設定、持久化、工具）——正是 seam Agent Note 所設想的遞迴組合方式；jsonrpc 示例終於有了快照覆蓋，而且走的就是 SDK 路徑本身。
 
 **代價**：`sdk/` 組多了第三個包、subagent 多了第四個要保持最新的後端；SDK 後端每個子行程啟動完整外掛程式樹（單次成本高於 ACP 子行程；池化與 ACP 一樣留作未來工作）；協議仍無取消方法，SDK 的 `RequestTimeoutError` 與後端的 dispose 都只在本機結帳、伺服器側輪次會繼續執行到行程清理為止；快照 fixture 錄制於 `deepseek-v4-flash`，與其他錄制語料一樣隨模型行為漂移而重錄。

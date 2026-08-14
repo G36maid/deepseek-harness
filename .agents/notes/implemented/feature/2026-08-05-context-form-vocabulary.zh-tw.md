@@ -61,7 +61,7 @@ Status: implemented
 
 - `packages/client/runtime` 釘住形態投影，包括必須降級為 opaque 的未知值、空值、類型不符與缺失。
 - `packages/client/ui-conversation` 逐個釘住內容區：opaque 的換行留存與來源欄位、instructions 的文件清單與原樣包裝、catalog 的條目清單，以及條目不可用的 catalog 回落到 opaque。
-- `packages/skill/tool-skill` 釘住首次發布與替換時的新來源、由持久條目驅動程式的重新發布行為，以及畸形持久目錄不打斷步驟觀察。
+- `packages/skill/tool-skill` 釘住首次發布與替換時的新來源、由持久條目驅動的重新發布行為，以及畸形持久目錄不打斷步驟觀察。
 - 無金鑰的組裝 Web seeded-history 場景在 Chromium 中展開一條真實的 `instructions` 上下文，斷言其文件清單、原樣包裝與未改動的展開項幾何。`catalog` 沒有組裝態覆蓋：隔離腳手架不發布任何 skill，因此沒有目錄能進入瀏覽器場景。
 
 ## 後果

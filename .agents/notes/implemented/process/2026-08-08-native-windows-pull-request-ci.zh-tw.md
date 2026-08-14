@@ -28,7 +28,7 @@ Pull Request必需的 Windows 判定既需要快速的 win32 工具鏈訊號，�
 
 原生 watcher 使用 `canonicalizeWatchPath()` 對層級最深的現有祖先執行 realpath 解析；後綴缺失時，先證明該祖先是可枚舉目錄，再拼回後綴。這可避免 Windows 8.3 別名與長格式 libuv 事件混用，並讓所有宿主在祖先為普通文件時都保留 `ENOTDIR`。設定、憑據、skill（技能）根與 Cordis HMR（熱模組替換）在發現和診斷時保留設定路徑；模組 HMR 則使用規範寫法作為 Node 載入快取標識、掛接監聽器並在外掛程式啟動完成前等待主 watcher 就緒，因此啟動後立即發生的編輯不會與初始掃描形成競態。`watchFollowSymlinks: false` 時，若 skill 根本身是符號連結，系統不會展開最後這一級連結，從而讓 Chokidar 強制執行該邊界。
 
-Windows 的持久 JSONL 路徑會保留驅動程式器根目錄的原生寫法，並僅對後代路徑與暫存路徑應用擴充長度命名空間。ACP（Agent Client Protocol）拆卸階梯使用真實 Node 子行程，以符合宿主詞義的結果證明優雅終止與強制終止兩個層級，並避免聲稱 Windows 會交付 POSIX 訊號。產品接受裸命令時，可執行 fixture 會提供 `.cmd` 包裝指令碼與 `PATHEXT`。repository-cache 輔助包位於所選 Git 子路徑內，因此它們聲明的 `file:` 相依性會在 Windows 上以相同方式暴露命令包裝指令碼。隨附的安裝器會匯出 pnpm 自有的 workspace-ignore 設定，保留 `PNPM_HOME` 作為 pnpm 資料設定，同時從生命週期 `PATH` 中移除該目錄，並在 `PATHEXT` 中優先選擇 `.CMD`；因此，巢狀 Git 包安裝既不會重新加入外層 workspace，也不會讓繼承的 Windows pnpm 可執行文件搶在交易持有的 wrapper 之前。
+Windows 的持久 JSONL 路徑會保留驅動器根目錄的原生寫法，並僅對後代路徑與暫存路徑應用擴充長度命名空間。ACP（Agent Client Protocol）拆卸階梯使用真實 Node 子行程，以符合宿主詞義的結果證明優雅終止與強制終止兩個層級，並避免聲稱 Windows 會交付 POSIX 訊號。產品接受裸命令時，可執行 fixture 會提供 `.cmd` 包裝指令碼與 `PATHEXT`。repository-cache 輔助包位於所選 Git 子路徑內，因此它們聲明的 `file:` 相依性會在 Windows 上以相同方式暴露命令包裝指令碼。隨附的安裝器會匯出 pnpm 自有的 workspace-ignore 設定，保留 `PNPM_HOME` 作為 pnpm 資料設定，同時從生命週期 `PATH` 中移除該目錄，並在 `PATHEXT` 中優先選擇 `.CMD`；因此，巢狀 Git 包安裝既不會重新加入外層 workspace，也不會讓繼承的 Windows pnpm 可執行文件搶在交易持有的 wrapper 之前。
 
 啟動後，只有根 fiber 與 Loader 均處於活躍狀態時，系統才會繼續設定 profile watcher。只有當同一次呼叫所記錄的訊號已取得關閉流程所有權時，系統才會隔離並行設定錯誤；無關 HMR 故障仍會響亮失敗。[行程關閉控制器](../bug-fix/2026-08-03-cli-signal-shutdown-escalation.md)會在根級 dispose 成功後讓單次任務的正常完成流程排空 Node 剩餘控制代碼，同時讓拆卸失敗、截止時間到期和訊號升級繼續強制退出。vendored Include 會序列化防抖寫入，只對瞬時訪問或忙碌故障執行有界退避重試，並確保每個由計時器觸發的拒絕都得到觀察。持久化最終失敗後，該故障會保留在佇列中，並重新拋給拆卸責任方；成功拆卸則會排空最新寫入。
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-28-web-gui-feedback-loop.md
 2026-07-28-web-gui-feedback-loop.md: 37de32dbfb60150fe72f6e4102fa143ac9c8db05
 2026-07-28-web-gui-feedback-loop.zh.md: d1bc937da1ba527f9f3ec1417465ac6adebd9fb7
-2026-07-28-web-gui-feedback-loop.zh-tw.md: 2f5fb253ea7a65e9534bcd2bd75f57a18a2b5911
+2026-07-28-web-gui-feedback-loop.zh-tw.md: c28ed15ae6e8c4be6871f2843afae7079999b36a

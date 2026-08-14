@@ -30,7 +30,7 @@
 
 ## 工作階段投影
 
-當組合掛載了 `ctx.sessionProjections`（[`@deepseek-ai/dsh-session-projection`](../../session/session-projection/README.md)）時，本包在一個注入的子外掛程式中註冊 `todos` 投影單元：`init` = `null`（尚無寫入）、`apply` = 從每個 `todo/write` 取整表，並在每個 `turn/start` 清為 `null`（當前有效計畫；`turn/end` 保留剛完成的清單；其餘事件都返回同一個狀態引用）、`view` = 恆等、`stateVersion` = 2。該鍵在本包中合併進 `SessionProjectionMap`（經 Service Definition 包的 `/types` 出口）；框架驅動程式該單元，載體透過歷史尾頁與 `session/projection` 推送幀提供該值。未掛載登錄檔的組合不受影響。生命週期理由見 [在下一輪次清空 todo 計畫](../../../.agents/notes/implemented/feature/2026-07-28-todo-plan-clears-on-next-turn.md)。
+當組合掛載了 `ctx.sessionProjections`（[`@deepseek-ai/dsh-session-projection`](../../session/session-projection/README.md)）時，本包在一個注入的子外掛程式中註冊 `todos` 投影單元：`init` = `null`（尚無寫入）、`apply` = 從每個 `todo/write` 取整表，並在每個 `turn/start` 清為 `null`（當前有效計畫；`turn/end` 保留剛完成的清單；其餘事件都返回同一個狀態引用）、`view` = 恆等、`stateVersion` = 2。該鍵在本包中合併進 `SessionProjectionMap`（經 Service Definition 包的 `/types` 出口）；框架驅動該單元，載體透過歷史尾頁與 `session/projection` 推送幀提供該值。未掛載登錄檔的組合不受影響。生命週期理由見 [在下一輪次清空 todo 計畫](../../../.agents/notes/implemented/feature/2026-07-28-todo-plan-clears-on-next-turn.md)。
 
 ## 匯出形狀
 

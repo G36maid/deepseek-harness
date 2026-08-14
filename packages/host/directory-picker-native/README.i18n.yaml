@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/host/directory-picker-native/README.md
 README.md: ac67a7ab8df4398378498c9f2edfb31262eb23c7
 README.zh.md: 6aec916644efef1a2a3f8f096140c342183e1907
-README.zh-tw.md: a093289165457eca47dbd41a827327820cdc5473
+README.zh-tw.md: 88ac02ed4a341c803b621e34c7356288c2961cca

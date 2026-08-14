@@ -18,7 +18,7 @@ Status: implemented
 
 括號所有方按位置讀取它：在 `session/end-seed` 之前的未配對開啟標記具有更小的 seq，來自構造種子，並且屬於一個已結束的生命週期。核心寫入該邊界但不從中讀取任何內容；每個括號的詞彙表仍歸其所屬外掛程式，因此在沒有消費端來塑形之前，核心不會先發布謂詞輔助函式。
 
-選擇構造函式，是因為它是每一個帶種子工作階段都必經的唯一收窄處。全部六個入口都會到達它：`agents.resume()`、在已持久化 id 上的設定驅動程式啟動（`restoreOrCreateConfigured`）、`sessions.fork()`、subagent fork 子工作階段、`coordinator.adopt()` 的即時前綴路徑，以及裸的 `sessions.create(id, {seed})`。在持久化載入時寫入的邊界會漏掉兩條 fork 路徑——而一個繼承了仍在執行的父工作階段開放 `compaction/start` 的 fork 子工作階段，恰恰是必須可判定的場景。在 loop 啟動時寫入的邊界會漏掉 `fork()` 與 `adopt()`，並且不得不在 `SessionStartSource: 'startup'` 上觸發——那正是 fork 子工作階段發布的取值，於是該欄位將不再具有區分力。
+選擇構造函式，是因為它是每一個帶種子工作階段都必經的唯一收窄處。全部六個入口都會到達它：`agents.resume()`、在已持久化 id 上的設定驅動啟動（`restoreOrCreateConfigured`）、`sessions.fork()`、subagent fork 子工作階段、`coordinator.adopt()` 的即時前綴路徑，以及裸的 `sessions.create(id, {seed})`。在持久化載入時寫入的邊界會漏掉兩條 fork 路徑——而一個繼承了仍在執行的父工作階段開放 `compaction/start` 的 fork 子工作階段，恰恰是必須可判定的場景。在 loop 啟動時寫入的邊界會漏掉 `fork()` 與 `adopt()`，並且不得不在 `SessionStartSource: 'startup'` 上觸發——那正是 fork 子工作階段發布的取值，於是該欄位將不再具有區分力。
 
 兩條守衛讓這個標記保持精確。省略種子時不寫入任何內容，因為這是全新工作階段。種子本身已以該事件結尾時不會重複標記，這讓寫入具備冪等性。冪等性是承重的，而不是為了整潔：每次綁定到 Agent 的冷工作階段接手都會經過 `agentFor()`；沒有這條守衛，重複的控制操作即使沒有執行任何工作，也會讓日誌成長。只執行檢查的 `session.history` 與 `session.fork` 源端路徑不會在源工作階段中建立這條邊界。
 

@@ -12,12 +12,12 @@ Status: implemented
 
 ## 決策
 
-每個協議形態的包各有一個由 `fast-check`（根 devDependency）驅動程式的 `tests/properties.spec.ts`。生成器調優為*逼真但對抗性*的輸入（而非均勻噪聲），`numRuns` 控制在本機套件總耗時遠低於約 10 秒。失敗時列印可復現的 seed。（以 100 倍迭代執行的夜間 CI job 未交付——屬性測試套件僅在常規的 `push`/`pull_request` CI 中執行；定時高迭代 job 仍屬可能的後續工作。）
+每個協議形態的包各有一個由 `fast-check`（根 devDependency）驅動的 `tests/properties.spec.ts`。生成器調優為*逼真但對抗性*的輸入（而非均勻噪聲），`numRuns` 控制在本機套件總耗時遠低於約 10 秒。失敗時列印可復現的 seed。（以 100 倍迭代執行的夜間 CI job 未交付——屬性測試套件僅在常規的 `push`/`pull_request` CI 中執行；定時高迭代 job 仍屬可能的後續工作。）
 
 - **dsh-llm / BlockAssembler：** 任意區塊流（合法 + 畸形：重複索引、滯後分片、缺少 block-start）。不變式：`blocks()` 計數 ≤ 已見到的不同索引數；重組冪等（`blocks()` 在重複呼叫間穩定，且 `message().content` 與之一致）；`blocks()` 從不拋例外且僅產出合法的內容區塊標籤；`finish` 反映最後一個 `finish` 區塊，無此類區塊時預設為 `{kind:'stop'}`。
 - **dsh-session：** 任意事件日誌。不變式：`deriveMessages` 確定性；從 seed 重播結果一致；seq 嚴格單調遞增；非訊息事件不影響推匯出的歷史；推匯出的內容與日誌解耦。
 - **dsh-tools：** 任意 `ParameterSchemaSpec`。不變式：JSON Schema 的 `required` 等於每一層 `required:true` 的鍵集；轉換對合法聲明而言是全函式；**並且與[執行時期參數校驗](../architecture/2026-06-11-runtime-arg-validation.md)組合驗證**——滿足 spec 的生成參數透過 `validateArgs`，而定向破壞（刪除必填鍵、頂層非對象）被拒絕。聚焦用例覆蓋每種根值類型、恰好一項匹配中的分支重疊與無匹配、顯式開放性、原始預設值以及有損 JSON。這封堵了編譯器、validator 與 `InferArgs` 之間的漂移風險。
-- **dsh-agent-loop：** 任意傳送調度，對接一個永不耗盡的配接器，透過 `agent/status` settle 訊號驅動程式（無掛鐘 sleep）。不變式：無訊息丟失；輪次編號嚴格遞增；狀態轉換保持在合法狀態機上。
+- **dsh-agent-loop：** 任意傳送調度，對接一個永不耗盡的配接器，透過 `agent/status` settle 訊號驅動（無掛鐘 sleep）。不變式：無訊息丟失；輪次編號嚴格遞增；狀態轉換保持在合法狀態機上。
 
 ## 後果
 

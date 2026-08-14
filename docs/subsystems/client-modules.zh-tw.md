@@ -60,7 +60,7 @@ interface WebBootGraph {
 
 `ClientModuleRegistry`（`ctx.clientModules`，定義於 [`packages/client/modules/src/index.ts`](../../packages/client/modules/src/index.ts)）暴露讀取面與重建面；簽名見生成的[服務目錄](#ctxclientmodules--clientmoduleregistry)。`graph()` 返回當前組合出的圖（兩次變更之間是同一個穩定對象），`clientPath(id)` 返回該 bundle 的絕對路徑。`rebuilt(id)` 是 bundle 內容到達圖的唯一入口：它對文件重新雜湊，只有 rev 真正變化才會重新組合圖並行出通知。`onRebuilt` 按發生變化的 bundle 逐個觸發並攜帶新 rev；`onGraphChanged` 在任何一次重新組合了圖的 flush 之後觸發（行的增刪，或 rebuilt 帶來的 rev 變化），並採用拉取模型——監聽器自行重讀 `graph()`。兩條通知路徑都會兜住監聽器例外，因此一個拋錯的訂閱者既不能讓後續訂閱者被跳過，也不能殺死觸發這次 flush 的一方。
 
-開發環境下，[dsh-client-hmr](../../packages/client/hmr/README.md) 是登錄檔的監視驅動程式：它的 Node 半從同步取得的基線出發，對圖中每一行的 bundle 做 stat 輪詢，變化時呼叫 `rebuilt(id)`，經 `onGraphChanged` 重新同步監視集合，並透過 SSE（Server-Sent Events）把 rev 變化廣播給瀏覽器半。生產環境的圖完全不含 HMR（熱模組替換）行；模組宿主自身從不監視文件。
+開發環境下，[dsh-client-hmr](../../packages/client/hmr/README.md) 是登錄檔的監視驅動：它的 Node 半從同步取得的基線出發，對圖中每一行的 bundle 做 stat 輪詢，變化時呼叫 `rebuilt(id)`，經 `onGraphChanged` 重新同步監視集合，並透過 SSE（Server-Sent Events）把 rev 變化廣播給瀏覽器半。生產環境的圖完全不含 HMR（熱模組替換）行；模組宿主自身從不監視文件。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

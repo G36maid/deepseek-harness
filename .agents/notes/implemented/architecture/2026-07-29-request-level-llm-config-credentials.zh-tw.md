@@ -8,7 +8,7 @@ Status: implemented
 
 ## 問題
 
-[settings seam](2026-07-28-user-settings-seam.md) 落地時沒有生產消費端，而 LLM 配接器正是當初驅動程式該 seam 的那個消費端：兩個配接器都在外掛程式載入時把 `apiKey`/`baseURL`/catalog 凍結進配接器實例，改金鑰或端點就要重新啟動行程，金鑰缺失則直接使外掛程式載入失敗——對個人設定頁而言，這是最糟糕的首次執行姿態（「先存金鑰，再重新啟動」）。機密的走向也不對：順理成章的做法（把 `apiKey` 放進設定文件）會被迫引入脫敏、`replace` 時的伺服器端回填與 dotfiles 同步告警，為一個同類產品根本沒有的問題堆起一整摞緩解措施——Codex（`env_key` + auth.json）、Reasonix（`api_key_env` + 家目錄 `.env`）、OpenCode/Pi（`auth.json`）、Claude Code（`apiKeyHelper`）全都把機密擋在設定檔之外。
+[settings seam](2026-07-28-user-settings-seam.md) 落地時沒有生產消費端，而 LLM 配接器正是當初驅動該 seam 的那個消費端：兩個配接器都在外掛程式載入時把 `apiKey`/`baseURL`/catalog 凍結進配接器實例，改金鑰或端點就要重新啟動行程，金鑰缺失則直接使外掛程式載入失敗——對個人設定頁而言，這是最糟糕的首次執行姿態（「先存金鑰，再重新啟動」）。機密的走向也不對：順理成章的做法（把 `apiKey` 放進設定文件）會被迫引入脫敏、`replace` 時的伺服器端回填與 dotfiles 同步告警，為一個同類產品根本沒有的問題堆起一整摞緩解措施——Codex（`env_key` + auth.json）、Reasonix（`api_key_env` + 家目錄 `.env`）、OpenCode/Pi（`auth.json`）、Claude Code（`apiKeyHelper`）全都把機密擋在設定檔之外。
 
 ## 決策
 

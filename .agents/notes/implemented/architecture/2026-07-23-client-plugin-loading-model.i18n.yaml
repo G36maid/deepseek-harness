@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-23-client-plugin-loading-model.md
 2026-07-23-client-plugin-loading-model.md: 5faf02ee30f13613e86d39cd65eb9ab18071e0a7
 2026-07-23-client-plugin-loading-model.zh.md: ad6000767be19d89dea0e71724afd5b814a1094d
-2026-07-23-client-plugin-loading-model.zh-tw.md: 8e3bfd9f2dbffbbeb192a22d1115f87eea494a4b
+2026-07-23-client-plugin-loading-model.zh-tw.md: 3d4656ae180846aae2c76c0f8dd2e82082bb8c97

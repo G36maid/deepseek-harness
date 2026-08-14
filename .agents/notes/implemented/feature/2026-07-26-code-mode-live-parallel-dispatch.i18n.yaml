@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-26-code-mode-live-parallel-dispatch.md
 2026-07-26-code-mode-live-parallel-dispatch.md: fe3862b169d86e6ce2601a184b26309632914829
 2026-07-26-code-mode-live-parallel-dispatch.zh.md: 149181984f326816d3e99ff30182da1e89323028
-2026-07-26-code-mode-live-parallel-dispatch.zh-tw.md: 84b404e1844e5a1b141ffd83c1c702993859224a
+2026-07-26-code-mode-live-parallel-dispatch.zh-tw.md: 2b2d0b3b77a458ad920fc284a11dc7995f1b082f

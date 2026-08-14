@@ -88,12 +88,12 @@ if (!ctx.fiber.runtime) return ctx.reflect.get(prop, false)   // ← direct glob
 
 ## 為什麼所有測試都沒有捕獲（真正的失敗）
 
-兩個 bug 都源於同一個根本流程缺口：**沒有任何測試透過外掛程式的真實載入路徑或真實呼叫拓撲來驅動程式它。**
+兩個 bug 都源於同一個根本流程缺口：**沒有任何測試透過外掛程式的真實載入路徑或真實呼叫拓撲來驅動它。**
 
 - 記憶體 harness 透過手動建置外掛程式對象來掛載 bridge：`ctx.plugin({ name, inject, apply })`。這手動提供了 `inject`，因此永遠無法復現 Bug #1——`unwrapExports` 只被 *Loader* 呼叫，`ctx.plugin` 從不呼叫它。即使 `ctx.plugin(NamespaceImport)` 也無法捕獲。
 - 同一個 harness 將所有內容平鋪掛載在一個根上下文上，因此從中觸達的 `AgentLoop` 復原要麼執行在頂層（`!runtime` 繞過），要麼經由 shadow 執行，而該 shadow 的 origin 仍然解析到 root——掩蓋了 Bug #2 的祖先遍歷失敗。
 - 唯一的無 key e2e 傳送 `initialize` 並檢查 stdout 純淨性。`initialize` 從不觸達 factory，因此兩個 bug 都安然透過。
-- 唯一驅動程式 `session/new`/`session/load` 的測試需要 key 才能執行，因此 CI（無 key）跳過了它——而本機它之所以「透過」，只是因為一個過時的已建置 `lib/`（包含舊程式碼）恰好滿足了模組解析。
+- 唯一驅動 `session/new`/`session/load` 的測試需要 key 才能執行，因此 CI（無 key）跳過了它——而本機它之所以「透過」，只是因為一個過時的已建置 `lib/`（包含舊程式碼）恰好滿足了模組解析。
 
 100% 行覆蓋率始終滿足。覆蓋率證明程式碼行*被執行過*；它不能說明功能是否*按交付方式正常工作*。
 
@@ -109,5 +109,5 @@ if (!ctx.fiber.runtime) return ctx.reflect.get(prop, false)   // ← direct glob
 
 - 命名空間外掛程式與 default export 在 Cordis Loader 下互斥。選擇命名空間形式（`name`/`inject`/`Config`/`apply`），不要新增 `export default`——`unwrapExports` 會丟棄命名空間。
 - 對於外掛程式機會性讀取但未在 `static inject` 中聲明的服務，使用 `ctx.get(name)`，絕不使用 `ctx.<name>`。屬性代理透過僅向祖先方向的 fiber 遍歷解析，經由外部 shadow 時會失敗；`ctx.get(name)` 是拓撲無關的尋找（且默認採用嚴格模式——非活躍後端讀取為 `undefined`，不會在 teardown 期間仍將該後端返回給呼叫方）。
-- 手動建置外掛程式的測試無法驗證外掛程式的載入方式。至少一個測試必須端到端地驅動程式真實的 Loader/export 路徑。當核心操作不呼叫模型時，該測試無需 API key——因此它屬於 CI，而非 key 門控之後。
+- 手動建置外掛程式的測試無法驗證外掛程式的載入方式。至少一個測試必須端到端地驅動真實的 Loader/export 路徑。當核心操作不呼叫模型時，該測試無需 API key——因此它屬於 CI，而非 key 門控之後。
 - 相信跟蹤結果，不要迷信理論。優雅的 shadow 解釋是真實的，但它是*第二個* bug；*第一個*是一行匯出錯誤，在數小時看似合理但實際錯誤的推理之後，一個 fiber 遍歷的 `console.error` 在幾分鐘內就找到了它。

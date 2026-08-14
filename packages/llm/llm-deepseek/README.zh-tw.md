@@ -51,7 +51,7 @@ harness LLM（大型語言模型）seam 的 DeepSeek chat-completions 配接器�
 
 連線事實不在載入時凍結。`resolveAdapterOptions` 是從原始設定到已校驗事實的唯一顯式 resolve 步驟，配接器經由一個 thunk **每操作重讀一次**：base URL、catalog、請求預設值與 idle 預算都在下一次請求生效，進行中的流則保持其起始事實。兩個選填 seam 供給該 thunk：
 
-- **`ctx.settings`**——外掛程式用同一份 `Config` schema 註冊 `llm-deepseek` namespace，並以其 `cordis.yml` 條目為組合 `base`，因此使用者設定文件中的 `llm-deepseek:` 分節可以免重新啟動覆蓋任何欄位。未掛載 settings 服務時，僅由 entry 設定驅動程式配接器，行為不變。存活 settings 快照若透過 schema 卻違反 schema 之外的約束（重複的 catalog id、無法成立的 thinking／推理強度組合），則保留最後可用事實並記錄失敗；entry 設定本身仍會使外掛程式載入失敗。
+- **`ctx.settings`**——外掛程式用同一份 `Config` schema 註冊 `llm-deepseek` namespace，並以其 `cordis.yml` 條目為組合 `base`，因此使用者設定文件中的 `llm-deepseek:` 分節可以免重新啟動覆蓋任何欄位。未掛載 settings 服務時，僅由 entry 設定驅動配接器，行為不變。存活 settings 快照若透過 schema 卻違反 schema 之外的約束（重複的 catalog id、無法成立的 thinking／推理強度組合），則保留最後可用事實並記錄失敗；entry 設定本身仍會使外掛程式載入失敗。
 - **`ctx.credentials`**——API 金鑰按每次 stream 呼叫解析，取自與端點*同一*份解析後的快照。設定只攜帶 `apiKeyEnv`，從不攜帶字面金鑰：該引用經憑據 seam 解析，未掛載 seam 時則經受信環境層解析。由於憑據事實與連線事實同行，被 resolver 拒絕的 settings 快照既不貢獻自己的端點，也不貢獻自己的金鑰：整個先前世代繼續服務。每個解析出的金鑰在使用前都會被校驗格式，因此 HTTP 標頭無法承載的值會以 `LlmError('INVALID_CREDENTIAL')` 被拒絕，點名失敗的入口，但絕不透露金鑰的任何部分，而不是以語義不明的 `fetch` `TypeError` 形式浮現。任何地方都沒有金鑰的請求以 `MISSING_CREDENTIAL` 失敗，並點名每個設定入口，同時路由保持註冊、catalog 保持可瀏覽——首次執行的上手流程就是「瀏覽模型、存入金鑰、再次發起提示」，中間無需任何重新啟動。
 
 唯一在註冊期捕獲的事實是重試策略：其解析值變化時，外掛程式原地重新註冊該路由（同一配接器實例、一個同步區段），因此 `ctx.llm.providerRetryPolicy('deepseek-official')` 始終報告當前策略。

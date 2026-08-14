@@ -7,7 +7,7 @@
 | 包 | 職責 | ctx 鍵 |
 |---|---|---|
 | [`subagent/`](subagent/README.md) | 定義提供方註冊、委派和繼續執行 | `ctx.subagents` |
-| [`subagent-inprocess/`](subagent-in-process-driver/README.md) | 提供共享的行程內執行驅動程式器 | 無 |
+| [`subagent-inprocess/`](subagent-in-process-driver/README.md) | 提供共享的行程內執行驅動器 | 無 |
 | [`subagent-spawn-in-process/`](subagent-spawn-in-process/README.md) | 啟動全新的行程內子 agent | 註冊到 `ctx.subagents` |
 | [`subagent-fork-in-process/`](subagent-fork-in-process/README.md) | 從父 agent 已完成的歷史記錄啟動行程內子 agent | 註冊到 `ctx.subagents` |
 | [`subagent-acp/`](subagent-acp/README.md) | 透過 ACP（Agent Client Protocol）啟動行程外子 agent | 註冊到 `ctx.subagents` |

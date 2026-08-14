@@ -28,7 +28,7 @@ Status: implemented
 - **外掛程式協議槽位。** 頂層的 `name`/`inject`/`reusable`/`Config` 常數和 `apply` 入口，以及外掛程式類上的同名靜態成員，屬於框架協議：其形狀由 Cordis 固定，模組文件註釋加 `interface Config` 承載外掛程式的真實語義。
 - **構造函式**，與 Cordis 閘門一致：外掛程式類由框架構造，類文件承載全部說明。
 
-`collectExportJsdocViolations()` 返回違規清單（CLI（命令列介面）在非空時以 1 退出），因此 `packages/core/agent/tests/verify-export-jsdoc.spec.ts` 中的負路徑測試直接斷言發現項，透過 fixture（測試前置資料）包驅動程式每一種拒絕和每一種豁免。
+`collectExportJsdocViolations()` 返回違規清單（CLI（命令列介面）在非空時以 1 退出），因此 `packages/core/agent/tests/verify-export-jsdoc.spec.ts` 中的負路徑測試直接斷言發現項，透過 fixture（測試前置資料）包驅動每一種拒絕和每一種豁免。
 
 ## 曾考慮的替代方案
 

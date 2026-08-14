@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-25-subagent-policy-inheritance.md
 2026-07-25-subagent-policy-inheritance.md: 97999e8590a4ed3f4e816df6e7397b83a02caa32
 2026-07-25-subagent-policy-inheritance.zh.md: a893c1b7d93dd46fba295dd8a566810b0d9207cb
-2026-07-25-subagent-policy-inheritance.zh-tw.md: 53f634b396a8fca0584e3051a8696af84ca6d647
+2026-07-25-subagent-policy-inheritance.zh-tw.md: f934a882ea782612127ab7f0f30d370446dcb36b

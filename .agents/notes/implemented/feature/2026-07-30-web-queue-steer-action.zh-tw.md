@@ -8,7 +8,7 @@ Status: implemented
 
 Web composer 原本會在 agent（代理）執行期間把所有 Enter 提交作為 Queue 入隊。QueueDock 已經為每條待處理訊息提供可尋址的行，持久 transcript（文字記錄）也已能把消費後的 steer 事件渲染為使用者樣式氣泡，但 Web 既沒有連線這兩個介面的操作，也沒有讓使用者從 composer 直接選擇當前輪次 steering 的手勢。
 
-如果 Web 先在用戶端刪除該行，再呼叫 `session.prompt(mode: 'steer')`，就會把使用者的一次意圖拆分到兩個 RPC 中。驅動程式器可能在兩次呼叫之間先認領該項，steering 投遞也可能在刪除後失敗；現有盡力而為的 `agent.steer()` 回退還可能在原單次入隊項被移除後，靜默追加一個新的 Queue 項。因此，立即傳送操作必須區分當前輪次 steering 與 Queue 前移，並在 steering 已不可用時保留原行。
+如果 Web 先在用戶端刪除該行，再呼叫 `session.prompt(mode: 'steer')`，就會把使用者的一次意圖拆分到兩個 RPC 中。驅動器可能在兩次呼叫之間先認領該項，steering 投遞也可能在刪除後失敗；現有盡力而為的 `agent.steer()` 回退還可能在原單次入隊項被移除後，靜默追加一個新的 Queue 項。因此，立即傳送操作必須區分當前輪次 steering 與 Queue 前移，並在 steering 已不可用時保留原行。
 
 ## 決策
 
@@ -18,7 +18,7 @@ Web composer 原本會在 agent（代理）執行期間把所有 Enter 提交作
 
 觸發該操作會針對對應的 `InboxItemId` 請求嚴格的當前輪次 steering。操作成功後，權威 Host 快照會移除 Queue 行，並在 `Deep diving...` 執行狀態行之後立即投影同一條待處理 steering；該氣泡提供複製，但訊息尚無持久事件序號，因此不提供 fork。AgentLoop 排空該項後，現有持久 `user/message` 事件會接管同一個使用者樣式氣泡，並復原時鐘、複製和 fork，無需另建持久展示路徑。
 
-running 標志位只用於提示互動狀態。在同步變更邊界上，AgentLoop 的 `acceptsNextStep` 值纔是權威依據。如果該視窗已經關閉，操作會保持 Queue 單次入隊項不變並返回類型化的 `steer-unavailable` 錯誤，隨後原喚醒單次入隊項會經 Queue 繼續執行。如果驅動程式器已經認領該項，則返回現有的 `queue-item-not-found` 錯誤，且獨立輪次投遞已經開始。UI 會把兩種競態都視為已收斂的 Queue 投遞，不顯示失敗通知；傳輸和未知錯誤仍會顯示。
+running 標志位只用於提示互動狀態。在同步變更邊界上，AgentLoop 的 `acceptsNextStep` 值纔是權威依據。如果該視窗已經關閉，操作會保持 Queue 單次入隊項不變並返回類型化的 `steer-unavailable` 錯誤，隨後原喚醒單次入隊項會經 Queue 繼續執行。如果驅動器已經認領該項，則返回現有的 `queue-item-not-found` 錯誤，且獨立輪次投遞已經開始。UI 會把兩種競態都視為已收斂的 Queue 投遞，不顯示失敗通知；傳輸和未知錯誤仍會顯示。
 
 Composer 對新輸入採用另一套盡力而為約定。所尋址工作階段空閒時，Enter 和 Cmd/Ctrl+Enter 都執行普通 Queue 傳送。主工作階段執行期間，General Settings 偏好會把普通 Enter 分配為 Queue（預設值）或 Steer，Cmd/Ctrl+Enter 則執行另一種行為；Shift+Enter 用於換行。已尋址 subagent 會讓這兩個手勢都使用其僅支持 Queue 的繼續執行傳輸。Host settings 文件會在共享同一 DSH home 的 Web origin 之間持久化該偏好，並且它隻影響支持 steering 的繁忙態手勢對。如果 composer 直接寄出的 Steer 錯過當前 next-step 視窗，AgentLoop 會自動將其接納為下一條喚醒 Queue 輪次，Web 不顯示失敗。
 
@@ -50,7 +50,7 @@ Host schema 和代理測試覆蓋新操作、兩種類型化錯誤、帶 placeme
 
 ## 考慮過的替代方案
 
-**在 Web 中刪除該行，再呼叫 `session.prompt(mode: 'steer')`。** 不予採納，因為兩個 RPC 無法讓刪除和 steering 成為原子操作；失敗和驅動程式器認領競態可能丟失或重複使用者訊息。
+**在 Web 中刪除該行，再呼叫 `session.prompt(mode: 'steer')`。** 不予採納，因為兩個 RPC 無法讓刪除和 steering 成為原子操作；失敗和驅動器認領競態可能丟失或重複使用者訊息。
 
 **復原向上箭頭對應的 Queue 前移操作。** 不予採納，因為把某個項移到隊首仍然會建立一個獨立接納的輪次。該控制元件承諾的是當前輪次 steering，而不是 Queue 內的優先級。
 

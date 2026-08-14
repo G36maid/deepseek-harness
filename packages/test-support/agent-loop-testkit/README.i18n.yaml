@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/test-support/agent-loop-testkit/README.md
 README.md: 855dc01039fd76a09b2b4493371542073d8843d0
 README.zh.md: a18c379e66ed7af901f3b5b28ab14e4582ac2727
-README.zh-tw.md: c2fdbd75d0cc08a396d222d2567e350d23e86bfc
+README.zh-tw.md: 771305ba4e6bf00beb860590e5acb0e34fa1707d

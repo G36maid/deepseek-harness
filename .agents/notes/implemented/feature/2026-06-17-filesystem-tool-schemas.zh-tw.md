@@ -51,7 +51,7 @@ schema 使用 snake_case 欄位名（`file_path`、`old_string`、`new_string`�
 
 在默認 fs-observation-policy 下，使用 `write` 更新已有文件需要同一執行上下文先前對該文件有過一次觀測（read/write/edit）；`dsh-fs-observation-policy` 外掛程式將觀測到的版本作為 `fs/write-intent` 上的過時版本防護提供。建立新文件不需要先前觀測。如果策略外掛程式不存在，`write` 是由裸提供方無條件執行的建立或覆蓋操作。
 
-schema 不將 `expected_hash`、`expected_version` 或 `create_only` 作為面向模型的參數暴露。過時版本檢查由後端產生的版本和策略外掛程式的觀測狀態驅動程式，而非要求模型透過 schema 複製版本權杖。
+schema 不將 `expected_hash`、`expected_version` 或 `create_only` 作為面向模型的參數暴露。過時版本檢查由後端產生的版本和策略外掛程式的觀測狀態驅動，而非要求模型透過 schema 複製版本權杖。
 
 ### `edit`
 
@@ -101,7 +101,7 @@ schema 測試固定每個工具的必填/選填參數集、空 `old_string` 拒�
 
 - **Codex 風格的 patch 文法或多模式 edit API**：否決。一種嚴格的字面替換模式使面向模型的約定保持簡單，並讓後端掌控精確匹配、重複匹配、行尾和過時版本的語義。
 - **camelCase 參數名（OpenCode 風格）**：snake_case 與 Claude Code 及現有 harness 工具 schema 示例一致，且命名一旦發布即成為公開 API。
-- **面向模型的 `expected_hash` / `expected_version` / `create_only` 參數**：否決。過時檢查由後端產生的版本和策略外掛程式的觀測狀態驅動程式，從不相依性模型複製的脆弱權杖。
+- **面向模型的 `expected_hash` / `expected_version` / `create_only` 參數**：否決。過時檢查由後端產生的版本和策略外掛程式的觀測狀態驅動，從不相依性模型複製的脆弱權杖。
 
 ## 後果
 

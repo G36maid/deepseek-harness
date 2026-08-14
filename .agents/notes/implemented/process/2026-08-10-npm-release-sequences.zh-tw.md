@@ -136,7 +136,7 @@ dsh 的驗證會一並安裝 vendored 族的 pack 產物。harness 的包把 ven
 
 **只按版本號判斷「是否已發布」，不比對內容。** 參照流程根本不查 registry：publish 逐個上傳，重複版本由 npm 拒絕。只按版本號跳過會漏掉「改了程式碼沒 bump」，而這是唯一會安靜地把舊位元組留在 registry 上的錯誤。代價是引入一次 registry 查詢和對建置可復現性的相依性。
 
-**只做打包後安裝驗證，不起本機 registry。** 參照流程是把 tarball 解包成一棵樹、用普通 Node 驅動程式，這繞過了版本範圍解析。曾提議在 CI 裡起本機 registry 補這一層，被否：產物正確性已由既有測試覆蓋，發布路徑由 master 的排練覆蓋，而 pull request 只需證明發布集能打出來。用 `file:` 說明符安裝依然會對每個內部相依性走一遍範圍解析。
+**只做打包後安裝驗證，不起本機 registry。** 參照流程是把 tarball 解包成一棵樹、用普通 Node 驅動，這繞過了版本範圍解析。曾提議在 CI 裡起本機 registry 補這一層，被否：產物正確性已由既有測試覆蓋，發布路徑由 master 的排練覆蓋，而 pull request 只需證明發布集能打出來。用 `file:` 說明符安裝依然會對每個內部相依性走一遍範圍解析。
 
 **按入口閉包挑一部分包發。** 從 `@deepseek-ai/dsh` 與 `@deepseek-ai/dsh-web-frontend` 沿 `dependencies` 爬得到 156 個包，比全量少 61 個。但本倉的外掛程式是 `cordis.yml` 按名字掛載的、不是被 import 的：`vendor/cordis-plugin-group` 與 `vendor/cordis-plugin-logger-console` 落在相依性閉包之外，卻是執行時期必需。照程式碼相依性挑的失敗形態是「消費端裝完起不來」，而且要額外持續證明「沒漏任何掛載項」。私有 scope 下多出來的包對組織外不可見。`python/`、根 `examples/`、`docs/` 與 `website/` 不是成員。
 
@@ -152,7 +152,7 @@ dsh 的驗證會一並安裝 vendored 族的 pack 產物。harness 的包把 ven
 
 發布指令碼是帶入口守衛的可 import 模組，其判斷都有單測覆蓋：tag 命名、發布順序與環報告、版本基線運算、payload 變更判據，以及各族的 payload 策略。第一版帶過的兩個缺陷——publish 命令在 import 時執行了 pack 命令、變更判據對 `vendor/cordis` 的原始碼改動失明——正是這類測試在對應接縫上能抓住的。
 
-一個 pull request 會為兩條序列跑完整的 pack（無憑據），並把打包好的 dsh tarball 裝進一次性 consumer，用普通 Node 驅動程式 `dsh --version`。這個探針刻意只有一條命令：它證明 `files` 選出了完整 payload、發布出去的範圍可解析，不涉及任何互動行為。
+一個 pull request 會為兩條序列跑完整的 pack（無憑據），並把打包好的 dsh tarball 裝進一次性 consumer，用普通 Node 驅動 `dsh --version`。這個探針刻意只有一條命令：它證明 `files` 選出了完整 payload、發布出去的範圍可解析，不涉及任何互動行為。
 
 代價：
 

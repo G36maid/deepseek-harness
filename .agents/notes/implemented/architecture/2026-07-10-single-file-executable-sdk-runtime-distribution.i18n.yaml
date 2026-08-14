@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md
 2026-07-10-single-file-executable-sdk-runtime-distribution.md: 9c09211acd0da8f3260f9a94ce414fa120bf0ccf
 2026-07-10-single-file-executable-sdk-runtime-distribution.zh.md: 35ef378cd78fa8d8c128a1b48c89146476a1debf
-2026-07-10-single-file-executable-sdk-runtime-distribution.zh-tw.md: a217b261919220f14d24a36485b93f8293dc86f8
+2026-07-10-single-file-executable-sdk-runtime-distribution.zh-tw.md: 595c45dc9a3aaa5399bb70fb3475db9ba9faff53

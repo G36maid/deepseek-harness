@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md
 2026-07-27-session-projection-and-command-log.md: 46c3caf6ba652b38aa1d9f5c78d3b70bb1316fe6
 2026-07-27-session-projection-and-command-log.zh.md: f003f0d5927eacb3da3bfca1c0462388037b20c0
-2026-07-27-session-projection-and-command-log.zh-tw.md: d550dcf7a8970b183de05a5db9d7d18a4a3effeb
+2026-07-27-session-projection-and-command-log.zh-tw.md: 411d99ed1cc1d1a03504f982676399a867893783

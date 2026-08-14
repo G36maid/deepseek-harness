@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/schedule/schedule/README.md
 README.md: 416bacffca2b013b6961e76608bfd7ea70a9c9ad
 README.zh.md: 9ab2c29f89953e2ab479d40c4f6b801c00fd7e22
-README.zh-tw.md: 91ff189002ddd28a8540fbe9a58f42a2a993973a
+README.zh-tw.md: c2e91104d55404fa69ff8add6541a7435f19b3df

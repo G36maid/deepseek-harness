@@ -291,7 +291,7 @@ export class WorkspaceRegistry extends Service {
 | `log` facet 與 session 後端遷移 | 本期後任意期啟動 | 介質操作下沉（複用審計表即施工清單） | facet 結構已留位；兩後端介質程式碼本期即按可下沉形狀組織 |
 | 多行程並行寫保護 | 兩 host 行程同寫一介質 | JSON 後端文件鎖；SQLite WAL 天然多行程 | 寫全經 domain 單點序列，加鎖只動後端 |
 | 跨行程變更觀測 | GUI 斷線重連感知 | revision 模式（抄 session-persistence） | 行程內已有 `domain/changed` |
-| 資料遷移 | 首個 tagged release 後模型再變 | 版本號驅動程式逐域遷移 | 版本號自第一天入介質 |
+| 資料遷移 | 首個 tagged release 後模型再變 | 版本號驅動逐域遷移 | 版本號自第一天入介質 |
 | 大表效能 | 千級記錄域掛 json | `routes` 改指 sqlite，資料手工導一次 | 路由即設定，消費端零改動 |
 | 多段 key | 兩段 key 消費端出現（每 workspace 每 session 維度資料） | key 泛型換 tuple、SQLite 複合主鍵、JSON 巢狀層 | 一級表 = 段數 1 特例；不做任意深度巢狀；不拼字串 key |
 | scope 維度 | "每 workspace 一份"的域出現且複合 key 表達不動 | DomainSpec 加 scope + 檔名 scope 段（encodeSegment） | 名字字元集已收緊，檔名不衝突 |

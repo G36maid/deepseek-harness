@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-24-web-config-tree-boot-and-transport-layering.md
 2026-07-24-web-config-tree-boot-and-transport-layering.md: 54e56e07d499fedc779311f105c4b0ca9eb06317
 2026-07-24-web-config-tree-boot-and-transport-layering.zh.md: 9c2868d444d6e03ef7b0312d641b19fd5e4ee69d
-2026-07-24-web-config-tree-boot-and-transport-layering.zh-tw.md: 6c35f6f605ff846d3a958020985dadf3f56179a4
+2026-07-24-web-config-tree-boot-and-transport-layering.zh-tw.md: ae4fcb8bcfb645018ffd40382dd48bcd65d6307f

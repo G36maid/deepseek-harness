@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-04-pointer-revealed-sidebar-scrollbars.md
 2026-08-04-pointer-revealed-sidebar-scrollbars.md: f118dd1511ec5f035acc2d562c11c9833f7fcdd9
 2026-08-04-pointer-revealed-sidebar-scrollbars.zh.md: 8a857bc1338590367b9918978df6036d71c9d9ad
-2026-08-04-pointer-revealed-sidebar-scrollbars.zh-tw.md: ab3b7ba9e95a9069ca40a5cd498a507c96436a78
+2026-08-04-pointer-revealed-sidebar-scrollbars.zh-tw.md: bfd513db3c70d892afa2dfa4aadd6c20cdd739c7

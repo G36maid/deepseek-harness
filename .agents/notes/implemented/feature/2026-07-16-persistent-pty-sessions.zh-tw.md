@@ -8,7 +8,7 @@ Status: implemented
 
 harness 可以執行前臺與後臺命令、編輯文件和委派工作，但無法跨工具呼叫延續一次互動式終端機對話。每次 `bash` 前景執行都會啟動一個新 shell，因此 shell 內的 cwd、匯出變數、虛擬環境啟用狀態、函式、job control 狀態和互動式子行程都會隨本次呼叫結束。
 
-這個缺口排除了狀態駐留在終端機而不是文件中的工作流程，例如單步除錯 `gdb`、在 Python 或 Node REPL 中探索、驅動程式 `ed` 這類行式編輯器，或者中斷前臺命令後回到原 shell。通用的 [`ctx.jobs`](../../../../packages/jobs/README.md) 執行時期可以保留後臺操作控制代碼和輸出，但不提供互動式 stdin 或終端機語義。
+這個缺口排除了狀態駐留在終端機而不是文件中的工作流程，例如單步除錯 `gdb`、在 Python 或 Node REPL 中探索、驅動 `ed` 這類行式編輯器，或者中斷前臺命令後回到原 shell。通用的 [`ctx.jobs`](../../../../packages/jobs/README.md) 執行時期可以保留後臺操作控制代碼和輸出，但不提供互動式 stdin 或終端機語義。
 
 現有 `bash`、`read`、`write` 和 `edit` 工具仍是有界、可審計操作的可靠預設選項。PTY 是對確實需要終端機狀態的工作的補充能力，不說明這些工具有缺陷，更不意味著要移除它們。
 
@@ -76,7 +76,7 @@ UI 渲染約定精確且不攜帶位置資訊。`terminal_send` 只為前臺傳�
 
 在 Linux 上，檢查器從 `/proc/<shellPid>/stat` 讀取 shell 的終端機前臺 PGID，枚舉該行程組中的每個行程與執行緒，並檢查它們當前的 syscall。Tier 1 只有觀察到 stdin 等待才返回正結果：直接 `read(0)`、獲準讀取且含 fd 0 的 `select`/`pselect6` 或 `poll`/`ppoll` 參數，或者含 fd 0 的 epoll interest list。終端機輸入前就已存在的等待並不代表寫入後就緒：必須先觀察到同一 PGID 脫離該等待，之後再次進入等待才能使該次 send 完成；前臺 PGID 發生變化則構成新的證據。無法讀取的行程記憶體和未識別的 syscall 都是 miss，絕不作為正向猜測。架構表只包含對應 Linux UAPI 定義的 syscall number；不支持的架構跳過 Tier 1。
 
-macOS 沒有精確 syscall 層。任何前臺行程組輸出靜默都會返回 `inferred_idle`，包括 Python 和 `gdb`；從 `ps` 推導的終端機 PGID 只用於傳送訊號，不作為「只有 shell 才能 idle」的證明。純行程檢查邏輯可注入，並在 Linux 上經過單元測試，同時由 macOS CI job 驅動程式真實 PTY 和行程表路徑。
+macOS 沒有精確 syscall 層。任何前臺行程組輸出靜默都會返回 `inferred_idle`，包括 Python 和 `gdb`；從 `ps` 推導的終端機 PGID 只用於傳送訊號，不作為「只有 shell 才能 idle」的證明。純行程檢查邏輯可注入，並在 Linux 上經過單元測試，同時由 macOS CI job 驅動真實 PTY 和行程表路徑。
 
 Tier 2 在持續 `idleSilenceMs` 沒有輸出後返回 `inferred_idle`，因此 sleep 或網路阻塞的命令可能看似 ready。如果此前已經見過 prompt marker，Tier 2 會再等待 `handoffGraceMs`，使恰好落在靜默邊界上的 bash 前臺交接仍然以精確的 `stdin_read` 歸因結束，而不是退到較弱的推斷；該寬限是由部署方擁有的設定欄位，並被校驗為至少覆蓋一個 `pollIntervalMs`——短於輪詢週期的寬限裝不下一次就緒輪詢，因此不可能改變任何結果。它只約束見過 marker 的 send，代價是這一種情況的互動返回延遲，而不是每一次 send。Tier 3 在 `timeoutMs` 後返回 `timeout`，避免前臺工具呼叫無限佔住 agent。結果保留這些區別；呼叫方可以透過 `ctx.jobs` 等待、向前臺組發信號，或從另一個工作階段排查。
 
@@ -159,7 +159,7 @@ plugins:
 - 逐文件覆蓋測試鎖定了 owner 隔離、並行預留、寫入前檢查期間的取消、未發布 spawn 的取消與等待式 teardown、沙盒模式變更拒絕、可重試的生命週期清理、就緒層級、對寫入前 stdin 等待與延遲到達的先前 prompt 的拒絕、設定化交接寬限把 idle fallback 頂過一次輪詢以及低於 `pollIntervalMs` 時的拒絕、sanitizer carry state、完整 UTF-8 結果上限、task 整合、schema 和精確 render intent。
 - 子行程 fixture（測試前置資料）覆蓋非 leader 與非主線程的 stdin 等待、殭屍行程完全靜止、不可讀行程狀態、受支持的 syscall 表、不支持的架構和誤報拒絕；同一單元測試套件透過注入覆蓋 macOS 檢查器邏輯。
 - 真實 `node-pty` 與 PTY 消費端測試共同在受支持宿主上覆蓋 shell 狀態、共享沙盒策略、環境清洗、raw mode 前臺 `SIGINT`、忽略 `SIGTERM` 的後代行程，以及 dispose 返回後立即完全靜止。
-- Loader 驅動程式的 `cordis.yml` 測試掛載真實三包組合。ACP 與 headless 快照透過 opt-in overlay 固定 6 個 schema、有界結果和錯誤；TUI 快照固定 terminal 與 generic 卡片展示。
+- Loader 驅動的 `cordis.yml` 測試掛載真實三包組合。ACP 與 headless 快照透過 opt-in overlay 固定 6 個 schema、有界結果和錯誤；TUI 快照固定 terminal 與 generic 卡片展示。
 - 包約定、架構圖、子系統頁面、生成目錄和 website API 描述同一個已發布介面。
 
 ## 後果

@@ -26,7 +26,7 @@ pre-step 的 enter 分支會為正在最終確定的請求返回完整的 `PreSt
 
 ## 注入生命週期
 
-`inject()` 始終把上下文插入不會喚醒的 `next-step` inbox，並以 `agent/inbox/spliced` 提交該佇列變更。執行中的驅動程式器會在最近的後續 pre-step 邊界領取它。idle 驅動程式器會讓它保持待處理，直至 `followup()` 或 `steer()` 提供可喚醒工作；在此之前，取消或 dispose（資源釋放）可能將其丟棄，但不會抹除持久佇列歷史。
+`inject()` 始終把上下文插入不會喚醒的 `next-step` inbox，並以 `agent/inbox/spliced` 提交該佇列變更。執行中的驅動器會在最近的後續 pre-step 邊界領取它。idle 驅動器會讓它保持待處理，直至 `followup()` 或 `steer()` 提供可喚醒工作；在此之前，取消或 dispose（資源釋放）可能將其丟棄，但不會抹除持久佇列歷史。
 
 迴圈會先領取當前 next-step 批次，再執行 `agent/pre-step`，因此領取後到達的注入可能趕不上正在最終確定的請求，而由下一次邊界領取。enter decision 返回的訊息會在所屬輪次內、消費它們的請求之前追加。在助手工具呼叫批次期間產生的上下文因此只會出現在該批次全部有序結果之後。
 

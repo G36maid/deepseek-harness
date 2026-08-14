@@ -6,9 +6,9 @@ Status: implemented
 
 ## 問題
 
-取消是一種生命週期短於 Agent（代理）驅動程式器的控制能力。自由文字字串無法完整區分所有呼叫方，步驟級控制器也無法中斷提示詞提交、提示詞組裝、繼續決策或輪次終止策略。持久化 `Error`、`AbortSignal.reason` 或後端私有對象還會向持久化重播暴露不穩定的執行時期細節。
+取消是一種生命週期短於 Agent（代理）驅動器的控制能力。自由文字字串無法完整區分所有呼叫方，步驟級控制器也無法中斷提示詞提交、提示詞組裝、繼續決策或輪次終止策略。持久化 `Error`、`AbortSignal.reason` 或後端私有對象還會向持久化重播暴露不穩定的執行時期細節。
 
-[發起 Agent 作用域決策](2026-07-15-agent-initiator-scope.md)有意讓 AsyncLocalStorage 只攜帶同一個 Agent。若把輪次、步驟或 signal 狀態加入這個與驅動程式器同生命週期的邊界，過時的非同步後代就會看似仍對後續輪次擁有權限。因此，取消需要一個輪次歸屬方並顯式傳播，且不建立另一套環境上下文或公開的輪次包裝層。
+[發起 Agent 作用域決策](2026-07-15-agent-initiator-scope.md)有意讓 AsyncLocalStorage 只攜帶同一個 Agent。若把輪次、步驟或 signal 狀態加入這個與驅動器同生命週期的邊界，過時的非同步後代就會看似仍對後續輪次擁有權限。因此，取消需要一個輪次歸屬方並顯式傳播，且不建立另一套環境上下文或公開的輪次包裝層。
 
 ## 決策
 
@@ -16,13 +16,13 @@ Agent 擁有僅用於執行時期的 `AgentCancelCause` 聯合類型 `{ kind: 'u
 
 正在執行的輪次被中斷後，以粗粒度的持久化結果 `{ kind: 'aborted' }` 結束。終態事件記錄輪次發生了什麼，執行時期 signal 標識誰請求了取消；重播不會重複保存 `user` 或 `parent`。工作階段 seed/load 會拒絕攜帶取消原因或任何其他額外欄位的舊式中止記錄，因此重播無法重新引入由呼叫方持有的取消細節。僅限行程內的 `agent/cancel-requested` 通知不會持久化；未來若有審計需求，應使用獨立的持久化控制請求事件，讓請求與最終結果保持為兩項事實。持久化事件不包含呼叫棧、signal、錯誤對象、自由文字取消原因或後端私有細節。
 
-AgentLoop 為每個待啟動輪次私有地持有一個 `TurnCancellation`。它在通知 `agent/status = running` 前安裝該持有者，使其中唯一的 `AbortController` 持續覆蓋 inbox 領取、`agent/pre-step`、提示詞組裝、每個步驟、模型與工具執行以及 `agent/turn-stopping`；隨後在發布 `turn/end` 前立即清除所安裝的那個持有者。因此，即使驅動程式器狀態可能在持久化刷新結帳前保持 `running`，終態事件觀察者及其後的持久化刷新也無法取消已完成的輪次工作。所有參與的方法、事件和請求值都會收到同一個顯式 signal；下一個輪次會收到全新的 signal。
+AgentLoop 為每個待啟動輪次私有地持有一個 `TurnCancellation`。它在通知 `agent/status = running` 前安裝該持有者，使其中唯一的 `AbortController` 持續覆蓋 inbox 領取、`agent/pre-step`、提示詞組裝、每個步驟、模型與工具執行以及 `agent/turn-stopping`；隨後在發布 `turn/end` 前立即清除所安裝的那個持有者。因此，即使驅動器狀態可能在持久化刷新結帳前保持 `running`，終態事件觀察者及其後的持久化刷新也無法取消已完成的輪次工作。所有參與的方法、事件和請求值都會收到同一個顯式 signal；下一個輪次會收到全新的 signal。
 
-對於輪次被認領前已取消的排隊工作，驅動程式器只保留一個不攜帶取消原因的執行前標記。實際生效的 `cancel()` 會先發出僅供觀察的 `agent/cancel-requested` 通知並攜帶最終確定的類型化取消原因，然後才清除排隊工作和 steering（中途引導）工作或中止持有者；通知失敗不能阻止此次停止，空閒狀態下呼叫則不寄出任何通知。通知觀察者同步加入佇列的工作也會被這次清除，而稍後由 signal 中止觀察者加入佇列的工作會被鎖存，並在被中止的活動收斂到空閒時執行——`disposed` 取消則將其停放（[取消收斂視窗喚醒鎖存](../bug-fix/2026-08-07-cancel-convergence-wake-latch.md)）。若 `running` 監聽器同步取消舊工作並行送替代提示詞，驅動程式器會丟棄已中止的持有者，並為替代提示詞建立全新的持有者。同一活躍持有者上的重複取消遵循首次請求優先，後續呼叫仍可清除新入隊的待處理工作。
+對於輪次被認領前已取消的排隊工作，驅動器只保留一個不攜帶取消原因的執行前標記。實際生效的 `cancel()` 會先發出僅供觀察的 `agent/cancel-requested` 通知並攜帶最終確定的類型化取消原因，然後才清除排隊工作和 steering（中途引導）工作或中止持有者；通知失敗不能阻止此次停止，空閒狀態下呼叫則不寄出任何通知。通知觀察者同步加入佇列的工作也會被這次清除，而稍後由 signal 中止觀察者加入佇列的工作會被鎖存，並在被中止的活動收斂到空閒時執行——`disposed` 取消則將其停放（[取消收斂視窗喚醒鎖存](../bug-fix/2026-08-07-cancel-convergence-wake-latch.md)）。若 `running` 監聽器同步取消舊工作並行送替代提示詞，驅動器會丟棄已中止的持有者，並為替代提示詞建立全新的持有者。同一活躍持有者上的重複取消遵循首次請求優先，後續呼叫仍可清除新入隊的待處理工作。
 
 顯式事件簽名傳遞單個 payload 對象：agent 作用域事件在 payload 中攜帶 `agent` 和 `signal`，`next` 位於最後；其餘 API 保持 `signal` 緊鄰 waterfall（瀑布式事件）的最終 `next` 之前。`PreStepContext` 與 `RequestFailureContext` 已退役，其欄位並入 `agent/pre-step` 與 `agent/request-error` 的 payload（[payload-object 事件](2026-08-06-agent-event-payload-objects.md)）。進入 pre-step 時、請求設定、請求錯誤復原、模型生成、工具執行、審批、輪次停止以及 subagent 或工作流程請求都會收到當前 signal。掛鉤橋接器也必須提供 `RunHookOptions.signal`，使輪次取消能夠到達 Bash 執行器終止行程組並等待其退出的邊界。`SystemPrompt.assemble()` 在 `AssembleContext` 中攜帶 `signal?: AbortSignal`，因為該對象是顯式請求值，也可表示輪次之外不攜帶 signal 的組裝。監聽器可以配合該 signal 取消，但不得保留它來控制其他輪次。
 
-`ctx.agents` 仍只攜帶發起 Agent。環境中的 Agent 並不代表存活、當前輪次或取消權限。cause 讀取器是 loop 私有的，它直接陳述機器私有的 slot 不變數（只有 `cancel()` 會中止輪次控制器，且總是攜帶規範的凍結 cause），而不是對 reason 做結構化再校驗；不存在從任意 signal 讀取 cause 的公開輔助函式。並行 Agent 會同時隔離各自的發起方身份和輪次 signal；子驅動程式會遮蔽父發起方，而父請求 signal 仍透過 subagent seam 傳遞。
+`ctx.agents` 仍只攜帶發起 Agent。環境中的 Agent 並不代表存活、當前輪次或取消權限。cause 讀取器是 loop 私有的，它直接陳述機器私有的 slot 不變數（只有 `cancel()` 會中止輪次控制器，且總是攜帶規範的凍結 cause），而不是對 reason 做結構化再校驗；不存在從任意 signal 讀取 cause 的公開輔助函式。並行 Agent 會同時隔離各自的發起方身份和輪次 signal；子驅動會遮蔽父發起方，而父請求 signal 仍透過 subagent seam 傳遞。
 
 Agent dispose（資源釋放）會在活躍持有者上請求僅用於執行時期的 `{ kind: 'disposed' }` 中斷。若取消已經先佔用控制器的中斷原因，該原因便無法改寫，因此終態分類會先檢查生命週期狀態：資源釋放結果優先，之後受支持的 `user` 或 `parent` 取消原因形成粗粒度的中止結果，其他例外保留現有錯誤路徑。ACP（Agent Client Protocol）取消對映為 `user`；行程內 spawn 和 fork 的傳播對映為 `parent`。遠端 ACP subagent 保持現有協議。
 
@@ -32,11 +32,11 @@ Agent dispose（資源釋放）會在活躍持有者上請求僅用於執行時�
 
 約定測試驗證類型化呼叫方聯合類型、凍結且與呼叫方分離、默認行為與首次請求優先行為、粗粒度的工作階段 JSON 往返與舊式記錄拒絕、ACP `user`、行程內 subagent `parent` 以及 dispose 優先級。AgentLoop 測試讓協作式監聽器在 pre-step、系統提示詞組裝、請求、模型流、請求錯誤復原、工具執行和輪次停止處等待 signal；並斷言同一輪次使用一個 signal，不同輪次使用全新的 signal，終態發布期間和持久化刷新受阻期間不存在取消權限。真實掛鉤橋接器測試會在報告空閒狀態前取消並回收受阻的提示詞掛鉤。
 
-發起方作用域測試斷言所有掛鉤仍觀察到同一個 Agent 且沒有環境中的輪次 signal，並行 Agent 保持獨立的身份與 signal，巢狀子驅動程式只遮蔽身份。競態測試覆蓋空閒狀態取消、執行前取消、從 `running` 監聽器提交替代提示詞、重複取消以及取消與 dispose 競爭下的完全靜止。
+發起方作用域測試斷言所有掛鉤仍觀察到同一個 Agent 且沒有環境中的輪次 signal，並行 Agent 保持獨立的身份與 signal，巢狀子驅動只遮蔽身份。競態測試覆蓋空閒狀態取消、執行前取消、從 `running` 監聽器提交替代提示詞、重複取消以及取消與 dispose 競爭下的完全靜止。
 
 ## 考慮過的替代方案
 
-**把 signal 存入 ALS。** ALS 會在整個驅動程式器生命週期內跟隨非同步後代，而取消權限在一個輪次結束時就已終止。洩漏的回呼可能觀察到過時 signal，或者迫使實作使用可變的環境狀態，因此發起方作用域繼續只攜帶 Agent，控制能力繼續顯式傳遞。
+**把 signal 存入 ALS。** ALS 會在整個驅動器生命週期內跟隨非同步後代，而取消權限在一個輪次結束時就已終止。洩漏的回呼可能觀察到過時 signal，或者迫使實作使用可變的環境狀態，因此發起方作用域繼續只攜帶 Agent，控制能力繼續顯式傳遞。
 
 **持久化自由文字原因。** 字串允許拼寫漂移、阻礙窮盡分支判斷，還會鼓勵消費端解析展示文字。執行時期使用封閉的可辨識聯合類型，終態記錄只需要穩定的中止結果。
 

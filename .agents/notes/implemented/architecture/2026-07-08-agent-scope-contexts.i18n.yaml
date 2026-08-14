@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-08-agent-scope-contexts.md
 2026-07-08-agent-scope-contexts.md: 5b893ea2ecfddcccd2078d6fe6448d449ae9d959
 2026-07-08-agent-scope-contexts.zh.md: 33a0a2daeff0afeeff6025613a1f18df556a14e3
-2026-07-08-agent-scope-contexts.zh-tw.md: 16c2a0c52b509a1337cbfa170d09b9d0627134a9
+2026-07-08-agent-scope-contexts.zh-tw.md: 9cacbbadd5329be0b86d887d4978f7079c9aa917

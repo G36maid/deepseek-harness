@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-08-native-windows-pull-request-ci.md
 2026-08-08-native-windows-pull-request-ci.md: 3a636b7ba46eac3c35c78d6189e91b5e6abeb0cc
 2026-08-08-native-windows-pull-request-ci.zh.md: b705d54303b3a61bda5f5f74493e243c34726deb
-2026-08-08-native-windows-pull-request-ci.zh-tw.md: 9461cf1055f2fad59a16d8da1cec897c7c84b848
+2026-08-08-native-windows-pull-request-ci.zh-tw.md: 3d7703dfd48563f976300e1ebe6223d8bf9d9931

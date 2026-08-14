@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-28-themed-scrollbars-and-reserved-gutter.md
 2026-07-28-themed-scrollbars-and-reserved-gutter.md: 3bbb0113e9cf56168640c51338b54e091867770c
 2026-07-28-themed-scrollbars-and-reserved-gutter.zh.md: 278615eb115bf4d5f5f489ef03f8b97e99622c39
-2026-07-28-themed-scrollbars-and-reserved-gutter.zh-tw.md: 739405dcfc208eb1f580f4c415a672ca82df7c15
+2026-07-28-themed-scrollbars-and-reserved-gutter.zh-tw.md: a222d02df184280db1b56a4421be77c2582ce806

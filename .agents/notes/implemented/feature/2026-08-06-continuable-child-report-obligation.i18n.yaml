@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-continuable-child-report-obligation.md
 2026-08-06-continuable-child-report-obligation.md: be6fa1c4f1a8c7d24270b84e5031b4b094160ed9
 2026-08-06-continuable-child-report-obligation.zh.md: fc62cdebf8d85969b0ab222a6e7a5ddcf0c11604
-2026-08-06-continuable-child-report-obligation.zh-tw.md: c166e622301a6386fde0d869d52a947e8651f5fb
+2026-08-06-continuable-child-report-obligation.zh-tw.md: 70e855fd074099b3799a765bbec09280f4dc47ba

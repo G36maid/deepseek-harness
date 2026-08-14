@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-10-host-plane-ownership-after-presets.md
 2026-08-10-host-plane-ownership-after-presets.md: 0fb3349c7df1eda8eec7c3441a2b6b53c2341dec
 2026-08-10-host-plane-ownership-after-presets.zh.md: bb4a4c17559769bd2c8ac5932527e3fe3ac21ab6
-2026-08-10-host-plane-ownership-after-presets.zh-tw.md: 78467f8a9c1e7cfc94bb118bfbbcd9a794e56988
+2026-08-10-host-plane-ownership-after-presets.zh-tw.md: b14d28119cf6ac2471407e037271b8f13c3b381e

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-06-subagent-list-identity-projection.md
 2026-08-06-subagent-list-identity-projection.md: 136ddd83adede298112bb77b02d83d06b51e8d44
 2026-08-06-subagent-list-identity-projection.zh.md: 553e87a85ff045a640c609132f91b24dd08d85bb
-2026-08-06-subagent-list-identity-projection.zh-tw.md: 48a6896046292132533e728640a9bc37af4e21bb
+2026-08-06-subagent-list-identity-projection.zh-tw.md: e678b08c36935a3ff1784626a66d5eef799e0a18

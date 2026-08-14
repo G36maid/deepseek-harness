@@ -32,7 +32,7 @@ session <session>, window <index> "<name>", pane <index> <pane-id>
 window active=<0|1>, pane active=<0|1>, layout <window-layout>
 ```
 
-輪次前綴是易變的首行；其下的兩行狀態塊纔是變化抑制所比較的單元，因此重新注入由 tmux 狀態驅動程式，而非迴圈位置。
+輪次前綴是易變的首行；其下的兩行狀態塊纔是變化抑制所比較的單元，因此重新注入由 tmux 狀態驅動，而非迴圈位置。
 
 ### 持久性與請求重建
 

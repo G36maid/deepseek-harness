@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/llm/llm-deepseek/README.md
 README.md: 12691f4e8a3d66e0828ef249092c8991c56e128e
 README.zh.md: e4d5dcdc94a8eb4b59d6ba7e5f5c8d4056f7bc4f
-README.zh-tw.md: 05c7b0d623d6a837388916a0c32c6ca583c63e47
+README.zh-tw.md: fae738b04f5d901ea896f983a408dc5ab017ff7f

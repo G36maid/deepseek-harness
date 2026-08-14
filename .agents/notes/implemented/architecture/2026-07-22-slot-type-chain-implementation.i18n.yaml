@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-22-slot-type-chain-implementation.md
 2026-07-22-slot-type-chain-implementation.md: 254e67643a4db4aed93c7b25e284559258edc049
 2026-07-22-slot-type-chain-implementation.zh.md: 6f41d5761038faceb8942e3ff48fd44253780ebe
-2026-07-22-slot-type-chain-implementation.zh-tw.md: 4188c5343e88eaa9dbfdd58e7f409b437fc7b577
+2026-07-22-slot-type-chain-implementation.zh-tw.md: f1e65334c1059869759f3ee81805fc583801319f

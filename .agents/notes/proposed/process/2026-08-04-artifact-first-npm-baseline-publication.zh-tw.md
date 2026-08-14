@@ -59,7 +59,7 @@ PR（Pull Request） CI 不會呼叫 pack 命令；安裝態入口探測屬於�
 - `@deepseek-ai/dsh` 安裝後的 `dsh --version` 與 `dsh --dump-default-config` 在普通 Node 下成功，分別覆蓋靜態 CLI 入口和一個動態模式入口。
 - 安裝後的默認 `dsh` 在 PTY 中完成一次無金鑰 TUI 啟動，到達既定 ready 訊號後由測試受控退出。這條路徑必須載入真實 TUI 動態 chunk，因此缺少類似 `lib/tui-*.js` 的發布文件會使閘門失敗。
 - 每個其他已發布 `bin` 都定義一個不會訪問真實服務或修改使用者狀態的包級冒煙命令。不同 CLI 不強制共用 `--help`；測試必須執行其真實安裝入口並檢查約定的退出或 ready 訊號。
-- Node 相容的公開執行時期入口從安裝目錄載入；瀏覽器、worker 或必須由宿主協議驅動程式的入口使用對應的隔離 fixture（測試前置資料），但輸入仍只能是本次 tarball。
+- Node 相容的公開執行時期入口從安裝目錄載入；瀏覽器、worker 或必須由宿主協議驅動的入口使用對應的隔離 fixture（測試前置資料），但輸入仍只能是本次 tarball。
 
 這些測試驗證可執行性，不替代單元測試、快照、真實 API e2e 或 publint。測試 fixture 應複用現有 built-bin 和 PTY 場景的行為斷言，但必須把入口改為 tarball 安裝結果；直接執行工作樹 `lib/bin.js` 的測試不能算作本閘門。
 

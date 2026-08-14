@@ -104,7 +104,7 @@ profile 的 `models` 清單是*替換*該路由已安裝 catalog，而不是擴�
 
 ## 動態設定（settings + credentials）
 
-配接器經由一個 thunk **每操作讀取一次** profile，而非在構造期凍結。外掛程式在選填的 `ctx.settings` seam 上用同一份 `Config` schema 註冊 `llm-pi-ai` namespace，並以其 `cordis.yml` 條目為組合 `base`；由於 `providers` 是字典，base 與使用者的 `llm-pi-ai:` settings 分節**按提供方**合併：使用者可以新增路由、覆蓋組合路由的單個欄位，或把路由指向另一個 proxy，全部在下一次請求生效，無需重新啟動。未掛載 settings 服務時，僅由 entry 設定驅動程式配接器，行為不變。
+配接器經由一個 thunk **每操作讀取一次** profile，而非在構造期凍結。外掛程式在選填的 `ctx.settings` seam 上用同一份 `Config` schema 註冊 `llm-pi-ai` namespace，並以其 `cordis.yml` 條目為組合 `base`；由於 `providers` 是字典，base 與使用者的 `llm-pi-ai:` settings 分節**按提供方**合併：使用者可以新增路由、覆蓋組合路由的單個欄位，或把路由指向另一個 proxy，全部在下一次請求生效，無需重新啟動。未掛載 settings 服務時，僅由 entry 設定驅動配接器，行為不變。
 
 憑據在每次流呼叫時透過 `apiKeyEnv` 與選填的 `ctx.credentials` seam 解析；未掛載該 seam 時，配接器只讀取該引用指向的環境變數。只有完全沒有點名任何憑據的 profile——僅限這一種情況——才交給 pi-ai 的環境發現。每個解析出的金鑰都會在使用前去除首尾空白並校驗格式，因此 HTTP 標頭無法承載的值會被拒絕，而不是以語義不明的 `fetch` `TypeError` 形式浮現；這種拒絕會拋出 `LlmError('INVALID_CREDENTIAL')`，點名失敗的路由與憑據引用，但絕不透露金鑰的任何部分。路由集合與每條路由捕獲的重試策略是註冊級事實：兩者任一變化時，外掛程式都會原子地替換自己的註冊（同一配接器實例，候選集合先經校驗），因此某條路由若已被另一配接器佔有，先前的路由會繼續服務，而改回可用設定時註冊會重新生效。提供方鍵的順序絕不算作變化。本配接器無法服務的分節會在寫入處被拒——註冊的 `validate` 會解析整份 profile 集合，因此 `ctx.settings.mutate` 以 resolver 自身的錯誤拒絕（該協議將其報為 `settings-rejected`），什麼都不會儲存。已儲存分節若因其他途徑變得不可服務——比如外部編輯了 `settings.yaml`——則由 settings seam 保留該 namespace 最後可用的值並告警。entry 設定本身仍會使外掛程式載入失敗；而 llm 登錄檔拒絕的路由（已被另一配接器族佔有的那種）會被記錄下來，先前註冊的路由繼續服務。
 

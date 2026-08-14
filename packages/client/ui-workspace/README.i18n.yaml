@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-workspace/README.md
 README.md: 5066462c1d37b8751b23c383e91b27ee9d44168c
 README.zh.md: 3d179652c18ab690b6fb4cd58fe1a09706ad3b0d
-README.zh-tw.md: 87b0a2ef34e408b606b73aed8594ae702539747f
+README.zh-tw.md: a1bd9a1ec458e47b68ffcf3ac2a48a9877b6b6b0

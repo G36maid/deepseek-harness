@@ -2,29 +2,29 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-本包是兩個行程內提供方共用的執行驅動程式器。spawn 不傳入工作階段初始內容；fork 傳入父 agent（代理）已完成輪次的前綴。其餘機制，包括深度、子 agent 建立、選填的子 agent 訂製、結果讀取、取消和 dispose（資源釋放），都在此共用同一套實作。
+本包是兩個行程內提供方共用的執行驅動器。spawn 不傳入工作階段初始內容；fork 傳入父 agent（代理）已完成輪次的前綴。其餘機制，包括深度、子 agent 建立、選填的子 agent 訂製、結果讀取、取消和 dispose（資源釋放），都在此共用同一套實作。
 
 ## 啟動約定
 
 `startInProcessRun(request, options): Promise<SubagentRun>` 只在子 agent 發布到 `ctx.agents` 後才兌現。啟動被拒絕時，agent 工廠的未發布建立交易已經完全靜止，因此呼叫方絕不會收到建立到一半的控制代碼。
 
-驅動程式器按以下順序執行：
+驅動器按以下順序執行：
 
 1. 校驗父 agent 深度和選填的絕對 `maxDepth`，然後把子 agent 深度推導為父 agent 深度加一，並將其持久化到子 agent 工作階段 header。
 2. 直接呼叫 `parent.ctx.agents.create`，把必需的請求訊號傳入工廠的建立交易。
 3. 在該交易未發布的設定視窗中，安裝請求的 persona、工具限制和結構化輸出執行時期。
-4. 發布子 agent，保留返回的 `AgentHandle`，並透過先呼叫 `child.followup(prompt)`、再呼叫 `child.whenIdle()` 來驅動程式一項任務。
+4. 發布子 agent，保留返回的 `AgentHandle`，並透過先呼叫 `child.followup(prompt)`、再呼叫 `child.whenIdle()` 來驅動一項任務。
 5. 從完整的自有子執行中讀取子 agent 自身的輸出——最後一條非空 assistant 訊息（記錄 usage 的空內容訊息會被跳過），若沒有這類訊息則取其累積的 assistant 文字——以及最終持久化的輪次原因，並排除任何 fork 初始內容。
 
 子 agent 會獲得父 agent 的工作目錄／工作階段譜系；除非 `request.agentOptions` 覆蓋，否則還會繼承父 agent 的提供方、模型和輸出 token 上限。它獲得全新的扁平註冊作用域：父級所有權不會匯入父 agent 的工具限制，也不會建立權限子集。
 
 該結果邊界成立，是因為提供方擁有從發布到完全靜止的隔離子 agent 生命週期。在該生命週期內提交的 steering（中途引導）屬於子執行；提供方不會聲稱輸出只歸初始 follow-up 所有。
 
-驅動程式器透過共享的子 agent 輔助函式應用該 seam 的[委派策略](../subagent/README.md#delegated-policy)：它會在建立子 agent 前捕獲父級的顯式沙盒覆蓋項與 `'never'` 審批釘定，並在未發布的設定階段追加帶來源標記的事件，使其位於所有 fork 歷史之後、工作階段發布之前。參見[委派策略決策](../../../.agents/notes/implemented/feature/2026-07-25-subagent-policy-inheritance.md)。
+驅動器透過共享的子 agent 輔助函式應用該 seam 的[委派策略](../subagent/README.md#delegated-policy)：它會在建立子 agent 前捕獲父級的顯式沙盒覆蓋項與 `'never'` 審批釘定，並在未發布的設定階段追加帶來源標記的事件，使其位於所有 fork 歷史之後、工作階段發布之前。參見[委派策略決策](../../../.agents/notes/implemented/feature/2026-07-25-subagent-policy-inheritance.md)。
 
 ## 取消與所有權
 
-必需的請求訊號同時覆蓋啟動階段和即時執行。發布前，`AgentCreationTransaction` 會觀察該訊號、回滾並拒絕。工廠返回前會移除僅用於建立階段的監聽器；驅動程式器隨即再次檢查訊號，然後安裝最小化的即時執行監聽器，從而消除交接競態。發布後，中止會取消子 agent。
+必需的請求訊號同時覆蓋啟動階段和即時執行。發布前，`AgentCreationTransaction` 會觀察該訊號、回滾並拒絕。工廠返回前會移除僅用於建立階段的監聽器；驅動器隨即再次檢查訊號，然後安裝最小化的即時執行監聽器，從而消除交接競態。發布後，中止會取消子 agent。
 
 兌現後，呼叫方擁有該執行。提供方外掛程式解除安裝不會撤銷它。`dispose()` 會移除即時中止監聽器、記錄取消，並委託給返回的 `AgentHandle.dispose()`；後者透過經記憶化的完全靜止交易停止迴圈、移除 agent 和工作階段，並撤銷作用域內的註冊。取消流程會接管所有尚未完成的進行中結果，並將其報告為 `aborted`；已經完成的輪次仍保持完成狀態。
 
@@ -44,7 +44,7 @@
 - `tools/result` 觀察器只會在該次執行的權威最終工具結果成功後提交暫存值；Code Mode 子分派外層的 `run_code` 結果也包括在內。
 - 單調工具防護會在捕獲值後阻止後續呼叫，結構化輸出執行的 `concludeTurn()` 標記則在結果提交後結束輪次。
 
-正常結束卻始終未提交必需結構化值的輪次會報告 `error`；驅動程式器不會重新提示。所有註冊都附著於子 agent fiber，並隨其一同消失。
+正常結束卻始終未提交必需結構化值的輪次會報告 `error`；驅動器不會重新提示。所有註冊都附著於子 agent fiber，並隨其一同消失。
 
 ## 模型體驗
 
@@ -52,7 +52,7 @@
 
 #### 模型看到的內容
 
-共享驅動程式器把任務逐字作為子 agent 的使用者訊息傳送；若有請求，還會在未發布子 agent 的全新作用域中遮蔽 persona，並限制全域性工具 schema、尋找、執行和 Code Mode SDK 綁定。父 agent 的限制不會被繼承，獨立的工具指導段仍會保留。spawn 不提供歷史；fork 提供平衡的初始內容。
+共享驅動器把任務逐字作為子 agent 的使用者訊息傳送；若有請求，還會在未發布子 agent 的全新作用域中遮蔽 persona，並限制全域性工具 schema、尋找、執行和 Code Mode SDK 綁定。父 agent 的限制不會被繼承，獨立的工具指導段仍會保留。spawn 不提供歷史；fork 提供平衡的初始內容。
 
 #### Token 影響
 
@@ -100,7 +100,7 @@ When you have your final answer, you MUST report it by calling the `structured_o
 
 #### 模型看到的內容
 
-驅動程式器只提取子 agent 自身最後的 assistant 輸出或捕獲的結構化值；作為初始內容的父 agent 訊息和子 agent 中間工作不會成為結果。
+驅動器只提取子 agent 自身最後的 assistant 輸出或捕獲的結構化值；作為初始內容的父 agent 訊息和子 agent 中間工作不會成為結果。
 
 #### Token 影響
 

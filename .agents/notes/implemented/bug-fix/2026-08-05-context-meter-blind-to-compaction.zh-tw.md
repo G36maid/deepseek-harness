@@ -8,7 +8,7 @@ Status: implemented
 
 composer 的[上下文儀表](../feature/2026-08-05-composer-context-meter-breakdown.md)的圓環、百分比與 `~已用 / 容量` 標題都取自 `contextPressure.pressureTokens`，即提供方報告的最新提示詞規模。這個數字只在某個請求報告用量時才會移動，而壓縮（compaction）不報告用量：`compaction-basic` 透過直連的 `ctx.llm.stream()` 呼叫生成摘要，只追加 `compaction/start`、`compaction/summary`、用作替換的 `user/message` 和 `compaction/end`——沒有 `assistant/message`，也沒有用量區塊。
 
-於是在唯一一個專門用來改變它的操作面前，這塊儀表紋絲不動。透過真實的 agent loop（代理循環）驅動程式一次 `compactNow`：
+於是在唯一一個專門用來改變它的操作面前，這塊儀表紋絲不動。透過真實的 agent loop（代理循環）驅動一次 `compactNow`：
 
 ```
 BEFORE compact:  ring=4%  header=~4227/100000   rows=[system 18, tools 0, messages 4365]
@@ -43,4 +43,4 @@ AFTER  compact:  ring=4%  header=~4227/100000   rows=[system 18, tools 0, messag
 
 ## 測試
 
-`packages/llm/token-meter/tests/token-usage-projection.spec.ts` 覆蓋了投影值在表層成長與一次壓縮期間的延續更新（樣本保持不動而投影值縮小），以及啟發式誤差會把數字壓到負數時的零鉗制。`packages/client/ui-conversation/tests/context-meter.client.spec.tsx` 釘住圓環讀取投影值這一點，`chat-stats.spec.tsx` 釘住 `contextOccupancy` 的優先級與回退。上面那組端到端數字來自在掛載了投影登錄檔的真實 `AgentLoop` 上驅動程式 `BasicCompactionEngine.compactNow`。
+`packages/llm/token-meter/tests/token-usage-projection.spec.ts` 覆蓋了投影值在表層成長與一次壓縮期間的延續更新（樣本保持不動而投影值縮小），以及啟發式誤差會把數字壓到負數時的零鉗制。`packages/client/ui-conversation/tests/context-meter.client.spec.tsx` 釘住圓環讀取投影值這一點，`chat-stats.spec.tsx` 釘住 `contextOccupancy` 的優先級與回退。上面那組端到端數字來自在掛載了投影登錄檔的真實 `AgentLoop` 上驅動 `BasicCompactionEngine.compactNow`。

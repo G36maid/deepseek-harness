@@ -47,4 +47,4 @@ pi-ai 提供了 `createProvider({ fetchModels })` 加上 `Models.refresh()` 與 
 
 ## Testing
 
-`packages/llm/llm/tests/topology.spec.ts` 覆蓋登錄檔：每個 namespace 一份、隨 fiber dispose（資源釋放）、丟棄重複與不可用 id 且不憑空補容量的歸一化，以及 `NO_DISCOVERY`/`INVALID_DISCOVERY` 兩種拒絕。`packages/llm/llm-pi-ai/tests/discovery.spec.ts` 針對本機 HTTP 伺服器驅動程式探測——含與不含公佈容量的清單、被保留的部署路徑、無憑據、草稿沒帶金鑰時已設定路由自行取用憑據且鍵入的金鑰壓過它、catalog 路由完全不解析憑據即作答、被丟棄的行、401/403 與伺服器故障之別、非清單與非 JSON 回應、不可達端點、呼叫方取消、不支持的協議，以及尺寸上限的「聲明長度」與「流式」兩種形態。`packages/host/apiproxy/tests/api-proxy-config.spec.ts` 在真實 proxy 上覆蓋該 RPC：草稿完整抵達其 namespace、缺席欄位保持缺席、沒有 namespace 或憑據被寫入，以及失敗以 `model-discovery-failed` 呈現且序列化後的錯誤裡不含憑據。
+`packages/llm/llm/tests/topology.spec.ts` 覆蓋登錄檔：每個 namespace 一份、隨 fiber dispose（資源釋放）、丟棄重複與不可用 id 且不憑空補容量的歸一化，以及 `NO_DISCOVERY`/`INVALID_DISCOVERY` 兩種拒絕。`packages/llm/llm-pi-ai/tests/discovery.spec.ts` 針對本機 HTTP 伺服器驅動探測——含與不含公佈容量的清單、被保留的部署路徑、無憑據、草稿沒帶金鑰時已設定路由自行取用憑據且鍵入的金鑰壓過它、catalog 路由完全不解析憑據即作答、被丟棄的行、401/403 與伺服器故障之別、非清單與非 JSON 回應、不可達端點、呼叫方取消、不支持的協議，以及尺寸上限的「聲明長度」與「流式」兩種形態。`packages/host/apiproxy/tests/api-proxy-config.spec.ts` 在真實 proxy 上覆蓋該 RPC：草稿完整抵達其 namespace、缺席欄位保持缺席、沒有 namespace 或憑據被寫入，以及失敗以 `model-discovery-failed` 呈現且序列化後的錯誤裡不含憑據。

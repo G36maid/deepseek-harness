@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-第三個同級包 **`dsh-host-directory-picker-auto`**：一個只有 node 半側的*選擇器*，不持有任何選取程式碼，也沒有 UI。它的 `apply` 在啟動時恰好取樣一次宿主事實——從注入的 `httpServer` 讀綁定宿主（新增的 `host` getter 與既有的 `port` 對稱）、`SSH_CONNECTION`／`SSH_TTY`、平臺、`DISPLAY`／`WAYLAND_DISPLAY`、以及對 Linux 選擇器二進位（zenity／kdialog）的一次 `PATH` 探查——經由一個匯出的純函式判定，再用 `ctx.loader.create({name})` 把選中的雙面後端掛進 Loader 的**記憶體根樹**；該 effect 的 disposer 會移除該條目並匯入後端 fiber 的拆卸（單靠 `remove()` 只是啟動拆卸），因此，只有後端完全靜止後，選擇器的解除安裝才會完成。`native` 要求全部“有人值守且可服務”訊號：回環綁定 ∧ 無 SSH 標記 ∧ native 後端能驅動程式的顯示工作階段——darwin／win32 上視為存在，linux 上要求 `DISPLAY`／`WAYLAND_DISPLAY` 外加一個選擇器二進位，其餘平臺一律不成立（native 後端恰好支持 darwin／win32／linux）。任何含糊情形都判定為處處可用的 `browse`。`apps/cli` 現在把 `-auto` 掛為它的 `directory-picker` 行；直接組合 `-native` 或 `-browse` 仍是固定互動的方式。
+第三個同級包 **`dsh-host-directory-picker-auto`**：一個只有 node 半側的*選擇器*，不持有任何選取程式碼，也沒有 UI。它的 `apply` 在啟動時恰好取樣一次宿主事實——從注入的 `httpServer` 讀綁定宿主（新增的 `host` getter 與既有的 `port` 對稱）、`SSH_CONNECTION`／`SSH_TTY`、平臺、`DISPLAY`／`WAYLAND_DISPLAY`、以及對 Linux 選擇器二進位（zenity／kdialog）的一次 `PATH` 探查——經由一個匯出的純函式判定，再用 `ctx.loader.create({name})` 把選中的雙面後端掛進 Loader 的**記憶體根樹**；該 effect 的 disposer 會移除該條目並匯入後端 fiber 的拆卸（單靠 `remove()` 只是啟動拆卸），因此，只有後端完全靜止後，選擇器的解除安裝才會完成。`native` 要求全部“有人值守且可服務”訊號：回環綁定 ∧ 無 SSH 標記 ∧ native 後端能驅動的顯示工作階段——darwin／win32 上視為存在，linux 上要求 `DISPLAY`／`WAYLAND_DISPLAY` 外加一個選擇器二進位，其餘平臺一律不成立（native 後端恰好支持 darwin／win32／linux）。任何含糊情形都判定為處處可用的 `browse`。`apps/cli` 現在把 `-auto` 掛為它的 `directory-picker` 行；直接組合 `-native` 或 `-browse` 仍是固定互動的方式。
 
 條目級掛載之所以是承重機制：client 模組表（`dsh-client-modules`）基於 `internal/plugin` 對 **Loader 條目**做響應式協調，因此以真實條目掛載的後端，其 browser half 被發現的方式與設定行完全相同——seam 的“一行同時換兩面”不變式在自適應下依然成立，且沒有一行重複的 client 程式碼。開發環境的 HMR 行（`AppCLIEntry`）是該機制的先例。瞄準根樹很關鍵：根樹的 `write()` 是 no-op，因此判定出的行絕不會被持久化回 `cordis.yml`（Include 子樹*會*寫回）。
 

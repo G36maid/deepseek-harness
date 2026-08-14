@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-24-separate-context-injection-from-turn-execution.md
 2026-07-24-separate-context-injection-from-turn-execution.md: 0794206f4b9b48bf4519f9af34b5797fed025735
 2026-07-24-separate-context-injection-from-turn-execution.zh.md: 1e92c14679f94715d9b8996b29b7b3f0f30c6dfd
-2026-07-24-separate-context-injection-from-turn-execution.zh-tw.md: 94c9be5ba10ace7939a33d8e23802fd85e845e5a
+2026-07-24-separate-context-injection-from-turn-execution.zh-tw.md: 2ce5f0c6c1ec3dca2c3286c58d5b6446853b23af

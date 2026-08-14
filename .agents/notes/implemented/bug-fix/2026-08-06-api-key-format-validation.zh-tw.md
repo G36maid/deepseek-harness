@@ -92,7 +92,7 @@ Status: implemented
 
 ## 測試
 
-`packages/llm/llm/tests/api-key.spec.ts` 以整張輸入表驅動程式 `normalizeApiKey` 與 `assertUsableApiKey`——空值、純空白、帶首尾空白、含中間空格、C0 控制字元、emoji、中日韓文字、全形、latin-1，以及可列印 ASCII 的邊界字元——並釘住一次拒絕攜帶 `INVALID_CREDENTIAL` 且不含 Key 的任何部分。
+`packages/llm/llm/tests/api-key.spec.ts` 以整張輸入表驅動 `normalizeApiKey` 與 `assertUsableApiKey`——空值、純空白、帶首尾空白、含中間空格、C0 控制字元、emoji、中日韓文字、全形、latin-1，以及可列印 ASCII 的邊界字元——並釘住一次拒絕攜帶 `INVALID_CREDENTIAL` 且不含 Key 的任何部分。
 
 `packages/llm/llm-deepseek/tests/` 在 `dynamic-config.spec.ts` 中經真實憑據 seam（而非 stub）端到端覆蓋已儲存憑據路徑。`packages/llm/llm-pi-ai/tests/` 覆蓋探測路徑，包括不帶 Key 的探測不會發出 `authorization` 標頭。
 

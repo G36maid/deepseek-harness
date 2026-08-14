@@ -44,7 +44,7 @@ Web 聊天裡的讀取行現在常駐承載文件內容，是相對純摘要行�
 
 `packages/client/ui-tool/tests/read-card.client.spec.tsx` 固定每個渲染點的接線：`readCardModel` 的派生與每條 null 分支（執行中讀取、無檢視表、通用檢視表、未知卡片）、結果標題替換化簡後的路徑、路徑相對工作區的化簡、凍結行陣列的複製而非別名；`GenericToolCard` 回退中與 keyed `ReadRow` 中的常駐卡片（外加其路徑連結打開宿主、其 running/error/stopped 狀態、以及其 `read` 鍵註冊）；還有面板 Output 區段以全高渲染讀取卡片同時保留 JSON Input 區段，含執行中讀取佔位與非讀取攤平 pre 兩條分支。該文件位於覆蓋 `exclude` 清單（`ui-tool/src/*`），因此不承受門檻壓力。
 
-`packages/client/connection/src/client/fixture.ts` 中的 fixture（測試前置資料）增加輪次 66，一次 `read` 呼叫，其結果檢視表是視窗讀取（行號從文件行 41 起、`totalLines` 180、`ts` 提示），使 built-boot 快照和即時 `?fixture` 伺服器展示帶行號、高亮和計數提示的讀取卡片。它命名為 `read` 以驅動程式 keyed `ReadRow`。輪次 64 的 `run_code` 樣例中的巢狀讀取子派發並不驅動程式渲染點回退讀取卡片：`session.ts` 把它們摺疊為 `resultView: null`，因此它們只覆蓋回退行的通用行形狀，而非回退行內的讀取卡片；回退行讀取卡片由 `read-card.spec.tsx` 的 `web_fetch` 用例釘住。輪次 66 排在 todo 輪次（現為 67）之前，與終端機樣例同因：常駐計畫在下一次 `turn/start` 退場。
+`packages/client/connection/src/client/fixture.ts` 中的 fixture（測試前置資料）增加輪次 66，一次 `read` 呼叫，其結果檢視表是視窗讀取（行號從文件行 41 起、`totalLines` 180、`ts` 提示），使 built-boot 快照和即時 `?fixture` 伺服器展示帶行號、高亮和計數提示的讀取卡片。它命名為 `read` 以驅動 keyed `ReadRow`。輪次 64 的 `run_code` 樣例中的巢狀讀取子派發並不驅動渲染點回退讀取卡片：`session.ts` 把它們摺疊為 `resultView: null`，因此它們只覆蓋回退行的通用行形狀，而非回退行內的讀取卡片；回退行讀取卡片由 `read-card.spec.tsx` 的 `web_fetch` 用例釘住。輪次 66 排在 todo 輪次（現為 67）之前，與終端機樣例同因：常駐計畫在下一次 `turn/start` 退場。
 
 ## Related
 

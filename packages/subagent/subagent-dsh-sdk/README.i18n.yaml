@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-dsh-sdk/README.md
 README.md: cd8d7d04049d01163c85f4e001be4a0ab739756b
 README.zh.md: 5fba0cdad8ce1f261a20833ddfaf0c3d9a9124af
-README.zh-tw.md: cc42f5413e5cc7597b8baaf974c0848ef36aabad
+README.zh-tw.md: 501f1c97945fa5dd4c88da86fd1993fb4e9279fd

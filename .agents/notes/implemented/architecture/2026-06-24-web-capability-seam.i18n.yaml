@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md
 2026-06-24-web-capability-seam.md: 823c3274a1d99bacd65320ff959b0f18f7228c29
 2026-06-24-web-capability-seam.zh.md: f4816e9f5b3e6b209d8ef28a41418f212e70707e
-2026-06-24-web-capability-seam.zh-tw.md: 97ed06340e41f471486b26a38510f5dafb2b9453
+2026-06-24-web-capability-seam.zh-tw.md: 9db87fde8664bd36639d68657a195fe6727f690b

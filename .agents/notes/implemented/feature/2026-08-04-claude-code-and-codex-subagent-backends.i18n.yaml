@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-04-claude-code-and-codex-subagent-backends.md
 2026-08-04-claude-code-and-codex-subagent-backends.md: 26d17ca87fb4407a749e71930d851a35e1dad4ac
 2026-08-04-claude-code-and-codex-subagent-backends.zh.md: e06916b4b9b86b2248e714e3914041840723f9c2
-2026-08-04-claude-code-and-codex-subagent-backends.zh-tw.md: f46db37cc5e11b22d31b2cdaaa018442501b9c27
+2026-08-04-claude-code-and-codex-subagent-backends.zh-tw.md: 65b1eab2654d362ca20f62adb44d90655f85060b

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-mcp-client-auto-reconnect.md
 2026-08-06-mcp-client-auto-reconnect.md: 0ec20e139b6668348896a9e8c591f2b23a0d362c
 2026-08-06-mcp-client-auto-reconnect.zh.md: c2565fa1c0fc316cc312b6a4eadb106e1f463396
-2026-08-06-mcp-client-auto-reconnect.zh-tw.md: 2ef8920146ad64af49af2a311a043f30c71cd1dd
+2026-08-06-mcp-client-auto-reconnect.zh-tw.md: 57b862a16accde0bc37e53d88c7a23acbd8b24dc

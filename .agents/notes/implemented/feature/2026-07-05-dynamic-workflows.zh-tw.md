@@ -1,4 +1,4 @@
-# Agent Note: 動態工作流程——指令碼驅動程式的多 agent 編排 seam
+# Agent Note: 動態工作流程——指令碼驅動的多 agent 編排 seam
 
 Status: implemented
 
@@ -52,7 +52,7 @@ harness 可以透過 `dsh-tool-subagent` 將一個任務委派給一個子 agent
 
 ## 測試
 
-worker 側邏輯透過行程內 `MessageChannel` 執行，使 V8 覆蓋率能夠度量它。單元測試覆蓋指令碼輔助函式、fatal 與 nullable 失敗、JSON 邊界、上限、取消、子 agent 所有權和透過真實迴圈的結構化輸出。建置後二進位檔案的冒煙測試在純 Node 下執行單獨打包的 `lib/worker.cjs`，帶金鑰的 e2e 驅動程式真實子 agent，面向模型的工作流程行為透過其所屬示例進行快照覆蓋。
+worker 側邏輯透過行程內 `MessageChannel` 執行，使 V8 覆蓋率能夠度量它。單元測試覆蓋指令碼輔助函式、fatal 與 nullable 失敗、JSON 邊界、上限、取消、子 agent 所有權和透過真實迴圈的結構化輸出。建置後二進位檔案的冒煙測試在純 Node 下執行單獨打包的 `lib/worker.cjs`，帶金鑰的 e2e 驅動真實子 agent，面向模型的工作流程行為透過其所屬示例進行快照覆蓋。
 
 ## 延遲（明確的非目標）
 

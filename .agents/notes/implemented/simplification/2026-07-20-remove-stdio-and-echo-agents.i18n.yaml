@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-20-remove-stdio-and-echo-agents.md
 2026-07-20-remove-stdio-and-echo-agents.md: 48ad2e5abfa6076656df26df59af192569f70c35
 2026-07-20-remove-stdio-and-echo-agents.zh.md: 0541e8dbc9a6eee08a432c3206a262ca75effef1
-2026-07-20-remove-stdio-and-echo-agents.zh-tw.md: e97571109e5ad47a4213a7690c03ad8c19144f47
+2026-07-20-remove-stdio-and-echo-agents.zh-tw.md: 0f639b48d1a1774f3cf5409de205fa4a9235a0f8

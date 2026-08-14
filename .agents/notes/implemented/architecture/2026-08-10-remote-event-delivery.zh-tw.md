@@ -14,7 +14,7 @@ Host 擁有 `agent-preset/selected`、`commands/change`、`credentials/updated`�
 
 ## 決策
 
-消費端 Remote 面持有一個單向事件訂閱動詞 `ctx.remote.$on(event, listener)`；**名單驅動程式、原樣轉發**：
+消費端 Remote 面持有一個單向事件訂閱動詞 `ctx.remote.$on(event, listener)`；**名單驅動、原樣轉發**：
 
 - `packages/api/remotes/src/remote-events.ts` 持有一份可轉發 host 事件名單，它同時是「消費端能訂閱什麼」的唯一控制點。旁邊的 `src/types.ts` 由它派生類型投影並填充 selection 座位，按包約定保持純類型。兩個文件**都同時列進本包 host 與 client 兩個 face 的 `files`**，兩側讀同一份。
 - wire 上的事件名 **就是 host cordis 事件原名**（`settings/document-updated`），不加 `host/` 前綴；載荷 **就是 host 的實參清單**，逐元素原樣過 JSON，無投影、無脫敏、無改名。

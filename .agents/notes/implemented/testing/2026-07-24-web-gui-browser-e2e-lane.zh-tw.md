@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-Web GUI 以一條真實組裝鏈交付——chromium 頁面 → client 外掛程式 bundle → HTTP 單次 RPC + 兩條 SSE（Server-Sent Events）流 → `toFetchHandler`/apiproxy → host 端的 agent loop（代理循環）、工具與 JSONL 持久化——卻沒有任何測試無金鑰且確定性地檢驗這條鏈。[GUI 測試體系](../process/2026-07-20-gui-testing-system.md)覆蓋第 1 層（Node 中的協議同構）、第 2 層（對象層狀態機）與第 3 層冒煙測試，但無金鑰冒煙驅動程式的是 `FixtureApiClient`——沒有 host、沒有 wire、沒有 agent loop——而全鏈路冒煙需要 `DEEPSEEK_API_KEY` 和真實模型，因此不確定、在無金鑰 CI 中自行跳過。[docs/testing.md](../../../../docs/testing.md) 的快照哲學——帶金鑰錄制一次、永久無金鑰重播、格式變動時刷新——已覆蓋 ACP（Agent Client Protocol）、headless `stream-json` 與 TUI 三個 transcript（文字記錄）表面；web 表面是唯一沒有這層保障的組裝形態。而缺口恰恰是兩起已實證 GUI P0 藏身之處：fixture（測試前置資料）用戶端短路掉的 wire 承載鏈。
+Web GUI 以一條真實組裝鏈交付——chromium 頁面 → client 外掛程式 bundle → HTTP 單次 RPC + 兩條 SSE（Server-Sent Events）流 → `toFetchHandler`/apiproxy → host 端的 agent loop（代理循環）、工具與 JSONL 持久化——卻沒有任何測試無金鑰且確定性地檢驗這條鏈。[GUI 測試體系](../process/2026-07-20-gui-testing-system.md)覆蓋第 1 層（Node 中的協議同構）、第 2 層（對象層狀態機）與第 3 層冒煙測試，但無金鑰冒煙驅動的是 `FixtureApiClient`——沒有 host、沒有 wire、沒有 agent loop——而全鏈路冒煙需要 `DEEPSEEK_API_KEY` 和真實模型，因此不確定、在無金鑰 CI 中自行跳過。[docs/testing.md](../../../../docs/testing.md) 的快照哲學——帶金鑰錄制一次、永久無金鑰重播、格式變動時刷新——已覆蓋 ACP（Agent Client Protocol）、headless `stream-json` 與 TUI 三個 transcript（文字記錄）表面；web 表面是唯一沒有這層保障的組裝形態。而缺口恰恰是兩起已實證 GUI P0 藏身之處：fixture（測試前置資料）用戶端短路掉的 wire 承載鏈。
 
 ## 決策
 
@@ -14,9 +14,9 @@ Web GUI 以一條真實組裝鏈交付——chromium 頁面 → client 外掛程
 
 ### Scaffold：`apps/web/tests/scaffold.ts`
 
-一個普通的共享 fixture 模組（[測試政策認可的形態](../../../../docs/testing.md)），不是包：值得閘門把守的邏輯——重播推導、工作階段解析、日誌脫敏、持久化——都在已受閘門的包 `dsh-llm-replay`、`dsh-acp-snapshot`、`dsh-session-persistence-jsonl` 中；剩下的只是啟動接線和瀏覽器膠水，而驅動程式 chromium 的原始碼在無瀏覽器的覆蓋率 runner 上無法誠實保持逐文件 100% 覆蓋率。
+一個普通的共享 fixture 模組（[測試政策認可的形態](../../../../docs/testing.md)），不是包：值得閘門把守的邏輯——重播推導、工作階段解析、日誌脫敏、持久化——都在已受閘門的包 `dsh-llm-replay`、`dsh-acp-snapshot`、`dsh-session-persistence-jsonl` 中；剩下的只是啟動接線和瀏覽器膠水，而驅動 chromium 的原始碼在無瀏覽器的覆蓋率 runner 上無法誠實保持逐文件 100% 覆蓋率。
 
-`launchWebScaffold()` 透過 vendored Loader 的 include 機制，從交付的 `apps/cli/config/base.cordis.yml` 與 `apps/cli/config/web.cordis.yml` 啟動真實 web 組合——與 `AppCLIEntry` 為 `dsh web` 驅動程式的是同一棵樹、同一套機制。差異全部經 include patch 覆蓋在這棵樹上，即 ACP `cordis.snapshot.yml` 模式的行程內表達：臨時 `persistenceRoot`；每個主機級 `skill-filesystem` 根目錄（`dshHome`、`agentsHome` 和 `bundledSkillDir`）都釘在臨時工作區下並停用監聽，因為環境 skill（技能）目錄是模型可見輸入；停用 `agent-instructions`（錄制的 fixture 不得嵌入本倉庫的 AGENTS.md）；停用 `session-title-llm`（其發後不管的標題呼叫會與迴圈爭搶工作階段的重播遊標）；webserver 行釘到埠 0，並使用已建置的 dist；無金鑰模式下停用 `llm-deepseek`。patch 的 id 一旦不再匹配任何行，boot 掃描會大聲失敗而不是漂移。boot 在臨時工作區 `chdir` 下執行，使 api-gateway 的 `process.cwd()` 工作階段預設值、工具 cwd 與 fixture 一致；`dsh web` bin 自身的膠水（argv、profile json、AppCLIEntry）仍由 `smoke-real.e2e.ts` 中的無金鑰 CLI（命令列介面）冒煙把守。初始化回滾和正常關閉都會先對 Cordis 樹執行 dispose（資源釋放），再刪除 scaffold 持有的兩個臨時根目錄；每項清理都會獨立嘗試，並會報告清理失敗而不掩蓋初始化失敗。
+`launchWebScaffold()` 透過 vendored Loader 的 include 機制，從交付的 `apps/cli/config/base.cordis.yml` 與 `apps/cli/config/web.cordis.yml` 啟動真實 web 組合——與 `AppCLIEntry` 為 `dsh web` 驅動的是同一棵樹、同一套機制。差異全部經 include patch 覆蓋在這棵樹上，即 ACP `cordis.snapshot.yml` 模式的行程內表達：臨時 `persistenceRoot`；每個主機級 `skill-filesystem` 根目錄（`dshHome`、`agentsHome` 和 `bundledSkillDir`）都釘在臨時工作區下並停用監聽，因為環境 skill（技能）目錄是模型可見輸入；停用 `agent-instructions`（錄制的 fixture 不得嵌入本倉庫的 AGENTS.md）；停用 `session-title-llm`（其發後不管的標題呼叫會與迴圈爭搶工作階段的重播遊標）；webserver 行釘到埠 0，並使用已建置的 dist；無金鑰模式下停用 `llm-deepseek`。patch 的 id 一旦不再匹配任何行，boot 掃描會大聲失敗而不是漂移。boot 在臨時工作區 `chdir` 下執行，使 api-gateway 的 `process.cwd()` 工作階段預設值、工具 cwd 與 fixture 一致；`dsh web` bin 自身的膠水（argv、profile json、AppCLIEntry）仍由 `smoke-real.e2e.ts` 中的無金鑰 CLI（命令列介面）冒煙把守。初始化回滾和正常關閉都會先對 Cordis 樹執行 dispose（資源釋放），再刪除 scaffold 持有的兩個臨時根目錄；每項清理都會獨立嘗試，並會報告清理失敗而不掩蓋初始化失敗。
 
 無金鑰的模型替換 = 停用配接器行的 patch 加 `installLlmReplay` 在停穩的根 ctx 上以提供方目錄（providers-catalog）模式填充空的配接器登錄檔——絕不用 catch-all：配接器行被停用後不存在任何配接器，catch-all 會讓 `resolveModelInfo` 無路由可走，`compaction-basic` 的步後壓力檢查將步步告警，而不是被可證明地閒置（發布的 128k `contextWindow` 使該路徑對小 fixture 保持閒置）。選擇直接安裝而非插入重播外掛程式行是刻意的：直接安裝返回收尾消費檢查所需的 `ReplayHandle`。沒有 fixture 的場景讓登錄檔保持空置，任何意外的流式呼叫都會以 NO_ADAPTER 大聲失敗。
 
@@ -38,17 +38,17 @@ Web GUI 以一條真實組裝鏈交付——chromium 頁面 → client 外掛程
 
 ### 模式與 fixture
 
-`DSH_SNAPSHOT` 選擇 replay（默認，無金鑰）、record（帶金鑰）或 refresh（無金鑰）。發起提示的 spec 將所有模式共用的驅動程式步驟與僅供 replay/refresh 使用的斷言分開；record 模式驅動程式真實輸入框，採收記憶體中的工作階段 header 與事件，脫敏請求標頭，並 token 化當次執行的工作階段、cwd 與 RPC 標識。隨後一次無金鑰 refresh 重新生成 aria 預期輸出。每條提示詞都會與 fixture 中錄制的 `user/message` 核對；每個場景目錄都採用封閉清單，其中每個 JSONL 都是脫敏不動點。Web fixture 全部脫敏請求標頭且不釘任何 header 類別；見「暫緩」。
+`DSH_SNAPSHOT` 選擇 replay（默認，無金鑰）、record（帶金鑰）或 refresh（無金鑰）。發起提示的 spec 將所有模式共用的驅動步驟與僅供 replay/refresh 使用的斷言分開；record 模式驅動真實輸入框，採收記憶體中的工作階段 header 與事件，脫敏請求標頭，並 token 化當次執行的工作階段、cwd 與 RPC 標識。隨後一次無金鑰 refresh 重新生成 aria 預期輸出。每條提示詞都會與 fixture 中錄制的 `user/message` 核對；每個場景目錄都採用封閉清單，其中每個 JSONL 都是脫敏不動點。Web fixture 全部脫敏請求標頭且不釘任何 header 類別；見「暫緩」。
 
 ### 覆蓋約定
 
-該車道覆蓋三類行為。即時輪次場景釘住普通工具執行、取消、不可重試失敗、瞬態重試、常駐提問與輪次中途 steering（中途引導）；同步相依性持久事件、`whenIdle()` 或顯式重播標記，而不使用延時。冷歷史場景透過真實持久化 API 播種，在不呼叫模型的情況下覆蓋歷史渲染、側欄搜尋、Trajectory 與 waterfall（瀑布式事件）檢視表及工具詳情。瀏覽器生命週期場景覆蓋首次傳送時物化工作區、重新載入復原、版面配置重設、主題與語言偏好，以及工作區的建立、重新命名和檢視表操作。每類場景都斷言瀏覽器表面和權威的 host 狀態；意外的模型呼叫或未耗盡的 fixture 會使拆卸失敗。必需車道還包含一份合成的 88 輪 Chat 滾動約定，其中混合了換行 Markdown、圍欄程式碼以及成對的 bash 呼叫/結果。真實 wheel、輸入框、工具、tab、工作階段與 viewport 互動會在並行歷史前插加帶節奏流式輸出、貼底/離底流式輸出、工具 disclosure 離屏迴圈、擴充歷史後的檢視表/工作階段重新掛載、寬度重排、貼底後立即重新掛載、輸入框尺寸變化以及 textarea wheel 鏈場景中，斷言一個已穩定的具名行相對 transcript scrollport 的頂部位置和到真實底部的距離；真實鍵盤翻頁與觸摸式慣性滑動模擬額外釘住不相依性 wheel 的貼底跟隨所有權（[讀者滾動歸因筆記](../bug-fix/2026-08-06-reader-scroll-attribution-observed-top-ledger.md)）；它刻意不釘 DOM 基數或絕對 `scrollTop`，因此同一約定可以驗收虛擬化實作。另一份基於同一 fixture 的互動約定釘住異構行順序、相鄰工具 disclosure 的獨立狀態、使用者訊息剪貼簿內容的精確值、以輪次為邊界的訊息 fork、源工作階段/子工作階段隔離，以及子工作階段中的一次真實追問輪次；wheel 輸入只用於導覽到語義目標，不承載幾何預期。一份簡短的即時歷史約定從空白工作區開始，連續驅動程式輸入框輪次，其中包括真實的 bash 呼叫/結果輪次和一段帶節奏的長篇最終回應；它釘住單一工作階段身份、每輪事件的精確歸屬、瀏覽器回顯唯一性與輸入框復原，不設定時間閾值。
+該車道覆蓋三類行為。即時輪次場景釘住普通工具執行、取消、不可重試失敗、瞬態重試、常駐提問與輪次中途 steering（中途引導）；同步相依性持久事件、`whenIdle()` 或顯式重播標記，而不使用延時。冷歷史場景透過真實持久化 API 播種，在不呼叫模型的情況下覆蓋歷史渲染、側欄搜尋、Trajectory 與 waterfall（瀑布式事件）檢視表及工具詳情。瀏覽器生命週期場景覆蓋首次傳送時物化工作區、重新載入復原、版面配置重設、主題與語言偏好，以及工作區的建立、重新命名和檢視表操作。每類場景都斷言瀏覽器表面和權威的 host 狀態；意外的模型呼叫或未耗盡的 fixture 會使拆卸失敗。必需車道還包含一份合成的 88 輪 Chat 滾動約定，其中混合了換行 Markdown、圍欄程式碼以及成對的 bash 呼叫/結果。真實 wheel、輸入框、工具、tab、工作階段與 viewport 互動會在並行歷史前插加帶節奏流式輸出、貼底/離底流式輸出、工具 disclosure 離屏迴圈、擴充歷史後的檢視表/工作階段重新掛載、寬度重排、貼底後立即重新掛載、輸入框尺寸變化以及 textarea wheel 鏈場景中，斷言一個已穩定的具名行相對 transcript scrollport 的頂部位置和到真實底部的距離；真實鍵盤翻頁與觸摸式慣性滑動模擬額外釘住不相依性 wheel 的貼底跟隨所有權（[讀者滾動歸因筆記](../bug-fix/2026-08-06-reader-scroll-attribution-observed-top-ledger.md)）；它刻意不釘 DOM 基數或絕對 `scrollTop`，因此同一約定可以驗收虛擬化實作。另一份基於同一 fixture 的互動約定釘住異構行順序、相鄰工具 disclosure 的獨立狀態、使用者訊息剪貼簿內容的精確值、以輪次為邊界的訊息 fork、源工作階段/子工作階段隔離，以及子工作階段中的一次真實追問輪次；wheel 輸入只用於導覽到語義目標，不承載幾何預期。一份簡短的即時歷史約定從空白工作區開始，連續驅動輸入框輪次，其中包括真實的 bash 呼叫/結果輪次和一段帶節奏的長篇最終回應；它釘住單一工作階段身份、每輪事件的精確歸屬、瀏覽器回顯唯一性與輸入框復原，不設定時間閾值。
 
 ### CI 立場
 
 根據[瀏覽器快照 CI 決策](2026-07-30-web-browser-snapshot-ci-gate.md)，該車道是 Linux Pull Request必需的只比較閘門。`node 24 / snapshots and artifacts` 消費端任務在[消費端獨立建置](../process/2026-07-30-independent-ci-consumer-build.md)中負責唯一一次 Linux 建置，安裝鎖定檔選定的 Chromium，復原以作業系統和鎖定檔為鍵的快取，並用 `DSH_SNAPSHOT=replay` 執行該車道。這是有意的平面切分：host 與 spec 使用 [tsx 原始碼啟動約定](../architecture/2026-07-29-dsh-source-launch-tsx-esm.md)，瀏覽器則消費 `apps/web/dist` 和包的 `lib/client.js` 產物，因此閘門相依性 `built-package-invariants` 提供這些用戶端產物。託管和自託管的默認分支 Linux 序列任務執行同一閘門；託管任務生成供 PR 消費的瀏覽器快取，持久化自託管池則不需要託管側快取。CI 從不錄制或刷新預期輸出。場景仍面向 POSIX，並繼續置於 Windows 和 macOS 矩陣之外。
 
-高基數效能診斷使用單獨按需啟用的 `apps/web/tests/**/*.perf.ts` 清單，並且只由 `vitest.web.perf.config.ts` 選中。`complex-history.perf.ts` 的隔離用例複用真實 scaffold：工作區用例播種 1,000 個緊湊工作階段以及一份包含 500 次工具呼叫的 500 輪次歷史，在 Chat 中窮盡並重新掛載該歷史，並報告 Chromium 主線程、DOM、監聽器、堆記憶體、分頁、搜尋和 Trajectory 測量結果。兩個續聊用例播種同一份長歷史，但比較默認的 24 輪次 Chat 視窗與展開全部 500 輪次的狀態，然後各自透過真實輸入框、agent loop、SSE wire、工具和持久化繼續進行 8 個相同輪次；其中兩輪執行真實 `bash` 呼叫並斷言其持久化結果，最後一輪則填入一條包含 8,232 個字元的混合語言提示詞，並回放 120 個帶節奏的文字增量。一個單獨的 soak 用例從空白工作階段開始，透過真實輸入框連續驅動程式 100 輪，每第 10 輪執行一次 `bash` 呼叫並產生結果，每 10 輪強制執行一次 GC，並報告每 10 輪的延遲視窗及保留的瀏覽器狀態。隨後它透過受信任的瀏覽器點擊提交第 101 個純文字輪次，並使用瀏覽器時鐘分別測量傳送到 transcript DOM 和傳送到繪製後的延遲，排除輸入框的草稿映像檔，並與完整輪次完成時間分開。逐輪診斷涵蓋輸入框填入、點擊到使用者訊息回顯、點擊到首個區塊、完成、瀏覽器變更、持久化區塊和工具事件；合成重播模型擁有足夠的上下文容量，可使 fixture 基數保持穩定，而不會因壓縮（compaction）消耗指令碼化呼叫。結構性斷言釘住預期的負載、流和工具形狀，但時間仍不設閾值，因為機器速度不屬於正確性約定。必需的 `vitest.web.config.ts` 清單仍僅限 `*.e2e.ts` 和 `*.snapshot.ts`，因此 `test:web:built` 及其 CI 閘門都不會收集效能用例。
+高基數效能診斷使用單獨按需啟用的 `apps/web/tests/**/*.perf.ts` 清單，並且只由 `vitest.web.perf.config.ts` 選中。`complex-history.perf.ts` 的隔離用例複用真實 scaffold：工作區用例播種 1,000 個緊湊工作階段以及一份包含 500 次工具呼叫的 500 輪次歷史，在 Chat 中窮盡並重新掛載該歷史，並報告 Chromium 主線程、DOM、監聽器、堆記憶體、分頁、搜尋和 Trajectory 測量結果。兩個續聊用例播種同一份長歷史，但比較默認的 24 輪次 Chat 視窗與展開全部 500 輪次的狀態，然後各自透過真實輸入框、agent loop、SSE wire、工具和持久化繼續進行 8 個相同輪次；其中兩輪執行真實 `bash` 呼叫並斷言其持久化結果，最後一輪則填入一條包含 8,232 個字元的混合語言提示詞，並回放 120 個帶節奏的文字增量。一個單獨的 soak 用例從空白工作階段開始，透過真實輸入框連續驅動 100 輪，每第 10 輪執行一次 `bash` 呼叫並產生結果，每 10 輪強制執行一次 GC，並報告每 10 輪的延遲視窗及保留的瀏覽器狀態。隨後它透過受信任的瀏覽器點擊提交第 101 個純文字輪次，並使用瀏覽器時鐘分別測量傳送到 transcript DOM 和傳送到繪製後的延遲，排除輸入框的草稿映像檔，並與完整輪次完成時間分開。逐輪診斷涵蓋輸入框填入、點擊到使用者訊息回顯、點擊到首個區塊、完成、瀏覽器變更、持久化區塊和工具事件；合成重播模型擁有足夠的上下文容量，可使 fixture 基數保持穩定，而不會因壓縮（compaction）消耗指令碼化呼叫。結構性斷言釘住預期的負載、流和工具形狀，但時間仍不設閾值，因為機器速度不屬於正確性約定。必需的 `vitest.web.config.ts` 清單仍僅限 `*.e2e.ts` 和 `*.snapshot.ts`，因此 `test:web:built` 及其 CI 閘門都不會收集效能用例。
 
 ## 業界先例
 
@@ -64,7 +64,7 @@ Web GUI 以一條真實組裝鏈交付——chromium 頁面 → client 外掛程
 
 **用佔位 `DEEPSEEK_API_KEY` + 重播攔截替代停用配接器行。** 儘管零組合改動且樹內有兩處先例仍被否決：它用謊言滿足 `llm-deepseek` 的快速失敗金鑰檢查，還留下一個掛載卻被攔截的死配接器；停用行（ACP overlay 的同款做法）是誠實的無金鑰，並在最早可解析點快速失敗。
 
-**`packages/test-support/web-snapshot` 包 + `defineWebSnapshotSuite` 工廠。** 已否決：驅動程式 chromium 的原始碼在無瀏覽器的覆蓋率 runner 上無法誠實保持逐文件 100%，且除受閘門的包已匯出的輔助工具與本機 scaffold 外，這些場景專用互動尚未形成穩定的無瀏覽器約定。出現第二個 web 形態消費端，或被證實重複的生命週期程式碼確立該約定後，再重新考慮。
+**`packages/test-support/web-snapshot` 包 + `defineWebSnapshotSuite` 工廠。** 已否決：驅動 chromium 的原始碼在無瀏覽器的覆蓋率 runner 上無法誠實保持逐文件 100%，且除受閘門的包已匯出的輔助工具與本機 scaffold 外，這些場景專用互動尚未形成穩定的無瀏覽器約定。出現第二個 web 形態消費端，或被證實重複的生命週期程式碼確立該約定後，再重新考慮。
 
 **第二份提交的規範化工作階段日誌預期輸出。** 已否決：日誌表面已由 ACP/headless/TUI 套件經同一迴圈與持久化釘住；在此只會翻倍刷新成本並重複測試下層。內聯在根上下文事件上的世界狀態斷言保住了驗證世界的義務。
 
@@ -86,7 +86,7 @@ Web GUI 以一條真實組裝鏈交付——chromium 頁面 → client 外掛程
 
 - **Web 頭類別釘住**：web fixture 處處 token 化 `{{system}}`/`{{tools}}`，沒有場景釘住 web 組合的提示詞/工具 schema（`TODO(web-header-pin)`——scaffold 的 `recordFixture` JSDoc 有標記）。沿用 TUI 處處脫敏先例；當 web 組裝的請求標頭與其映像檔的 repl 組合進一步分叉時重審。
 - **復原後追問場景**：真實 wire 上的歷史/即時縫合路徑；當該程式碼變更或回歸時作為獨立場景補充。
-- **輸入框 steering 手勢**：輸入在執行期間鎖定（只能停止或等待），因此 steering 場景從頁面走 wire 做 steer；`TODO(web-steer-composer)` 待產品長出真實的輸入框手勢後，把驅動程式步驟升級為該手勢。
+- **輸入框 steering 手勢**：輸入在執行期間鎖定（只能停止或等待），因此 steering 場景從頁面走 wire 做 steer；`TODO(web-steer-composer)` 待產品長出真實的輸入框手勢後，把驅動步驟升級為該手勢。
 - **拖拽工作階段重排**：`workspace.insertSessionBefore` 尚無瀏覽器場景；它需要在同一個工作區裡物化兩個工作階段，並合成 HTML5 拖拽事件。當該表面變更或回歸時再補充。無行為的工作階段 Rename/Fork/Delete 和工作區 Delete 選單行待獲得行為後再補充場景。
 - **長歷史 Chat 到 Trajectory 的 Inspect**：兩個檢視表共用 Session 分頁，而所選 Trajectory 記錄由一個派生的表格索引定位；隨著較早頁面前插，該索引可能移動。短歷史 Inspect 仍有覆蓋；在選中項具有穩定的語義身份之前，長歷史互動約定不包含這項交接。
 

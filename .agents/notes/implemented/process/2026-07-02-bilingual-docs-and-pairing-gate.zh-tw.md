@@ -32,7 +32,7 @@ Status: implemented
 
 ## 業界先例
 
-帶語言後綴的配對兄弟文件是中國大廠的主流約定（ant-design 的 `index.zh-CN.md`/`index.en-US.md`；arco-design 的 `README.zh-CN.md` 加頂部切換行；Apache ShardingSphere 的 387 對 `.cn.md`/`.en.md`），但這些倉庫都沒有在 CI 中**強制**配對或一致性檢查；約定純靠評審維繫。一致性自動化存在於中國以外：MDN 的 `l10n.sourceCommit` front-matter 指紋、Vue 的 Ryu-Cho action（監視上游 commit，為過時譯文自動開 issue/PR）、Kubernetes 的本機化漂移指令碼、微軟 Azure co-op-translator（CI 中由源 hash 驅動程式的 LLM 重譯）。本設計將兩者結合：中文生態的文件版面配置，加上 hash 配對閘門，再加一個由 agent 執行的工作流程替代 bot 服務。
+帶語言後綴的配對兄弟文件是中國大廠的主流約定（ant-design 的 `index.zh-CN.md`/`index.en-US.md`；arco-design 的 `README.zh-CN.md` 加頂部切換行；Apache ShardingSphere 的 387 對 `.cn.md`/`.en.md`），但這些倉庫都沒有在 CI 中**強制**配對或一致性檢查；約定純靠評審維繫。一致性自動化存在於中國以外：MDN 的 `l10n.sourceCommit` front-matter 指紋、Vue 的 Ryu-Cho action（監視上游 commit，為過時譯文自動開 issue/PR）、Kubernetes 的本機化漂移指令碼、微軟 Azure co-op-translator（CI 中由源 hash 驅動的 LLM 重譯）。本設計將兩者結合：中文生態的文件版面配置，加上 hash 配對閘門，再加一個由 agent 執行的工作流程替代 bot 服務。
 
 ## 後果
 

@@ -109,7 +109,7 @@ reminders_json: <JSON.stringify(reminders)>
 ## 已知限制與暫緩事項
 
 - **僅限工作階段本機交付**：提醒只有在原工作階段 live 時才能準時執行；cold 工作階段不會收到外部通知，只有復原後才會處理 overdue 記錄。
-- **活動驅動程式的重試**：到期 preflight 被拒絕或 framing／入隊失敗被收容後，記錄仍保持活動，但不會啟動私有重試 timer；後續 Agent 活動或成功的 Schedule preflight 會觸發重新計算。
+- **活動驅動的重試**：到期 preflight 被拒絕或 framing／入隊失敗被收容後，記錄仍保持活動，但不會啟動私有重試 timer；後續 Agent 活動或成功的 Schedule preflight 會觸發重新計算。
 - **顯式本機時區**：`at` 絕不會匯入瀏覽器上下文；呼叫方必須把自然語言轉換為帶偏移量的 RFC 3339 字串，或帶 `time_zone` 的本機對象。
 - **固定間隔，而非日曆規則**：`every_seconds` 與建立錨點對齊，且執行頻率不能高於每 5 分鐘一次；協議不包含日曆表達式或 Cron 表達式。
 - **只追趕最新一次**：逾期 Every 記錄只貢獻其最新一個到期發生時點，因此 Schedule 絕不會重播因錯過間隔而形成的積壓。

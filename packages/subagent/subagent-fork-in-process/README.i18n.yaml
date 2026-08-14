@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-fork-in-process/README.md
 README.md: 7c8b5045a77f5e8c0ddbb22b3509b2612044d62f
 README.zh.md: 825cb2303bfe752a49823e0036b0cee1c10aa093
-README.zh-tw.md: c5bba67ede3e662acafa4875252264c23c15e43d
+README.zh-tw.md: 4e67f56088a950d5762b7c0bc0d9c097b4c62fc4

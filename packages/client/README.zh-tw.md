@@ -13,7 +13,7 @@ dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 U
 | [`runtime/`](runtime/README.md) | 為工作階段、工作區和 UI 組合提供共享用戶端服務。 |
 | [`hmr/`](hmr/README.md) | 在開發期間刷新用戶端外掛程式。 |
 | [`locale/`](locale/README.md) | 提供本機化偏好與訊息詞典。 |
-| [`schema-form/`](schema-form/README.md) | 為設定編輯器提供 schema 驅動程式的草稿處理。 |
+| [`schema-form/`](schema-form/README.md) | 為設定編輯器提供 schema 驅動的草稿處理。 |
 | [`test-runtime/`](../test-support/client-runtime/README.md) | 為用戶端功能包提供共享的倉庫測試支持。 |
 | [`ui-slots/`](ui-slots/README.md) | 定義 UI 功能註冊和組合擴充 slot 的方式。 |
 | [`ui-theme/`](ui-theme/README.md) | 應用所選顏色主題。 |

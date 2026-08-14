@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-10-web-plugin-configuration.md
 2026-08-10-web-plugin-configuration.md: 3856c91b25a82018cc6f2fe067f54317856f1be7
 2026-08-10-web-plugin-configuration.zh.md: 7077ddeee1a03a2ce054a55cd332ba544687ddf0
-2026-08-10-web-plugin-configuration.zh-tw.md: a0fcdd338d0e2f12e44de8185118ed1c3bb5e8c3
+2026-08-10-web-plugin-configuration.zh-tw.md: 95de1d04dfc257b1775fe978ab7df23efb598389

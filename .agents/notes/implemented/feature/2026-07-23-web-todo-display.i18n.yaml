@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-23-web-todo-display.md
 2026-07-23-web-todo-display.md: b5507f33ffde50758d5d2d5d3cc8efe118c69d56
 2026-07-23-web-todo-display.zh.md: bb1bf49e8bda45b8ffb0f4c0023be949e110bf89
-2026-07-23-web-todo-display.zh-tw.md: 7f9f1e841cdb2125a42dd5d13dec2564905b8f65
+2026-07-23-web-todo-display.zh-tw.md: 79bb038b82c06f34dddf817c3d80634ed2576788

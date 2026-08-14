@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-30-bash-stdin-env-trusted-plugin-api.md
 2026-06-30-bash-stdin-env-trusted-plugin-api.md: 9d21dc2a71ea78877ccb9a94c93ff4e39e3110e2
 2026-06-30-bash-stdin-env-trusted-plugin-api.zh.md: 872460945a08e17c644eedac9b922d98e1688a41
-2026-06-30-bash-stdin-env-trusted-plugin-api.zh-tw.md: e56b8eb969997f4b9b4ffa444c6e7f86a44c6d9b
+2026-06-30-bash-stdin-env-trusted-plugin-api.zh-tw.md: 70363177ddebf82605d81ff75c0e6f5b3b5ddb86

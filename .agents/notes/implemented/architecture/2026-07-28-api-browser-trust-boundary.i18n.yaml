@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-28-api-browser-trust-boundary.md
 2026-07-28-api-browser-trust-boundary.md: 75ae5d38bfd45517dcb890a0c14379bcdd3aaa15
 2026-07-28-api-browser-trust-boundary.zh.md: e21454283378f5ddf69ea725915b3ed0ca3ac62e
-2026-07-28-api-browser-trust-boundary.zh-tw.md: 73682ed4f8def160e1df0220c584aca7819a4f16
+2026-07-28-api-browser-trust-boundary.zh-tw.md: af835d817173687a2c636fb0f603d5b1e2baea8d

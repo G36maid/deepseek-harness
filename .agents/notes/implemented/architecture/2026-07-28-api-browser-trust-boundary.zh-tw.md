@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-Web GUI 宿主以純 HTTP 提供 `/api`（默認 `127.0.0.1:3080`，支持 `--host 0.0.0.0`），而這個面上有遠端程式碼執行等級的方法——`session.prompt` 驅動程式的 agent（代理）可以執行 bash。瀏覽器會用兩種經典方式把操作者變成攻擊此類本機 API 的「混淆代理人」：惡意頁面寄出跨站「簡單請求」 POST（`text/plain`——不經 CORS 預檢即寄出），其副作用照常執行、只是回應不可讀；以及 DNS rebinding 後的源以「同源」身份直連 socket，CORS 整體失效，只有 `Host` 頭會暴露攻擊者的網域。在本決策之前，系統裡唯一的瀏覽器信任檢查（`isTrustedNativeDialogRequest`：回環 socket、同源、回環 Host）只守著一個裝飾性的路由——`host.pickDirectory`，其原生對話框彈在宿主螢幕上——而所有真正具有嚴重後果的方法都沒有防護。按 RPC 逐個設防也活不過應用內目錄瀏覽器：它存在的意義就是服務合法的遠端用戶端，回環規則恰恰會拒絕它們。
+Web GUI 宿主以純 HTTP 提供 `/api`（默認 `127.0.0.1:3080`，支持 `--host 0.0.0.0`），而這個面上有遠端程式碼執行等級的方法——`session.prompt` 驅動的 agent（代理）可以執行 bash。瀏覽器會用兩種經典方式把操作者變成攻擊此類本機 API 的「混淆代理人」：惡意頁面寄出跨站「簡單請求」 POST（`text/plain`——不經 CORS 預檢即寄出），其副作用照常執行、只是回應不可讀；以及 DNS rebinding 後的源以「同源」身份直連 socket，CORS 整體失效，只有 `Host` 頭會暴露攻擊者的網域。在本決策之前，系統裡唯一的瀏覽器信任檢查（`isTrustedNativeDialogRequest`：回環 socket、同源、回環 Host）只守著一個裝飾性的路由——`host.pickDirectory`，其原生對話框彈在宿主螢幕上——而所有真正具有嚴重後果的方法都沒有防護。按 RPC 逐個設防也活不過應用內目錄瀏覽器：它存在的意義就是服務合法的遠端用戶端，回環規則恰恰會拒絕它們。
 
 ## 決策
 

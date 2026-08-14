@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-10-remote-event-delivery.md
 2026-08-10-remote-event-delivery.md: 9f95d535ddc4daf2c3d7157eef872bc87960579e
 2026-08-10-remote-event-delivery.zh.md: 61f4dcd02ccea8b662c3f18dc09eeffbe8ff2839
-2026-08-10-remote-event-delivery.zh-tw.md: 6c7650b55704216a516d1e7ca9ea58a99522dd3f
+2026-08-10-remote-event-delivery.zh-tw.md: a04882dcd78a791d7270f2bcfec9ffef3f7bcb53

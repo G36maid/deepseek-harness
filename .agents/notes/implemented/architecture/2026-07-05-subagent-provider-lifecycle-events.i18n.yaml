@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-05-subagent-provider-lifecycle-events.md
 2026-07-05-subagent-provider-lifecycle-events.md: 7d9d1b07335db268aef871a01586e13cf7b6d621
 2026-07-05-subagent-provider-lifecycle-events.zh.md: bb2541bb0168e063ddfde8bff1537fcd1c59a9b2
-2026-07-05-subagent-provider-lifecycle-events.zh-tw.md: 06ffe82386810d8b5893057f8488dc1a0f09390e
+2026-07-05-subagent-provider-lifecycle-events.zh-tw.md: 307db2179f4d43f996611a619dec2af7ff53d75d

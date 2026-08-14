@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-工具與提示段的可見性沿 `dsh-scope` 的父鏈繼承，而 agent 的 scope key 鑄造出來時沒有父。[逐工作階段 agent preset](../architecture/2026-08-03-per-session-agent-presets.md) 把所有面向模型的行搬到了 agent 平面，並讓 `AgentPresets.mount()` 成為綁定那條父鏈的唯一途徑——呼叫點在 api-proxy 的工作階段建立、復原與 fork 路徑上。兩個行程內 subagent 驅動程式透過 `applyChildComposition()` 組裝子 agent，而它只安裝了逐子 agent 的 persona 與工具限制，於是子 agent 的 scope 鏈長度為一，其登錄檔檢視表只能解析到全域性層。
+工具與提示段的可見性沿 `dsh-scope` 的父鏈繼承，而 agent 的 scope key 鑄造出來時沒有父。[逐工作階段 agent preset](../architecture/2026-08-03-per-session-agent-presets.md) 把所有面向模型的行搬到了 agent 平面，並讓 `AgentPresets.mount()` 成為綁定那條父鏈的唯一途徑——呼叫點在 api-proxy 的工作階段建立、復原與 fork 路徑上。兩個行程內 subagent 驅動透過 `applyChildComposition()` 組裝子 agent，而它只安裝了逐子 agent 的 persona 與工具限制，於是子 agent 的 scope 鏈長度為一，其登錄檔檢視表只能解析到全域性層。
 
 在任何設定了 preset roster 的部署裡，那一層現在是空的：web-app 修補程式層停用了全部宿主平面工具行。因此一次性子 agent 抵達模型時工具為零，可繼續子 agent 只剩宿主平面的 `report`，兩者都不帶父方的 persona、工作區上下文、plan-mode 段與技能目錄。fork 路徑此前已因同一理由做過相同處理；委派沒有。
 
@@ -16,9 +16,9 @@ Status: implemented
 
 `AgentPresets.composeFrom(agentCtx, parentCtx)` 讓一個 agent 加入另一個 agent 已在執行的常駐組裝，並返回所加入的 preset id。它透過 `standingMountFor()` 定位父方的掛載——agent 的 key 認父到其 preset 的常駐 key，正是 `serviceForAgent()` 讀取的同一關係——再把子 agent 的 key 綁到同一個常駐 key 上，綁定控制代碼仍歸 roster 獨有的重鏈權威持有。未加入任何 preset 的父方不產生加入、也不報錯，那就是無 roster 的部署：它面向模型的行位於宿主組裝中，子 agent 已經能透過全域性層解析到它們。
 
-這是認父而非掛載，兩處差別都要緊。子 agent 拿到的是父方那個確切的代際，因此父方啟動後被編輯過的組裝文件不可能把與父方歷史所產出時不同的另一個代際交給它，此後被刪除的 preset 也不可能讓一個父方仍在執行的子 agent 失敗。它還是同步的，這正是子 agent 建立視窗能夠使用它的前提——兩個行程內驅動程式都在同步的 `setup` 中完成組裝。
+這是認父而非掛載，兩處差別都要緊。子 agent 拿到的是父方那個確切的代際，因此父方啟動後被編輯過的組裝文件不可能把與父方歷史所產出時不同的另一個代際交給它，此後被刪除的 preset 也不可能讓一個父方仍在執行的子 agent 失敗。它還是同步的，這正是子 agent 建立視窗能夠使用它的前提——兩個行程內驅動都在同步的 `setup` 中完成組裝。
 
-`applyChildComposition(childCtx, parent, composition)` 接收父方，並在應用子 agent 自身註冊之前完成加入。這個參數正是要點所在：它讓"組裝子 agent 卻不做該加入"在各呼叫點無法表達，而不是把第二個步驟留給每個新驅動程式去記住。`childSessionMeta()` 透過 `AgentPresets.composedPreset()` 記錄所加入的 id，該值從父方**活著的** scope 鏈讀取而不是從其 header 讀取，因為在空白期切換過 preset 的父方執行在更新的那份組裝上，而它的 header 仍寫著舊的那個。
+`applyChildComposition(childCtx, parent, composition)` 接收父方，並在應用子 agent 自身註冊之前完成加入。這個參數正是要點所在：它讓"組裝子 agent 卻不做該加入"在各呼叫點無法表達，而不是把第二個步驟留給每個新驅動去記住。`childSessionMeta()` 透過 `AgentPresets.composedPreset()` 記錄所加入的 id，該值從父方**活著的** scope 鏈讀取而不是從其 header 讀取，因為在空白期切換過 preset 的父方執行在更新的那份組裝上，而它的 header 仍寫著舊的那個。
 
 `dsh-subagent` 以類型級匯入加選填 peer 相依性的方式，透過 `ctx.get('agentPresets')` 觸達 roster——這正是它對 `sandboxPolicy` 與 `approval` 已在使用的、有明確文件的機會性消費模式。
 
@@ -26,11 +26,11 @@ Status: implemented
 
 ## 考慮過的替代方案
 
-**在子 agent 的 setup 裡按 id 重新掛載父方的 preset。** 語義與機制兩方面都不成立而被否決。它會重讀 roster 並重新 stat 組裝文件，因此父方啟動後的一次編輯就會把子 agent 分叉到另一個代際，而此後被刪除的 preset 會讓子 agent 失敗、父方卻照常執行。`mount()` 還是非同步的，同步的建立視窗無法在不重構兩個驅動程式的前提下接受它。
+**在子 agent 的 setup 裡按 id 重新掛載父方的 preset。** 語義與機制兩方面都不成立而被否決。它會重讀 roster 並重新 stat 組裝文件，因此父方啟動後的一次編輯就會把子 agent 分叉到另一個代際，而此後被刪除的 preset 會讓子 agent 失敗、父方卻照常執行。`mount()` 還是非同步的，同步的建立視窗無法在不重構兩個驅動的前提下接受它。
 
 **把子 agent 的 key 綁到**父方的** key 而不是常駐掛載上。** 否決，因為這改變了子 agent 繼承的內容：父方自己的 scope 層攜帶其逐 agent 限制，那些限制會就此與每個後代求交，而活得比父方久的子 agent 會掛在一個已 dispose 的 agent key 上。加入常駐掛載給到子 agent 的是父方的組裝，僅此而已。
 
-**擴充可繼續 activation setup 登錄檔以覆蓋一次性子 agent。** 否決，因為該登錄檔的貢獻類型是同步的 `(childCtx) => () => void` 並帶有逐次安裝的撤銷，建模的是會來會走的部署能力，而 preset 加入是一次性認父、自身沒有撤銷可言。擴充它反而會讓任何繞過該登錄檔的驅動程式重新具備遺漏的可能。
+**擴充可繼續 activation setup 登錄檔以覆蓋一次性子 agent。** 否決，因為該登錄檔的貢獻類型是同步的 `(childCtx) => () => void` 並帶有逐次安裝的撤銷，建模的是會來會走的部署能力，而 preset 加入是一次性認父、自身沒有撤銷可言。擴充它反而會讓任何繞過該登錄檔的驅動重新具備遺漏的可能。
 
 **讓 `dsh-subagent` 匯入 `resolveSessionPreset` 並按解析出的 id 掛載。** 否決，因為這會給一個必須在沒有 roster 時也能工作的包引入硬模組邊，而且最終仍落回上述的重新掛載語義。
 
@@ -52,7 +52,7 @@ Status: implemented
 
 委派現在的成本是每個子 agent 一次 scope 認父，再無其他——沒有額外的外掛程式實例、沒有 roster 讀取、沒有新的失敗模式。子 agent 的能力恰好等於父方的能力，減去它自己的 `toolFilter` 所移除的部分；逐 subagent 的 preset（"agent 類型"）仍未建置，那會是一個新的請求欄位，而不是對這次加入的改動。
 
-`applyChildComposition()` 的形態變了，因此將來任何倉庫外的行程內驅動程式都必須提供父方。這是刻意付出的代價：此前的簽名允許呼叫方組裝出一個毫無能力的子 agent 而不報任何錯。
+`applyChildComposition()` 的形態變了，因此將來任何倉庫外的行程內驅動都必須提供父方。這是刻意付出的代價：此前的簽名允許呼叫方組裝出一個毫無能力的子 agent 而不報任何錯。
 
 冷復原的可繼續子 agent 加入的是父方**當前**的組裝，而不是它自己 header 所記錄的那份。視窗很窄——父方必須先建子、保持空白、切換 preset，之後才喚醒它；駐留中的子 agent 不會重新加入，一次性子 agent 也不會復原——而替代方案更糟：按子 agent 自己記錄的 id 解析會重讀 roster，把這次認父刻意規避掉的"preset 已刪除"失敗模式又請回來。子 agent 的 header 仍記錄它啟動時的那份，因此這處分歧是可觀察的而非靜默的。
 

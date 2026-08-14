@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-19-human-goal-command.md
 2026-07-19-human-goal-command.md: aef39d47b4dd1b18bd47165fd0b06a354202bcef
 2026-07-19-human-goal-command.zh.md: ea994f3991a9f199b7e1ce3476872b45aa912157
-2026-07-19-human-goal-command.zh-tw.md: 4a51707704409783fa6ee41865ada7a0dffc1610
+2026-07-19-human-goal-command.zh-tw.md: 1406ec54f1c35c2e0a4d3b0c1d45ee4f90fed75f

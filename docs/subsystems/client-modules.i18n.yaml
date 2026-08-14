@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/client-modules.md
 client-modules.md: a9bc7012a4796cebb2021565b90259b9c9e7b138
 client-modules.zh.md: 5e0106cb1983d6069343cf87da8c162affa5e2fe
-client-modules.zh-tw.md: 37421db6c9e19230a732c90aba6e32cd2f742d4e
+client-modules.zh-tw.md: 668c9d966ece5354e9153870360d384300a74f52

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-08-tool-output-spill-files.md
 2026-07-08-tool-output-spill-files.md: 3741881ab25cf48fc484e8012420eb0c1e4b8434
 2026-07-08-tool-output-spill-files.zh.md: 78fa2ab3608223a37f3883d100a95e9180d4f6d4
-2026-07-08-tool-output-spill-files.zh-tw.md: 182657fffd61d533c08e0d372a07431d13b9c5d6
+2026-07-08-tool-output-spill-files.zh-tw.md: b71b2ea7b046572c34158e1c77ad6542c50b4116

@@ -20,7 +20,7 @@ skill（技能）服務的嵌入式執行時期子系統中，`ctx.skills.regist
 
 ## 驗收標準
 
-- skill 收集只有一條提供方驅動程式的路徑，已完成快取僅以 cwd 為鍵，revision epoch 僅用於使進行中的發現操作失效；保留的 skill 欄位要麼有生產讀取方，要麼有記錄在案的有意擴充約定。
+- skill 收集只有一條提供方驅動的路徑，已完成快取僅以 cwd 為鍵，revision epoch 僅用於使進行中的發現操作失效；保留的 skill 欄位要麼有生產讀取方，要麼有記錄在案的有意擴充約定。
 - agent 作用域的系統提示詞段、變數、工具提供方、工具守衛，以及原生模式和 Code Mode 下的 structured-output 提交行為保持不變。
 - 型別檢查、覆蓋率、快照、doc-sync（文件同步閘門）、module-graph 校驗、建置與 hygiene 全部透過。
 

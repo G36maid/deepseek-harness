@@ -12,7 +12,7 @@ Status: implemented
 
 被委派的子 agent 只在委派時固定的權限範圍內行動，審批提示則從它的世界中徹底移除：`captureDelegatedPolicyOverrides(parent)`（`dsh-subagent/src/child-agent.ts`）仍對父工作階段的顯式沙盒覆蓋項建立快照，但只要審批能力已組合，就把 `approvalPolicy: 'never'` 釘定下來——不再讀取父級自身的審批策略。`appendDelegatedPolicyOverrides()` 把這個釘定作為持久化的 `approval/policy { policy: 'never', source: 'delegation' }` 事件寫入子 agent 的日誌，與沙盒快照走完全相同的一次性與可繼續委派路徑，因此冷復原會重放它，fork 種子中過時的父級策略也會輸給它。
 
-強制執行沿用既有的 `ApprovalService` `'never'` 語義，落在裁決 ask 的唯一操作上：子 agent 的每次 ask——bash 或 fs 的 `sandbox_permissions` 升級、hook 驅動程式的權限詢問、任何未來的請求方——都在諮詢任何應答者之前確定性地解析為 `'rejected'`，同時仍在子日誌上留下 `approval/asked`／`approval/decided` 審計對。子 agent 的全部權限故事因此就是它的沙盒範圍：`danger-full-access` 父級委派出的子 agent 無需任何審批，`read-only` 父級委派出的子 agent 沒有任何逃生通道，而放寬的決定始終屬於父級一側（先放寬父工作階段，再重新委派或繼續 follow-up）。
+強制執行沿用既有的 `ApprovalService` `'never'` 語義，落在裁決 ask 的唯一操作上：子 agent 的每次 ask——bash 或 fs 的 `sandbox_permissions` 升級、hook 驅動的權限詢問、任何未來的請求方——都在諮詢任何應答者之前確定性地解析為 `'rejected'`，同時仍在子日誌上留下 `approval/asked`／`approval/decided` 審計對。子 agent 的全部權限故事因此就是它的沙盒範圍：`danger-full-access` 父級委派出的子 agent 無需任何審批，`read-only` 父級委派出的子 agent 沒有任何逃生通道，而放寬的決定始終屬於父級一側（先放寬父工作階段，再重新委派或繼續 follow-up）。
 
 每個行程內子 agent 都被告知而非被困住：`applyChildComposition` 註冊作用域內的 `subagent:delegation` 執行時期上下文聲明（order 120，位於 `sandbox:policy` 與 `approval:policy` 語句之後），聲明權限範圍已在啟動時固定、需要審批的操作會被自動拒絕、需要更寬訪問的任務應以上報限制收尾而不是重試。該聲明是執行時期上下文貢獻而非系統提示詞 section，因此部署的系統提示詞在父子之間保持統一（快照測試套件釘住了這一統一性），該事實也隨策略語句乘坐同一份持久化快照。
 

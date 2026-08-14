@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-由工作階段支撐的 subagent 具有持久化身份、持久化 transcript（文字記錄）與直接 child 目錄，但普通工作階段譜系無法將它們與 fork 區分開，也無法證明其描述符 mode 與繼續執行授權。否則，綁定到 agent（代理）的通用 Host 操作可能在其直接 parent 繼續執行 owner 之外復原或驅動程式 child。
+由工作階段支撐的 subagent 具有持久化身份、持久化 transcript（文字記錄）與直接 child 目錄，但普通工作階段譜系無法將它們與 fork 區分開，也無法證明其描述符 mode 與繼續執行授權。否則，綁定到 agent（代理）的通用 Host 操作可能在其直接 parent 繼續執行 owner 之外復原或驅動 child。
 
 瀏覽器必須遵守[可繼續 subagent 約定](../../implemented/feature/2026-07-28-continuable-subagent-conversations.md)：一個可繼續 child 在行程內最多隻能有一項 Activation，只能透過確切的存活直接 parent 接受後續工作，並將 agent inbox 用作唯一的 FIFO。查看歷史不得建立 Activation。inbox 訊息一經接受，HTTP 呼叫方既不擁有其執行過程，也不會獲得取消控制代碼。
 

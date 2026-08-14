@@ -16,7 +16,7 @@ Schedule 已經透過將普通的 agent（代理）後續輪次排入佇列來�
 
 `schedule/change` 仍是唯一持久 Schedule 狀態。其 dispatch 操作記錄後續輪次已同步入隊，這會在 dispatch 持久化後阻止普通的重新啟動重播。dispatch 不表示模型成功、使用者確認或外部通知。入隊與持久 dispatch 之間的狹窄崩潰視窗仍保留至少一次語義。
 
-Schedule 不公開呈現投影、Host 伴隨資料、瀏覽器事件節點、按事件鍵控的 slot 或用戶端渲染器。工作階段持久化保留共享的 `flush()` 約定，且不存在由 Schedule 驅動程式的成功事件。顯式啟用的 Web overlay 只載入 `@deepseek-ai/dsh-schedule`。
+Schedule 不公開呈現投影、Host 伴隨資料、瀏覽器事件節點、按事件鍵控的 slot 或用戶端渲染器。工作階段持久化保留共享的 `flush()` 約定，且不存在由 Schedule 驅動的成功事件。顯式啟用的 Web overlay 只載入 `@deepseek-ai/dsh-schedule`。
 
 ## 已考慮的替代方案
 
