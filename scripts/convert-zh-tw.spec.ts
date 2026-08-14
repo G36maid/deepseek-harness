@@ -20,15 +20,41 @@ describe('zh-TW conversion corrections', () => {
     expect(corrections.size).toBeGreaterThan(50)
   })
 
-  it('skips rows with identical or absent translations', () => {
-    const corrections = loadZhTwCorrections('| 简体中文 | 繁體中文 | English 錨點 | 備註 |\n|---|---|---|---|\n| 子代理 | 子代理 | subagent | 同形词 |\n| 事件 | 事件 | event | 同形词 |\n')
-    expect(corrections.size).toBe(0)
+  it('never loads the table header row into the dictionary', () => {
+    // 简体中文 leaking into the dictionary would convert the prose word
+    // 简体中文 into 繁體中文, inverting meaning in every unprotected mention.
+    const table = readFileSync(join(root, 'docs/i18n/terminology-zh-tw.md'), 'utf8')
+    const corrections = loadZhTwCorrections(table)
+    expect(corrections.has('简体中文')).toBe(false)
+  })
+
+  it('keeps same-form rows that pin a rendering and drops empty values', () => {
+    const corrections = loadZhTwCorrections('## 需要替换的词条（zh-CN → zh-TW）\n\n| 简体中文 | 繁體中文 | English 錨點 | 備註 |\n|---|---|---|---|\n| 子代理 | 子代理 | subagent | 同形词 |\n| 缺值 |  | event | 空值不加载 |\n')
+    expect(corrections.get('子代理')).toBe('子代理')
+    expect(corrections.has('缺值')).toBe(false)
   })
 
   it('drops rows whose translation contains the key, which would compound on re-application', () => {
-    const corrections = loadZhTwCorrections('| 简体中文 | 繁體中文 | English 錨點 | 備註 |\n|---|---|---|---|\n| 工作流 | 工作流程 | workflow | |\n| 高可用 | 高可用性 | high availability | |\n')
+    const corrections = loadZhTwCorrections('## 需要替换的词条（zh-CN → zh-TW）\n\n| 简体中文 | 繁體中文 | English 錨點 | 備註 |\n|---|---|---|---|\n| 工作流 | 工作流程 | workflow | |\n| 高可用 | 高可用性 | high availability | |\n')
     expect(corrections.has('工作流')).toBe(false)
     expect(corrections.has('高可用')).toBe(false)
+  })
+
+  it('ignores rows before the separator and outside the replacement section', () => {
+    const table = [
+      '## 其他小节',
+      '',
+      '| 智能 | 智慧 | AI | 不应加载 |',
+      '',
+      '## 需要替换的词条（zh-CN → zh-TW）',
+      '',
+      '| 简体中文 | 繁體中文 | English 錨點 | 備註 |',
+      '|---|---|---|---|',
+      '| 人工智能 | 人工智慧 | AI | |',
+    ].join('\n')
+    const corrections = loadZhTwCorrections(table)
+    expect(corrections.has('智能')).toBe(false)
+    expect(corrections.get('人工智能')).toBe('人工智慧')
   })
 })
 
@@ -133,5 +159,26 @@ describe('zh-CN to zh-TW Markdown conversion', () => {
     const converted = convertChineseMarkdown(source)
     expect(converted).toContain('[English](server.md) | [简体中文](server.zh.md) | 繁體中文')
     expect(converted).not.toContain('| [繁體中文](server.zh.md) |')
+  })
+
+  it('keeps prose 过程 as 過程, not the program-flavored 程序', () => {
+    const converted = convertChineseMarkdown('系统提示词的组装过程如下；装载过程会等待完成。')
+    expect(converted).toContain('組裝過程')
+    expect(converted).toContain('裝載過程')
+    expect(converted).not.toContain('程序')
+  })
+
+  it('renders 本地化 as 在地化 without crossing the 文本 word boundary', () => {
+    // zhtw-js's internal 文本→文字 entry fires across 中文|本地化 and yields
+    // 中文字地化; the post-conversion override repairs the damaged compound.
+    const converted = convertChineseMarkdown('Kubernetes 中文本地化指南是最大的本地化团队。')
+    expect(converted).toContain('中文在地化指南')
+    expect(converted).toContain('最大的在地化團隊')
+    expect(converted).not.toContain('文字地化')
+  })
+
+  it('restores a span followed directly by a prose digit', () => {
+    const converted = convertChineseMarkdown('命令是 `run`5 秒后超时。')
+    expect(converted).toContain('`run`5 秒')
   })
 })

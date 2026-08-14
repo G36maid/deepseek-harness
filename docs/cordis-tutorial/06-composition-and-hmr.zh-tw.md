@@ -22,7 +22,7 @@ Cordis 設定項除了 `name` 和 `config`，還接受其他中繼資料：
 
 ## 熱模組替換
 
-解除安裝會釋放 effect（[第 2 章](02-lifecycle-and-effects.md)），載入則遵循相依性關係（[第 3 章](03-services.md)），因此 HMR 可以先解除安裝、再載入，以替換正在執行的外掛程式。`@deepseek-ai/cordis-plugin-hmr` 外掛程式會監視文件，並在保存時執行這一程序。
+解除安裝會釋放 effect（[第 2 章](02-lifecycle-and-effects.md)），載入則遵循相依性關係（[第 3 章](03-services.md)），因此 HMR 可以先解除安裝、再載入，以替換正在執行的外掛程式。`@deepseek-ai/cordis-plugin-hmr` 外掛程式會監視文件，並在保存時執行這一過程。
 
 在 `tmp/cordis-tutorial` 中編寫 `cordis.yml`：
 

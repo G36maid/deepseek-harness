@@ -6,7 +6,7 @@
 - 「繁體中文」列为 zh-TW 正文的默认用词。若该列为英文，则 zh-TW 正文中保留英文不翻译（与 zh-CN 一致）。
 - 首次出现沿用 terminology.md 的「首次出现」列规则，括注内的简体词按本表换算为繁体词。
 - 「不要译作」列的禁忌在 zh-TW 同样适用；本表额外标注机械转换陷阱（OpenCC 会转成错误词形的条目）。
-- 本表条目同时是批量转换的校正来源：OpenCC `s2twp` 转换后，逐条将简体词替换为本表繁体词；未列出的简体词按 OpenCC 默认词形输出。
+- 本表条目同时是批量转换的校正来源：`convert-zh-tw` 将本表作为 zhtw-js 的自定义词典在转换时优先套用，OpenCC `cn→t` 仅负责字符级回退；未列出的简体词按 zhtw-js 默认词形输出。
 - 拼音、代码、命令、文件名等不翻译（与 zh-CN 规则一致）。
 
 ## 需要替换的词条（zh-CN → zh-TW）
@@ -174,6 +174,7 @@
 | 简体中文 | 繁體中文 | English 錨點 | 備註 |
 |---|---|---|---|
 | 登录档 | 登錄檔 | registry（登录档为 registry 语境，非 login） | OpenCC 实际输出：登入檔 |
+| 本地化 | 在地化 | localization | zhtw-js 会把「文本」跨词界转成「文字」（中文本地化→中文字地化）；本条以最长匹配优先于该内部词条，并采用台湾惯用语 |
 | 表达式 | 運算式 | expression | OpenCC 实际输出：表示式 |
 | 并发 | 並行 | concurrency | OpenCC 实际输出：併發 |
 | 并行 | 平行 | parallelism | OpenCC 实际输出：並行 |
@@ -190,7 +191,6 @@
 | 构建 | 建置 | build | OpenCC 实际输出：構建 |
 | 归档 | 封存 | archive | OpenCC 实际输出：歸檔 |
 | 滚动 | 捲動 | scroll | OpenCC 实际输出：滾動 |
-| 过程 | 程序 | process（操作系统语境）；「过程」→「程序」仅限 process 语境 | OpenCC 实际输出：過程 |
 | 恢复 | 復原 | restore | OpenCC 实际输出：恢復 |
 | 回调 | 回呼 | callback | OpenCC 实际输出：回撥 |
 | 回归 | 回歸 | regression（同形） | OpenCC 实际输出：迴歸 |

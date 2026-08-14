@@ -21,7 +21,7 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 | `interrupt(targetSessionId, authority)` | 憑人類出示的持久化父級地址 `{ kind: 'user', parentSessionId }`，或確切線上的祖先 Agent `{ kind: 'ancestor', agent }` 進行授權，中斷一個線上可繼續子級的當前輪次。准入判定同步完成，但取消非同步生效：該操作寄出 `Agent.cancel(cause, { keepInbox: true })` 後立即返回，不等待目標觀察到訊號。尚未領取的待處理 inbox 工作、Activation 和已發布的後代均會保留；已經領取到被中斷輪次中的工作不會重新入隊。目標不存在時視為已接受的空操作；錯誤的父級地址，或過時、指向自身、並非祖先的呼叫方，會以 `UNAUTHORIZED` 被拒絕。 |
 | `reportFrom(child, content, { delivery, signal })` | 從確切線上可繼續 child 向其確切線上直接 parent 投遞一條選中訊息，並返回已接受的穩定 `MessageId`。靜默投遞會注入上下文；喚醒投遞會提交一個後續 parent 輪次。 |
 | `registerContinuableSetup(contribution)` | 把一項選填部署能力組合到每個可繼續 child 尚未發布的作用域中，並支援從駐留 child 立即撤銷。 |
-| `drainContinuableDescendants(parents)` | 在由 host 擁有的確切線上父級 Agent 之下關閉准入，只停止這些父級可見的可繼續後代；等待已在這些根節點下獲準的物化程序完成發布或回滾後，再按子級優先順序釋放所選的各棵樹。該截止狀態會持續到每個確切父級離開登錄檔；無關的父級樹仍線上，管理器全域性准入仍保持開放。 |
+| `drainContinuableDescendants(parents)` | 在由 host 擁有的確切線上父級 Agent 之下關閉准入，只停止這些父級可見的可繼續後代；等待已在這些根節點下獲準的物化過程完成發布或回滾後，再按子級優先順序釋放所選的各棵樹。該截止狀態會持續到每個確切父級離開登錄檔；無關的父級樹仍線上，管理器全域性准入仍保持開放。 |
 | `listChildren(parentSessionId, signal?)` | 按 `createdAt`、再按 id 的順序列出由工作階段支撐的直接 subagent，包括其 `one-shot`／`continuable` 模式、`running`／`inactive` 活動狀態、根據 origin 分類得出的一層 `hasChildren` 提示，以及每個子級的診斷資訊，且不會載入或復原它們。該操作直接讀取線上工作階段儲存和選填的工作階段持久化（沒有持久化時只枚舉線上子級），並要求已掛載 `sessionProjections` 登錄檔；不要求 `ctx.agents`、繼續執行管理器或任何查詢服務。 |
 | `listDescendants(rootSessionId, signal?)` | 從同一份線上優先語料按穩定 pre-order 展平根的完整工作階段樹，並為每個 subagent 條目附加持久 `parentId` 與相對根的 `depth`。普通工作階段與一次性 child 仍作為遍歷節點，因此其下的可繼續後代仍可發現。身份、diagnostic、相依性與取消約定均沿用 `listChildren()`。 |
 
@@ -62,7 +62,7 @@ subagent seam 允許一個 agent（代理）透過具名提供方把工作委派
 
 ## 一次性所有權與生命週期
 
-`provider.start(request): Promise<SubagentRun>` 是所有權轉移邊界；委派工具也會在其由 Task 支撐的一次性後臺路徑中使用它。兌現前，提供方擁有設定程序，並且在任何失敗路徑上都必須取消、回滾並使尚未發布的資源完全靜止。兌現後，run 的所有權轉移給呼叫方；呼叫方必須在每條路徑上呼叫 `dispose()`。剩餘提示詞和輪次工作屬於 `SubagentRun.result`。
+`provider.start(request): Promise<SubagentRun>` 是所有權轉移邊界；委派工具也會在其由 Task 支撐的一次性後臺路徑中使用它。兌現前，提供方擁有設定過程，並且在任何失敗路徑上都必須取消、回滾並使尚未發布的資源完全靜止。兌現後，run 的所有權轉移給呼叫方；呼叫方必須在每條路徑上呼叫 `dispose()`。剩餘提示詞和輪次工作屬於 `SubagentRun.result`。
 
 `SubagentRun.result` 兌現為 `{ output, structured?, stopReason }`。子 agent 級失敗會以非 `completed` 原因兌現；只有 seam 無法表示的基礎設施故障纔可以拒絕。`dispose()` 是冪等的，會取消剩餘工作，並等待結果結帳以及子 agent 資源完全靜止。result 的拒絕只透過 `result` 本身報告；只有獨立的資源釋放失敗，才會使 `dispose()` 被拒絕。`output` 與 `subagent/end` 事件的 `lastAssistantMessage` 使用匯出的 `AssistantOutputFold`／`finalAssistantOutput` 輔助函式選取子 agent 最後一條非空 assistant 訊息；若沒有這類訊息，則選取其累積的 assistant 文字。子 agent 兩種輸出均未產生時，`output` 為 `[]`，該事件欄位預設（結果約定歸 [`SubagentResult.output`](../../../docs/subsystems/subagent.md#the-terminal-result-subagentresult) 所有）。
 

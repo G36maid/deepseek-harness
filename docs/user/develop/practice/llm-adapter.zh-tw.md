@@ -112,7 +112,7 @@ async function* exampleChunks(): AsyncIterable<StreamChunk> {
 
 `stream()` 接收倉庫匯出的 `GenerateOptions`。它包含模型、配接器擁有的推理強度 ID、對話歷史、系統提示詞、工具 schema、生成參數、停止序列和中止訊號；完整欄位以 `@deepseek-ai/dsh-llm` 匯出的 TypeScript 類型為準。配接器必須將支援的欄位對映到具體 API；如果無法支援某個欄位，應拋出帶穩定 code 的 `LlmError`，不得靜默丟棄。
 
-請覆寫 `resolveModel(provider, model, signal?)`，在一次查詢中返回確切的提供方／模型身份以及選填的 `context` 和 `reasoning` 中繼資料。推理中繼資料包含有序的不透明 ID、展示名稱，以及選填的設定預設值；請保留配接器給出的權威選填清單，包括其上游能力 API 返回的 `off`，不要將這些值提升為核心枚舉。非同步查詢必須回應該選填訊號，使取消和資源釋放程序完全靜止。服務會校驗聚合結果，並在呼叫 `stream()` 前拒絕顯式指定但不受支援的推理強度；省略 `reasoning` 表示該模型沒有選填的推理強度能力。
+請覆寫 `resolveModel(provider, model, signal?)`，在一次查詢中返回確切的提供方／模型身份以及選填的 `context` 和 `reasoning` 中繼資料。推理中繼資料包含有序的不透明 ID、展示名稱，以及選填的設定預設值；請保留配接器給出的權威選填清單，包括其上游能力 API 返回的 `off`，不要將這些值提升為核心枚舉。非同步查詢必須回應該選填訊號，使取消和資源釋放過程完全靜止。服務會校驗聚合結果，並在呼叫 `stream()` 前拒絕顯式指定但不受支援的推理強度；省略 `reasoning` 表示該模型沒有選填的推理強度能力。
 
 ## 註冊配接器
 

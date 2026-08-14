@@ -42,14 +42,15 @@ The gate's limit, stated plainly: **a green gate means the pair was confirmed co
 
 ## Scope and exclusions
 
-**Scope**: the root CONTRIBUTING document, every non-vendor README, and every active document under `.agents/notes/**`, `docs/**`, and `python/**`. README matching is case-insensitive on the basename and covers future directories without another manifest edit. Dependency and ignored build-output trees and the frozen `.agents/notes/archived/` tree are discovery exclusions, not evolving translation source.
+**Scope**: the root CONTRIBUTING document, every non-vendor README, and every active document under `docs/**` and `python/**`. README matching is case-insensitive on the basename and covers future directories without another manifest edit. Dependency and ignored build-output trees are discovery exclusions, not evolving translation source.
 
 Generated English references and graphs participate in pairing when reviewed Chinese counterparts are available. Their generators remain the English source of truth, and freshness and pairing gates enforce their respective invariants independently; regeneration that changes English leaves the pair out of sync until the reviewed Chinese counterparts are updated and re-recorded. Generated English sources omit the language switcher that ordinary authored sources carry, because adding it would make the generator stale; their Chinese counterparts still link back to the English source. A generated page's Chinese counterpart may rewrite only self-referential generation and maintenance statements that would otherwise be false for the reviewed translation; all technical content remains subject to the ordinary faithfulness rules.
 
 **Excluded** (never paired, and the gate rejects a translated side or `.i18n.yaml` for them):
 
 - [cordis-api/inherited.md](../cordis-api/inherited.md) — generated without a reviewed Chinese counterpart, so both website locales project the English source.
-- `docs/AGENTS.md`, `.agents/notes/**/AGENTS.md`, and their `CLAUDE.md` instruction symlinks — agent instructions, maintained in English only like the root `AGENTS.md`.
+- `docs/AGENTS.md` and its `CLAUDE.md` instruction symlink — agent instructions, maintained in English only like the root `AGENTS.md`.
+- `.agents/**` — the agent-facing tree (workflows, skills, and Agent Notes) is maintained in English only, so the gate rejects any translated side or `.i18n.yaml` under it. The frozen `.agents/notes/archived/` triplets below predate this rule and stay sealed by their dedicated verifier.
 - `docs/i18n/terminology.md` and [style-samples.md](style-samples.md) — both are bilingual by construction.
 - [terminology-zh-tw.md](terminology-zh-tw.md) — the zh-TW conversion glossary is bilingual by construction (zh-CN → zh-TW), excluded from pairing exactly like `terminology.md`; it is the conversion-side counterpart of the EN↔zh-CN source-of-truth table.
 - [translation-prompt.md](translation-prompt.md) — the automated pipeline's prompt template; its body is machine-consumed verbatim, so a paired translation would change pipeline behavior.

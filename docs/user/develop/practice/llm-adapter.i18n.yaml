@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/user/develop/practice/llm-adapter.md
 llm-adapter.md: 659489e1242db0de9e7bfba9585f33b8ce10c819
 llm-adapter.zh.md: 29affe6f226f9875431c7a7b648ce414cc792d6f
-llm-adapter.zh-tw.md: 995b833eff4cf9295aeb8d4d036af5189aa107e0
+llm-adapter.zh-tw.md: 040bdf7fc834f74adaa171e0adc1c935f4b7b41d

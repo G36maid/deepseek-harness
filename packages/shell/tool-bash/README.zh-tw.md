@@ -24,7 +24,7 @@
 | `sandbox_permissions` | string enum | 僅當已掛載的執行器啟用沙盒時才會公開（`ctx.shell.sandboxMode` 報告一個具有限制作用的預設值）：被拒命令所需的更寬模式，取自封閉的目標詞彙 `workspace-write`/`danger-full-access`（絕不能縮減為執行器預設值；有效模式按工作階段確定，執行時會基於它檢查是否嚴格拓寬，未拓寬的請求直接失敗，不會向任何人發起提示）。 |
 | `justification` | string | 必須與 `sandbox_permissions` 一同提供（缺少任一項都會產生驗證錯誤）：用一句話向使用者解釋此命令為何需要這項更寬權限。 |
 
-執行前，`command`、`workdir` 和 `timeoutMs` 會透過 `ctx.shell.resolve()` 依據執行器設定預設值完成解析，因此 Service Definition（`ShellExecSpec`）收到顯式的 `workdir`/`timeoutMs` 值。工具層會根據呼叫方 agent 的 `session.header.cwd` 應用工作目錄預設值，然後才呼叫 `resolve()`：由於 N 個工作階段共享一個執行器，逐工作階段 cwd 必須來自 `exec.agent`；只有無法取得工作階段 cwd 時，執行器纔回退到自身設定／`process.cwd()`。存在沙盒策略時，工具會複用已經規範化的 `workspaceRoot` 作為工作目錄基準，防止限制邏輯與行程啟動程序對同一個工作階段路徑拼寫產生不同解析結果。
+執行前，`command`、`workdir` 和 `timeoutMs` 會透過 `ctx.shell.resolve()` 依據執行器設定預設值完成解析，因此 Service Definition（`ShellExecSpec`）收到顯式的 `workdir`/`timeoutMs` 值。工具層會根據呼叫方 agent 的 `session.header.cwd` 應用工作目錄預設值，然後才呼叫 `resolve()`：由於 N 個工作階段共享一個執行器，逐工作階段 cwd 必須來自 `exec.agent`；只有無法取得工作階段 cwd 時，執行器纔回退到自身設定／`process.cwd()`。存在沙盒策略時，工具會複用已經規範化的 `workspaceRoot` 作為工作目錄基準，防止限制邏輯與行程啟動過程對同一個工作階段路徑拼寫產生不同解析結果。
 
 ### 託管 shell 環境
 

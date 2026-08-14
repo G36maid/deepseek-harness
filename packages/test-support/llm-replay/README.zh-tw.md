@@ -10,7 +10,7 @@
 
 fixture 就是持久化的工作階段日誌（`<scenario>/session.jsonl`）。其 `assistant/chunk` 事件包含每個 `StreamChunk`，因此按 `(turn, step)` 分組即可重建每次 agent loop（代理循環）的 `stream()` 呼叫的區塊序列。壓縮（compaction）摘要器成功時，日誌記錄方式有所不同：當 `compaction/summary` 攜帶 `llmStreamCall: true` 和完整的 `rawOutput` 時，重播會在該事件的位置重建一條規範成功流，其中每個塊各使用一對 `block-start`/`block-end`，帶上已記錄的用量（如有），並以 `stop` 終止。提供方增量的精確切分不屬於持久壓縮結果。不帶該標記的 `rawOutput` 並不意味著發生了本機 LLM 呼叫，因為樣板摘要器和遠端摘要器即使未使用此上下文的配接器，也可能保留完整輸出。
 
-因此，錄制就是「執行一次真實 agent 並收集 `.jsonl`」，由快照 harness 完成；該外掛程式本身不錄制。fixture 的 `request/header` 內容可能被標記化為 `{{system}}`/`{{tools}}`（harness 會在一個場景中固定該內容，並清除其餘場景中的內容）；重播不受影響，因為派生程序只讀取 `assistant/chunk` 和 `compaction/summary` 事件以及第 0 行的工作階段 header。
+因此，錄制就是「執行一次真實 agent 並收集 `.jsonl`」，由快照 harness 完成；該外掛程式本身不錄制。fixture 的 `request/header` 內容可能被標記化為 `{{system}}`/`{{tools}}`（harness 會在一個場景中固定該內容，並清除其餘場景中的內容）；重播不受影響，因為派生過程只讀取 `assistant/chunk` 和 `compaction/summary` 事件以及第 0 行的工作階段 header。
 
 有兩種失敗模式無法僅根據 `assistant/chunk` 重建：在產生任何區塊前直接拋出例外（例如 HTTP 401，此時日誌只有 `turn/end {error}` 而沒有區塊），以及取消或掛起（差異在時序，而非區塊內容）。需要這些行為的場景可提供伴隨檔案（`<scenario>/replay.override.json`）：它可以替換派生指令碼（裸 `ReplayEntry[]`），也可以增補派生指令碼（`{ patches: [{ at, entry }] }`：保留所有從 JSONL 派生的呼叫，只替換指定的從 0 開始計數的呼叫索引；當 `at` 等於派生長度時，則在注入瞬態例外後的重試位置追加一次呼叫）。修補程式索引不得重複。文件載入時會校驗覆寫文件、每個修補程式和條目，以及每個區塊的判別標籤。`hang` 條目可以指定 `readyFile`；當前綴區塊到達迴圈後、開始等待取消前，重播會寫入這個空標記，使外部驅動程式無需觀察展示層更新即可確定性地取消。
 

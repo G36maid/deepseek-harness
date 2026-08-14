@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/subagent.md
 subagent.md: 428123782409bfe276e48458f80dff6bf9ce61d5
 subagent.zh.md: 8e9443a79cf8714cecc0bc8f416e3b9173ee4124
-subagent.zh-tw.md: f551483dead5a38beac6856ce03b99e3c0f543a1
+subagent.zh-tw.md: 1685b8967611ea6a086da3f81adc792c914c4485

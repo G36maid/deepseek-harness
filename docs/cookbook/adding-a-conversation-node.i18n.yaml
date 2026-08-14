@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/adding-a-conversation-node.md
 adding-a-conversation-node.md: 3e4b31857ca4355458b903d7b86a2dc6aa69f401
 adding-a-conversation-node.zh.md: b6268530073cd9431a28999494a5ad732ae8faa3
-adding-a-conversation-node.zh-tw.md: dc5912874f85acb7be4deaedbc469aae1455c64a
+adding-a-conversation-node.zh-tw.md: cc7227207dcd68c1a5ff39d229827ad67dd16bc4

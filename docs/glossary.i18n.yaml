@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/glossary.md
 glossary.md: ff35bff9bc17573ed7779529a16b6996ead2feee
 glossary.zh.md: 0d86ad3ab62592577a0a5feae28042f048d01c56
-glossary.zh-tw.md: af739105f4cf02961f1c650aa2d0ed4afd9c6992
+glossary.zh-tw.md: e883055d26037e828d14f4a38447a0faad9a9f37

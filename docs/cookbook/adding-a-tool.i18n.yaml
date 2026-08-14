@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/adding-a-tool.md
 adding-a-tool.md: 52bb4a998089dc73b5a2255267504e3284513ac0
 adding-a-tool.zh.md: b76e584b03c56cace0fc78823f32fce9ebbc8a31
-adding-a-tool.zh-tw.md: d98ba2263dcdb0dccf683ab99e61e79674963d3b
+adding-a-tool.zh-tw.md: 50e8734faee0fea90b02d3c2404d03a80ea6ad06

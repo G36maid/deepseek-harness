@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/i18n/translation-rules.md
 translation-rules.md: cadffe42588093e43ac466a7960a1cbbc386777e
 translation-rules.zh.md: 21d7a1521a8d3a0ba77495c52de81a47b7a767aa
-translation-rules.zh-tw.md: 0682fe2dd83e0e4bc08a2b7efbb00381adc9170c
+translation-rules.zh-tw.md: 258537d32a713203c701c8d21bc00f4e613073fd

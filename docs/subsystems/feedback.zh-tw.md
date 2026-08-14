@@ -219,7 +219,7 @@ Plugin disposal 會先關閉變更接納，排空已進入各 Session 佇列的�
 - Host 約定不記錄已驗證的 actor 或審計身份，因此假設呼叫方邊界可信。
 - Web 控制元件只出現在對話檢視表。trajectory 與 waterfall 檢視表不算繪回饋條目，儘管它們的助手節點攜帶相同的 `messageId`。
 - 該 sidecar 不發布即時幀，因此另一個分頁標籤的評分要等到重連或下一次衝突回應纔可見，不會立即出現。
-- 備注編輯器不預先校驗 `maxNoteBytes`；超長備注在保存時以 `note-too-large` 失敗，而不是在輸入程序中。
+- 備注編輯器不預先校驗 `maxNoteBytes`；超長備注在保存時以 `note-too-large` 失敗，而不是在輸入過程中。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

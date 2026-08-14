@@ -18,7 +18,9 @@ export function protectSpans(markdown: string): { text: string; spans: Protected
   const spans: ProtectedSpan[] = []
   let index = 0
   const replace = (content: string): string => {
-    const token = `${TOKEN_PREFIX}${index++}`
+    // The trailing `;` bounds the numeric token: a span followed directly
+    // by a prose digit would otherwise let the restore regex swallow it.
+    const token = `${TOKEN_PREFIX}${index++};`
     spans.push({ token, content })
     return token
   }
@@ -46,5 +48,5 @@ export function protectSpans(markdown: string): { text: string; spans: Protected
 /** Restore protected tokens to their original content in one pass. */
 export function restoreSpans(text: string, spans: ProtectedSpan[]): string {
   const byToken = new Map(spans.map(span => [span.token, span.content]))
-  return text.replace(/\u0000ZH_TW\u0000\d+/g, token => byToken.get(token) ?? token)
+  return text.replace(/\u0000ZH_TW\u0000\d+;/g, token => byToken.get(token) ?? token)
 }

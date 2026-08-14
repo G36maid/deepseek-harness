@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/test-support/llm-replay/README.md
 README.md: de3c282b35c1a97736b838ae21d7e0a301788d69
 README.zh.md: b8ccb030908a479503342dd2e1d61ea8acb80db7
-README.zh-tw.md: 6d00feb7130c34693b9f14c8494faf9db9257ee5
+README.zh-tw.md: 9bc48c72e8161cb911a762b1c21e5f8240dc1cc2

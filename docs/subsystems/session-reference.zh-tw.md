@@ -38,7 +38,7 @@ interface SessionReferenceCandidate {
 
 ## 準備後的訊息
 
-準備程序保留可讀的當前訊息內容，並最多返回一個聚合上下文。
+準備過程保留可讀的當前訊息內容，並最多返回一個聚合上下文。
 
 ```ts type-equiv
 /** Direct message content and optional referenced-session context. */

@@ -21,7 +21,7 @@
 pnpm install
 ```
 
-安裝程序還會透過 `scripts/install-lefthook.mjs` 設定 worktree 本機的 Lefthook 掛鉤和 `dsh-translation-pairing` Git 合併驅動。[worktree 本機掛鉤 Agent Note](../.agents/notes/implemented/process/2026-07-27-worktree-local-lefthook.md) 負責掛鉤路徑的安全約定；[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md) 負責合併驅動。
+安裝過程還會透過 `scripts/install-lefthook.mjs` 設定 worktree 本機的 Lefthook 掛鉤和 `dsh-translation-pairing` Git 合併驅動。[worktree 本機掛鉤 Agent Note](../.agents/notes/implemented/process/2026-07-27-worktree-local-lefthook.md) 負責掛鉤路徑的安全約定；[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md) 負責合併驅動。
 
 如果相依性是從快取復原或 `postinstall` 被跳過而導致任一整合缺失，請手動安裝：
 

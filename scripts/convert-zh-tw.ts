@@ -10,6 +10,7 @@
 
 import { readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { createConverter } from 'zhtw-js'
 import * as OpenCC from 'opencc-js'
 import { protectSpans, restoreSpans } from './zh-tw-spans.ts'
@@ -21,6 +22,7 @@ const simplifiedToStandard = OpenCC.Converter({ from: 'cn', to: 't' })
 export type ZhTwCorrections = Map<string, string>
 
 const CORRECTION_LINE = /^\|\s*([^|\s][^|]*?)\s*\|\s*([^|\s][^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|$/
+const TABLE_SEPARATOR = /^\|[\s:|-]+\|$/
 
 /** Sort a correction map longest-key-first so multi-character terms win. */
 function sorted(map: Map<string, string>): Map<string, string> {
@@ -29,7 +31,10 @@ function sorted(map: Map<string, string>): Map<string, string> {
 
 /**
  * Parse the `docs/i18n/terminology-zh-tw.md` replacement table into
- * simplified → traditional pairs. Same-form rows (同形词) are kept so the
+ * simplified → traditional pairs. Rows are accepted only after the table's
+ * `|---|` separator: the header row `| 简体中文 | 繁體中文 | … |` would
+ * otherwise enter the dictionary and convert the prose word 简体中文 into
+ * 繁體中文, inverting meaning. Same-form rows (同形词) are kept so the
  * custom dictionary can pin a rendering zhtw-js would otherwise mis-convert
  * (e.g. 打包 stays 打包 in a packaging sense, not 外帶). Rows whose
  * traditional form contains the key as a substring are dropped — the custom
@@ -41,12 +46,18 @@ function sorted(map: Map<string, string>): Map<string, string> {
 export function loadZhTwCorrections(table: string): ZhTwCorrections {
   const corrections = new Map<string, string>()
   let inReplacementTable = false
+  let pastHeader = false
   for (const line of table.split('\n')) {
     if (line.startsWith('## ')) {
       inReplacementTable = line.includes('需要替换的词条')
+      pastHeader = false
       continue
     }
     if (!inReplacementTable) continue
+    if (!pastHeader) {
+      if (TABLE_SEPARATOR.test(line.trim())) pastHeader = true
+      continue
+    }
     const match = CORRECTION_LINE.exec(line)
     if (!match?.[1] || !match[2]) continue
     const simplified = match[1].trim()
@@ -113,8 +124,10 @@ export function convertChineseMarkdown(markdown: string, corrections?: ZhTwCorre
  * zhtw-js converts 进程→進程 (literal) where Taiwan uses 行程, keeps 用户 as
  * 用戶 where Taiwan uses 使用者 (except the compound 用戶端 = client, which
  * is the standard Taiwan rendering), and maps 噪声→噪聲 where Taiwan uses
- * 噪音. Each replacement is unambiguous in the repo corpus: 程序 (program)
- * is NOT remapped because it legitimately means 程式.
+ * 噪音. 文字地化 is the converter's 文本→文字 entry firing across the
+ * 中文|本地化 word boundary; the Taiwan term for localization is 在地化.
+ * Each replacement is unambiguous in the repo corpus: 程序 (program) is NOT
+ * remapped because it legitimately means 程式.
  */
 function applyTerminologyOverrides(markdown: string): string {
   return markdown
@@ -124,6 +137,7 @@ function applyTerminologyOverrides(markdown: string): string {
     .split('噪聲').join('噪音')
     .split('存儲').join('儲存')
     .split('進程').join('行程')
+    .split('文字地化').join('文在地化')
 }
 
 /** Convert one zh-CN file into its `.zh-tw.md` sibling. */
@@ -181,7 +195,10 @@ export function main(argv: string[]): void {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+const invokedPath = process.argv[1]
+const isMain = invokedPath !== undefined && import.meta.url === pathToFileURL(resolve(invokedPath)).href
+
+if (isMain) {
   try {
     main(process.argv.slice(2))
   } catch (error) {

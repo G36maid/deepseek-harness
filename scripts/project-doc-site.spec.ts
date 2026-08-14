@@ -252,6 +252,45 @@ describe('rewriteMarkdown', () => {
     })).toBe('[English](../../en/guide/a.md) [B](../reference/b.md)\n')
   })
 
+  it('routes a third-side switcher link to its own locale, not back into the current one', () => {
+    const { root, pages } = fixture()
+    writeFileSync(join(root, 'docs/a.zh.md'), '# A\n')
+    writeFileSync(join(root, 'docs/a.zh-tw.md'), '# A\n')
+    const paired = pages.filter(page => page.source !== 'docs/a.md')
+    paired.push(
+      {
+        locale: 'root', contentLocale: 'zh-CN', source: 'docs/a.zh.md', sourceAliases: ['docs/a.md'],
+        route: 'guide/a.md', label: 'A', sidebar: 'zh-guide', section: 'Test', order: 1,
+      },
+      {
+        locale: 'zh-TW', contentLocale: 'zh-TW', source: 'docs/a.zh-tw.md', sourceAliases: ['docs/a.md', 'docs/a.zh.md'],
+        route: 'zh-TW/guide/a.md', label: 'A', sidebar: 'zh-TW-guide', section: 'Test', order: 1,
+      },
+      {
+        locale: 'en', contentLocale: 'en-US', source: 'docs/a.md', sourceAliases: ['docs/a.zh.md'],
+        route: 'en/guide/a.md', label: 'A', sidebar: 'en-guide', section: 'Test', order: 1,
+      },
+    )
+    // The 简体中文 link inside a three-way switcher on the zh-TW page must
+    // land on the zh-CN (root-locale) route, not resolve back into zh-TW.
+    expect(rewriteMarkdown('[简体中文](a.zh.md)\n', {
+      locale: 'zh-TW',
+      sourcePath: 'docs/a.zh-tw.md',
+      route: 'zh-TW/guide/a.md',
+      pages: paired,
+      repoRoot: root,
+      repositoryRef: 'abc123',
+    })).toBe('[简体中文](../../guide/a.md)\n')
+    expect(rewriteMarkdown('[繁體中文](a.zh-tw.md)\n', {
+      locale: 'en',
+      sourcePath: 'docs/a.md',
+      route: 'en/guide/a.md',
+      pages: paired,
+      repoRoot: root,
+      repositoryRef: 'abc123',
+    })).toBe('[繁體中文](../../zh-TW/guide/a.md)\n')
+  })
+
   it('fails loud when a relative target is missing', () => {
     const { root, pages } = fixture()
     expect(() => rewriteMarkdown('[missing](missing.md)\n', {

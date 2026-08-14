@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/capability-seams.md
 capability-seams.md: a990a9dd4d92d10e37b82e6a63caa4a5a469c441
 capability-seams.zh.md: c7f6c9f2f598f1d931384eae32186129f49a184d
-capability-seams.zh-tw.md: 2b08515c29bed808f4852afbc01decbd26b8a122
+capability-seams.zh-tw.md: 7c29999e566824c9c4f889daa93ea48e5f434f1b

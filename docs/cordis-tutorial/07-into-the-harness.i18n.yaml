@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/07-into-the-harness.md
 07-into-the-harness.md: 52c3fba7e7df40b756c6cdd9355755750823842b
 07-into-the-harness.zh.md: a9c098aae6b01e007ab0001a74317b7243e2e09a
-07-into-the-harness.zh-tw.md: 026dbc9a3cf38f754bc27b65aea6f69525547208
+07-into-the-harness.zh-tw.md: d2d7f359858f9ccfbc8ab9b81fce7ef050bc27e7

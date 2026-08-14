@@ -1,13 +1,21 @@
 /** Regression tests for the zh-TW verification gate. */
 
+import { spawnSync } from 'node:child_process'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
   checkZhTwDocument,
+  checkZhTwFile,
 } from './verify-zh-tw.ts'
 
 describe('zh-TW document check', () => {
   it('accepts clean Traditional Chinese prose', () => {
     expect(checkZhTwDocument('這個軟體需要最佳化，使用者權限請聯絡管理員。')).toEqual([])
+  })
+
+  it('protects the three-way language-switcher line', () => {
+    const doc = '# 標題\n\n[English](server.md) | [简体中文](server.zh.md) | 繁體中文\n\n正文。\n'
+    expect(checkZhTwDocument(doc)).toEqual([])
   })
 
   it('flags residual Simplified Chinese characters', () => {
@@ -42,5 +50,22 @@ describe('zh-TW document check', () => {
     expect(issue).toMatchObject({ source: '用户', target: '使用者' })
     expect(typeof issue.start).toBe('number')
     expect(typeof issue.end).toBe('number')
+  })
+})
+
+describe('zh-TW file check', () => {
+  it('throws on a missing named path', () => {
+    expect(() => checkZhTwFile('docs/i18n/does-not-exist.zh-tw.md')).toThrow(/missing/)
+  })
+
+  it('exits non-zero from the CLI when a named path is missing', () => {
+    const script = resolve(import.meta.dirname, 'verify-zh-tw.ts')
+    const run = spawnSync(
+      process.execPath,
+      ['--import', 'tsx/esm', script, 'docs/i18n/does-not-exist.zh-tw.md'],
+      { encoding: 'utf8' },
+    )
+    expect(run.status).toBe(1)
+    expect(run.stderr).toContain('missing or unreadable')
   })
 })

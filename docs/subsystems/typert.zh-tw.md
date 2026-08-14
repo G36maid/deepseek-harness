@@ -18,7 +18,7 @@ interface TypertLookupMap {}
 interface TypertContextMap {}
 ```
 
-lookup 的 resolver 解除安裝後，登錄檔仍會保留其 wire 聲明。因此 SRC 發現程序會繼續把該參數歸類為 lookup，並因不可用而失敗，而不會把 wire 值當作普通業務對象接受。
+lookup 的 resolver 解除安裝後，登錄檔仍會保留其 wire 聲明。因此 SRC 發現過程會繼續把該參數歸類為 lookup，並因不可用而失敗，而不會把 wire 值當作普通業務對象接受。
 
 ```ts type-equiv
 /** Stable wire declaration retained after a lookup provider unloads. */

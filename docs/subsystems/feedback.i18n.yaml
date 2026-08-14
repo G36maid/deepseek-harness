@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/feedback.md
 feedback.md: c04892aa87b740332dda2bd5c9ec5f0bf2d83a44
 feedback.zh.md: 203c57523a5ebab6213a34c3cfc572a7b06077c4
-feedback.zh-tw.md: 3ae424955921468116a0b873b5325d32b9490f97
+feedback.zh-tw.md: 9d6189fc0791f6b2f177169ce93f36fc93ab174c

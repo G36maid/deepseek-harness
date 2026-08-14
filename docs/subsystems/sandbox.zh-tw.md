@@ -95,7 +95,7 @@ interface SandboxPolicy extends SandboxExecutionPolicy {
 
 ## 包裝後的 argv 與分類方言
 
-`RunnerFailureRule` 匯集用於判定 runner 在執行命令前失敗的證據。消費端要求行程以非零狀態結束，並同時滿足選填的允許結束碼門控，以及餘下某一 stderr 行中不區分大小寫的致命簽名。系統會先按不區分大小寫的整行精確匹配移除資訊性排除項，因此無害的 runner 通知本身不能證明失敗。匹配到的行仍可用作錯誤詳情；分類程序不會重寫 stderr。
+`RunnerFailureRule` 匯集用於判定 runner 在執行命令前失敗的證據。消費端要求行程以非零狀態結束，並同時滿足選填的允許結束碼門控，以及餘下某一 stderr 行中不區分大小寫的致命簽名。系統會先按不區分大小寫的整行精確匹配移除資訊性排除項，因此無害的 runner 通知本身不能證明失敗。匹配到的行仍可用作錯誤詳情；分類過程不會重寫 stderr。
 
 ```ts type-equiv
 /**

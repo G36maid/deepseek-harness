@@ -2,7 +2,7 @@
 
 [English](adding-a-conversation-node.md) | [简体中文](adding-a-conversation-node.zh.md) | 繁體中文
 
-本教學為 Web Client Chat 檢視表新增一行由業務自行擁有的內容。完成後的外掛程式會把一個持久 Session 事件族關聯成一個 Context，增量構造業務 State，發布類型化 Step 資料，再算繪 keyed Chat Node；整個程序不掃描 Session 視窗或其他已算繪節點。本教學假設 Host 已經記錄這些事件，且該 Client 外掛程式已組裝進 Web bundle；Host 側外部 UI 和 Trajectory 等額外檢視表目標不在本文範圍內。
+本教學為 Web Client Chat 檢視表新增一行由業務自行擁有的內容。完成後的外掛程式會把一個持久 Session 事件族關聯成一個 Context，增量構造業務 State，發布類型化 Step 資料，再算繪 keyed Chat Node；整個過程不掃描 Session 視窗或其他已算繪節點。本教學假設 Host 已經記錄這些事件，且該 Client 外掛程式已組裝進 Web bundle；Host 側外部 UI 和 Trajectory 等額外檢視表目標不在本文範圍內。
 
 [Conversation Node 組裝決策](../../.agents/notes/implemented/architecture/2026-08-09-client-conversation-node-assembly.md)記錄完整的引擎模型和設計理由；本文只說明實作路徑。
 

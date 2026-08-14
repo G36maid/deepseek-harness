@@ -2,7 +2,7 @@
 
 [English](translation-rules.md) | [简体中文](translation-rules.zh.md) | 繁體中文
 
-本文規定：如何在本倉庫文件配對的英文、繁體中文與繁體中文三種語言之間進行翻譯。所有語言同權（見 [README.md](README.md)）：每次變更可以用任一語言撰寫，被編輯的一側即為本次更新的源；本文的規則約束如何產出或更新其他對側檔案。這些規則對人類和 agent（代理）同等生效。日常工作中，agent 會在術語指導下直接一次完成有改動內容的翻譯；擴充版 [.agents/skills/dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程僅在使用者顯式呼叫時執行。規則等級沿用 RFC 2119 的用法：**必須（MUST）** ／ **禁止（MUST NOT）** 會卡閘門或評審；**應當（SHOULD）** 偏離時要說明理由；**可以（MAY）** 自行裁量。
+本文規定：如何在本倉庫文件配對的英文、簡體中文與繁體中文三種語言之間進行翻譯。所有語言同權（見 [README.md](README.md)）：每次變更可以用任一語言撰寫，被編輯的一側即為本次更新的源；本文的規則約束如何產出或更新其他對側檔案。這些規則對人類和 agent（代理）同等生效。日常工作中，agent 會在術語指導下直接一次完成有改動內容的翻譯；擴充版 [.agents/skills/dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程僅在使用者顯式呼叫時執行。規則等級沿用 RFC 2119 的用法：**必須（MUST）** ／ **禁止（MUST NOT）** 會卡閘門或評審；**應當（SHOULD）** 偏離時要說明理由；**可以（MAY）** 自行裁量。
 
 ## 忠實性
 
@@ -36,7 +36,7 @@
 
 - [terminology.md](terminology.md) 是雙向的術語真源。翻譯前請先載入它；表內術語必須遵守對應行與「不要譯作」禁項。譯成中文時，採用「中文」列，並按「首次出現」列括注；譯成英文時，採用「English」列，不加中文括注。
 - 繁體中文的術語寫法遵循 [terminology-zh-tw.md](terminology-zh-tw.md)，該文件是 zh→zh-TW 的轉換術語表；術語表的 English 錨點負責交叉核對。
-- zh-TW 路徑先由 zh-CN 機械轉換，再對照英文評審。排版採用教育部《重訂標點符號手冊》等臺灣規範；「您」或「你」按臺灣技術寫作慣例選擇，並使用 [terminology-zh-tw.md](terminology-zh-tw.md) 規定的寫法。繁體中文專用的「你而非您」規則不自動適用於 zh-TW。
+- zh-TW 路徑先由 zh-CN 機械轉換，再對照英文評審。排版採用教育部《重訂標點符號手冊》等臺灣規範；「您」或「你」按臺灣技術寫作慣例選擇，並使用 [terminology-zh-tw.md](terminology-zh-tw.md) 規定的寫法。簡體中文專用的「你而非您」規則不自動適用於 zh-TW。
 - 譯成中文時，術語表未收錄的技術術語只有在主流中文 OSS 文件或廠商資料中已有通行譯法時纔可以翻譯（K8s／Vue／MDN 中文文件、微軟簡中風格指南、大廠項目文件），並須在 PR 中註明出處；否則必須保留英文，並在 PR 描述的「待定術語」中給出建議譯法。
 - 譯成英文時，採用通行的英文技術術語。如果源術語沒有明確的通行對應詞，則保留原詞、附上簡短說明，並列入「待定術語」。兩個方向都不得自行創造譯法；確定後的術語須在同一個 PR 或後續 PR 中加入 [terminology.md](terminology.md)。
 
@@ -44,7 +44,7 @@
 
 現有排版規則約束繁體中文一側；zh-TW 遵循包括教育部《重訂標點符號手冊》在內的臺灣規範。以下混合文字間距規則由兩種中文共同遵守。
 
-本節規則約束中文一側；英文一側遵循倉庫常規的 Markdown 約定（根 `AGENTS.md`）。以下中西文混排規則遵循 [MDN 繁體中文翻譯指南](https://github.com/mdn/translated-content/blob/main/docs/zh-cn/translation-guide.md)、[Kubernetes 中文字地化指南](https://kubernetes.io/zh-cn/docs/contribute/localization_zh/)、[Vue.js 中文翻譯須知](https://github.com/vuejs-translations/docs-zh-cn/wiki/%E7%BF%BB%E8%AF%91%E9%A1%BB%E7%9F%A5) 與[中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)的跨項目共識，其根據是 [W3C clreq](https://www.w3.org/TR/clreq/) 與 GB/T 15834—2011：
+本節規則約束中文一側；英文一側遵循倉庫常規的 Markdown 約定（根 `AGENTS.md`）。以下中西文混排規則遵循 [MDN 簡體中文翻譯指南](https://github.com/mdn/translated-content/blob/main/docs/zh-cn/translation-guide.md)、[Kubernetes 中文在地化指南](https://kubernetes.io/zh-cn/docs/contribute/localization_zh/)、[Vue.js 中文翻譯須知](https://github.com/vuejs-translations/docs-zh-cn/wiki/%E7%BF%BB%E8%AF%91%E9%A1%BB%E7%9F%A5) 與[中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)的跨項目共識，其根據是 [W3C clreq](https://www.w3.org/TR/clreq/) 與 GB/T 15834—2011：
 
 - 必須在中文與拉丁詞之間、中文與數字之間各留一個半形空格：`每个 plugin 注册 3 个 tool`。全形標點與任何字元之間不加空格。
 - 中文行文必須使用全形（中文）標點：`，。：；？！（）「」`。半形標點保留在程式碼內、按原樣引用的完整英文句子內、以及數字內（`3.5`、`1,024`）。
@@ -65,8 +65,8 @@
 本文各規則引用的權威出處，供想瞭解底層依據的人和 agent 查閱：
 
 - [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)：中西文混排空格與標點的社區事實標準。
-- [MDN 繁體中文翻譯指南](https://github.com/mdn/translated-content/blob/main/docs/zh-cn/translation-guide.md)：與本文同形態的倉庫內建翻譯規則文件；空格、標點與術語表實踐。
-- [Kubernetes 中文字地化指南](https://kubernetes.io/zh-cn/docs/contribute/localization_zh/)：最大的中文字地化團隊的術語首現與標點實踐。
+- [MDN 簡體中文翻譯指南](https://github.com/mdn/translated-content/blob/main/docs/zh-cn/translation-guide.md)：與本文同形態的倉庫內建翻譯規則文件；空格、標點與術語表實踐。
+- [Kubernetes 中文在地化指南](https://kubernetes.io/zh-cn/docs/contribute/localization_zh/)：最大的中文在地化團隊的術語首現與標點實踐。
 - [Vue.js docs-zh-cn 翻譯須知](https://github.com/vuejs-translations/docs-zh-cn/wiki/%E7%BF%BB%E8%AF%91%E9%A1%BB%E7%9F%A5)：逐術語的譯／留決策與語氣。
 - [zh-style-guide](https://zh-style-guide.readthedocs.io)：社區中文技術文件寫作規範，本文借用了它的規則等級分類體系（與 RFC 2119 關鍵字分級）；它聚合了 GB/T 15834/15835、clreq 與各廠商指南。
 - [W3C clreq](https://www.w3.org/TR/clreq/) 與[微軟繁體中文風格指南](https://learn.microsoft.com/en-us/globalization/reference/microsoft-style-guides)：排版學與廠商本機化的正式基線。

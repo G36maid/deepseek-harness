@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-本倉庫的文件會被公司內外的人和 agent（代理）閱讀，因此範圍內的每篇文件都以英文、繁體中文與繁體中文維護。本頁定義配對約定、檢查、範圍與排除規則；[translation-rules.md](translation-rules.md) 定義如何翻譯；[terminology.md](terminology.md) 是 EN↔zh 術語真源，[terminology-zh-tw.md](terminology-zh-tw.md) 是 zh→zh-TW 轉換術語表。agent 的日常工作遵循 [docs/AGENTS.md](../AGENTS.md) 中的輕量路徑；擴充版 [.agents/skills/dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程僅在使用者顯式呼叫時可用。
+本倉庫的文件會被公司內外的人和 agent（代理）閱讀，因此範圍內的每篇文件都以英文、簡體中文與繁體中文維護。本頁定義配對約定、檢查、範圍與排除規則；[translation-rules.md](translation-rules.md) 定義如何翻譯；[terminology.md](terminology.md) 是 EN↔zh 術語真源，[terminology-zh-tw.md](terminology-zh-tw.md) 是 zh→zh-TW 轉換術語表。agent 的日常工作遵循 [docs/AGENTS.md](../AGENTS.md) 中的輕量路徑；擴充版 [.agents/skills/dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程僅在使用者顯式呼叫時可用。
 
 ## 配對約定
 
@@ -42,14 +42,15 @@
 
 ## 範圍與排除
 
-**範圍**：根目錄 CONTRIBUTING 文件、除 vendor 原始碼外的全部 README，以及 `.agents/notes/**`、`docs/**` 與 `python/**` 下的全部活躍文件。匹配 README 時只看檔名且不區分大小寫，因此今後新增的目錄無需再修改 manifest。相依性目錄、被忽略的建置產物目錄以及凍結的 `.agents/notes/archived/` 目錄樹只在發現階段排除，不屬於持續演進的翻譯源文件。
+**範圍**：根目錄 CONTRIBUTING 文件、除 vendor 原始碼外的全部 README，以及 `docs/**` 與 `python/**` 下的全部活躍文件。匹配 README 時只看檔名且不區分大小寫，因此今後新增的目錄無需再修改 manifest。相依性目錄與被忽略的建置產物目錄只在發現階段排除，不屬於持續演進的翻譯源文件。
 
 有經評審的中文對側的生成英文參考文件和圖文件遵循配對規則。生成器仍是英文真源，新鮮度閘門與配對閘門各自獨立強制其約束；重新生成導致英文變化後，配對會保持失去同步狀態，直至經評審的中文對側完成更新並重新記錄。生成的英文原始檔不含普通撰寫文件所帶的語言切換列，因為新增該行會使生成器新鮮度檢查失敗；中文對側仍連結回英文源。生成頁的中文對側只能改寫若直譯便不再符合經評審譯文事實的自指生成與維護說明；所有技術內容仍受普通忠實性規則約束。
 
 **排除**（永不配對，閘門拒絕為它們建 `.zh.md` 或 `.i18n.yaml`）：
 
 - [cordis-api/inherited.md](../cordis-api/inherited.md)：該生成文件沒有經評審的中文對側，因此網站的兩個 locale 都投影英文原始檔。
-- `docs/AGENTS.md`、`.agents/notes/**/AGENTS.md` 以及指向它們的 `CLAUDE.md` 指令符號連結：agent 指令，與根 `AGENTS.md` 一樣只以英文維護。
+- `docs/AGENTS.md` 及指向它的 `CLAUDE.md` 指令符號連結：agent 指令，與根 `AGENTS.md` 一樣只以英文維護。
+- `.agents/**`：agent 側目錄樹（工作流程、技能與 Agent Note）只以英文維護，閘門拒絕其下任何翻譯側檔案或 `.i18n.yaml`。下方凍結的 `.agents/notes/archived/` 三檔案配對早於此規則，仍由專用校驗器封存。
 - `docs/i18n/terminology.md` 與 [style-samples.md](style-samples.md)：二者本身即為中英對照文件。
 - [terminology-zh-tw.md](terminology-zh-tw.md)：繁體轉換術語表本身即為簡繁對照文件（zh-CN → zh-TW），與 `terminology.md` 一樣排除在配對之外；它是 EN↔zh-CN 真源術語表的轉換側對應物。
 - [translation-prompt.md](translation-prompt.md)：自動翻譯管線的提示詞樣板；正文逐字進入模型請求，配對翻譯會改變管線行為。

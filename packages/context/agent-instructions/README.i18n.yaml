@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/context/agent-instructions/README.md
 README.md: 706db930da1cb328695da9ab60a44dd9259d83c5
 README.zh.md: e75b3d6f1e0c68d45bebdd7c4e9092b34e00419a
-README.zh-tw.md: 5b5f1390f7bb0af2dc7f3f833391497ecf7fc26d
+README.zh-tw.md: af96f9c1fdc743338505e2cd61fa71a043f139b2

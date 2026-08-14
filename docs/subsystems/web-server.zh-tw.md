@@ -44,7 +44,7 @@ interface Config {
 
 `WebServer`（`ctx.webServer`）在啟用時立即監聽；監聽失敗（EADDRINUSE 等）會使初始化被拒絕，啟動行程會報告失敗的 fiber。`register(route)` 新增一條具名路由並返回其 disposer；重複的 `(kind, path)` 拋出例外，因為路由模式是組合層約定，衝突即設定錯誤。`tapIndex(transform)` 新增一個純 HTML 到 HTML 轉換函式，按註冊順序應用於每個 index 回應（`/` 和每次 SPA 回退）；[dsh-client-modules](../../packages/client/modules) 用它注入啟動 manifest（中繼資料清單）。`port` 讀取監聽埠，包括 `config.port` 為 0 時作業系統分配的埠。
 
-處理程序中拋出例外的請求（畸形的 % 轉義撞上 `decodeURIComponent`、用戶端在請求體中途中斷連線）會記錄為警告並應答 400（回應標頭已寄出時則銷毀 socket），絕不導致行程結束。dispose（資源釋放）把 `close()` 與 `closeAllConnections()` 配對使用，因為處理器可能像 SSE（Server-Sent Events）那樣保持回應打開，而這類連線永遠不會自行結束；沒有強制關閉，拆卸就會掛起。該包從不列印輸出：URL 行歸 shell 所有。逐包運維細節（含開發模式的 bundle 監視管線）留在 [README](../../packages/host/webserver/README.md) 中。
+處理過程中拋出例外的請求（畸形的 % 轉義撞上 `decodeURIComponent`、用戶端在請求體中途中斷連線）會記錄為警告並應答 400（回應標頭已寄出時則銷毀 socket），絕不導致行程結束。dispose（資源釋放）把 `close()` 與 `closeAllConnections()` 配對使用，因為處理器可能像 SSE（Server-Sent Events）那樣保持回應打開，而這類連線永遠不會自行結束；沒有強制關閉，拆卸就會掛起。該包從不列印輸出：URL 行歸 shell 所有。逐包運維細節（含開發模式的 bundle 監視管線）留在 [README](../../packages/host/webserver/README.md) 中。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

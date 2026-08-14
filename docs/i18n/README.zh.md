@@ -42,14 +42,15 @@
 
 ## 范围与排除
 
-**范围**：根目录 CONTRIBUTING 文档、除 vendor 源码外的全部 README，以及 `.agents/notes/**`、`docs/**` 与 `python/**` 下的全部活跃文档。匹配 README 时只看文件名且不区分大小写，因此今后新增的目录无需再修改 manifest。依赖目录、被忽略的构建产物目录以及冻结的 `.agents/notes/archived/` 目录树只在发现阶段排除，不属于持续演进的翻译源文档。
+**范围**：根目录 CONTRIBUTING 文档、除 vendor 源码外的全部 README，以及 `docs/**` 与 `python/**` 下的全部活跃文档。匹配 README 时只看文件名且不区分大小写，因此今后新增的目录无需再修改 manifest。依赖目录与被忽略的构建产物目录只在发现阶段排除，不属于持续演进的翻译源文档。
 
 有经评审的中文对侧的生成英文参考文档和图文档遵循配对规则。生成器仍是英文真源，新鲜度门禁与配对门禁各自独立强制其约束；重新生成导致英文变化后，配对会保持失去同步状态，直至经评审的中文对侧完成更新并重新记录。生成的英文源文件不含普通撰写文档所带的语言切换行，因为添加该行会使生成器新鲜度检查失败；中文对侧仍链接回英文源。生成页的中文对侧只能改写若直译便不再符合经评审译文事实的自指生成与维护说明；所有技术内容仍受普通忠实性规则约束。
 
 **排除**（永不配对，门禁拒绝为它们建 `.zh.md` 或 `.i18n.yaml`）：
 
 - [cordis-api/inherited.md](../cordis-api/inherited.md)：该生成文档没有经评审的中文对侧，因此网站的两个 locale 都投影英文源文件。
-- `docs/AGENTS.md`、`.agents/notes/**/AGENTS.md` 以及指向它们的 `CLAUDE.md` 指令符号链接：agent 指令，与根 `AGENTS.md` 一样只以英文维护。
+- `docs/AGENTS.md` 及指向它的 `CLAUDE.md` 指令符号链接：agent 指令，与根 `AGENTS.md` 一样只以英文维护。
+- `.agents/**`：agent 侧目录树（工作流、技能与 Agent Note）只以英文维护，门禁拒绝其下任何翻译侧文件或 `.i18n.yaml`。下方冻结的 `.agents/notes/archived/` 三文件配对早于此规则，仍由专用校验器封存。
 - `docs/i18n/terminology.md` 与 [style-samples.md](style-samples.md)：二者本身即为中英对照文档。
 - [terminology-zh-tw.md](terminology-zh-tw.md)：繁体转换术语表本身即为简繁对照文档（zh-CN → zh-TW），与 `terminology.md` 一样排除在配对之外；它是 EN↔zh-CN 真源术语表的转换侧对应物。
 - [translation-prompt.md](translation-prompt.md)：自动翻译流水线的提示词模板；正文逐字进入模型请求，配对翻译会改变流水线行为。

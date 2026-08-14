@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/web/web-search-deepseek/README.md
 README.md: a68dfc46b51ba294057ea08cd947ccc78b9f5772
 README.zh.md: ae91b9efe499c98b7086936a6eaa53df90c1acf2
-README.zh-tw.md: 00d2c6997e2e826306db2d082822512055a77159
+README.zh-tw.md: da990883f5a83b9020b683b416404578a6d2be47

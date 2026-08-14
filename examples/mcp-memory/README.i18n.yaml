@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write examples/mcp-memory/README.md
 README.md: 57730bcee90e25560e3b78bfebe676bff7a79eba
 README.zh.md: 3bd0d1340591a3ece011451be98c1d1d3fc853fc
-README.zh-tw.md: 6e322acc004fd04d24246216b579dc8cb0abeae6
+README.zh-tw.md: bc9788d8af3ce642f350d18be5a59edbbd6bce9e

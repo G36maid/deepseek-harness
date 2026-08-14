@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/preset/persona/README.md
 README.md: e87de26d5fb3e5dc36fd5be826594ddb71587e70
 README.zh.md: 4cb9836d2a755ece7d7a7e0f938970186a64011c
-README.zh-tw.md: 273ede1a609dc5c959722a852825193c16b7bd9a
+README.zh-tw.md: cd6489b71995647b1a7c144200b046bbcd87c59a

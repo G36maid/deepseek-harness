@@ -24,7 +24,7 @@
 | `compactNow(agent, signal)` | 即使未達到自動壓力，也顯式壓縮一段有效、平衡的較早範圍。該操作會在讓出控制權前同步預留空閒輪次接納；沒有有效範圍時不寫入任何內容；在摘要前記錄獨立的 `compaction/* { turn: null }` 嘗試；釋放預留前等待其持久性檢查點。預期操作失敗使用 `ManualCompactionError`；取消會原樣重新拋出 abort 原因。 |
 | `compactRegion(start, end, agent, signal?)` | 強制將表層節點 `[start, end]`（包含兩端 seq）從 `agent.session` 摘要為單個替換節點，其源由 `compactCheckpointSource(compactionId)` 建立。如果壓縮已在進行、`start`／`end` 不是表層節點，或 `start` 在表層上位於 `end` 之後，則**拋出例外**。該範圍是表層位置範圍，不是數值 seq 區間：在之前的 replace 將新生成的高 seq 摘要節點放到已遮蔽範圍的位置之後，表層順序不再跟隨 seq 順序。 |
 
-`CompactionResult` 向呼叫方保留原始摘要與記錄操作程序的事件 seq，同時保留已遮蔽範圍與 token 計量；其結構由漂移檢查保障，定義見 [壓縮資料結構參考](../../../docs/subsystems/compaction.md#compactionresult)。
+`CompactionResult` 向呼叫方保留原始摘要與記錄操作過程的事件 seq，同時保留已遮蔽範圍與 token 計量；其結構由漂移檢查保障，定義見 [壓縮資料結構參考](../../../docs/subsystems/compaction.md#compactionresult)。
 
 `compactIfNeeded` 和 `compactNow` 必須傳入 `signal`；`compactRegion` 的該參數選填。透過 `ctx.llm.stream()` 摘要的後端**必須** 將它轉發到呼叫的 `GenerateOptions.signal`，因此 abort 或 fiber dispose（資源釋放）會停止進行中的摘要。自動和顯式範圍標記對會從當前打開的輪次復原其數字形式歸屬。手動標記對不要求存在打開的輪次，並標記 `turn: null`。
 

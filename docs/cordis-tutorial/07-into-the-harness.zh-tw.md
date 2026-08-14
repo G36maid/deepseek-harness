@@ -91,7 +91,7 @@ node --import tsx ../../vendor/cordis/bin.js
 tool replied: [{"type":"text","text":"Hello, Cordis!"}]
 ```
 
-logger 會先觸發：`tools/result` 在結果物化程序中寄出，發生在 `execute` 向呼叫方返回的 promise 兌現之前。兩個外掛程式都不知道另一個外掛程式存在，它們由登錄檔服務和事件連線。
+logger 會先觸發：`tools/result` 在結果物化過程中寄出，發生在 `execute` 向呼叫方返回的 promise 兌現之前。兩個外掛程式都不知道另一個外掛程式存在，它們由登錄檔服務和事件連線。
 
 ## 從這裡走向完整 agent（代理）
 

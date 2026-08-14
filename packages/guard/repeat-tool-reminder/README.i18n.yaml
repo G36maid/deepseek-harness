@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/guard/repeat-tool-reminder/README.md
 README.md: 62d50072e86726130faed6395274e8516ba32844
 README.zh.md: c975b869317997840c47f885a0a5e903454e0c40
-README.zh-tw.md: a3b9ce5c623aea0f14229d6fdac6129a4aae8a94
+README.zh-tw.md: 44a98ba9af23c0585fe0087f7d1a8a3f8729102d

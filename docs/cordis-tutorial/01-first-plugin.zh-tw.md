@@ -42,7 +42,7 @@ node --import tsx ../../vendor/cordis/bin.js
 hello from my first plugin
 ```
 
-當沒有任何內容繼續執行時期，行程會自行結束。具體程序如下：
+當沒有任何內容繼續執行時期，行程會自行結束。具體過程如下：
 
 1. 啟動器建立根 `Context`，並掛載 **Loader** 外掛程式。
 2. Loader 讀取 `cordis.yml`，解析 `./hello.ts`，然後將其作為子外掛程式掛載。

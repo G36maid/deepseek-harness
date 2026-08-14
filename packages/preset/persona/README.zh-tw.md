@@ -8,7 +8,7 @@
 
 ## 僅限 scope 內使用
 
-在 agent scope 之外掛載本行，會與登錄檔自身的 `deployment:persona` 註冊相撞並明確報錯。這不是需要繞開的限制：部署級人設已經有歸屬，而本行存在的意義正是為某一個 agent 遮蔽它。請把它掛在 preset 組裝內部，由 preset 的掛載程序提供 agent scope。
+在 agent scope 之外掛載本行，會與登錄檔自身的 `deployment:persona` 註冊相撞並明確報錯。這不是需要繞開的限制：部署級人設已經有歸屬，而本行存在的意義正是為某一個 agent 遮蔽它。請把它掛在 preset 組裝內部，由 preset 的掛載過程提供 agent scope。
 
 ## 設定
 

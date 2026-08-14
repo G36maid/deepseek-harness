@@ -1,9 +1,6 @@
 {
   "excluded": [
     ".agents/",
-    ".agents/notes/AGENTS.md",
-    ".agents/notes/implemented/AGENTS.md",
-    ".agents/notes/implemented/CLAUDE.md",
     "docs/AGENTS.md",
     "docs/cordis-api/inherited.md",
     "docs/i18n/style-samples.md",

@@ -8,6 +8,7 @@
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join, resolve, sep } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { check, type Match } from 'zhtw-js'
 import * as OpenCC from 'opencc-js'
 import { protectSpans } from './zh-tw-spans.ts'
@@ -106,12 +107,14 @@ export function main(argv: string[]): void {
     throw new Error('verify-zh-tw: expected one or more .zh-tw.md paths, or --all for the whole corpus')
   }
   let total = 0
+  const missing: string[] = []
   for (const path of targets) {
     let issues: ZhTwIssue[]
     try {
       issues = checkZhTwFile(path)
     } catch (error) {
       console.error(`verify-zh-tw: ${error instanceof Error ? error.message : String(error)}`)
+      missing.push(path)
       continue
     }
     for (const issue of issues) {
@@ -119,14 +122,22 @@ export function main(argv: string[]): void {
       total++
     }
   }
-  if (total > 0) {
-    console.error(`verify-zh-tw: ${total} residual Simplified-Chinese finding(s) in ${targets.length} file(s)`)
+  if (total > 0 || missing.length > 0) {
+    if (total > 0) {
+      console.error(`verify-zh-tw: ${total} residual Simplified-Chinese finding(s) in ${targets.length} file(s)`)
+    }
+    if (missing.length > 0) {
+      console.error(`verify-zh-tw: ${missing.length} of ${targets.length} named file(s) missing or unreadable`)
+    }
     process.exit(1)
   }
   console.log(`verify-zh-tw: ${targets.length} zh-TW file(s) checked, no residual Simplified Chinese.`)
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+const invokedPath = process.argv[1]
+const isMain = invokedPath !== undefined && import.meta.url === pathToFileURL(resolve(invokedPath)).href
+
+if (isMain) {
   try {
     main(process.argv.slice(2))
   } catch (error) {

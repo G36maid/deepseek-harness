@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/preset/agent-presets/README.md
 README.md: 6e8925bda6da0db8b07ced592c2d0e694b222930
 README.zh.md: 46546a30a2f473aa8f4b76d52769db5572a406a5
-README.zh-tw.md: 351591be5e03f8a15906ae3afe7d94b8f72d65c1
+README.zh-tw.md: 0bb284c559106e3de85b2700fb31886c862ebc1a

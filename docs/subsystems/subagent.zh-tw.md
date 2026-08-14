@@ -156,7 +156,7 @@ type SubagentInterruptAuthority =
 
 每個 Activation 都擁有自己的 `AgentHandle` 和一個 `ownedChildren: Set<SessionId>`；由於一份工作階段至多有一個存活 Activation，子工作階段 id 無需另一個執行時期化身引用即可標識存活的子 agent。啟動子 agent 或提交源自 parent 的工作，會在子 agent 能夠執行之前將其註冊到受繼續執行管理的父級集合中；只要該集合非空，該父級就無法 settle。頂層或其他非繼續執行的 Agent 沒有 Activation，處於 waiting 圖之外。只有當子 Agent 已完全靜止、該子 agent 的每個子級都已 dispose、best-effort 的最終工作階段 flush 結帳完畢，且子 agent 的 `AgentHandle` 完成 dispose 之後，才會釋放子 agent。
 
-最終結帳會等待 `ctx.sessions.flush(session)`，但會忽略其參與布林值，因為任意 listener 都無法證明某個持久化後端已儲存該狀態。rejection 會被記錄，但不會使 Activation 失敗；管理器仍會 dispose 該 handle 並釋放所有權，此後持久化的子 agent 狀態在後續復原時可能缺失或過時。管理器解除安裝會呼叫內部的管理器全域性 drain，關閉准入並 dispose 每片線上森林；`drainContinuableDescendants(parents)` 只關閉由 host 確切擁有的線上 Agent 之下的准入，並 dispose 其可繼續後代，而無關森林保持線上。兩者都會等待各自作用域內已獲準的物化程序，自頂向下傳播取消，按 child-first 順序釋放 handle，並且即使個別分支失敗也會等待所有選中分支。持久化子工作階段不受該行程內拆卸的影響。
+最終結帳會等待 `ctx.sessions.flush(session)`，但會忽略其參與布林值，因為任意 listener 都無法證明某個持久化後端已儲存該狀態。rejection 會被記錄，但不會使 Activation 失敗；管理器仍會 dispose 該 handle 並釋放所有權，此後持久化的子 agent 狀態在後續復原時可能缺失或過時。管理器解除安裝會呼叫內部的管理器全域性 drain，關閉准入並 dispose 每片線上森林；`drainContinuableDescendants(parents)` 只關閉由 host 確切擁有的線上 Agent 之下的准入，並 dispose 其可繼續後代，而無關森林保持線上。兩者都會等待各自作用域內已獲準的物化過程，自頂向下傳播取消，按 child-first 順序釋放 handle，並且即使個別分支失敗也會等待所有選中分支。持久化子工作階段不受該行程內拆卸的影響。
 
 ```ts type-equiv
 /** Attribution for a model coordinator's follow-up to one of its children. */

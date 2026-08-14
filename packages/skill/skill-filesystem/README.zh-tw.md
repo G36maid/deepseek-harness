@@ -46,9 +46,9 @@
 
 現有 skill 根由 Chokidar 監視。打開原生 watcher 前，提供方會對現有根或祖先執行 realpath 解析，並拼回下一個缺失路徑段；當 `watchFollowSymlinks` 為 false 且根本身是符號連結時，提供方不會展開最後這一級連結，使 Chokidar 能夠強制執行設定邊界。發現與診斷仍保留設定路徑，從而避免 Windows 在 libuv 內部混用 8.3 別名與長格式事件路徑。提供方會觀察直屬 bundle 目錄的新增／移除、平鋪 Markdown 文件的新增／移除，以及直接 `SKILL.md` 的新增／移除／變更；`change` 事件用於重新發現 `name`、`description` 等目錄 frontmatter。`references`、`scripts`、`assets` 或其他 bundle 資源下的變更不會使目錄失效。同一微任務批次內送達的事件會合並為一次提供方失效。
 
-不存在的根會從最近的現有祖先開始，每次沿一個缺失路徑段跟蹤。系統使用 `fs.watchFile` 探測下一段；當 `.agents`、`skills` 或已設定的根出現後，觀察會逐級推進，直至 Chokidar 可以附加到真實根。根刪除時，該程序反向執行，因此刪除再重建整個 skills 目錄仍可被觀察到。按項目劃分的 watcher 數量受 `watchMaxProjects` 限制；再次訪問已被驅逐的項目時，發現階段會重新附加觀察。
+不存在的根會從最近的現有祖先開始，每次沿一個缺失路徑段跟蹤。系統使用 `fs.watchFile` 探測下一段；當 `.agents`、`skills` 或已設定的根出現後，觀察會逐級推進，直至 Chokidar 可以附加到真實根。根刪除時，該過程反向執行，因此刪除再重建整個 skills 目錄仍可被觀察到。按項目劃分的 watcher 數量受 `watchMaxProjects` 限制；再次訪問已被驅逐的項目時，發現階段會重新附加觀察。
 
-如果第一方檔案系統 `write` 和 `edit` 工具的目標可能影響受監視的 skill 條目，它們還會透過 `fs/observed` 同步使提供方失效。這條快速路徑讓模型的下一個步驟無需等待宿主 watcher，即可觀察到自身的檔案系統變更。外部 IDE、Git、shell 和行程產生的變更相依性 Chokidar 或缺失路徑探測。現有根的 watcher 會保持持久狀態直至 effect 釋放，使 Chokidar 能夠接管非同步原生錯誤事件；watcher 啟動或執行時期失敗會被記錄並觸發重試。發現程序仍會掃描可讀根目錄，並返回其候選項供直接載入，但會將觀測標記為不完整，因此不會快取，也不會作為權威模型目錄發布。effect 釋放會關閉所有 watcher，並收束延遲回呼。
+如果第一方檔案系統 `write` 和 `edit` 工具的目標可能影響受監視的 skill 條目，它們還會透過 `fs/observed` 同步使提供方失效。這條快速路徑讓模型的下一個步驟無需等待宿主 watcher，即可觀察到自身的檔案系統變更。外部 IDE、Git、shell 和行程產生的變更相依性 Chokidar 或缺失路徑探測。現有根的 watcher 會保持持久狀態直至 effect 釋放，使 Chokidar 能夠接管非同步原生錯誤事件；watcher 啟動或執行時期失敗會被記錄並觸發重試。發現過程仍會掃描可讀根目錄，並返回其候選項供直接載入，但會將觀測標記為不完整，因此不會快取，也不會作為權威模型目錄發布。effect 釋放會關閉所有 watcher，並收束延遲回呼。
 
 ## skill 格式
 

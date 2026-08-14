@@ -171,10 +171,8 @@ function sourceMap(pages: DocsPage[]): Map<string, Map<DocsLocale, DocsPage>> {
   return map
 }
 
-function counterpartSource(source: string): string {
-  if (source.endsWith('.zh-tw.md')) return source.replace(/\.zh-tw\.md$/, '.md')
-  if (source.endsWith('.zh.md')) return source.replace(/\.zh\.md$/, '.md')
-  return source.replace(/\.md$/, '.zh.md')
+function tripletBase(source: string): string {
+  return source.replace(/(\.zh-tw)?(\.zh)?\.md$/, '.md')
 }
 
 function sourceLocale(source: string): DocsLocale {
@@ -240,7 +238,11 @@ export function rewriteMarkdown(source: string, options: RewriteMarkdownOptions)
     if (path === '') return
     const { absPath, line } = resolveRepositoryTarget(sourceAbs, path, options.repoRoot)
     const targetPath = repoPath(absPath, options.repoRoot)
-    const isLanguageSwitcher = targetPath === counterpartSource(options.sourcePath)
+    // A link to a sibling side of this page's language triplet is a language
+    // switcher; the alias mechanism would otherwise resolve it back into the
+    // current locale as a self-link.
+    const isLanguageSwitcher
+      = tripletBase(targetPath) === tripletBase(options.sourcePath) && targetPath !== options.sourcePath
     const targetLocale: DocsLocale = isLanguageSwitcher
       ? sourceLocale(targetPath)
       : options.locale

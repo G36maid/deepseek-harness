@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-api/fiber.md
 fiber.md: 182b77390b29b8a90504437d0ccc2dfeba23921a
 fiber.zh.md: 8e17035e00acc2b3e59c6f3ad2805e685f6fb913
-fiber.zh-tw.md: 586a8455b268a0f5cf5f0cdee257bc3ddf7cc46c
+fiber.zh-tw.md: 0043dbd6d65377698190266ff7719b287de6f013

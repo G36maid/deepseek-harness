@@ -6,7 +6,7 @@ Web HTTP 與 upgrade route 註冊外掛程式（預設匯出 `WebServer`，設�
 
 該包不瞭解任何 harness 概念，也不提供任何文件服務：`/api` HTTP 橋接與下行 WebSocket 是 connection 外掛程式的 route，外掛程式 bundle 與 HMR（熱模組替換）事件串流是 modules／hmr 外掛程式的 route，dist 服務則屬於 fallback 持有者。upgrade handler 擁有協定握手與連線內容；webserver 只交付原始 socket 與 request。`host` 只接受 `127.0.0.1`（預設安全姿態）和 `0.0.0.0`（有意向網路開放）。該伺服器只服務瀏覽器；Electron 透過 `file://` 載入 dist，並經 IPC 橋接承載 fetch。該包從不列印內容；URL 行屬於 shell。
 
-監聽失敗（EADDRINUSE……）會從啟用程序拋出，並以綁定診斷資訊拒絕 Loader 組合；失敗的候選 fiber 會被 dispose（資源釋放）。處理 HTTP 請求時拋錯（例如 fallback 持有者的 `decodeURIComponent` 收到格式錯誤的百分號轉義，或用戶端在請求體傳輸中途中斷連線）時，伺服器會回應 400；若回應標頭已經寄出，則銷毀 socket，並記錄 warning，但絕不會結束行程。upgrade handler 拋錯或升級 socket 出現傳輸錯誤時，會記錄 warning 並銷毀對應 socket。資源釋放會啟動 `close()` 與 `closeAllConnections()`，銷毀所有受跟蹤的升級 socket，並僅在 HTTP server 與這些 socket 均已關閉後返回。
+監聽失敗（EADDRINUSE……）會從啟用過程拋出，並以綁定診斷資訊拒絕 Loader 組合；失敗的候選 fiber 會被 dispose（資源釋放）。處理 HTTP 請求時拋錯（例如 fallback 持有者的 `decodeURIComponent` 收到格式錯誤的百分號轉義，或用戶端在請求體傳輸中途中斷連線）時，伺服器會回應 400；若回應標頭已經寄出，則銷毀 socket，並記錄 warning，但絕不會結束行程。upgrade handler 拋錯或升級 socket 出現傳輸錯誤時，會記錄 warning 並銷毀對應 socket。資源釋放會啟動 `close()` 與 `closeAllConnections()`，銷毀所有受跟蹤的升級 socket，並僅在 HTTP server 與這些 socket 均已關閉後返回。
 
 ## 模型體驗
 
