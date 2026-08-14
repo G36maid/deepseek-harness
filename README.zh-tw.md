@@ -38,24 +38,7 @@ pnpm dsh web
 
 - 歡迎透過 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交回饋或 bug 報告。
 - 為你的外掛程式倉庫新增 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 話題，便於被發現。
-- 歡迎加入 DeepSeek Harness 企微羣：掃描 QR Code新增企微小助手並填寫入羣問卷，完成後小助手會邀請你入羣。
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">企微小助手</th>
-      <th align="center">入羣問卷</th>
-      <th align="center">微信公眾號</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><img src="assets/community-wecom-assistant.png" alt="DeepSeek Harness 企微小助手QR Code" width="180" height="180"></td>
-      <td align="center"><a href="https://trtgsjkv6r.feishu.cn/share/base/form/shrcnIt5twSVdLGD52KJBckGCgg"><img src="assets/community-wecom-survey.png" alt="DeepSeek Harness 入羣問卷QR Code" width="180" height="180"></a></td>
-      <td align="center"><img src="assets/community-wechat-official-account.png" alt="DeepSeek Harness 團隊微信公眾號QR Code" width="180" height="180"></td>
-    </tr>
-  </tbody>
-</table>
+- 加入 <a href="https://discord.gg/Ycq5dCaS4">DeepSeek Harness Discord 社群</a>。
 
 ## 參與貢獻
 
