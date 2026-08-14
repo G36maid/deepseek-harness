@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-這些測試在行程內啟動真實的 web 組合，並用真實 Chromium 透過真實 HTTP 驅動程式它。該 lane
+這些測試在行程內啟動真實的 web 組合，並用真實 Chromium 透過真實 HTTP 驅動它。該 lane
 的執行機制——模式、fixture、golden，以及與 `dsh web` 之間刻意保留的組合差異——記錄在
 [`scaffold.ts`](scaffold.ts) 和
 [瀏覽器 e2e Agent Note](../../../.agents/notes/implemented/testing/2026-07-24-web-gui-browser-e2e-lane.md)中。
@@ -10,7 +10,7 @@
 ## 這些是 Host 面的測試
 
 它們在根 `tsconfig.host.json` 中做型別檢查，而不在 Client aggregate 中，因為它們直接讀取
-Host 服務：`ctx.apiProxy`、Host 側 `SessionStore`、`ctx.sessionProjectionCache`。執行時期驅動程式
+Host 服務：`ctx.apiProxy`、Host 側 `SessionStore`、`ctx.sessionProjectionCache`。執行時期驅動
 瀏覽器並不使一個文件成為 Client 程序的一部分——兩個 face 在相同的鍵上以不同服務合併 cordis
 `Context`，因此單個程序無法同時看見兩者。把這些文件挪進 Client aggregate 會讓每一處
 Host 服務訪問都無法編譯。
@@ -26,7 +26,7 @@ Client face，而該 face 必須等 Host tsdown 生成 `@deepseek-ai/dsh-goal/re
 import 點明源模組。這樣漂移會表現為選擇器未命中或映像檔值過期——是響亮的失敗，絕不會是靜默
 透過。`scaffold.ts` 按此規則映像檔歡迎聲明的 namespace、確認欄位、版本和被斷言的中文文案。
 
-有兩類 Client import 是長期成立的。`assembled-boot.ts` 驅動程式 shell 本身，因此它從
+有兩類 Client import 是長期成立的。`assembled-boot.ts` 驅動 shell 本身，因此它從
 `@deepseek-ai/dsh-client-web` import `AppWebEntry`、從
 `@deepseek-ai/dsh-client-modules/client` import boot manifest 類型：啟動真實 shell 正是該
 harness 的用途，且這兩個包本來就在 Host 圖中。另外，chat 場景從

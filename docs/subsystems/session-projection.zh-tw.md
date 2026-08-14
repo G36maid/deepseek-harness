@@ -2,7 +2,7 @@
 
 [English](session-projection.md) | [简体中文](session-projection.zh.md) | 繁體中文
 
-工作階段投影 seam 是一項[能力 seam](../capability-seams.md)：領域 host 外掛程式經由它向用戶端載體供給按工作階段的日誌派生狀態的當前全量值；三方分別是 Service Definition 與登錄檔（[dsh-session-projection](../../packages/session/session-projection)，`ctx.sessionProjections`）、領域貢獻方（每個領域註冊一個純單元）與載體（[dsh-host-apiproxy](../../packages/host/apiproxy) 的歷史尾頁與 `session/projection` 推送幀）。它是一項選填能力，不屬於 agent loop（代理循環）主幹。框架負責驅動程式，領域負責計算：登錄檔只訂閱一次 `session/event`，並把每個已提交事件摺疊進每個單元；領域不持有任何訂閱，用戶端也從不摺疊領域事件——它們收到的是成品值。設計權威：[session-projection RFC](../../.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md)；驅動程式、快取與變更流約定：[包 README](../../packages/session/session-projection/README.md)。
+工作階段投影 seam 是一項[能力 seam](../capability-seams.md)：領域 host 外掛程式經由它向用戶端載體供給按工作階段的日誌派生狀態的當前全量值；三方分別是 Service Definition 與登錄檔（[dsh-session-projection](../../packages/session/session-projection)，`ctx.sessionProjections`）、領域貢獻方（每個領域註冊一個純單元）與載體（[dsh-host-apiproxy](../../packages/host/apiproxy) 的歷史尾頁與 `session/projection` 推送幀）。它是一項選填能力，不屬於 agent loop（代理循環）主幹。框架負責驅動，領域負責計算：登錄檔只訂閱一次 `session/event`，並把每個已提交事件摺疊進每個單元；領域不持有任何訂閱，用戶端也從不摺疊領域事件——它們收到的是成品值。設計權威：[session-projection RFC](../../.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md)；驅動、快取與變更流約定：[包 README](../../packages/session/session-projection/README.md)。
 
 原始碼：[`packages/session/session-projection/src/index.ts`](../../packages/session/session-projection/src/index.ts)
 
@@ -90,7 +90,7 @@ type ProjectionChangeListener = (
 
 ## 登錄檔：`ctx.sessionProjections`
 
-`SessionProjectionRegistry`（[簽名](#ctxsessionprojections--sessionprojectionregistry)）擁有驅動程式權：一份 `session/event` 訂閱、對每個已註冊單元即時呼叫 `apply`，以及每工作階段每單元的水位線（watermark）cell。cell 惰性建置：在事件串流過之後才註冊的單元，或比登錄檔更早的工作階段，都在首次觸達（事件或讀取）時從 `init` 出發在記憶體日誌上摺疊。註冊是一個 effect，其 disposer 隨呼叫方 fiber 走：領域外掛程式解除安裝後，其 key（連同快取的 cell）從後續驅動程式與快照中消失，用戶端將其讀作能力缺失；key 重複直接 throw。領域外掛程式在 `ctx.inject(['sessionProjections'], …)` 下註冊，因此不帶登錄檔的 headless 組裝完全不受影響。
+`SessionProjectionRegistry`（[簽名](#ctxsessionprojections--sessionprojectionregistry)）擁有驅動權：一份 `session/event` 訂閱、對每個已註冊單元即時呼叫 `apply`，以及每工作階段每單元的水位線（watermark）cell。cell 惰性建置：在事件串流過之後才註冊的單元，或比登錄檔更早的工作階段，都在首次觸達（事件或讀取）時從 `init` 出發在記憶體日誌上摺疊。註冊是一個 effect，其 disposer 隨呼叫方 fiber 走：領域外掛程式解除安裝後，其 key（連同快取的 cell）從後續驅動與快照中消失，用戶端將其讀作能力缺失；key 重複直接 throw。領域外掛程式在 `ctx.inject(['sessionProjections'], …)` 下註冊，因此不帶登錄檔的 headless 組裝完全不受影響。
 
 <!-- BEGIN GENERATED cordis-surface (gen-cordis-catalog.ts) — do not edit between markers -->
 

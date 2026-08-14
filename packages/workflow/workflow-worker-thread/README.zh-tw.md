@@ -62,7 +62,7 @@ subagent seam 只有一個取消通道：請求訊號。不存在單獨的子 ag
 
 正常結帳也會中止待處理啟動，並在結果對外結帳前開始 dispose 所有已發布但無需等待的子 agent。宿主的完全靜止條件同時包括待處理啟動和已發布子 agent 的 dispose，因此清理不會遺漏非同步啟動交易。
 
-`dispose()` 是冪等的。它會取消執行、立即啟動宿主驅動程式的 dispose、在同一寬限時間內等待結果和子 agent 完全靜止、無條件終止 worker，並執行最後一次倖存項掃描。每個子 agent 的 dispose 都會記憶化，使 worker RPC、宿主取消、死亡清理和公開 dispose 都匯入同一操作。
+`dispose()` 是冪等的。它會取消執行、立即啟動宿主驅動的 dispose、在同一寬限時間內等待結果和子 agent 完全靜止、無條件終止 worker，並執行最後一次倖存項掃描。每個子 agent 的 dispose 都會記憶化，使 worker RPC、宿主取消、死亡清理和公開 dispose 都匯入同一操作。
 
 ## 結果與事件保證
 

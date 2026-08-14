@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/hmr/README.md
 README.md: 3d4bc75038881476af1b28b4459e840397f6c5d5
 README.zh.md: caf32ac062803db6946b240c603a3f6780c792c3
-README.zh-tw.md: 5916f54f96b5530b76fbe6abd77f5cefb1746de1
+README.zh-tw.md: e9c37aad7fc4d7ebb14df2f4c6f807843405e6bf

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-31-one-route-to-add-a-workspace.md
 2026-07-31-one-route-to-add-a-workspace.md: 0c907a166a30dc3b31192f7186bec127fc808ca2
 2026-07-31-one-route-to-add-a-workspace.zh.md: dca6223be4ed2bed7a62087d64fd1911c0ec019f
-2026-07-31-one-route-to-add-a-workspace.zh-tw.md: 95ac0c931cc4ee4b9dce4c368c1239120c5ba3cc
+2026-07-31-one-route-to-add-a-workspace.zh-tw.md: 07b3bbf066d3f70226777ab3b038678f9c5837d2

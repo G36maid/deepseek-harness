@@ -115,4 +115,23 @@ describe('zh-CN to zh-TW Markdown conversion', () => {
     }
     expect(converted).toContain('`print("信息")`')
   })
+
+  it('keeps 驱动 as the verb 驅動, not the noun 驅動程式', () => {
+    const source = '模型驱动每个请求，循环驱动的 agent 使用运行时事实。'
+    const converted = convertChineseMarkdown(source)
+    expect(converted).toContain('驅動每個請求')
+    expect(converted).toContain('迴圈驅動的 agent')
+    expect(converted).not.toContain('驅動程式每個請求')
+    expect(converted).not.toContain('迴圈驅動程式的 agent')
+  })
+
+  it('protects a three-way language switcher from label conversion', () => {
+    // A zh.md whose switcher already names 简体中文 (as the repo-wide
+    // three-way form) must survive re-conversion verbatim: converting the
+    // Simplified label would turn it into 繁體中文.
+    const source = '# 标题\n\n[English](server.md) | [简体中文](server.zh.md) | 繁體中文\n\n正文。\n'
+    const converted = convertChineseMarkdown(source)
+    expect(converted).toContain('[English](server.md) | [简体中文](server.zh.md) | 繁體中文')
+    expect(converted).not.toContain('| [繁體中文](server.zh.md) |')
+  })
 })

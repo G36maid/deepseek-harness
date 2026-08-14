@@ -22,7 +22,7 @@ Web agent（代理）既無法識別承載當前工作階段的 GUI，也不知�
 
 ## 驗證
 
-無金鑰的 fresh-round-trip 瀏覽器場景會啟動已交付的 Web 組合，驅動程式真實的重播工作階段，對包含 URL 的系統提示詞前綴生成快照，並呼叫組裝後的 bash 工具，證明 `$DSH_WEB_URL` 與實際綁定的執行時期一致。真實 CLI 冒煙測試會啟動 `dsh web` 並捕獲模型提供方請求，從而固定完整的雙命令開發約定。`dev:web` watcher 測試會在原始碼發生變化後重新建置隔離的用戶端 bundle；瀏覽器 HMR 場景會啟動 `dsh web`，修改初始 roster 中的 bundle，並在頁面 identity 不變的情況下觀察新 DOM。真實 Vite 子行程測試要求服務模式在給出改用完整宿主的糾正資訊後自然退出，並透過插樁 `Server.listen()` 證明它從未被呼叫。真實 loader Web 伺服器測試會在行程完成綁定後改寫靜態資源，並證明同一埠返回新的位元組。這些斷言檢查提示詞狀態、行程退出狀態、shell 輸出、DOM identity 和 HTTP 位元組，而不是 agent 的成功聲明。
+無金鑰的 fresh-round-trip 瀏覽器場景會啟動已交付的 Web 組合，驅動真實的重播工作階段，對包含 URL 的系統提示詞前綴生成快照，並呼叫組裝後的 bash 工具，證明 `$DSH_WEB_URL` 與實際綁定的執行時期一致。真實 CLI 冒煙測試會啟動 `dsh web` 並捕獲模型提供方請求，從而固定完整的雙命令開發約定。`dev:web` watcher 測試會在原始碼發生變化後重新建置隔離的用戶端 bundle；瀏覽器 HMR 場景會啟動 `dsh web`，修改初始 roster 中的 bundle，並在頁面 identity 不變的情況下觀察新 DOM。真實 Vite 子行程測試要求服務模式在給出改用完整宿主的糾正資訊後自然退出，並透過插樁 `Server.listen()` 證明它從未被呼叫。真實 loader Web 伺服器測試會在行程完成綁定後改寫靜態資源，並證明同一埠返回新的位元組。這些斷言檢查提示詞狀態、行程退出狀態、shell 輸出、DOM identity 和 HTTP 位元組，而不是 agent 的成功聲明。
 
 ## 考慮過的替代方案
 

@@ -19,7 +19,7 @@ pnpm dsh --profile headless "fix the failing test in this workspace"
 
 ## E2B POC overlay
 
-[`e2b.cordis.yml`](e2b.cordis.yml) 使用一個共享 E2B 沙盒替換本機檔案系統與子行程提供方，同時保留 `dsh-bash-local` 和相同的面向模型工具。請在 git 忽略的根目錄 `.env` 中，將 `E2B_API_KEY` 與 `DEEPSEEK_API_KEY` 放在一起，然後執行憑據門控的實機組合測試；它在同一個沙盒中驅動程式 FS、Bash、PTY 和 LSP，並證明沙盒最終被刪除：
+[`e2b.cordis.yml`](e2b.cordis.yml) 使用一個共享 E2B 沙盒替換本機檔案系統與子行程提供方，同時保留 `dsh-bash-local` 和相同的面向模型工具。請在 git 忽略的根目錄 `.env` 中，將 `E2B_API_KEY` 與 `DEEPSEEK_API_KEY` 放在一起，然後執行憑據門控的實機組合測試；它在同一個沙盒中驅動 FS、Bash、PTY 和 LSP，並證明沙盒最終被刪除：
 
 ```sh
 pnpm exec vitest run --config vitest.e2e.config.ts packages/e2b/e2b/tests/composition.e2e.ts

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-02-win32-in-process-folder-dialog.md
 2026-08-02-win32-in-process-folder-dialog.md: dcfe39a93e19347b1d6b50160d4c3929e0fc0ca0
 2026-08-02-win32-in-process-folder-dialog.zh.md: 0a88fb7e10dfecb5780f6cb72382342bed373bef
-2026-08-02-win32-in-process-folder-dialog.zh-tw.md: 071087126e2b91e918bee5706aa72c377651d50a
+2026-08-02-win32-in-process-folder-dialog.zh-tw.md: 20d7e27b20c1fda4e7c292743ecb9e1f8929b043

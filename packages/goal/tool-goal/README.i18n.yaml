@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/goal/tool-goal/README.md
 README.md: a61054d1f9460b197228206716566b6a5c6e044a
 README.zh.md: 8ee21e7d997008937f333341c1dfd6c0d10c2006
-README.zh-tw.md: 14e6129943dab46bbfffa5cd923634184d111828
+README.zh-tw.md: 37eff808c9ab061253388923f7749eec5af21718

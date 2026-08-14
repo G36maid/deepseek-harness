@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-26-todo-parallel-in-progress.md
 2026-07-26-todo-parallel-in-progress.md: 71e5b980661ed467cd7c1bea92247e8e57c10be9
 2026-07-26-todo-parallel-in-progress.zh.md: a07b241cc1e1fbe1df62cc613a121fc8ea8ba43b
-2026-07-26-todo-parallel-in-progress.zh-tw.md: e83c0456ffc913fd048111b9990fb18a71abf717
+2026-07-26-todo-parallel-in-progress.zh-tw.md: b6555b60453419217573e988d6681a73e5b01b6c

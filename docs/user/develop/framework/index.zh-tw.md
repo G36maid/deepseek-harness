@@ -23,7 +23,7 @@ ACTIVE → UNLOADING → DISPOSED
 | UNLOADING | 外掛程式正在解除安裝並釋放資源 |
 | DISPOSED | 已完全解除安裝 |
 
-## 相依性驅動程式的載入
+## 相依性驅動的載入
 
 聲明瞭 `inject` 的外掛程式會等待所有必需服務就緒：
 

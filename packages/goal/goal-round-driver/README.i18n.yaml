@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/goal/goal-round-driver/README.md
 README.md: ddbe9f35d32508479cc85f2a2a6d4f3b451fd7cc
 README.zh.md: a5254a78e7f5a1627e9f811b39d2f008646f9995
-README.zh-tw.md: c363f6a7f9e36c4562051b70e2c20a2cf5d1c1b2
+README.zh-tw.md: f32a33294a0ba6c048a450dd22cea1875f1f7e4e

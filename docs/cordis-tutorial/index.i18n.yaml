@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/index.md
 index.md: b9a4c452e160bcf02a8115ad03f5fcf7c6cb28fd
 index.zh.md: c87f840cc1bea3ca18d82f54dddf27f92ef7d138
-index.zh-tw.md: 4c482e0ed11adbb68a8953f7002ca6359010d54e
+index.zh-tw.md: db16c3035ae41e590a19b5a26810f0e209f989c2

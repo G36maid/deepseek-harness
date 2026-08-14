@@ -16,7 +16,7 @@ Web 輸入框的圖片介面缺乏基本可用性（使用者回饋，issue #224
 
 附件展示落位到新的零 cordis 原子元件包 `@deepseek-ai/dsh-client-ui-attachment`（`packages/client/ui-attachment`），模式照 `dsh-client-ui-primitives`：`AttachmentRail`（64px、16px 圓角縮略圖，單擊 `onOpen`，卡片內部的刪除按鈕懸停或聚焦顯示、`pointer: coarse` 下常顯，隱藏捲軸配兩端圓形箭頭並依滾動幾何重算，縱向滾輪轉橫向平移且單次鉗制 60px，新增條目滾到欄尾），`MessageImage`/`ImageGallery`（單擊預覽），以及 `ImageLightbox`。文案經 label props 傳入；`ui-conversation` 透過 `src/client/image-labels.ts` 橋接 `conversation` 詞典，並保留狀態機接線（草稿 id、預覽狀態、接收回呼）。跨包 import 之所以是被允許的路徑，正因為它是原子元件庫而非 client 外掛程式：外掛程式之間仍禁止互相 import 元件，且附件欄是輸入框自有的渲染，不是插槽。
 
-兩個浮層都 portal 到 body：從聊天訊息打開的燈箱位於帶 transform 的祖先之下，`position: fixed` 會被困在祖先的盒子裡（遮罩只蓋住聊天列），因此 `ImageLightbox` 與 `Toast` 經 `createPortal(document.body)` 渲染，從任何打開位置都覆蓋整個視口。短時橫幅是 `ui-primitives` 的 `Toast` 原子（距視口頂部 120px，水準中心跟隨選填錨點——composer 卡片，因此橫幅在聊天列上置中——`role="alert"`、`pointer-events: none`，停留三秒再一秒淡出，`onDone` 解除安裝，按展示序號作 key 使相同文案重新播報）。`InputBar` 把接收拒絕（`addImages` 返回的原因）和 `promptError` 都改走 toast，替換內聯紅條，`ModelSelect` 的模型選擇被拒也走同一原子，其選單內帶 Retry 的錯誤條仍是目錄載入的呈現面；狀態機 notice 條不受影響。DeepSeek Chat 原始碼（本機參考副本）提供了目標行為：其 `ImageThumbnailInInput`（64px 卡片、透明度過渡的刪除鈕）、`ScrollArrows`（哨兵驅動程式的翻頁）與 `useToast` 用法。
+兩個浮層都 portal 到 body：從聊天訊息打開的燈箱位於帶 transform 的祖先之下，`position: fixed` 會被困在祖先的盒子裡（遮罩只蓋住聊天列），因此 `ImageLightbox` 與 `Toast` 經 `createPortal(document.body)` 渲染，從任何打開位置都覆蓋整個視口。短時橫幅是 `ui-primitives` 的 `Toast` 原子（距視口頂部 120px，水準中心跟隨選填錨點——composer 卡片，因此橫幅在聊天列上置中——`role="alert"`、`pointer-events: none`，停留三秒再一秒淡出，`onDone` 解除安裝，按展示序號作 key 使相同文案重新播報）。`InputBar` 把接收拒絕（`addImages` 返回的原因）和 `promptError` 都改走 toast，替換內聯紅條，`ModelSelect` 的模型選擇被拒也走同一原子，其選單內帶 Retry 的錯誤條仍是目錄載入的呈現面；狀態機 notice 條不受影響。DeepSeek Chat 原始碼（本機參考副本）提供了目標行為：其 `ImageThumbnailInInput`（64px 卡片、透明度過渡的刪除鈕）、`ScrollArrows`（哨兵驅動的翻頁）與 `useToast` 用法。
 
 ## 備選方案
 

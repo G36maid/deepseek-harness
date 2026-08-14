@@ -4,7 +4,7 @@
 
 用於無金鑰快照測試的 LLM（大型語言模型）重播外掛程式。它根據已記錄的**工作階段 JSONL** fixture（測試前置資料）重建模型流，使測試無需 API 金鑰即可針對固定的模型 transcript（文字記錄）啟動真實 agent（代理）。設定 `providers` 後，它會註冊僅用於重播的配接器，其模型目錄可供測試模型發現功能的場景使用；未設定 `providers` 時，它會安裝無需模型發現功能的測試所用 catch-all `llm/stream` waterfall（瀑布式事件）。
 
-其消費端包括 ACP（Agent Client Protocol）與 headless `stream-json` 快照套件，以及 Web 瀏覽器 e2e 管線。Loader 驅動程式的套件使用此外掛程式替代真實 LLM 配接器；Web 管線直接安裝它，以保留清理階段的消費檢查控制代碼。
+其消費端包括 ACP（Agent Client Protocol）與 headless `stream-json` 快照套件，以及 Web 瀏覽器 e2e 管線。Loader 驅動的套件使用此外掛程式替代真實 LLM 配接器；Web 管線直接安裝它，以保留清理階段的消費檢查控制代碼。
 
 ## fixture 的工作方式
 
@@ -56,7 +56,7 @@ fixture 就是持久化的工作階段日誌（`<scenario>/session.jsonl`）。�
 
 ## 匯出項
 
-- `installLlmReplay(ctx, config)`：安裝已設定重播配接器或 catch-all `llm/stream` 監聽器；返回 `ReplayHandle`（包含用於保證 HMR（熱模組替換）安全的 `dispose()`，以及清理階段執行的 `assertConsumed()` 檢查；後者確保每個已記錄指令碼都綁定到即時工作階段，且每個已綁定遊標都已耗盡，從而將場景靜默驅動程式的模型呼叫少於記錄數轉換為明確診斷）。在測試中使用它，可以不透過 Loader 或 env var 驅動程式重播。
+- `installLlmReplay(ctx, config)`：安裝已設定重播配接器或 catch-all `llm/stream` 監聽器；返回 `ReplayHandle`（包含用於保證 HMR（熱模組替換）安全的 `dispose()`，以及清理階段執行的 `assertConsumed()` 檢查；後者確保每個已記錄指令碼都綁定到即時工作階段，且每個已綁定遊標都已耗盡，從而將場景靜默驅動的模型呼叫少於記錄數轉換為明確診斷）。在測試中使用它，可以不透過 Loader 或 env var 驅動重播。
 - `loadSessionScripts(config)`：解析場景中有序的 `SessionScript[]`（主工作階段 + 子工作階段），準備按首次呼叫順序綁定到即時工作階段。
 - `loadReplayScript(config)`：只解析主工作階段的 `ReplayEntry[]`（如果伴隨檔案存在，則使用經校驗的替換或修補程式；否則從 JSONL 派生；fixture 缺失時明確報錯）。
 - `deriveReplayScript(events)` / `parseSessionLog(text)` / `parseSessionHeader(text)` / `resolveScriptedEntry(entry, messages)`：將已記錄工作階段日誌中的普通 loop 區塊和顯式標記的本機壓縮輸出轉換為指令碼、讀取其 header `id`/`createdAt`、並針對單次即時請求解析 `{{fromRequest:...}}` 佔位符的純輔助工具。派生的 assistant 分組必須以 `finish` 區塊結束；沒有該區塊的分組是 `stream()` 拋出例外的指紋，必須改用 override 伴隨檔案表達。

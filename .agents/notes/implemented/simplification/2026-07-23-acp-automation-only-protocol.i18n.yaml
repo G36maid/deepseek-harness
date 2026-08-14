@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-23-acp-automation-only-protocol.md
 2026-07-23-acp-automation-only-protocol.md: 85844cdb4b15c59217085826a9c93d731710ceb6
 2026-07-23-acp-automation-only-protocol.zh.md: 60d7f6c946784d7a84bf9c6984aeac81de510f6a
-2026-07-23-acp-automation-only-protocol.zh-tw.md: 9dd9251c6c4dedfa3f254622491e28a68154cf8d
+2026-07-23-acp-automation-only-protocol.zh-tw.md: 387b95eae7d337bd466b908f2b14f25e2185309f

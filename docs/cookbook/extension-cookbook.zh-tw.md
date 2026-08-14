@@ -36,7 +36,7 @@ export function apply(ctx: Context) {
 
 ## UI 外掛程式
 
-UI 外掛程式從 `session/event` 事件串流渲染（助手 token 流以 `assistant/chunk` 形式到達，加上輪次/步驟邊界與工具活動），並透過 `agent.followup()` / `agent.steer()` 將輸入驅動程式回去。如果瀏覽器外掛程式要向內建 Web Client 貢獻業務行，則應註冊 `ConversationNodeDefinition` 與 keyed Chat renderer；具體步驟見 [Conversation Node 指南](adding-a-conversation-node.md)。
+UI 外掛程式從 `session/event` 事件串流渲染（助手 token 流以 `assistant/chunk` 形式到達，加上輪次/步驟邊界與工具活動），並透過 `agent.followup()` / `agent.steer()` 將輸入驅動回去。如果瀏覽器外掛程式要向內建 Web Client 貢獻業務行，則應註冊 `ConversationNodeDefinition` 與 keyed Chat renderer；具體步驟見 [Conversation Node 指南](adding-a-conversation-node.md)。
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
@@ -62,9 +62,9 @@ export function apply(ctx: Context) {
 }
 ```
 
-## 外部協議驅動程式
+## 外部協議驅動
 
-*協議驅動程式*將協議對端接入 `ctx.agents`；它可以服務於 UI 或自動化用戶端。stdio 驅動程式擁有 stdout，透過工廠建立或復原 agent（代理），並將協議請求對映為 `followup()` 或 `cancel()`。底層提示詞請求返回其持久入隊回執；它不會透過關聯 `MessageId` 與 `turn/end` 獲得結果。整個 agent 的狀態應單獨發布。自動化方法可以從回執等待到下一次 idle，並概括這一顯式擁有的區間；UI 通常則會持續觀察開放式事件串流。透過 `AgentHandle.dispose()` 拆除 agent，以使 dispose（資源釋放）達到完全靜止。
+*協議驅動*將協議對端接入 `ctx.agents`；它可以服務於 UI 或自動化用戶端。stdio 驅動擁有 stdout，透過工廠建立或復原 agent（代理），並將協議請求對映為 `followup()` 或 `cancel()`。底層提示詞請求返回其持久入隊回執；它不會透過關聯 `MessageId` 與 `turn/end` 獲得結果。整個 agent 的狀態應單獨發布。自動化方法可以從回執等待到下一次 idle，並概括這一顯式擁有的區間；UI 通常則會持續觀察開放式事件串流。透過 `AgentHandle.dispose()` 拆除 agent，以使 dispose（資源釋放）達到完全靜止。
 
 [`packages/acp/acp`](../../packages/acp/acp) 是僅面向自動化的完整示例：它透過 ACP（Agent Client Protocol）JSON-RPC stdio 提供全新文字工作階段，寄出已提交的助手文字，並為其擁有的 agent 註冊一次性機器權限應答器。其 [README](../../packages/acp/acp/README.md) 定義確切的方法、事件順序和生命週期約定。
 
@@ -92,7 +92,7 @@ export function apply(ctx: Context) {
 
 ## 可執行的組裝示例
 
-可執行葉子從 `examples/*/cordis.yml` 載入各自的外掛程式樹；根目錄的 `demo:*` 指令碼和這些葉子目錄是權威清單。產品 `dsh` 啟動器負責 Web 和一次性 headless 執行，ACP 葉子使用 [`@deepseek-ai/dsh-acp-demo`](../../packages/examples/acp-demo)，JSON-RPC 葉子使用 [`@deepseek-ai/dsh-sdk-jsonrpc-demo`](../../packages/examples/jsonrpc-demo)。headless 快照葉節點顯式掛載 [`@deepseek-ai/dsh-agent-spine-demo`](../../packages/examples/agent-spine-demo) 和 JSONL 持久化，再透過示例自有的測試 fixture（測試前置資料）驅動程式這些元件，而不是透過已交付的 app 包。
+可執行葉子從 `examples/*/cordis.yml` 載入各自的外掛程式樹；根目錄的 `demo:*` 指令碼和這些葉子目錄是權威清單。產品 `dsh` 啟動器負責 Web 和一次性 headless 執行，ACP 葉子使用 [`@deepseek-ai/dsh-acp-demo`](../../packages/examples/acp-demo)，JSON-RPC 葉子使用 [`@deepseek-ai/dsh-sdk-jsonrpc-demo`](../../packages/examples/jsonrpc-demo)。headless 快照葉節點顯式掛載 [`@deepseek-ai/dsh-agent-spine-demo`](../../packages/examples/agent-spine-demo) 和 JSONL 持久化，再透過示例自有的測試 fixture（測試前置資料）驅動這些元件，而不是透過已交付的 app 包。
 
 ## 功能→機制對映
 

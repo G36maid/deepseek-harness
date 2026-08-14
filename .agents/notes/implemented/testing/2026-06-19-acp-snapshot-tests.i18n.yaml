@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/testing/2026-06-19-acp-snapshot-tests.md
 2026-06-19-acp-snapshot-tests.md: e42d1c0da53f7c29972aad7dc419ebc6eeae83de
 2026-06-19-acp-snapshot-tests.zh.md: 59c83fea81bbdd693a1f781a655a9a7a7ed547bd
-2026-06-19-acp-snapshot-tests.zh-tw.md: 2be18e693292f27602d6d8903c69f871c9ca8065
+2026-06-19-acp-snapshot-tests.zh-tw.md: 036ba0532d26a61193cf1c28aaeceef583db35ec

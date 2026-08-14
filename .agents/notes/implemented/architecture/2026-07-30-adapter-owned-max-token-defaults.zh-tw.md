@@ -6,7 +6,7 @@ Status: implemented
 
 ## Problem
 
-LLM（大型語言模型）配接器可以序列化顯式的 `GenerateOptions.maxTokens`，但無法透過 Cordis 設定建立可重建的對話預設值。僅在提供方序列化中應用回退，會導致協議請求與持久 `request/header` 不一致；若將各提供方預設值都放進 agent loop（代理循環），則會把部署與模型策略轉移到提供方無關的驅動程式器中。
+LLM（大型語言模型）配接器可以序列化顯式的 `GenerateOptions.maxTokens`，但無法透過 Cordis 設定建立可重建的對話預設值。僅在提供方序列化中應用回退，會導致協議請求與持久 `request/header` 不一致；若將各提供方預設值都放進 agent loop（代理循環），則會把部署與模型策略轉移到提供方無關的驅動器中。
 
 ## Decision
 

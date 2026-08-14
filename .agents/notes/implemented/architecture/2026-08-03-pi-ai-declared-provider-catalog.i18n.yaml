@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-03-pi-ai-declared-provider-catalog.md
 2026-08-03-pi-ai-declared-provider-catalog.md: a08a799acfad7b951c1782a0e77b0bd7deac62cc
 2026-08-03-pi-ai-declared-provider-catalog.zh.md: e322cb68774adce487045c02b64959d4e672b276
-2026-08-03-pi-ai-declared-provider-catalog.zh-tw.md: 390f135ce17ef8ad754a9fd8ae2b5bdd3e7caa61
+2026-08-03-pi-ai-declared-provider-catalog.zh-tw.md: b5c0788c91221416932e0afe3ec9190262972c98

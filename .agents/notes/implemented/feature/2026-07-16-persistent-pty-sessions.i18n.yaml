@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-16-persistent-pty-sessions.md
 2026-07-16-persistent-pty-sessions.md: 4016d35d588e5a55d5a7518f1ee6e0943933bfb3
 2026-07-16-persistent-pty-sessions.zh.md: 2e66f2a5ef6f3914640c7503f994c44acd066ed9
-2026-07-16-persistent-pty-sessions.zh-tw.md: fcb30a4155295e666903f1ba1ff184e4504a7f0b
+2026-07-16-persistent-pty-sessions.zh-tw.md: 24446a8929acd9a9ff751dc8302c7738b2beadd1

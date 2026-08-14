@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-06-reader-scroll-attribution-observed-top-ledger.md
 2026-08-06-reader-scroll-attribution-observed-top-ledger.md: d00e88dd17a2d445ad453082f9135de8789d748c
 2026-08-06-reader-scroll-attribution-observed-top-ledger.zh.md: 52bee71d93865f27f9e606695364333b8648c369
-2026-08-06-reader-scroll-attribution-observed-top-ledger.zh-tw.md: 380dde19e19b577c6b0491b6118b86768b691136
+2026-08-06-reader-scroll-attribution-observed-top-ledger.zh-tw.md: 8ed675af3b383c29bb73e43fc1e571cb56a3b358

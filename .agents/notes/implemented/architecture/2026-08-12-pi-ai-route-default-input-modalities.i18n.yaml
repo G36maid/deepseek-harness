@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-12-pi-ai-route-default-input-modalities.md
 2026-08-12-pi-ai-route-default-input-modalities.md: 5a91e32522103f81378c186ad6493097dfad299a
 2026-08-12-pi-ai-route-default-input-modalities.zh.md: 4b7cdb19a6d135ff3157b006333108a87e99d569
-2026-08-12-pi-ai-route-default-input-modalities.zh-tw.md: 940cf700a5d6ee7474442a98ca65019d6c2b4995
+2026-08-12-pi-ai-route-default-input-modalities.zh-tw.md: a447f0d58ddeb3f2a030e780008aae22d80ea70e

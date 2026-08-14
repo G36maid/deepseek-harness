@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/postmortem/0001-acp-default-export-drops-inject.md
 0001-acp-default-export-drops-inject.md: 893c2df12e73843e0c1a7810d92e415e178fa60d
 0001-acp-default-export-drops-inject.zh.md: b5bff0452598e047672f1638fcd6c726d26f89d5
-0001-acp-default-export-drops-inject.zh-tw.md: e8807f341644d84de061b569b118d90ab5abad2f
+0001-acp-default-export-drops-inject.zh-tw.md: 3956c1a09b83c5650800af50c81816ed67181544

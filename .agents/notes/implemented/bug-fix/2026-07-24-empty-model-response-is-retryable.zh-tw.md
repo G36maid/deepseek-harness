@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-提供方偶爾會返回一種退化的 completion：流本身格式完好，以終止性的 `stop` 結束，卻沒有任何內容區塊——沒有文字、沒有推理（reasoning）、沒有工具呼叫。如果配接器把這種形態對映為成功的 `{kind: 'stop'}` 結束，主迴圈就會記錄一條空的 `assistant/message`，並把該輪次以 `completed` 結束。系統不會重試，失敗也不會向呼叫方暴露，而像 goal-round-driver 這樣的驅動程式方會消耗一個 Round，卻沒有取得任何進展。
+提供方偶爾會返回一種退化的 completion：流本身格式完好，以終止性的 `stop` 結束，卻沒有任何內容區塊——沒有文字、沒有推理（reasoning）、沒有工具呼叫。如果配接器把這種形態對映為成功的 `{kind: 'stop'}` 結束，主迴圈就會記錄一條空的 `assistant/message`，並把該輪次以 `completed` 結束。系統不會重試，失敗也不會向呼叫方暴露，而像 goal-round-driver 這樣的驅動方會消耗一個 Round，卻沒有取得任何進展。
 
 ## 決策
 

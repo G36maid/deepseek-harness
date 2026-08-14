@@ -14,7 +14,7 @@
 
 ## jsonrpc-agent
 
-由 Python SDK 和 JSON-RPC 驅動程式的無人值守編碼 agent。詳見 [JSON-RPC 示例參考](jsonrpc-agent/README.md)。
+由 Python SDK 和 JSON-RPC 驅動的無人值守編碼 agent。詳見 [JSON-RPC 示例參考](jsonrpc-agent/README.md)。
 
 ## web-cordis
 

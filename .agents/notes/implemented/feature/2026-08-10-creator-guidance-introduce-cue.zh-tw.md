@@ -30,4 +30,4 @@ Status: implemented
 
 ## 測試
 
-元件測試釘住帶上限的錯峯（11 字元拉丁名走 20ms 步進、4 字中文名走 40ms 節拍、單字元無錯峯）、確認時機，以及 reduced-motion 與空名的跳過路徑。`apply.spec.ts` 端到端驅動程式跨屏暫存：創造模式草稿攜帶提示暫存，一次確認將其清除，重複確認讓快照原樣不動。`agent-preset-authoring` web e2e 在 golden 中保持空自訂分組（標題加建立入口）。
+元件測試釘住帶上限的錯峯（11 字元拉丁名走 20ms 步進、4 字中文名走 40ms 節拍、單字元無錯峯）、確認時機，以及 reduced-motion 與空名的跳過路徑。`apply.spec.ts` 端到端驅動跨屏暫存：創造模式草稿攜帶提示暫存，一次確認將其清除，重複確認讓快照原樣不動。`agent-preset-authoring` web e2e 在 golden 中保持空自訂分組（標題加建立入口）。

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md
 2026-07-24-domain-kv-storage-and-workspace.md: 96f6e1083bc867f0176787089aabef7935ab0d7b
 2026-07-24-domain-kv-storage-and-workspace.zh.md: 9b4d435f0d63230681e73b75bd33b399ba2041de
-2026-07-24-domain-kv-storage-and-workspace.zh-tw.md: 1e629b040afb15ed6257292faeccd83ec0034bd5
+2026-07-24-domain-kv-storage-and-workspace.zh-tw.md: 4d06ae938cf524e6c7c878357e5a247ba79fa2c3

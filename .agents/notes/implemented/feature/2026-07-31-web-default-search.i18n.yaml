@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-web-default-search.md
 2026-07-31-web-default-search.md: 1306fc9947721950356fea9b8c0acd2b63c7e15f
 2026-07-31-web-default-search.zh.md: 15f18e4f945b4f0968793490678105d062ea05be
-2026-07-31-web-default-search.zh-tw.md: d531f07ec54ad3285f8d9cec9d659f54089af818
+2026-07-31-web-default-search.zh-tw.md: 05f1ea2d03a71c1e13410b600dd2a8392faaa5b0

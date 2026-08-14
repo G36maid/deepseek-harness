@@ -12,7 +12,7 @@ chip 攜帶無障礙描述 "Plan mode on, press to turn off"。准入失敗（`m
 
 ## 模型體驗
 
-間接地，透過 chip 派發的 `/plan off` 命令列：`@deepseek-ai/dsh-plan-mode` 擁有該命令列驅動程式的模型可見 policy 段、退出工具 schema 與已記錄狀態，本包只渲染投影並行送使用者同樣可以手敲的內容。
+間接地，透過 chip 派發的 `/plan off` 命令列：`@deepseek-ai/dsh-plan-mode` 擁有該命令列驅動的模型可見 policy 段、退出工具 schema 與已記錄狀態，本包只渲染投影並行送使用者同樣可以手敲的內容。
 
 #### KV Cache 影響
 

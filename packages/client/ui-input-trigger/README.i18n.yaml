@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/client/ui-input-trigger/README.md
 README.md: d0397199e68312bbc8aa79d2876826422b4fcc72
 README.zh.md: e1778cbc7dc01d71515e05902e5fc0b8fbe261b7
-README.zh-tw.md: 30158f422c50295e3cf24b5a128bbfba6b6d6ba4
+README.zh-tw.md: a3d3af2d325ba0be785dfdf7155830b581c40815

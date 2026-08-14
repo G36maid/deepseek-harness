@@ -17,13 +17,13 @@ DeepSeek Harness 的領域詞彙為每個概念規定一個規範術語。各術
 - **scoped dispatch**：規則是：關於某個 agent 的活動的事件以該 agent 的 carrier 進行分發。關於登錄檔本身的事件（如「一個工具被新增了」）屬於*登錄檔主體*事件，保持不過濾。
 - **shadowing**：最具體者勝出的名稱解析：一個帶作用域的工具／片段／變數僅在該 scope 內替換同名的全域性對應項。這是按 agent 訂製 persona 和按 agent 訂製工具變體的機制。
 - **restriction / scope-local 註冊**：restriction（`tools.restrict`）為單個 scope 過濾全域性工具集合（多個 restriction 取交集組合）；scope-local 註冊在過濾之後合併。被過濾掉的全域性工具既不出現在提示詞中，也拒絕執行，與不存在的工具無法區分。
-- **setup window**：建立者組裝 agent 作用域環境的建立時隙（`CreateAgentOptions.setup`）：此時 scope 和 agent 對象已存在，但 agent 或工作階段尚未發布，`agent/session-start` 尚未觸發，首次提示詞尚未組裝。setup 只做註冊，從不驅動程式 agent。
+- **setup window**：建立者組裝 agent 作用域環境的建立時隙（`CreateAgentOptions.setup`）：此時 scope 和 agent 對象已存在，但 agent 或工作階段尚未發布，`agent/session-start` 尚未觸發，首次提示詞尚未組裝。setup 只做註冊，從不驅動 agent。
 - **lineage**：以資料形式攜帶的父子關係事實（`parentSession`、持久的 `delegationDepth`、執行時期 `subagentDepth`）；從不影響可見性。<a id="lineage"></a>
 
 ## 目標
 
 - **目標**：附著在現有工作階段上的單個持久完成目標，帶有按修訂號演進的 `active` / `paused` / `blocked` / `complete` 階段和 Goal Round 上限；`blocked` 保留策略程式碼與說明。目標是一種狀態，不是調度器，也不是一段獨立對話；工作階段日誌仍是其真源。
-- **Goal Round**：為當前目標接納的一次續行週期。同工作階段驅動程式器將 Goal Round 具體化為一個由目標觸發的[輪次](#turn)，其中可包含零個或多個步驟；同一工作階段中無關的人類輪次不消耗 Goal Round 上限。<a id="goal-round"></a>
+- **Goal Round**：為當前目標接納的一次續行週期。同工作階段驅動器將 Goal Round 具體化為一個由目標觸發的[輪次](#turn)，其中可包含零個或多個步驟；同一工作階段中無關的人類輪次不消耗 Goal Round 上限。<a id="goal-round"></a>
 - **目標啟用**：續行消費端接納下一個 Goal Round 的行程本機權限。啟用態為 `armed` 或 `disarmed`；它有意不參與持久重播，因此在復原或 fork 後，只有隨後透過 `/goal` 或模型工具執行一次經人類授權的復原變更，自動工作才能開始。
 
 ## 人類命令

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cookbook/extension-cookbook.md
 extension-cookbook.md: aee34f9581a7e002f39ec03e37aa558919157413
 extension-cookbook.zh.md: e3c361513c712ca52237482cea7998204cf374ca
-extension-cookbook.zh-tw.md: a487c4c59e7c77288de38f089abd58f4fa99143b
+extension-cookbook.zh-tw.md: a99e00162ded90c3c5cac4e22f78d092d4eb6789

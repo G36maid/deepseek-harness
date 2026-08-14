@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/extensions/ui-cordis/README.md
 README.md: cc4496504020e5808bb0aa1429ba228fde2a42b4
 README.zh.md: 0d7863816479252271391644aea8fcc9c910afa4
-README.zh-tw.md: c436c4c73cfb827d4c761a4cb8c9a5a5d528effe
+README.zh-tw.md: 73fcfb26e0286857bf0e84caf7585622d744494a

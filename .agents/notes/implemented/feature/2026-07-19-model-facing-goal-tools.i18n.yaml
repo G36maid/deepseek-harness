@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-19-model-facing-goal-tools.md
 2026-07-19-model-facing-goal-tools.md: 8a3b5a887454633829292b7d6ed59b1169aeed29
 2026-07-19-model-facing-goal-tools.zh.md: 04a8d63281dfe2f1357f533c5364b5683f466fb7
-2026-07-19-model-facing-goal-tools.zh-tw.md: cc64fe389f87614bf25f5dc9762e0a4765c60ff9
+2026-07-19-model-facing-goal-tools.zh-tw.md: d41edcde7f4d32e08c0a58a2cc0784622c97f45e

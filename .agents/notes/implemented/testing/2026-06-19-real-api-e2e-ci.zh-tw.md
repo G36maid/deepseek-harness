@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-根據策略，harness 高度相依性真實 API 測試：[docs/testing.md](../../../../docs/testing.md) 指出，無金鑰套件證明的是管線，而非產品；[ACP（Agent Client Protocol）inject 事後檢討（postmortem）](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)則是常設證據——178 項無金鑰測試保持綠色時，真實 ACP 用戶端工作階段卻立即崩潰。真實 API e2e 套件（`pnpm run test:e2e`，即 `*.e2e.ts` 文件）的存在正是為了彌合這一缺口：它針對線上 DeepSeek API 驅動程式 agent（代理）——真實模型呼叫、真實 bash 工具、多輪次、復原、ACP-over-stdio。
+根據策略，harness 高度相依性真實 API 測試：[docs/testing.md](../../../../docs/testing.md) 指出，無金鑰套件證明的是管線，而非產品；[ACP（Agent Client Protocol）inject 事後檢討（postmortem）](../../../../docs/postmortem/0001-acp-default-export-drops-inject.md)則是常設證據——178 項無金鑰測試保持綠色時，真實 ACP 用戶端工作階段卻立即崩潰。真實 API e2e 套件（`pnpm run test:e2e`，即 `*.e2e.ts` 文件）的存在正是為了彌合這一缺口：它針對線上 DeepSeek API 驅動 agent（代理）——真實模型呼叫、真實 bash 工具、多輪次、復原、ACP-over-stdio。
 
 默認閘門（[.github/workflows/ci.yml](../../../../.github/workflows/ci.yml)）刻意無金鑰：不攜帶 secret，可供 fork 執行。`test:e2e` 在無金鑰時自動跳過（`describe.skipIf(!process.env.DEEPSEEK_API_KEY)`），因此將其加入該工作流程只會報綠而不會真正執行真實套件。要讓真實 API 覆蓋率成為合併訊號，需要一個獨立的、攜帶 secret 的工作流程。
 

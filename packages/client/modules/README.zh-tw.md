@@ -21,4 +21,4 @@ Node 側會掃描已啟用的 Loader 設定項以發現 web `dsh.client` 包，�
 ## 已知限制與暫緩事項
 
 - **有意採用扁平模組圖**：每個 bundle 是一個模組節點，其邊只指向表中的葉節點；介面（`loadCache`/`edges`/`invalidate`）已經支持通用模組圖，因此可以改變 externalization 粒度而不更改介面。
-- **自身不維護解除安裝記錄**：樣式移除與 fiber 拆卸順序屬於 HMR 驅動程式器（`@deepseek-ai/dsh-client-hmr`）；loader 只在每條記錄中登記其擁有的樣式標籤 id。
+- **自身不維護解除安裝記錄**：樣式移除與 fiber 拆卸順序屬於 HMR 驅動器（`@deepseek-ai/dsh-client-hmr`）；loader 只在每條記錄中登記其擁有的樣式標籤 id。

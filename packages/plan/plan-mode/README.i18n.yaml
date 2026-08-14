@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/plan/plan-mode/README.md
 README.md: fd88a89ccc5b981306000951585ffaf84cd61d31
 README.zh.md: f12fc16e59a929829988742ffd411f5c1985dcb8
-README.zh-tw.md: d9bd4ed3014d5097f49f1e03c2114c3dcf52a2d6
+README.zh-tw.md: e6eab88c7712fbf5d8b1e56e922a77f8b11f167d

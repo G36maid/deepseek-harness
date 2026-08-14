@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-02-bilingual-docs-and-pairing-gate.md
 2026-07-02-bilingual-docs-and-pairing-gate.md: 70b18723a65eb90ab603d0ebe3426367c991ccc0
 2026-07-02-bilingual-docs-and-pairing-gate.zh.md: 275f6717b4d3840a77e9f33cab68d4e715f3586e
-2026-07-02-bilingual-docs-and-pairing-gate.zh-tw.md: 567de37bad06265e4e69b6b15b3c470c36fa5a57
+2026-07-02-bilingual-docs-and-pairing-gate.zh-tw.md: ce989a4a4e2207c0542c657d0811e7ab68c9c93e

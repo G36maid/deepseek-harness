@@ -18,7 +18,7 @@ Goal Round 的 `complete` 或 `blocked` 成功不再呼叫 `concludeTurn()`。�
 
 ## 驗證
 
-`tool-goal` 包測試釘住兩個終態 action 注入的上下文（source、標籤、objective、禁止再調工具條款）與不存在的 `concludesTurn`，以及人類直接 pause 與 complete 的不注入路徑，文件覆蓋率 100%。`llm-replay` 單元測試釘住佔位符約定：最後一次匹配取勝的捕獲、無捕獲組時整體匹配回退，以及未匹配、非法、未閉合模式的明確報錯。新增 keyless ACP 快照 `goal-wrapup` 驅動程式成品應用走完 create → 第一輪 → 自主 complete，並在持久工作階段日誌與 ACP stdout 流中同時斷言 plugin 來源的收尾註入、同輪內的收尾 assistant 訊息與 `completed` 輪次結束。
+`tool-goal` 包測試釘住兩個終態 action 注入的上下文（source、標籤、objective、禁止再調工具條款）與不存在的 `concludesTurn`，以及人類直接 pause 與 complete 的不注入路徑，文件覆蓋率 100%。`llm-replay` 單元測試釘住佔位符約定：最後一次匹配取勝的捕獲、無捕獲組時整體匹配回退，以及未匹配、非法、未閉合模式的明確報錯。新增 keyless ACP 快照 `goal-wrapup` 驅動成品應用走完 create → 第一輪 → 自主 complete，並在持久工作階段日誌與 ACP stdout 流中同時斷言 plugin 來源的收尾註入、同輪內的收尾 assistant 訊息與 `completed` 輪次結束。
 
 ## 曾考慮的替代方案
 

@@ -50,4 +50,4 @@ DeepSeek chat-completions 配接器保持不動。它的 `['text']` 是關於其
 
 `config.spec.ts` 負責 schema 邊界：兩個層級上的未知模態拒絕、路由空清單被 schema 接受而由 settings seam 真正執行的命名空間校驗器拒絕，以及繼承規則所倚賴的「預設陣列物化為 `[]`」這一事實。
 
-沒有任何無金鑰 snapshot 通道會跑 pi-ai 路由：snapshot 示例驅動程式的是 `dsh-llm-replay`，它在自己的設定裡直接聲明模態，而 pi-ai 路由需要一個真實端點，其埠是靜態 `cordis.yml` 無法寫出的。本次變更所供給的那些准入點已經透過該提供方在那裡得到覆蓋（`examples/acp-agent/image.cordis.snapshot.yml` 與 `image-text-route.cordis.snapshot.yml`）且不受影響——改變的是某個配接器報告什麼，而非閘門如何讀取它。
+沒有任何無金鑰 snapshot 通道會跑 pi-ai 路由：snapshot 示例驅動的是 `dsh-llm-replay`，它在自己的設定裡直接聲明模態，而 pi-ai 路由需要一個真實端點，其埠是靜態 `cordis.yml` 無法寫出的。本次變更所供給的那些准入點已經透過該提供方在那裡得到覆蓋（`examples/acp-agent/image.cordis.snapshot.yml` 與 `image-text-route.cordis.snapshot.yml`）且不受影響——改變的是某個配接器報告什麼，而非閘門如何讀取它。

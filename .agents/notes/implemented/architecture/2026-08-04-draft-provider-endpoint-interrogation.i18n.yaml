@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-04-draft-provider-endpoint-interrogation.md
 2026-08-04-draft-provider-endpoint-interrogation.md: fadc7ddb48b27a2698f3f334be0b8bdcc89e2acc
 2026-08-04-draft-provider-endpoint-interrogation.zh.md: a0edde328ad41aaaa99fc7a1da488ac460327d0a
-2026-08-04-draft-provider-endpoint-interrogation.zh-tw.md: 3967336f9f691a223597c39a622955909db39b64
+2026-08-04-draft-provider-endpoint-interrogation.zh-tw.md: 4221e26821dfeea45e89247ff0ee890d9e4b34be

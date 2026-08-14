@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-client-locale-full-rollout.md
 2026-07-30-client-locale-full-rollout.md: 6c05e4094cbffb5c0c3bb38a5972b2e4f3238ab4
 2026-07-30-client-locale-full-rollout.zh.md: 0016b786a19983984563eec1f92beadeb3dd18dc
-2026-07-30-client-locale-full-rollout.zh-tw.md: fbc1aa6e0d90e70423e68ae8671bc729db860fbd
+2026-07-30-client-locale-full-rollout.zh-tw.md: bd4ea4ab9764efa2fc7319aaa36999429d4d779f

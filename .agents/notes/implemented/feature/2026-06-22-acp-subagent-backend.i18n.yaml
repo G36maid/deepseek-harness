@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-06-22-acp-subagent-backend.md
 2026-06-22-acp-subagent-backend.md: 1a7e6b8f5eec55c0c14dbe0f25644ca259097cac
 2026-06-22-acp-subagent-backend.zh.md: c567440e057aae9de053ae9e6a092ff70dc34ab7
-2026-06-22-acp-subagent-backend.zh-tw.md: 4f8390387c3fae71acbfc5055861dfc3dc4666d3
+2026-06-22-acp-subagent-backend.zh-tw.md: aebce3a4bbd58d0aeb8557f63fbadbb18606cc43

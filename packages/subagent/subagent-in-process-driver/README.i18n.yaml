@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/subagent/subagent-in-process-driver/README.md
 README.md: 5f5f7a8191efd851deeb653c38d9efe814864190
 README.zh.md: abd6f36e8de64e67eb658eed6f9744204d169b82
-README.zh-tw.md: 014df86f2f297d4e9e4a596818dbac50d7f8f0b7
+README.zh-tw.md: 793851a913f04ef359b981320cd70940d19baceb

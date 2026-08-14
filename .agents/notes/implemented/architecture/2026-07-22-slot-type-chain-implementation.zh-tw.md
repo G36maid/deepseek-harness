@@ -32,7 +32,7 @@ ctx.slots.register({
 }, AppFrame)
 ```
 
-不存在獨立的 slot 定義 API。`children` 對象同時做兩件事：**聲明子 slot**，並**授權本元件渲染它們**——slot 是渲染樹上的一個洞，因為有人要渲染它才存在，所以 slot 的生命週期就是聲明它的 entry 的生命週期（entry 一經 dispose（資源釋放），slot 隨之消亡、slot 內既有貢獻清空）。children 的值是執行時期 spec（`kind`/`scope` 驅動程式 outlet 的迭代形態與 binding 選擇；`SlotMap` 是純類型、執行時期即被擦除，這正是鍵陣列行不通的原因），並與對應 `SlotMap` entry 靜態對齊校驗——類型與值在同一點聲明、交叉驗證。
+不存在獨立的 slot 定義 API。`children` 對象同時做兩件事：**聲明子 slot**，並**授權本元件渲染它們**——slot 是渲染樹上的一個洞，因為有人要渲染它才存在，所以 slot 的生命週期就是聲明它的 entry 的生命週期（entry 一經 dispose（資源釋放），slot 隨之消亡、slot 內既有貢獻清空）。children 的值是執行時期 spec（`kind`/`scope` 驅動 outlet 的迭代形態與 binding 選擇；`SlotMap` 是純類型、執行時期即被擦除，這正是鍵陣列行不通的原因），並與對應 `SlotMap` entry 靜態對齊校驗——類型與值在同一點聲明、交叉驗證。
 
 對等原則：**聲明子 slot 的 entry 獨佔渲染這些子 slot 的權力**，全部在 register 時確定（設定錯誤會在裝載時明確失敗；渲染熱路徑不再校驗）。裝載即炸的情形：第二個 entry 聲明已被聲明的 slot；向未聲明的 slot register；同一個 store 控制代碼掛到兩個 scope 之下；chain 註冊缺 `select`。
 

@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-委派邊界在第一次 await 之前，經由共享的子 agent 輔助函式（`dsh-subagent` 中的 `captureDelegatedPolicyOverrides`／`appendDelegatedPolicyOverrides`）對 `sandboxPolicy.overrideOf(parent.session)` 取得快照；一次性驅動程式器與[可繼續啟動](2026-08-10-continuable-subagent-policy-inheritance.md)都會呼叫這些輔助函式。父級後續的切換屬於父級的未來；取消後重新委派會取得新快照。沙盒策略服務為選填，僅複製顯式工作階段覆蓋項，絕不複製部署預設值或一次性授權。審批策略不繼承：同一次捕獲會把每個子 agent 釘定為 `'never'`——[審批釘定決策](2026-08-10-subagent-approval-pinned-never.md)取代了本 note 原先的審批覆蓋項繼承。
+委派邊界在第一次 await 之前，經由共享的子 agent 輔助函式（`dsh-subagent` 中的 `captureDelegatedPolicyOverrides`／`appendDelegatedPolicyOverrides`）對 `sandboxPolicy.overrideOf(parent.session)` 取得快照；一次性驅動器與[可繼續啟動](2026-08-10-continuable-subagent-policy-inheritance.md)都會呼叫這些輔助函式。父級後續的切換屬於父級的未來；取消後重新委派會取得新快照。沙盒策略服務為選填，僅複製顯式工作階段覆蓋項，絕不複製部署預設值或一次性授權。審批策略不繼承：同一次捕獲會把每個子 agent 釘定為 `'never'`——[審批釘定決策](2026-08-10-subagent-approval-pinned-never.md)取代了本 note 原先的審批覆蓋項繼承。
 
 每個捕獲值都會成為子 agent 工廠在未發布設定階段追加的一條帶來源標記的 `sandbox/mode` 或 `approval/policy` 事件。工作階段構造函式已將 `Session.firstLiveSeq` 固定為 fork 前綴的長度，因此繼承事實會排在 fork 歷史之後，在子 agent 公佈時進入遙測，同時讓 `SessionHeader.seedLength` 保持為此前綴的長度。因此，既有的末事件勝出摺疊會讓委派快照壓過過時的 fork 歷史，並讓子 agent 後續的切換壓過該快照。孫代 agent 會摺疊其父級已記錄的狀態，因此無需另一套繼承機制即可組合此規則。
 

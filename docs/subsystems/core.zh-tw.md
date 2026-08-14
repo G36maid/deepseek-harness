@@ -2,7 +2,7 @@
 
 [English](core.md) | [简体中文](core.zh.md) | 繁體中文
 
-**核心**子系統即 [`packages/core`](../../packages/core/README.md)，包含每個組合都會啟動的包：事件溯源的工作階段日誌、系統提示詞組裝、工具登錄檔、agent（代理）類型，以及驅動程式它們的具體迴圈。本頁說明 `agent`/`agent-loop` 這對包所聲明的內容：agent 如何被建立與擁有，以及 `Agent` 控制代碼的投遞、取消與攔截約定；本頁還說明每個子系統都遵循的兩個類型模式。該組的專屬頁面與目錄其餘部分見[子系統 README](README.md)。
+**核心**子系統即 [`packages/core`](../../packages/core/README.md)，包含每個組合都會啟動的包：事件溯源的工作階段日誌、系統提示詞組裝、工具登錄檔、agent（代理）類型，以及驅動它們的具體迴圈。本頁說明 `agent`/`agent-loop` 這對包所聲明的內容：agent 如何被建立與擁有，以及 `Agent` 控制代碼的投遞、取消與攔截約定；本頁還說明每個子系統都遵循的兩個類型模式。該組的專屬頁面與目錄其餘部分見[子系統 README](README.md)。
 
 ## 主幹逐包速覽
 
@@ -156,7 +156,7 @@ interface Agent {
 type AgentStatus = 'idle' | 'running'
 ```
 
-`running` 描述整個驅動程式器的排空區間，可能跨越連續的排隊輪次；它不能證明某個輪次仍然打開。dispose 會把 agent 從登錄檔移除並行出 `agent/disposed`；它不是一個終態 status 值。`followup()` 不返回控制代碼：其 `MessageId` 標識的是持久的 inbox 插入、認領與丟棄事實，而非之後的助手輸出或輪次結束。`whenIdle()` 觀察的是整個 agent，因此只有當呼叫方明確擁有從回執到空閒的這段區間時，才能把它稱為一次 run（[決策](../../.agents/notes/implemented/architecture/2026-07-30-followup-enqueue-and-owned-runs.md)）。
+`running` 描述整個驅動器的排空區間，可能跨越連續的排隊輪次；它不能證明某個輪次仍然打開。dispose 會把 agent 從登錄檔移除並行出 `agent/disposed`；它不是一個終態 status 值。`followup()` 不返回控制代碼：其 `MessageId` 標識的是持久的 inbox 插入、認領與丟棄事實，而非之後的助手輸出或輪次結束。`whenIdle()` 觀察的是整個 agent，因此只有當呼叫方明確擁有從回執到空閒的這段區間時，才能把它稱為一次 run（[決策](../../.agents/notes/implemented/architecture/2026-07-30-followup-enqueue-and-owned-runs.md)）。
 
 ```ts type-equiv
 /** Merge-extensible agent creation options. Persona belongs to system-prompt sections. */

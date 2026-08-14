@@ -28,7 +28,7 @@ DeepSeek Harness 在 TUI 和 Headless coding agent 之外，還提供了兩個�
 
 ## 驗證
 
-TUI 與 Headless 的 Loader 覆蓋以原始碼和建置產物兩種模式執行真實 app 包。由 PTY 驅動程式的子行程覆蓋僅用於 TUI 生命週期；其他入口冒煙測試使用單次管道協議。Headless 驗證任務/結果約定和工具呼叫約定。生成圖譜與倉庫搜尋會拒絕過時的包、命令、葉節點、SDK 介面、`createStdioChat` 和 `StdioRuntime` 引用。
+TUI 與 Headless 的 Loader 覆蓋以原始碼和建置產物兩種模式執行真實 app 包。由 PTY 驅動的子行程覆蓋僅用於 TUI 生命週期；其他入口冒煙測試使用單次管道協議。Headless 驗證任務/結果約定和工具呼叫約定。生成圖譜與倉庫搜尋會拒絕過時的包、命令、葉節點、SDK 介面、`createStdioChat` 和 `StdioRuntime` 引用。
 
 建置後的 `dsh` 可執行文件會在 Loader 啟動前拒絕透過管道啟動 TUI，並指向 `dsh --profile headless`；`apps/cli/tests/built-bin.e2e.ts` 在普通 Node 下固定產品的一次性入口，包括輸出和無效參數。`examples/headless-agent/tests/headless.snapshot.ts` 固定產品持久化，`apps/cli/tests/headless-shutdown.e2e.ts` 則負責有界訊號升級。headless 示例僅供測試的 JSONL driver 保留組裝後的規範事件快照，而不會建立第二套 CLI（命令列介面）約定。Code Mode 由程序化 TUI 快照與 ACP overlay demo 覆蓋。時間上下文整合透過顯式的 Headless 測試組裝執行兩個有序輪次，而更細粒度的耗時行為由時間上下文的包級測試負責。
 

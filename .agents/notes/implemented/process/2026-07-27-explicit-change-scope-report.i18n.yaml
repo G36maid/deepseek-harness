@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-27-explicit-change-scope-report.md
 2026-07-27-explicit-change-scope-report.md: ffb384f3cb234681a700407935ac953bfa4546f5
 2026-07-27-explicit-change-scope-report.zh.md: ecb0dec155974c7d393de7048274b337e3178c3e
-2026-07-27-explicit-change-scope-report.zh-tw.md: c8490871445af7deaa80e0f7456f13b770583c76
+2026-07-27-explicit-change-scope-report.zh-tw.md: 08781f1b6310078a2714a8cc250f63b2f291d6c7

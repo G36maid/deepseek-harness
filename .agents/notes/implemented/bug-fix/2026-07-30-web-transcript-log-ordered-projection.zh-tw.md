@@ -39,7 +39,7 @@ const COMPACT_PLUGIN: CompactionCheckpointSource['plugin'] = 'compact'
 
 重新命名 Service Definition 的外掛程式 id 現在會在用戶端產生編譯錯誤：`TS2322: Type '"compact"' is not assignable to type '"compaction"'`。該匯入必須保持**僅類型**——任何既非平臺模組又非 inline-safe wire 層的 `@deepseek-ai` 包值匯入都會被用戶端純度閘門（`packages/client/tsdown.client.ts`）拒絕，而它自己的報錯資訊就記錄著僅類型匯入會被擦除、永不抵達該閘門。僅類型的葉子匯入同時需要 `tsconfig.base.json` 的一條 `paths` 條目和 `packages/client/runtime/tsconfig.json` `references` 中的 `{"path": "../../compaction/compaction"}`：composite 的 `rootDir` 規則同樣適用於被擦除的匯入，缺少該引用時的診斷是 `TS6059`/`TS6307`。
 
-`packages/client/ui-conversation/tests/conversation-node-definitions.client.spec.ts` 是行為側的另一半，用檢查點與溯源記錄驅動程式壓縮 Definition，並證明後續載入的舊分頁可以補齊缺失的摘要資料。Definition 僅類型匯入該葉子路徑，使用戶端繼續與 compact 包根及經由它可達的宿主側 `Context` 合併隔離。
+`packages/client/ui-conversation/tests/conversation-node-definitions.client.spec.ts` 是行為側的另一半，用檢查點與溯源記錄驅動壓縮 Definition，並證明後續載入的舊分頁可以補齊缺失的摘要資料。Definition 僅類型匯入該葉子路徑，使用戶端繼續與 compact 包根及經由它可達的宿主側 `Context` 合併隔離。
 
 因此與終端機的分歧很窄：兩個前端都從同一份聲明識別檢查點——終端機在宿主側值匯入 `isCompactCheckpointSource`（那裡不適用任何閘門），用戶端釘住類型。
 
@@ -75,4 +75,4 @@ Web e2e 場景現在圍繞它錄制的那一輪上的壓縮交易播種一次真
 
 ## Deferred
 
-終端機的[已歸檔壓縮進度決策](../../archived/feature/2026-07-30-compaction-progress-visibility.md)使用即時獨立標記對驅動程式單格指示器，並不改變此瀏覽器投影。
+終端機的[已歸檔壓縮進度決策](../../archived/feature/2026-07-30-compaction-progress-visibility.md)使用即時獨立標記對驅動單格指示器，並不改變此瀏覽器投影。

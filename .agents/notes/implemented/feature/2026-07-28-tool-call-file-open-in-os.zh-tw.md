@@ -10,7 +10,7 @@ Status: implemented
 
 ## 決策
 
-文件工具的路徑摘要（`read`／`write`／`edit` 參數中的 `path` 或 `file_path`）渲染為靜止狀態下即帶底線的連結，並使用 pointer 遊標。點擊路徑會經 `WorkspaceRuntime.openPath` 呼叫 `host.openPath`，相對路徑以工作階段 cwd 為基準解析。帶文件連結的行關閉參數展開（左側圖示不可點）；工具行（含 bash 與 todo 註冊）去掉整行點擊、整行懸停底色，以及點擊打開 details 的手勢。details 面板及其 inject 面仍保留供程序化選擇；工具行不再驅動程式它們。
+文件工具的路徑摘要（`read`／`write`／`edit` 參數中的 `path` 或 `file_path`）渲染為靜止狀態下即帶底線的連結，並使用 pointer 遊標。點擊路徑會經 `WorkspaceRuntime.openPath` 呼叫 `host.openPath`，相對路徑以工作階段 cwd 為基準解析。帶文件連結的行關閉參數展開（左側圖示不可點）；工具行（含 bash 與 todo 註冊）去掉整行點擊、整行懸停底色，以及點擊打開 details 的手勢。details 面板及其 inject 面仍保留供程序化選擇；工具行不再驅動它們。
 
 `host.openPath` 是特權一元 RPC，僅接受來自回環地址且同源的瀏覽器請求（與 `host.pickDirectory` 相同的載體守衛）。平臺配接器不經 shell 打開：macOS 為 `open`，Windows 為 PowerShell `Invoke-Item`，桌面 Linux 為 `xdg-open`；瀏覽器可渲染的文件會在 macOS 與桌面 Linux 上優先使用指定的預設瀏覽器。儘管 Node 將 WSL 報告為 `linux`，WSL 仍是一種獨立的宿主形態：配接器根據其環境或 Microsoft 核心 release 識別它，用 `wslpath -w` 轉換 Linux 路徑，並將所得 Windows/UNC 路徑交給同一 PowerShell 交接。打開器的平臺資訊和命令執行器可在測試中注入。僅含 URL 的 read 參數（`web_fetch`）不是文件連結。
 

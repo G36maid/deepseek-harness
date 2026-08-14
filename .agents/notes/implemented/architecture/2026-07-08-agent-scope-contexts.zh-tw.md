@@ -88,7 +88,7 @@ await handle.dispose()
 ctx.tools.get('review_summary', handle.agent)  // undefined: scope is gone
 ```
 
-setup 接收一個完整的受信 Cordis 上下文，因此可以組合普通外掛程式和服務。其約定僅限組合：不支持透過 cast 或內部登錄檔呼叫來驅動程式或發布正在建置中的 agent。
+setup 接收一個完整的受信 Cordis 上下文，因此可以組合普通外掛程式和服務。其約定僅限組合：不支持透過 cast 或內部登錄檔呼叫來驅動或發布正在建置中的 agent。
 
 ### 操作選擇檢視表
 
@@ -108,13 +108,13 @@ setup 接收一個完整的受信 Cordis 上下文，因此可以組合普通外
 
 ### 建立最後發布，dispose 最後撤銷
 
-`ctx.agents.create()` 和 `resume()` 建置未發布的工作階段、作用域、agent 和驅動程式器。它們等待 `setup`，同步呼叫其選填的 `AgentSetupCommit`，准入最終的工作階段和 agent 條目，按序公告，啟動迴圈，然後才返回 handle。該提交操作讓可變的設定狀態在所有 setup 的 await 均結帳後，於確切的發布邊界重新校驗；若其拋出例外，則會在公告任何一個身份前回滾私有交易，而成功提交後的撤銷屬於普通的存活期拆除。
+`ctx.agents.create()` 和 `resume()` 建置未發布的工作階段、作用域、agent 和驅動器。它們等待 `setup`，同步呼叫其選填的 `AgentSetupCommit`，准入最終的工作階段和 agent 條目，按序公告，啟動迴圈，然後才返回 handle。該提交操作讓可變的設定狀態在所有 setup 的 await 均結帳後，於確切的發布邊界重新校驗；若其拋出例外，則會在公告任何一個身份前回滾私有交易，而成功提交後的撤銷屬於普通的存活期拆除。
 
 選填的建立訊號僅在建立或復原掛起期間取消工作。promise resolve 後，返回的 `AgentHandle` 擁有顯式 dispose 權。
 
 如果載入、setup、選填的 setup 提交、准入或發布失敗，私有交易回滾其準備的一切。使用同一個呼叫方提供的存活 ID 的並行操作可能都到達 setup，但最終登錄檔條目只准入一個；每個失敗者拒絕並清理其私有資源。在等待 dispose 完成後的順序複用仍然有效。
 
-`AgentHandle.dispose()` 反轉邊界。它停用建立或驅動程式，等待同步發布完成退棧，停止並排空驅動程式器和最終工作階段刷寫，分離 agent 和工作階段，最後 dispose 作用域。重複或競爭的 dispose 請求合併為一個完成 promise。
+`AgentHandle.dispose()` 反轉邊界。它停用建立或驅動，等待同步發布完成退棧，停止並排空驅動器和最終工作階段刷寫，分離 agent 和工作階段，最後 dispose 作用域。重複或競爭的 dispose 請求合併為一個完成 promise。
 
 呼叫方的 Cordis 上下文和具體的 AgentLoop 工廠是結構性共同所有者。解除安裝任一方都會 dispose 交易或存活 agent。
 

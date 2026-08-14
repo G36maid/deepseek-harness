@@ -28,7 +28,7 @@ Status: implemented
 
 - **把 todo 寫入作為 surface 條目摺疊進 `nodes`**——重播的視窗會渲染每一份已被取代的清單；該事件被刻意設計成非 surface 類型。
 - **面板硬編碼進 `ConversationRoot`**——input-dock slot 出現之前的原始落點；dock 是本架構給「composer 上方常開橫條」安排的位置，硬編碼繞開了 slot 登錄檔的 disposal 與定序。
-- **面板放進 details 列**——details slot 單佔用且由選中驅動程式，生命週期不同於一條常開橫條。
+- **面板放進 details 列**——details slot 單佔用且由選中驅動，生命週期不同於一條常開橫條。
 - **host 計算的檢視表（一個 todo `ToolEventView`）**——呈現屬於用戶端；協議已在事件載荷裡攜帶整份快照。
 
 ## 後果

@@ -61,8 +61,10 @@ export function loadZhTwCorrections(table: string): ZhTwCorrections {
 
 /** Fix the language-switcher line for the Traditional Chinese side. */
 function fixSwitcher(markdown: string): string {
+  // Any surviving two-way form (old `| 中文`, or a bare `| 简体中文` whose
+  // label survived protection) becomes the three-way switcher.
   return markdown.replace(
-    /^\[English\]\(([^)]*\.md)\) \| 中文$/gm,
+    /^\[English\]\(([^)]*\.md)\) \| (?:中文|简体中文)(?: \| \[繁體中文\]\([^)]*\))?$/gm,
     (_match, enRef: string) => `[English](${enRef}) | [简体中文](${enRef.replace(/\.md$/, '.zh.md')}) | 繁體中文`,
   )
 }
@@ -85,9 +87,23 @@ export function convertChineseMarkdown(markdown: string, corrections?: ZhTwCorre
   const table = corrections ?? loadZhTwCorrections(
     readFileSync(resolve(import.meta.dirname, '../docs/i18n/terminology-zh-tw.md'), 'utf8'),
   )
-  const { text, spans } = protectSpans(markdown)
+  // The language-switcher line carries language labels (简体中文 / 繁體中文)
+  // that are UI chrome, not body prose: converting them would turn the
+  // Simplified label into 繁體中文. Protect the whole line verbatim before
+  // code-span protection so its link targets still match.
+  const switcherLines: string[] = []
+  const withSwitchers = markdown.replace(
+    /^\[English\]\([^)]*\.md\) \| .+$/gm,
+    (line: string) => {
+      switcherLines.push(line)
+      return '\u0000ZH_TW_SWITCHER\u0000'
+    },
+  )
+  const { text, spans } = protectSpans(withSwitchers)
   const converter = createConverter({ customDict: Object.fromEntries(table) })
-  const converted = simplifiedToStandard(converter.convert(text))
+  let converted = simplifiedToStandard(converter.convert(text))
+  // Reinsert the protected switcher lines in order.
+  converted = converted.replace(/\u0000ZH_TW_SWITCHER\u0000/g, () => switcherLines.shift() ?? 'SWITCHER')
   const restored = restoreSpans(converted, spans)
   return fixSwitcher(restored)
 }

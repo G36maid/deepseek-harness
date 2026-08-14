@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-單元測試與覆蓋率測試套件會在 Windows、macOS 和 Linux 上執行，但平臺無關行為可能被平臺特有的 fixture（測試前置資料）掩蓋。字面 POSIX 路徑在 Windows 上會變成相對於驅動程式器的路徑；帶主機名的 `file:` URI 在 Windows 上可能是有效的 UNC 路徑；子行程管道關閉或事件迴圈調度在不同宿主上的穩定時點也不一致。FIFO、可執行模式位和目錄搜尋權限位等僅存在於 POSIX 的檔案系統狀態，在 Windows 上沒有可直接構造的 fixture。
+單元測試與覆蓋率測試套件會在 Windows、macOS 和 Linux 上執行，但平臺無關行為可能被平臺特有的 fixture（測試前置資料）掩蓋。字面 POSIX 路徑在 Windows 上會變成相對於驅動器的路徑；帶主機名的 `file:` URI 在 Windows 上可能是有效的 UNC 路徑；子行程管道關閉或事件迴圈調度在不同宿主上的穩定時點也不一致。FIFO、可執行模式位和目錄搜尋權限位等僅存在於 POSIX 的檔案系統狀態，在 Windows 上沒有可直接構造的 fixture。
 
 把 fixture 文法當成產品行為，要麼會誤報回歸，要麼會促使生產程式碼引入抹去原生路徑語義的歸一化。
 

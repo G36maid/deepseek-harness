@@ -213,7 +213,7 @@ export type ResponseValue<K> =
 
 | 子類 | 所在包 | doFetch | 用途 |
 |---|---|---|---|
-| `InProcessApiClient` | apiproxy 本包 | 注入的 `{ fetch }` handler | **同構點**：`new InProcessApiClient(toFetchHandler(api))` 全程不過網路但真跑 wire 序列化/zod/SSE 幀；載體測試與呼叫方可以在不打開埠的情況下執行這套協議，而產品 `dsh --profile headless` 直接驅動程式 core |
+| `InProcessApiClient` | apiproxy 本包 | 注入的 `{ fetch }` handler | **同構點**：`new InProcessApiClient(toFetchHandler(api))` 全程不過網路但真跑 wire 序列化/zod/SSE 幀；載體測試與呼叫方可以在不打開埠的情況下執行這套協議，而產品 `dsh --profile headless` 直接驅動 core |
 | `WebApiClient` | dsh-client-connection | `globalThis.fetch` 上行 + 每邏輯流一條同源 WebSocket 下行 | 瀏覽器用戶端；物理邊界見 [WebSocket 下行載體](2026-08-04-websocket-downlink-carrier.md) |
 | `FixtureApiClient` | dsh-client-connection | 不用（協議層覆寫） | 無 server 的 UI 開發（`?fixture`）：覆寫 `callUnary`/`openMux`/`openHost`/`respond` 虛方法，自己就是假 server（幀 rpcId 由它 mint，語義自洽） |
 | IPC 橋子類（假想示例——尚無此形態） | Electron 殼 | IPC 序列化往返 | 只需換 doFetch，約定/基類零改 |

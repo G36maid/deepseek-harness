@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-06-approval-seam.md
 2026-07-06-approval-seam.md: bc3fd2de314d22b9a332940d92447c5b0c553f36
 2026-07-06-approval-seam.zh.md: 93359d370b155e74aceb65e6d0f09c2953b13d76
-2026-07-06-approval-seam.zh-tw.md: 32488a7135ea8867b74d664a0722e443a788ceb2
+2026-07-06-approval-seam.zh-tw.md: dcbc97e2fc7e03c89f2d5e3e898a0ba01cb8334f

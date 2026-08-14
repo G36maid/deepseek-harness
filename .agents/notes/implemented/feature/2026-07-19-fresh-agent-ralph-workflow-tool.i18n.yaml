@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-19-fresh-agent-ralph-workflow-tool.md
 2026-07-19-fresh-agent-ralph-workflow-tool.md: 4183a449c63a8cccb8dea854ea297db7535130b7
 2026-07-19-fresh-agent-ralph-workflow-tool.zh.md: 97b89eafaef5e562f0e76d333edd760209fdad59
-2026-07-19-fresh-agent-ralph-workflow-tool.zh-tw.md: 70ae10e540a421b5fac365b30a2459ff1d9fe127
+2026-07-19-fresh-agent-ralph-workflow-tool.zh-tw.md: e3d635a2cb1b8c3d432a2face84de50da7630126

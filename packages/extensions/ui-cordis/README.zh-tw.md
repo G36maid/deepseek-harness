@@ -18,7 +18,7 @@ Cordis 動態外掛程式的瀏覽器半：一個覆蓋整個框架的面板，�
 
 ## 模型體驗
 
-間接影響，經由這兩個面驅動程式的 run 與 stop 動詞——run 走瀏覽器側 runner 的編排，stop 走 `dynamicCordisRunner.stop`，與模型的 `cordis_run` / `cordis_stop` 工具是同一批 host 動詞。因此正在執行的定義隨後貢獻了什麼是 runner 的效果，而本包不產生任何模型可見輸入：它只渲染已落日誌的 call/result 切片與一次 host 清單讀取，不加 prompt 內容、不寫工作階段事件，並刻意不為「有人批准 / 拒絕 / 執行 / 停止」留下工作階段日誌痕跡。
+間接影響，經由這兩個面驅動的 run 與 stop 動詞——run 走瀏覽器側 runner 的編排，stop 走 `dynamicCordisRunner.stop`，與模型的 `cordis_run` / `cordis_stop` 工具是同一批 host 動詞。因此正在執行的定義隨後貢獻了什麼是 runner 的效果，而本包不產生任何模型可見輸入：它只渲染已落日誌的 call/result 切片與一次 host 清單讀取，不加 prompt 內容、不寫工作階段事件，並刻意不為「有人批准 / 拒絕 / 執行 / 停止」留下工作階段日誌痕跡。
 
 #### KV 快取影響
 

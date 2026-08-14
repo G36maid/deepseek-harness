@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-[提示詞變數 Agent Note](2026-07-05-prompt-variables-and-tool-guidance-ownership.md) 讓 `dsh-tool-subagent` 從其提供方派生面向模型的措辭：`SubagentProvider.inheritsParentContext`（spawn 和 ACP（Agent Client Protocol）為 `false`，fork 為 `true`）同時驅動程式工具描述和 `prompt` 參數描述，使 fork 工具不再在上下文繼承問題上對模型撒謊。這一修復引入了跨 fiber 的資料相依性：工具描述在工具註冊時固定（這是有意為之——描述是 tool-choice 引導所在之處），但提供方在自己的外掛程式 fiber 上到達，時機不確定。
+[提示詞變數 Agent Note](2026-07-05-prompt-variables-and-tool-guidance-ownership.md) 讓 `dsh-tool-subagent` 從其提供方派生面向模型的措辭：`SubagentProvider.inheritsParentContext`（spawn 和 ACP（Agent Client Protocol）為 `false`，fork 為 `true`）同時驅動工具描述和 `prompt` 參數描述，使 fork 工具不再在上下文繼承問題上對模型撒謊。這一修復引入了跨 fiber 的資料相依性：工具描述在工具註冊時固定（這是有意為之——描述是 tool-choice 引導所在之處），但提供方在自己的外掛程式 fiber 上到達，時機不確定。
 
 如果在工具外掛程式的 `apply` 時刻解析提供方，就會產生一個隱式的載入順序要求（「在 cordis.yml 中把後端列在工具前面」）。這個要求不成立，因為 Cordis Loader 並行啟動同級條目，且 `Entry.init()` 不會等待啟用完成：延遲到達的後端即使列在前面，也可能讓工具 fiber 失敗。Loader 不提供同級順序保證——「非同步狀態不是同步狀態」（見[防禦性模式](../../../../docs/defensive-patterns.md)）。
 

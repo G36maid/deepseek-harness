@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/subsystems/session-projection.md
 session-projection.md: a2de89d1bb18ca2655f0cb2d531e1c148c46516c
 session-projection.zh.md: 5db68b3ebe5ed9ff7f742abb47f4501416c51557
-session-projection.zh-tw.md: 3d59d1d7e106dab11b0d6890d32c54f5eb8516bc
+session-projection.zh-tw.md: 7b7cf25e806e051c73232b200078ef93c7fdc2fc

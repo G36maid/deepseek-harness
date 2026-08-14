@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-session-end-seed-log-boundary.md
 2026-07-30-session-end-seed-log-boundary.md: b1f2156d7d508368389f20af145b4abf7a7bb7e0
 2026-07-30-session-end-seed-log-boundary.zh.md: 80de5c02ab66541f3b7c112bc8ff9d14cec1a55f
-2026-07-30-session-end-seed-log-boundary.zh-tw.md: f99471f2f869b927402c7a0e0f4df0c96718b2fd
+2026-07-30-session-end-seed-log-boundary.zh-tw.md: aa8b71cf4e9cf4cc5b603d06f136aecc6a97750a

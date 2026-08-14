@@ -13,7 +13,7 @@ tools:
   mode: native   # native (default) | code | both
 ```
 
-`native` 以函式定義的形式貢獻可見工具。`code` 會提供保留的 `run_code` 傳輸、生成的 `tools:sdk` 段，以及聲明「只有 `run_code` 可被直接呼叫」的 `tools:code-only` 規則。執行器隨後強制執行該規則：模型直接呼叫其他任何工具時，會在策略執行前將該呼叫解析為 `UNKNOWN_TOOL`；`both` 同時提供兩種形式，且不聲明該規則，因為其中的原生呼叫確實可以執行。沒有單獨聲明呈現模式的 agent 默認採用此設定；agent preset 可透過 [`dsh-agent-tool-presentation`](../agent-tool-presentation/README.md) 自行選擇呈現模式。不能註冊、遮蔽、限制或移除該保留傳輸，且無論設定何種模式，該名稱都是保留的，因為任何 agent 都可能選擇 code 模式。非原生模式要求所載入 `ctx.codeRuntime` 的 `language` 有已註冊的 SDK 渲染器——TypeScript 經 [`dsh-code-runtime-worker-thread`](../../code-runtime/code-runtime-worker-thread/README.md) 交付；Python 渲染器內建，驅動程式任何報告 `language: 'python'` 的執行時期（第一方 `dsh-code-runtime-python` 後端另行交付）。沒有渲染器的執行時期語言會導致提示詞組裝明確失敗；如果 `systemPrompt.toolOrder` 條目指向當前模式未貢獻的工具，系統會拒絕組裝提示詞。`system-prompt/assemble` 監聽器可以替換登錄檔貢獻；它返回的組裝結果具有權威性，因此該監聽器負責保留可用的 Code Mode 協議。
+`native` 以函式定義的形式貢獻可見工具。`code` 會提供保留的 `run_code` 傳輸、生成的 `tools:sdk` 段，以及聲明「只有 `run_code` 可被直接呼叫」的 `tools:code-only` 規則。執行器隨後強制執行該規則：模型直接呼叫其他任何工具時，會在策略執行前將該呼叫解析為 `UNKNOWN_TOOL`；`both` 同時提供兩種形式，且不聲明該規則，因為其中的原生呼叫確實可以執行。沒有單獨聲明呈現模式的 agent 默認採用此設定；agent preset 可透過 [`dsh-agent-tool-presentation`](../agent-tool-presentation/README.md) 自行選擇呈現模式。不能註冊、遮蔽、限制或移除該保留傳輸，且無論設定何種模式，該名稱都是保留的，因為任何 agent 都可能選擇 code 模式。非原生模式要求所載入 `ctx.codeRuntime` 的 `language` 有已註冊的 SDK 渲染器——TypeScript 經 [`dsh-code-runtime-worker-thread`](../../code-runtime/code-runtime-worker-thread/README.md) 交付；Python 渲染器內建，驅動任何報告 `language: 'python'` 的執行時期（第一方 `dsh-code-runtime-python` 後端另行交付）。沒有渲染器的執行時期語言會導致提示詞組裝明確失敗；如果 `systemPrompt.toolOrder` 條目指向當前模式未貢獻的工具，系統會拒絕組裝提示詞。`system-prompt/assemble` 監聽器可以替換登錄檔貢獻；它返回的組裝結果具有權威性，因此該監聽器負責保留可用的 Code Mode 協議。
 
 ### 公開 API
 

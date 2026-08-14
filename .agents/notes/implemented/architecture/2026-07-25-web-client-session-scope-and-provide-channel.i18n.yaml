@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-25-web-client-session-scope-and-provide-channel.md
 2026-07-25-web-client-session-scope-and-provide-channel.md: 928ec4a3351d320232b386a468382470c219f4ea
 2026-07-25-web-client-session-scope-and-provide-channel.zh.md: 25fa5418ad642b5b9d40fbbedba41d55fbb64d9f
-2026-07-25-web-client-session-scope-and-provide-channel.zh-tw.md: f9aa18eba836fcfeb074c6b8f6c3674e463dcea9
+2026-07-25-web-client-session-scope-and-provide-channel.zh-tw.md: 590c2fd6758ec73f7b1844b058baec79299b56e3

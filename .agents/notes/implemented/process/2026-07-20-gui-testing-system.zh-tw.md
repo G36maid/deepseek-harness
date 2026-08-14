@@ -20,12 +20,12 @@ GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境�
 |---|---|---|---|
 | 1 協議同構層 | `AbstractApiClient` + `toFetchHandler`（雙向資料/rpcId/ZOD 類型/SSE（Server-Sent Events）流/合批/逾時） | **同構點全鏈**：`InProcessApiClient(toFetchHandler(脚本化 impl))` 不過網路但真跑 wire 序列化——零瀏覽器、純 node env | `packages/host/apiproxy/tests/client-handler.spec.ts` |
 | 2 對象層編排 | `Session`/`SessionManager`/`ConnectionController`（狀態機與時序：縫合/去重/翻頁/樂觀清稿/pendingBuffers/重連/退避） | **「事件序列進→快照出」黃金路徑**：可程式設計假體 + deferred 控時序 + fake timers 控退避 | `packages/client/{runtime,connection}/tests/` |
-| 3 組裝呈現層 | 建置產物 × 真實 client loader 與外掛程式組合 | 歸應用所有的語義快照會在 jsdom 下啟動全部 8 個已建置的 client 外掛程式，以確定性方式驅動程式跨外掛程式狀態變化；另有最簡 Playwright 冒煙測試負責驗證真實瀏覽器/承載層邊界，真 host 用例在無金鑰時自行跳過；無金鑰瀏覽器 e2e 車道會停用交付設定中的模型配接器行，並透過 `dsh-llm-replay` 在真實行程內 web 組裝中重播錄制的工作階段 fixture（測試前置資料），與工作階段區 aria 預期輸出比對（[web e2e 車道](../testing/2026-07-24-web-gui-browser-e2e-lane.md)、[必需 CI 閘門](../testing/2026-07-30-web-browser-snapshot-ci-gate.md)） | `apps/web/tests/*.snapshot.ts`、`apps/web/tests/smoke-{fixture,real}.e2e.ts`、`apps/web/tests/{replay-round-trip,seeded-history}.e2e.ts` |
+| 3 組裝呈現層 | 建置產物 × 真實 client loader 與外掛程式組合 | 歸應用所有的語義快照會在 jsdom 下啟動全部 8 個已建置的 client 外掛程式，以確定性方式驅動跨外掛程式狀態變化；另有最簡 Playwright 冒煙測試負責驗證真實瀏覽器/承載層邊界，真 host 用例在無金鑰時自行跳過；無金鑰瀏覽器 e2e 車道會停用交付設定中的模型配接器行，並透過 `dsh-llm-replay` 在真實行程內 web 組裝中重播錄制的工作階段 fixture（測試前置資料），與工作階段區 aria 預期輸出比對（[web e2e 車道](../testing/2026-07-24-web-gui-browser-e2e-lane.md)、[必需 CI 閘門](../testing/2026-07-30-web-browser-snapshot-ci-gate.md)） | `apps/web/tests/*.snapshot.ts`、`apps/web/tests/smoke-{fixture,real}.e2e.ts`、`apps/web/tests/{replay-round-trip,seeded-history}.e2e.ts` |
 
 層間紀律：**各層各測各的，上層不重測下層**：應用語義快照只固定組裝後外掛程式邊界上的使用者可見投影，Playwright 冒煙測試負責驗證瀏覽器與承載層是否存活；wire 語義歸 1 層，資料語義歸 2 層。純函式層（lineage/partial/notifier/transcript-adapter）隨 2 層同包 tests/ 零假體直測。
 
 - **host 與 client 原始碼**均納入全倉 per-file 100% 覆蓋率閘門，僅排除 `vitest.config.ts` 中帶註釋的少量瀏覽器級例外；元件套件透過逐文件 jsdom pragma 和 Testing Library 執行，不會改變 Node 套件。
-- **歸應用所有的語義快照**讀取已建置的 client bundle，透過真實 loader 執行它們，並且只驅動程式確定性的 fixture 掛鉤。它們負責固定側邊欄標籤、麵包屑導覽和 `document.title` 等穩定可見狀態，而不固定 CSS 畫素或下層狀態機細節。
+- **歸應用所有的語義快照**讀取已建置的 client bundle，透過真實 loader 執行它們，並且只驅動確定性的 fixture 掛鉤。它們負責固定側邊欄標籤、麵包屑導覽和 `document.title` 等穩定可見狀態，而不固定 CSS 畫素或下層狀態機細節。
 
 ## 車道地圖
 
@@ -42,7 +42,7 @@ GUI 棧需要考慮多種應用形態，同應用形態內的不同執行環境�
 ## 防回歸紀律
 
 - **修一個 bug 釘一條斷言**：瀏覽器可見的 bug 釘進所屬瀏覽器 spec（冒煙測試或 e2e 場景）；資料層 bug 釘進對應 spec（先例：res-close 誤判釘在 webserver 橋 suite——純 Node 秒級復現，不再需要 12s 瀏覽器哨兵作唯一防線）。
-- **fixture 全綠不算完，真 wire 也要過**：fixture 短路的恰是 wire 承載鏈（node:http 橋 close 語義、真網路時序），兩次實證 bug 都藏在那裡。改動觸及連線/橋/handler/SSE 的，瀏覽器車道（`pnpm run test:web`）必跑——其無金鑰 e2e 場景驅動程式真實 HTTP/SSE 承載，帶金鑰的真 host 冒煙測試仍是真模型側的補充。
+- **fixture 全綠不算完，真 wire 也要過**：fixture 短路的恰是 wire 承載鏈（node:http 橋 close 語義、真網路時序），兩次實證 bug 都藏在那裡。改動觸及連線/橋/handler/SSE 的，瀏覽器車道（`pnpm run test:web`）必跑——其無金鑰 e2e 場景驅動真實 HTTP/SSE 承載，帶金鑰的真 host 冒煙測試仍是真模型側的補充。
 - 落盤程式碼即答案的對表工作流程：行為改動落盤打紅既有用例時，當場對表校準（改測試還是改程式碼以 RFC/約定為裁），不留懸紅。
 
 ## Consequences

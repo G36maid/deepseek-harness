@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-30-web-read-card-frontend.md
 2026-07-30-web-read-card-frontend.md: 41b329921a477ac8172068dfe55137abf6a03013
 2026-07-30-web-read-card-frontend.zh.md: 17c6da4bc1369dce2448373cf3fe35fd4089adf4
-2026-07-30-web-read-card-frontend.zh-tw.md: 970027b3cb9cca49950577eaf66c77041ad864bf
+2026-07-30-web-read-card-frontend.zh-tw.md: 480dd8064ec89d238d10fdbbfdea107e4af072a0

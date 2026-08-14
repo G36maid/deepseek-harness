@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md
 2026-07-19-gui-layering-and-rpc-protocol.md: ad3a803619c7c98220b652aa96954342627ff80f
 2026-07-19-gui-layering-and-rpc-protocol.zh.md: 252cfef98c534e61552d4aa4963518bc444de7fd
-2026-07-19-gui-layering-and-rpc-protocol.zh-tw.md: bc0b589389e4759127864db24cc9179a1087f99d
+2026-07-19-gui-layering-and-rpc-protocol.zh-tw.md: 765137c2bc85d2d9448b1db4c54c0ffc38ae9643

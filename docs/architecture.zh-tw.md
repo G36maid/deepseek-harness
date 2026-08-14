@@ -46,7 +46,7 @@ dsh --profile web --dump-config
 | [`core/system-prompt`](subsystems/system-prompt.md) | 提示詞片段與工具 schema 的組裝 | `ctx.systemPrompt` |
 | [`core/tools`](subsystems/tools.md) | 作用域化的工具登錄檔和帶把關的執行管線 | `ctx.tools` |
 | [`core/agent`](subsystems/core.md) | `Agent` 介面、活躍 agent 登錄檔和 `agent/*` 事件 | `ctx.agents` |
-| [`core/agent-loop`](subsystems/core.md) | 實作該介面的默認驅動程式器 | `ctx.agentLoop` |
+| [`core/agent-loop`](subsystems/core.md) | 實作該介面的默認驅動器 | `ctx.agentLoop` |
 | [`core/scope`](subsystems/scope.md) | 按 agent 劃分作用域的註冊原語 | 庫，無 ctx 鍵 |
 | [`llm/llm`](subsystems/llm-streaming.md) | 訊息與流式詞彙表，以及配接器 seam | `ctx.llm` |
 
@@ -87,7 +87,7 @@ turn/end
 
 `turn/*`、`step/*`、`user/message`、`assistant/*` 和 `tool/*` 是持久工作階段事件；其餘是分屬三個事件域的即時擴充點。`agent/pre-step`、`agent/request`、`llm/stream` 和三個 `tools/*` 事件是 waterfall（瀑布式事件），其監聽器必須呼叫 `next()` 才能委託下去；`agent/turn-stopping` 是 serial 事件，沒有 `next()`。
 
-輸入透過同一個 inbox 到達驅動程式器。有些訊息會立即喚醒它；注入的上下文會留在 inbox 中，直到另一則訊息將其喚醒。
+輸入透過同一個 inbox 到達驅動器。有些訊息會立即喚醒它；注入的上下文會留在 inbox 中，直到另一則訊息將其喚醒。
 
 `agent/pre-step` 決定模型看到什麼。監聽器可以改寫已領取的訊息，也可以直接拒絕它們；首次領取被拒絕或被改寫為空時，仍會關閉一個不含步驟的持久輪次，因此日誌會記錄這次嘗試。每個步驟讀取外掛程式註冊的提示詞片段和工具 schema。
 
@@ -122,7 +122,7 @@ seam 正是替換一個提供方就能改變整個產品的原因。檔案系統
 | 限制所啟動的行程 | 使用 `ctx.sandbox` 後端；消費端在啟動行程前包裝 argv |
 | 攔截請求、工具或輪次 | 使用相應的 `agent/*` 或 `tools/*` 事件；`agent/turn-stopping` 會停止輪次 |
 | 新增模型可見上下文 | 呼叫 `agent.inject()`；它會落到下一次獲準的請求中 |
-| 新增 UI 或編輯器整合 | 驅動程式 `ctx.agents` 並從 `session/event` 渲染 |
+| 新增 UI 或編輯器整合 | 驅動 `ctx.agents` 並從 `session/event` 渲染 |
 | 新增 Web Client Chat 節點 | 註冊 `ConversationNodeDefinition` + keyed renderer |
 | 新增持久工作階段狀態 | 擴充 `SessionEventMap`；從日誌渲染和重播 |
 | 生成工作階段標題 | 註冊唯一的 `ctx.sessionTitle` 提供方 |

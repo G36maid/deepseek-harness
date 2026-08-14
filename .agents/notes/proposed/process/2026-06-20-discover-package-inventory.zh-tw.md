@@ -14,7 +14,7 @@ Status: proposed
 
 ## 提案
 
-讓剩餘的包與閘門清單可被發現。唯一真源，即 `packages/<group>/<pkg>` 層級結構加上包 manifest，應當驅動程式聚合設定的 `references`、模組圖以及任何全量包清單，並配合一個生成加校驗步驟（沿用現有的 `gen-module-graph` / `gen-cordis-catalog` 模式：生成器寫出產物，`--check` 模式在 `hygiene` / `doc-sync`（文件同步閘門）中發現已提交副本過時時失敗）。模組圖生成已經在學取包 manifest。`doc-sync` 應當成為定義並列印其子閘門的唯一命令，文件連結到該命令，而非重述第二份清單。
+讓剩餘的包與閘門清單可被發現。唯一真源，即 `packages/<group>/<pkg>` 層級結構加上包 manifest，應當驅動聚合設定的 `references`、模組圖以及任何全量包清單，並配合一個生成加校驗步驟（沿用現有的 `gen-module-graph` / `gen-cordis-catalog` 模式：生成器寫出產物，`--check` 模式在 `hygiene` / `doc-sync`（文件同步閘門）中發現已提交副本過時時失敗）。模組圖生成已經在學取包 manifest。`doc-sync` 應當成為定義並列印其子閘門的唯一命令，文件連結到該命令，而非重述第二份清單。
 
 層級結構不需要編碼關於包的所有事實，但應當編碼寬泛的維護策略：core/product 包、整合包、能力 seam 包與 support/test/example 包不應在指令碼能區分它們之前先要求一份手工維護的例外清單。
 

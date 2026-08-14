@@ -13,7 +13,7 @@ harness 有一個長期擱置的 seam 用於 **subagent**：一個 agent 將工�
 **多種 subagent 實作必須在執行時期共存。**一個父 agent 可能在同一個工作階段中既需要一個廉價的行程內子 agent 處理有限範圍的子任務，又需要一個隔離的行程外子 agent（透過 ACP）。傳輸方式：
 
 - **行程內**：在同一個 `Context` 上建立一個具體的子 `Agent`（最廉價，且鑑於現有 agent 工廠幾乎零成本）；
-- **ACP**：作為 ACP *用戶端*驅動程式另一個 agent 行程（可以是自身的另一個實例）；
+- **ACP**：作為 ACP *用戶端*驅動另一個 agent 行程（可以是自身的另一個實例）；
 - **Codex app-server 與 Claude Code Agent SDK**：當前的一次性同類提供方，將同一個命名提供方約定應用於官方產品行程（[產品提供方 Agent Note](2026-08-04-claude-code-and-codex-subagent-backends.md)）；
 - 後續：**A2A**，採用同樣的行程外形態：「啟動子 agent、傳送提示詞、結帳、取消」。
 
@@ -34,7 +34,7 @@ bash seam（[能力 seam](../architecture/2026-06-13-capability-seams.md)）在�
 | `@deepseek-ai/dsh-subagent` | 介面：`SubagentRuntime`（`ctx.subagents`）、`SubagentProvider`、`SubagentRun`、請求、結果、能力詞彙、`subagent/*` 事件 |
 | `@deepseek-ai/dsh-subagent-spawn-in-process` | 實作：透過 `ctx.agents.create` 建立全新的行程內子 agent |
 | `@deepseek-ai/dsh-subagent-fork-in-process` | 實作：用父 agent 日誌快照初始化的行程內子 agent |
-| `@deepseek-ai/dsh-subagent-acp` | 實作：作為 ACP 用戶端驅動程式已設定的子行程 |
+| `@deepseek-ai/dsh-subagent-acp` | 實作：作為 ACP 用戶端驅動已設定的子行程 |
 | `@deepseek-ai/dsh-subagent-codex` | 實作：一次性官方 Codex app-server 行程 |
 | `@deepseek-ai/dsh-subagent-claude-code` | 實作：透過 Agent SDK 執行的一次性官方 Claude Code 行程 |
 | `@deepseek-ai/dsh-tool-subagent` | 消費端：基於 `ctx.subagents` 的面向模型的 `subagent` 工具 |

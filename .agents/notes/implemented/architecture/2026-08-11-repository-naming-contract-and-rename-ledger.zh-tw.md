@@ -187,7 +187,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | `ScheduleOwner` | `ScheduleRuntime` | 該逐 agent 對象執行即時定時器、持久化投影、分派、空閒等待和資源釋放。`Owner` 沒有說明這一執行職責。耦合的私有 `owner*` 名稱也改用 `runtime*`。 |
 | `WorkflowService`, `ctx.workflows` | `WorkflowEngine`, `ctx.workflowEngine` | 一個引擎負責解析並執行工作流程序。複數鍵錯誤地暗示這是登錄檔。保留 `@deepseek-ai/dsh-workflow` 以及工作流程事件和工具。 |
 | `@deepseek-ai/dsh-workflow-workerthread`, `WorkerWorkflowEngine` | `@deepseek-ai/dsh-workflow-worker-thread`, `WorkerThreadWorkflowEngine` | `worker thread` 是準確的 Node 機制，倉庫拼寫要求使用完整單詞。 |
-| `@deepseek-ai/dsh-goal-session`, `goal/goal-session/` | `@deepseek-ai/dsh-goal-round-driver`, `goal/goal-round-driver/` | 該外掛程式驅動程式同一工作階段內的 Goal Rounds。它既不儲存目標，也不定義工作階段。保留 `GoalService`、目標來源、事件和約定。 |
+| `@deepseek-ai/dsh-goal-session`, `goal/goal-session/` | `@deepseek-ai/dsh-goal-round-driver`, `goal/goal-round-driver/` | 該外掛程式驅動同一工作階段內的 Goal Rounds。它既不儲存目標，也不定義工作階段。保留 `GoalService`、目標來源、事件和約定。 |
 | `packages/compact/` | `packages/compaction/` | 該組是以名詞命名的領域系列。`compact` 仍作為面向使用者的命令動詞。 |
 | `@deepseek-ai/dsh-compact`, `ctx.compact`, `CompactService` | `@deepseek-ai/dsh-compaction`, `ctx.compaction`, `CompactionEngine` | 該對象執行壓縮（compaction）演算法和生命週期。它是引擎，而不是通用服務。 |
 | `compact/*` 事件和公開領域前綴 | `compaction/*` | 事件和領域類型使用名詞形式。保留動詞形式的操作，例如 `compactNow`、`compactRegion` 和 `compactIfNeeded`。 |
@@ -242,7 +242,7 @@ PascalCase 識別符號中的首字母縮略詞使用首字母大寫格式：`Ui
 | `SubagentService` | `SubagentRuntime` | 該服務選擇提供方，並擁有即時 spawn、復原、跟進、取消和結帳行為。 |
 | `@deepseek-ai/dsh-subagent-spawn`, `SpawnProvider` | `@deepseek-ai/dsh-subagent-spawn-in-process`, `SpawnInProcessProvider` | 該提供方在當前行程內啟動子 agent。設定的提供方 id 仍為 `spawn`。 |
 | `@deepseek-ai/dsh-subagent-fork`, `ForkProvider` | `@deepseek-ai/dsh-subagent-fork-in-process`, `ForkInProcessProvider` | 該提供方在當前行程內 fork 一個 agent。設定的提供方 id 仍為 `fork`。 |
-| `@deepseek-ai/dsh-subagent-inprocess`, `subagent-inprocess/` | `@deepseek-ai/dsh-subagent-in-process-driver`, `subagent-in-process-driver/` | 該包包含通用的行程內驅動程式邏輯，而不是第三個提供方。 |
+| `@deepseek-ai/dsh-subagent-inprocess`, `subagent-inprocess/` | `@deepseek-ai/dsh-subagent-in-process-driver`, `subagent-in-process-driver/` | 該包包含通用的行程內驅動邏輯，而不是第三個提供方。 |
 | 私有的 `SdkProvider`，位於 `dsh-subagent-dsh-sdk` 中 | `SdkSubagentProvider` | 重複的包限定詞是有意保留的，類名還必須說明它透過 SDK 提供 subagent。 |
 | `WebService`, `WebServiceConfig` | `WebRuntime`, `WebRuntimeConfig` | 該對象選擇提供方並執行即時搜尋和抓取操作。保留包、鍵、提供方包和模型工具。 |
 | `@deepseek-ai/dsh-web-fetch-local`、`LocalFetchProvider`、`LocalFetchLimits`，提供方 id `local-http` | `@deepseek-ai/dsh-web-fetch-http`、`HttpFetchProvider`、`HttpFetchLimits`，提供方 id `http` | 該提供方執行直接 HTTP 抓取。`local` 只說明程式碼恰好在哪裡執行，並未說明它提供哪種機制。 |

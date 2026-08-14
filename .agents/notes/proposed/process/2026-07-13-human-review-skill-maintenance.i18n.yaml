@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-07-13-human-review-skill-maintenance.md
 2026-07-13-human-review-skill-maintenance.md: d38bac5010b353ecad1895cbde69aeb6ed463e19
 2026-07-13-human-review-skill-maintenance.zh.md: 5ea43fb6e76fbf646b95a1656b4861fe3721ce90
-2026-07-13-human-review-skill-maintenance.zh-tw.md: 2b03e2296c41c2a517e8d925d1a17a21ef1abb1d
+2026-07-13-human-review-skill-maintenance.zh-tw.md: 4cbe3f7814e09cd6f2ab7cb160b3dee1c3529fea

@@ -14,7 +14,7 @@ Status: implemented
 
 那些並非 surface 專屬的行移入 [`base.cordis.yml`](../../../../packages/bundle/base/cordis.patch.yml)，另有三行加入：`tool-session-query`、`tool-str-replace-editor` 和 `repeat-tool-reminder`。Web 搜尋也一並移入；其[部署決策](2026-07-31-web-default-search.md)負責安全邊界，共享 base 則負責與 surface 無關的掛載。兩個 surface 組裝同一份清單，其中 `glob` 和 `grep` 是固定成員，因為 `dsh-tool-fs-search` 直接 spawn [打包的 ripgrep 二進位](../architecture/2026-08-01-packaged-ripgrep-search.md)。之後有兩項決策收窄這份清單：[session-search 決策](2026-08-02-session-search-not-shipped-default.md)讓 `tool-session-query` 保持需顯式啟用，[單一編輯器決策](../simplification/2026-08-10-default-presets-single-editor.md)讓通用 preset 不提供 `tool-str-replace-editor`，但在 `minimal` 中保留它。
 
-有兩行仍是 surface 專屬。`tmux-context` 只在 TUI，因為瀏覽器 surface 沒有終端機複用器可描述。`session-reference` 只在 TUI，因為它以 launcher 的行程本機路徑驅動程式共享的 session-query 索引，而瀏覽器側邊欄會在自己的首次搜尋裡重建該索引。
+有兩行仍是 surface 專屬。`tmux-context` 只在 TUI，因為瀏覽器 surface 沒有終端機複用器可描述。`session-reference` 只在 TUI，因為它以 launcher 的行程本機路徑驅動共享的 session-query 索引，而瀏覽器側邊欄會在自己的首次搜尋裡重建該索引。
 
 **本次工具清單決策當時只做加法。** 落地時兩個 surface 均未移除任何工具行，目錄對比只發現了新增，別無其他。後續的 session-search 與單一編輯器決策分別負責對應的默認清單例外。共享執行器、沙盒組合與訪問預設值獨立歸屬[workspace-write 預設值決策](2026-07-31-workspace-write-surface-default.md)。
 
@@ -48,7 +48,7 @@ Status: implemented
 
 `glob` 與 `grep` 被作為固定成員斷言，而不是一對宿主相依性：`dsh-tool-fs-search` spawn 打包的 ripgrep 二進位並無條件註冊兩個工具，因此這一對始終在場。
 
-除入庫測試外,兩個 surface 都以 plain Node 從建置產物 `apps/cli/lib/bin.js` 出發、用真實金鑰驅動程式過。每一個已掛載的工具都執行成功,包括 `ralph` 與 `web_search`;模型從未觸達 `cordis_*` 或 `mcp_*`,被要求做 LSP 跳轉時退化到 `grep`,被要求開持久終端機時用了後臺 `bash` 任務。
+除入庫測試外,兩個 surface 都以 plain Node 從建置產物 `apps/cli/lib/bin.js` 出發、用真實金鑰驅動過。每一個已掛載的工具都執行成功,包括 `ralph` 與 `web_search`;模型從未觸達 `cordis_*` 或 `mcp_*`,被要求做 LSP 跳轉時退化到 `grep`,被要求開持久終端機時用了後臺 `bash` 任務。
 
 ## 曾考慮的替代方案
 

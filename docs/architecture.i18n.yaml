@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/architecture.md
 architecture.md: 4d973ed5e19e8b3c2ddac3a32efd42ae68e99897
 architecture.zh.md: 97705f189b9ed4bab89992050a7aa75a62066824
-architecture.zh-tw.md: 8e4a0eb6c762cc29b2a948589b98fb928347d0cc
+architecture.zh-tw.md: 4b88b8fe023439b712cccce6e8bd116da62cdff3

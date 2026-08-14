@@ -103,11 +103,11 @@ export function timeoutOf(x: AbortSignal | { reason?: unknown }, code?: string):
 - `AbortSignal.any` 和 `using`/`Symbol.dispose` 在此首次進入本倉庫（Node ≥ 24 基線，已滿足）。
 - 模型流現在共享一個可重新啟動的定時器約定，不會把滑動的空閒間隔變成總呼叫截止時間，也不會計入消費端思考時間。能夠觀察到帶外傳輸活動的配接器可以對尚未結帳的 demand 呼叫 `pulse()`；被封鎖的活動對 watchdog 仍不可見。該原語仍然只做通知；配接器測試證明其傳輸觀察到穩定訊號並終止。
 
-以下內容不在本次範圍內，列出以標明邊界：`web_search` 可以在其工具 schema 和快照覆蓋規劃完成後獲得選填的面向模型的 `timeout_ms`；基於 ripgrep 的檔案系統發現工具（[打包的 ripgrep 搜尋](2026-08-01-packaged-ripgrep-search.md)）透過 `dsh-tool-call-timeout-policy` 和 `exec.signal` 消費同樣的提供方自有 deadline 形狀；`tools/execute` waterfall（瀑布式事件）中介軟體可以透過驅動程式 `exec.signal` 為每次工具呼叫設定默認 deadline——那將是一個*消費*本庫的外掛程式，仍然只做通知，硬終止仍是各能力自己的事。
+以下內容不在本次範圍內，列出以標明邊界：`web_search` 可以在其工具 schema 和快照覆蓋規劃完成後獲得選填的面向模型的 `timeout_ms`；基於 ripgrep 的檔案系統發現工具（[打包的 ripgrep 搜尋](2026-08-01-packaged-ripgrep-search.md)）透過 `dsh-tool-call-timeout-policy` 和 `exec.signal` 消費同樣的提供方自有 deadline 形狀；`tools/execute` waterfall（瀑布式事件）中介軟體可以透過驅動 `exec.signal` 為每次工具呼叫設定默認 deadline——那將是一個*消費*本庫的外掛程式，仍然只做通知，硬終止仍是各能力自己的事。
 
 ## 曾考慮的替代方案
 
-**統一的逾時*外掛程式* / `ctx.timeout` 服務。** 基於微核心原則否決。一個能停止任何工具工作的服務必須理解每個能力的終止機制（行程組 SIGKILL、socket 拆除、系統呼叫邊界檢查），這正是架構所禁止的「核心知道太多」。Codex 的 `ExecExpiration` 被限定於 exec 族，正是因為它驅動程式的 kill（`killpg`）是行程族特有的；MCP 和模型流各自保有自己的。不存在一個連貫的中間層能為所有東西擁有終止權，因此共享部分只能是純計時/分類那一半——一個庫，而非服務。
+**統一的逾時*外掛程式* / `ctx.timeout` 服務。** 基於微核心原則否決。一個能停止任何工具工作的服務必須理解每個能力的終止機制（行程組 SIGKILL、socket 拆除、系統呼叫邊界檢查），這正是架構所禁止的「核心知道太多」。Codex 的 `ExecExpiration` 被限定於 exec 族，正是因為它驅動的 kill（`killpg`）是行程族特有的；MCP 和模型流各自保有自己的。不存在一個連貫的中間層能為所有東西擁有終止權，因此共享部分只能是純計時/分類那一半——一個庫，而非服務。
 
 **每個工具各自實作逾時，不共享程式碼（先前的現狀，也是 Claude Code 的選擇）。** 否決，因為它已經在產生分化和重複的正確性負擔：web_fetch 手寫了與未來網路/行程類工具各自需要重新推導的完全相同的 controller/reason 邏輯，而融合 + `signal.reason` 復原正是容易出錯的部分。Claude Code 容忍完全重複；本倉庫有一個統一的共享 abort 通道（每次 `execute` 上的 `exec.signal`），使得採用一個小型共享原語明顯更簡潔，因此成本/收益不同。
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-06-17-filesystem-tool-schemas.md
 2026-06-17-filesystem-tool-schemas.md: 1bd67f031557df8e7cc0db00b637c4145fcc8247
 2026-06-17-filesystem-tool-schemas.zh.md: c449211987b560c840e710c97263d543573e3c00
-2026-06-17-filesystem-tool-schemas.zh-tw.md: f457701b1fd77b42fe660bf1c7c3b4fc59883349
+2026-06-17-filesystem-tool-schemas.zh-tw.md: 14ef25c58c7dacab29883ead00fce70d905d2179

@@ -8,7 +8,7 @@ Status: implemented
 
 組裝後的系統提示詞存在四個缺陷，同屬一類：harness 已知的事實在別處被手工重述，然後漂移。
 
-**模型無法知道自己的名字。** `AgentOptions.model` 驅動程式每個請求，但沒有任何提示詞文字攜帶它——也不可能攜帶：`dsh-system-prompt` 中的 section 是上下文全域性的，而模型名稱因 agent（代理）而異，`assemble()` 根本不接受任何 per-agent 輸入。
+**模型無法知道自己的名字。** `AgentOptions.model` 驅動每個請求，但沒有任何提示詞文字攜帶它——也不可能攜帶：`dsh-system-prompt` 中的 section 是上下文全域性的，而模型名稱因 agent（代理）而異，`assemble()` 根本不接受任何 per-agent 輸入。
 
 **工具指導是 leaf YAML 中的手寫行文。** shell/subagent/todo_write 的使用指導存放在 coding-agent 和 ACP（Agent Client Protocol）的 persona 字串裡——兩份漂移的副本（ACP 那份已經被刪減）——而 `dsh-tool-fs` 和 `dsh-tool-web` 則透過 `ctx.systemPrompt.section()` 貢獻各自的指導。載入或解除安裝一個工具外掛程式意味著手動編輯每個部署的 persona，舊終端機歡迎橫幅也手動枚舉了工具集。
 
@@ -28,7 +28,7 @@ Status: implemented
 
 外掛程式透過 `ctx.systemPrompt.variable(name, provider)` 註冊 `{{name}}` 值。組裝過程將它們解析到 waterfall 可見的變數對映中。渲染階段拒絕以下情況：引用未知的自有屬性、已註冊的提供方返回 `undefined`、格式錯誤的完整引用、以及仍包含閉合 `}}` 的不平衡引用；孤立的未匹配 `{{` 保留為行文，替換後的值不會被重新掃描。註冊階段拒絕無效或重複的變數名，section 名稱也必須唯一。
 
-`dsh-agent-loop` 註冊兩個內建變數，均為上下文 agent 的純投影：`model`（= `options.model`）和 `cwd`（= `session.header.cwd`）。示例 persona 寫 `powered by the {{model}} model`——模型名稱只在 `model:` 設定鍵中聲明一次。`{{cwd}}` 僅在 ACP 示例中演示：每個 ACP 工作階段攜帶用戶端的 cwd，而設定預建立的 stdio agent 沒有 cwd（在那裡聲稱 `{{cwd}}` 的 persona 會導致該輪次失敗——這是有意為之）。變數留在 loop 外掛程式上（不同於下面的 section）：它們是本迴圈驅動程式的 agent 的執行時期事實，替換迴圈自行提供自己的變數。
+`dsh-agent-loop` 註冊兩個內建變數，均為上下文 agent 的純投影：`model`（= `options.model`）和 `cwd`（= `session.header.cwd`）。示例 persona 寫 `powered by the {{model}} model`——模型名稱只在 `model:` 設定鍵中聲明一次。`{{cwd}}` 僅在 ACP 示例中演示：每個 ACP 工作階段攜帶用戶端的 cwd，而設定預建立的 stdio agent 沒有 cwd（在那裡聲稱 `{{cwd}}` 的 persona 會導致該輪次失敗——這是有意為之）。變數留在 loop 外掛程式上（不同於下面的 section）：它們是本迴圈驅動的 agent 的執行時期事實，替換迴圈自行提供自己的變數。
 
 ### Persona 作為 order-0 section
 

@@ -22,7 +22,7 @@ ACP 選擇還必須保留提供方維度。同一個模型 ID 可能存在於多
 
 `LlmRuntime.listProviders()` 按註冊順序返回元資料副本。`LlmRuntime.listModels(provider)` 委託給路由所有者，校驗非空 ID 和名稱，並在提供方不匹配或模型 ID 重複時以 `INVALID_CATALOG` 失敗，最後回傳值的副本。未知提供方仍以 `NO_ADAPTER` 失敗。提供方元資料在 `registerAdapter()` 期間進行原子校驗，錯誤展示記錄不會留下部分註冊。
 
-目錄成員關係僅提供建議。它驅動程式選擇器與診斷，但不會改變 `stream()` 路由，也不會拒絕原本有效的請求。提供方所有權仍然具有排他性並綁定生命週期；模型 ID 仍是請求時傳給配接器的輸入。
+目錄成員關係僅提供建議。它驅動選擇器與診斷，但不會改變 `stream()` 路由，也不會拒絕原本有效的請求。提供方所有權仍然具有排他性並綁定生命週期；模型 ID 仍是請求時傳給配接器的輸入。
 
 `dsh-llm-pi-ai` 將已設定提供方的 `getModels(provider)` 返回的已安裝條目對映為提供方無關的目錄。其現有請求時目錄查詢仍是權威依據，未知模型仍以 `UNKNOWN_MODEL` 失敗。`dsh-llm-deepseek` 接受包含展示條目的選填 `models` 設定，默認包含名為 `DeepSeek-V4-Flash` 的 `deepseek-v4-flash` 和名為 `DeepSeek-V4-Pro` 的 `deepseek-v4-pro`。顯式清單會替換這些預設值，空清單則關閉發現。這些條目改善已知公開或私有模型的選擇體驗，而所有未列出的模型 ID 仍會原樣透傳。
 

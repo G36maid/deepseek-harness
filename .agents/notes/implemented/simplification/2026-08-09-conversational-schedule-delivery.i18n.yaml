@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-09-conversational-schedule-delivery.md
 2026-08-09-conversational-schedule-delivery.md: 988103ce0d740fa4113812250fd52f14861e6947
 2026-08-09-conversational-schedule-delivery.zh.md: ff18639a6956001e53388d0a30a2723df2f81661
-2026-08-09-conversational-schedule-delivery.zh-tw.md: 9509f074bd394e9da6b1b419c5824f9c0bd6896d
+2026-08-09-conversational-schedule-delivery.zh-tw.md: 94a015ce5b811a6ef61f003607a3874b1cb68c16

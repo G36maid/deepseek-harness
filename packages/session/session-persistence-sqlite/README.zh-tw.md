@@ -59,4 +59,4 @@ SQLite 儲存不修改當前請求前綴。只有重建歷史、當前 envelope 
 - **寫入爭用無等待或重試策略**：後端不設定 busy timeout，也不重試 locked-database 錯誤，因此其他連線持有寫交易時操作立即拒絕。
 - **只有 pristine 新資料庫或當前自有 `SCHEMA_VERSION` 才能打開**：無版本 schema 對象、外部 application identity 和所有其他 schema 版本被拒絕，而不是遷移（未發布軟體，無持久使用者資料需要保留）。
 - **不刪除已儲存工作階段**：行會累積，直到外部移除（seam 無刪除介面；`ON DELETE CASCADE` 已為這種帶外清理設定）。
-- **TODO：** 該後端直接呼叫 `node:sqlite`。如果採用 Cordis 資料庫服務（`cordis/db` / `@cordisjs` SQL driver 外掛程式），應改為透過該服務路由，而不在此直接持有 `DatabaseSync`；約定介面（`SessionPersistence`）不會變，只更換儲存驅動程式。
+- **TODO：** 該後端直接呼叫 `node:sqlite`。如果採用 Cordis 資料庫服務（`cordis/db` / `@cordisjs` SQL driver 外掛程式），應改為透過該服務路由，而不在此直接持有 `DatabaseSync`；約定介面（`SessionPersistence`）不會變，只更換儲存驅動。

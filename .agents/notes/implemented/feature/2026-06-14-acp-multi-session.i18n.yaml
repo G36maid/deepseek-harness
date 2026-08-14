@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-06-14-acp-multi-session.md
 2026-06-14-acp-multi-session.md: 429074304fae8d9998205106cbbc1ccb0ff8f202
 2026-06-14-acp-multi-session.zh.md: 69f22225de1c11e5b5547b99472eec44892c5afa
-2026-06-14-acp-multi-session.zh-tw.md: 073a95b7a39627b4e7fc1ff982081d7660cc8822
+2026-06-14-acp-multi-session.zh-tw.md: 864e2f218b54ef456f9e52aef623c3d1a64fb11e

@@ -124,7 +124,7 @@ interface SessionEventMap {
 }
 ```
 
-`UserMessage` 是普通提示詞、注入上下文、steering（中途引導）與即時收件箱事件共享的帶標識且凍結的 user-role 值。事件包裝層只會增加事件本機的位置或結果事實；條目待處理期間，loop 只額外附加驅動程式器自有的路由狀態。
+`UserMessage` 是普通提示詞、注入上下文、steering（中途引導）與即時收件箱事件共享的帶標識且凍結的 user-role 值。事件包裝層只會增加事件本機的位置或結果事實；條目待處理期間，loop 只額外附加驅動器自有的路由狀態。
 
 ### `TodoItem`：一條待辦項
 
@@ -541,7 +541,7 @@ declare class Session {
 
 ## 輪次的結束原因：`TurnEndReasonMap`
 
-`turn/start` 沒有 trigger 欄位。已進入的 `user/message` 批次記錄進入每個步驟的內容，`llm/retry` 記錄請求復原，idle 注入則保持待處理，直到喚醒交付抵達後續 pre-step。即時輪次會保留停止驅動程式器的類型化 [`AgentCancelCause`](core.md#the-agent-handle)；只有在匯入受支持的粗粒度取消記錄且記錄未保存呼叫方時，持久化才使用額外的 `{ kind: 'legacy' }` 原因。
+`turn/start` 沒有 trigger 欄位。已進入的 `user/message` 批次記錄進入每個步驟的內容，`llm/retry` 記錄請求復原，idle 注入則保持待處理，直到喚醒交付抵達後續 pre-step。即時輪次會保留停止驅動器的類型化 [`AgentCancelCause`](core.md#the-agent-handle)；只有在匯入受支持的粗粒度取消記錄且記錄未保存呼叫方時，持久化才使用額外的 `{ kind: 'legacy' }` 原因。
 
 ```ts type-equiv
 /** Durable cancellation cause, including imports whose original coarse record carried no cause. */

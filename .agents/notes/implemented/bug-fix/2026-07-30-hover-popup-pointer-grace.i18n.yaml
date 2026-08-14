@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-30-hover-popup-pointer-grace.md
 2026-07-30-hover-popup-pointer-grace.md: de0b8a9ec0d93467edb76b1820efe5a1380a2a18
 2026-07-30-hover-popup-pointer-grace.zh.md: 84e457aa3c24e4383819b2ea45167c655db206b8
-2026-07-30-hover-popup-pointer-grace.zh-tw.md: c7e76914f8f07939e769078036177ab2311dd8e6
+2026-07-30-hover-popup-pointer-grace.zh-tw.md: 4af14de0de9f670e21c1eee887fe4594a45b61eb

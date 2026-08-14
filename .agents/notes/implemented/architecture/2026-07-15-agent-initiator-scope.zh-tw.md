@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-harness 中存在兩種有用但不同的上下文概念。Cordis `Context` 負責選擇服務、註冊歸屬和生命週期；`agent.ctx` 是一個存活 Agent 所擁有的扁平註冊作用域。Agent 與工作階段身份描述的則是非同步操作主體。若把根 `ctx.agent` 改成「當前正在執行的 Agent」，就會混淆這兩種含義，並在單行程並行驅動程式多個 Agent 時失效。
+harness 中存在兩種有用但不同的上下文概念。Cordis `Context` 負責選擇服務、註冊歸屬和生命週期；`agent.ctx` 是一個存活 Agent 所擁有的扁平註冊作用域。Agent 與工作階段身份描述的則是非同步操作主體。若把根 `ctx.agent` 改成「當前正在執行的 Agent」，就會混淆這兩種含義，並在單行程並行驅動多個 Agent 時失效。
 
 行程內深層基礎設施有時需要在顯式傳遞的迴圈、工具及請求參數之下取得可信的發起 Agent，例如宿主感知傳輸層、追蹤輔助函式、日誌器或閘道用戶端。要求每個私有輔助函式都轉發 `agent` 會造成重複，而行程級可變槽會在跨 `await` 時發生並行錯誤。模型可見參數也不適用，因為模型不得選擇可信的工作階段或路由請求標頭。該載體歸 Agent 服務所有，而非模型可見的選填上下文。
 
@@ -16,9 +16,9 @@ harness 中存在兩種有用但不同的上下文概念。Cordis `Context` 負�
 
 `currentInitiator()` 用於選填讀取，`requireInitiator()` 拋出 `no initiating agent is active`，`withInitiator(agent, operation)` 保留操作返回的同步值或 Promise 本身。`withoutInitiator(operation)` 會建立清空邊界，供不得繼承 Agent 的工作使用。工作階段仍透過 `agent.session` 推導；輪次、步驟、工具呼叫、`signal`、模型、`cwd`、沙盒和授權繼續由現有歸屬方管理。
 
-`AgentLoop` 已經注入 `ctx.agents`，並用 `agents.withInitiator(agent, ...)` 包裹每個具體驅動程式的完整 `runLoop` 生命週期。迴圈、輪次、步驟和工具呼叫的包內私有入口從 `ctx.agents` 復原同一個 Agent，一次推導 `agent.session`，再由操作內輔助函式捕獲該值，避免在淺層介面中轉發具體驅動程式或 `Session`。若 `Session` 本身就是底層輔助函式的實際介面，該函式會保留狹窄的 `Session` 參數，而不會只為隱式尋找而接收更寬泛的 `Context`。
+`AgentLoop` 已經注入 `ctx.agents`，並用 `agents.withInitiator(agent, ...)` 包裹每個具體驅動的完整 `runLoop` 生命週期。迴圈、輪次、步驟和工具呼叫的包內私有入口從 `ctx.agents` 復原同一個 Agent，一次推導 `agent.session`，再由操作內輔助函式捕獲該值，避免在淺層介面中轉發具體驅動或 `Session`。若 `Session` 本身就是底層輔助函式的實際介面，該函式會保留狹窄的 `Session` 參數，而不會只為隱式尋找而接收更寬泛的 `Context`。
 
-因此，並行驅動程式使用彼此獨立的儲存。子驅動程式的非同步延續攜帶子 Agent；`withInitiator()` 返回後，呼叫方立即復原之前的儲存，而活動執行計數仍持續跟蹤返回的 Promise，直到其結束。建立、持久化載入和尚未發布的 `setup(agentCtx)` 位於子驅動程式邊界之外：由父 Agent 發起的建立使用父身份，而 `agentCtx.agent` 顯式標識子 Agent。
+因此，並行驅動使用彼此獨立的儲存。子驅動的非同步延續攜帶子 Agent；`withInitiator()` 返回後，呼叫方立即復原之前的儲存，而活動執行計數仍持續跟蹤返回的 Promise，直到其結束。建立、持久化載入和尚未發布的 `setup(agentCtx)` 位於子驅動邊界之外：由父 Agent 發起的建立使用父身份，而 `agentCtx.agent` 顯式標識子 Agent。
 
 隱式身份不會取代顯式約定。`ToolExecution.agent`、`AssembleContext.agent`、`GenerateOptions.sessionId`、任務歸屬、父子請求、`ctx.agent`、`agentCtx.agent`、審批與 hook 主體、`cwd` 選擇、取消、worker 和行程訊息、持久化記錄及協議身份都保持顯式傳遞。遠端邊界會把所需身份寫入類型化請求，因為 ALS 只在行程內有效。
 
@@ -32,7 +32,7 @@ harness 中存在兩種有用但不同的上下文概念。Cordis `Context` 負�
 
 ## 驗證
 
-Agent 服務測試鎖定選填與必需讀取、同步值及跨 realm Promise 的精確身份、內建 Promise 結束狀態觀察、並行、巢狀及清空邊界、同步拋錯或 Promise 拒絕後的復原、普通與重入排空順序及保留引用的錯誤。AgentLoop 整合測試鎖定並行與巢狀驅動程式、無 Agent 呼叫、AgentRegistry 重新啟動、根 Context 銷毀，以及包內私有的迴圈和工具調度透過隱式尋找完成。組合、模組圖、建置及執行時期閉包檢查確保默認組合包、SDK 主幹、Python 執行時期閉包及直接 AgentLoop harness 透過 `ctx.agents` 完成接線，無需其他提供方。
+Agent 服務測試鎖定選填與必需讀取、同步值及跨 realm Promise 的精確身份、內建 Promise 結束狀態觀察、並行、巢狀及清空邊界、同步拋錯或 Promise 拒絕後的復原、普通與重入排空順序及保留引用的錯誤。AgentLoop 整合測試鎖定並行與巢狀驅動、無 Agent 呼叫、AgentRegistry 重新啟動、根 Context 銷毀，以及包內私有的迴圈和工具調度透過隱式尋找完成。組合、模組圖、建置及執行時期閉包檢查確保默認組合包、SDK 主幹、Python 執行時期閉包及直接 AgentLoop harness 透過 `ctx.agents` 完成接線，無需其他提供方。
 
 測試替身形式的宿主感知傳輸層在內部推導 `X-Harness-Session-Id`，並驗證工具 schema 與日誌中記錄的參數都不包含身份欄位。服務有意不排空邊界操作所返回 Promise 之外的非同步工作；這類工作仍由所屬方的顯式停止約定管理。
 
@@ -46,7 +46,7 @@ Agent 服務測試鎖定選填與必需讀取、同步值及跨 realm Promise �
 
 **保存命名幀或完整執行時期幀。** 只有一個欄位的 `{ agent }` 幀只是包裝該值，而 Agent、工作階段、inbox、取消、輪次、步驟、工具執行和持久化已經有各自的真源。增加更多欄位會產生過時快照和另一套生命週期；直接攜帶 `Agent`，由方法名標識邊界，無需重複保存狀態。
 
-**包含步驟級 `AbortSignal`、`cwd`、沙盒或授權。** 它們的生命週期及權限範圍與驅動程式邊界不一致，而且現有 seam 已經顯式傳遞這些值。新增控制能力需要獨立決策和巢狀生命週期約定。
+**包含步驟級 `AbortSignal`、`cwd`、沙盒或授權。** 它們的生命週期及權限範圍與驅動邊界不一致，而且現有 seam 已經顯式傳遞這些值。新增控制能力需要獨立決策和巢狀生命週期約定。
 
 **使用行程級 `currentAgent`。** 並行 Agent 和 subagent 會在非同步延續執行之間相互覆蓋，因此可變全域性值只在 harness 不具備的序列保證下才正確。
 
@@ -56,7 +56,7 @@ Agent 服務測試鎖定選填與必需讀取、同步值及跨 realm Promise �
 
 ## 後果
 
-深層基礎設施可以獲得一個可信的行程內發起 Agent，而無需加寬現有工具和能力請求。並行及巢狀驅動程式會自動隔離，AgentLoop 不增加新的必需服務，HMR（熱模組替換）或根 Context dispose 會在停用 ALS 前達到完全靜止。
+深層基礎設施可以獲得一個可信的行程內發起 Agent，而無需加寬現有工具和能力請求。並行及巢狀驅動會自動隔離，AgentLoop 不增加新的必需服務，HMR（熱模組替換）或根 Context dispose 會在停用 ALS 前達到完全靜止。
 
 該相依性不會出現在函式簽名中，並且攜帶一個具有控制能力的 Agent 對象。消費端必須將其限制在橫切基礎設施中，把隱式存在視為既不證明存活、也不授予權限，並保留顯式取消和歸屬檢查。ALS 還有常駐傳播成本，也無法跨越 worker、行程、HTTP 或持久化佇列邊界。
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-19-gui-web-client-architecture.md
 2026-07-19-gui-web-client-architecture.md: 95cce60abadc959a3a8db527b814503fd5cd3180
 2026-07-19-gui-web-client-architecture.zh.md: a2c997c97f82434dd35ad79adacc9c4a95962b2c
-2026-07-19-gui-web-client-architecture.zh-tw.md: 9c460bc4ca709177362f1ba60197401c79353d08
+2026-07-19-gui-web-client-architecture.zh-tw.md: 57a0179a002a3499a63dda03efac7db8d23f12be

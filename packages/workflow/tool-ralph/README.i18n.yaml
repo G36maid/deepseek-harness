@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/workflow/tool-ralph/README.md
 README.md: 3c940a2cedb61076c4773a183b97dec5cc80190a
 README.zh.md: e336cc9031c27d3ab3fffcfdca419bf3d571cdfb
-README.zh-tw.md: fb58162e968878f79e9a61527fbe4dbd84cf0425
+README.zh-tw.md: 39ad5adbfcd86422bfc20fe6bca548e44fb2e783

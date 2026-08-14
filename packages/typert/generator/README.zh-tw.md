@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-TypeScript 項目分析器和模型驅動程式的 Typert 生成器。在生成任何產物之前，它會先將開發者編寫的源類型樹轉換為獨立於編譯器的 `FaceModel` 和 `TypeGraph` 資料。靜態分析無需 Cordis 即可消費該模型；各產物生成元件均不會接收 TypeScript 抽象文法樹（AST）或型別檢查器對象。
+TypeScript 項目分析器和模型驅動的 Typert 生成器。在生成任何產物之前，它會先將開發者編寫的源類型樹轉換為獨立於編譯器的 `FaceModel` 和 `TypeGraph` 資料。靜態分析無需 Cordis 即可消費該模型；各產物生成元件均不會接收 TypeScript 抽象文法樹（AST）或型別檢查器對象。
 
 分析器可以分別使用由 `tsconfig.host.json` 或 `tsconfig.client.json` 初始化的獨立 `ts.Program`。直接項目引用確定編譯器 face 的成員歸屬，而包子路徑確定 Typert 執行時期 face 的貢獻：聲明 `dsh.client` 的普通單項目包可以同時貢獻 Host 與 Client 執行時期模型；只有透過 `tsconfig.host.json` 或 `tsconfig.client.json` 顯式引用的拆分項目，才會被限制在相應 face。`package.json#exports` 確定所有跨包公開邊界，跨 face 的邊只能來自原始碼匯入或重新匯出。NPM 相依性擁有的類型（包括 `@types` 包中的全域性聲明）繼續以 `external` 引用表示，不會被展開。
 
@@ -22,7 +22,7 @@ TypeScript 項目分析器和模型驅動程式的 Typert 生成器。在生成�
 
 ## 本倉庫的 Cordis 投影
 
-包根匯出中包含本倉庫 Cordis 目錄使用的模型驅動程式提取邏輯、完整性檢查和確定性文字渲染器。它們接受 `CordisCatalogPolicy`；由倉庫持有的類型連結、基礎類型／豁免類型分類和繼承的 Cordis 條目仍位於 `scripts/gen-cordis-catalog.ts`，並由呼叫方顯式傳入。因此，生成器包只包含投影機制，不會隱式複製本倉庫的文件分類體系。
+包根匯出中包含本倉庫 Cordis 目錄使用的模型驅動提取邏輯、完整性檢查和確定性文字渲染器。它們接受 `CordisCatalogPolicy`；由倉庫持有的類型連結、基礎類型／豁免類型分類和繼承的 Cordis 條目仍位於 `scripts/gen-cordis-catalog.ts`，並由呼叫方顯式傳入。因此，生成器包只包含投影機制，不會隱式複製本倉庫的文件分類體系。
 
 ## 模型體驗
 

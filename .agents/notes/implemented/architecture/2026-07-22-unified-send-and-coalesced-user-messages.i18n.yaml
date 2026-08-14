@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-22-unified-send-and-coalesced-user-messages.md
 2026-07-22-unified-send-and-coalesced-user-messages.md: 7cc495cb45771328c193dcb9cf41bdf6153bc689
 2026-07-22-unified-send-and-coalesced-user-messages.zh.md: cb7e60e90973e4d3ed2b5584e6172be247ced267
-2026-07-22-unified-send-and-coalesced-user-messages.zh-tw.md: 02a2f8ff8855109b14ba28b8bcb6ba8fa2cfba83
+2026-07-22-unified-send-and-coalesced-user-messages.zh-tw.md: 5ed82687be8bc22e9e59de5bc573096cae79a552

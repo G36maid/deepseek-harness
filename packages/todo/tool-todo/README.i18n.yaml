@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write packages/todo/tool-todo/README.md
 README.md: 7e325d0a7e2359b78c8b4ba18a8e6fa024c4de70
 README.zh.md: e86437c2b70c3eeedc2a90e6c61e7baf9500f8f3
-README.zh-tw.md: 3bbe20a8da541fcedbb3459ea1dbe28574dfa021
+README.zh-tw.md: 9332d2fd8ed0d257b73411af1cde08e00363b535

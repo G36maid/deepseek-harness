@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-06-20-discover-package-inventory.md
 2026-06-20-discover-package-inventory.md: b89081444e891e38189496a1df72bf911a5cae1a
 2026-06-20-discover-package-inventory.zh.md: b66213b99bebb67b2f9f946f0c25792b7974ada3
-2026-06-20-discover-package-inventory.zh-tw.md: 317b6acdda5a0eadfca21d19c2325146f44f1f3a
+2026-06-20-discover-package-inventory.zh-tw.md: 106ab7355a831c1902951c07e0e6e2258c62460e

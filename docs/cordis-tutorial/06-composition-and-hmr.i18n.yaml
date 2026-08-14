@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write docs/cordis-tutorial/06-composition-and-hmr.md
 06-composition-and-hmr.md: 80cfb55612650e8975539d56550fc1a70d95d652
 06-composition-and-hmr.zh.md: 2b7acc09e90e134290cc20cc9ac02d21efd5e6e5
-06-composition-and-hmr.zh-tw.md: af640f0b2f189a07b374d675e7d9cd8f0500826f
+06-composition-and-hmr.zh-tw.md: 1b3baddbc7c809679478a607e58c9ac533e42c51

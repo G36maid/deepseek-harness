@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-agent（代理）的唯一具體實作外掛程式和迴圈驅動程式器。其包內部實作滿足 `Agent` 介面，並驅動工作階段、輪次和步驟的生命週期。
+agent（代理）的唯一具體實作外掛程式和迴圈驅動器。其包內部實作滿足 `Agent` 介面，並驅動工作階段、輪次和步驟的生命週期。
 
 這是 harness 中唯一包含具體迴圈邏輯的包。其他所有內容要麼是抽象服務，要麼是針對擴充點的外掛程式：新行為應放入外掛程式，而不是這裡。
 
@@ -10,7 +10,7 @@ agent（代理）的唯一具體實作外掛程式和迴圈驅動程式器。其
 
 ### 公開 API
 
-建立與復原屬於同一個受回滾保護的交易：構造私有工作階段、具體 agent 和帶作用域的上下文；等待選填 setup；進入兩個登錄檔；依次宣告 `session/created` 和 `agent/created`；寄出 `agent/session-start`；此後才啟動驅動程式器。Setup 作為受信任的同進程組合程式碼，接收完整的帶作用域 `Context`，並且不得驅動程式尚未發布的 agent。普通的類型化身份與選項輸入按只讀約定借用；seed 事件和工作階段元資料會跨越持久工作階段邊界，因此係統會對其進行驗證並建立快照。選填的 `AbortSignal` 只取消載入／setup／發布，並在返回的 handle 可見前分離。
+建立與復原屬於同一個受回滾保護的交易：構造私有工作階段、具體 agent 和帶作用域的上下文；等待選填 setup；進入兩個登錄檔；依次宣告 `session/created` 和 `agent/created`；寄出 `agent/session-start`；此後才啟動驅動器。Setup 作為受信任的同進程組合程式碼，接收完整的帶作用域 `Context`，並且不得驅動尚未發布的 agent。普通的類型化身份與選項輸入按只讀約定借用；seed 事件和工作階段元資料會跨越持久工作階段邊界，因此係統會對其進行驗證並建立快照。選填的 `AbortSignal` 只取消載入／setup／發布，並在返回的 handle 可見前分離。
 
 呼叫方 fiber 與 AgentLoop 提供方共同擁有 agent。`AgentFactory.createAgent(ownerCtx, options)` 與 `resume(ownerCtx, options)` 顯式接收呼叫方所有權，而工廠為 `sessions`/`llm`/`tools`/`systemPrompt` 保留自身的相依性上下文；這樣，呼叫方可以只注入 `agents`，而不會縮減新 agent 的服務介面。呼叫方解除安裝、handle dispose（資源釋放）或提供方解除安裝都會匯合到同一個記憶化的完全靜止邊界。提供方關閉會同時等待資源 teardown，以及已經觀測到停用的公開 create/resume 包裝層，因此相依性消失後，任何 continuation 都無法繼續發布。
 
@@ -23,7 +23,7 @@ agent（代理）的唯一具體實作外掛程式和迴圈驅動程式器。其
 - `ctx.agents.create({ sessionId, meta?, seed?, agentOptions?, setup?, signal? }): Promise<AgentHandle>`：使用呼叫方提供的共享 id 以程式設計方式建立。它會等待尚未發布的 setup 交易，然後才返回；`meta` 攜帶 cwd／譜系／seed 邊界元資料，`seed` 則在工作階段邊界驗證並快照持久值後，重建 fork 子級的前綴。`signal` 只在此 Promise 結帳前生效。返回的 [`AgentHandle`](../agent/README.md) 擁有確切的 teardown 能力。
 - `ctx.agents.resume({ resumeSessionId, agentOptions?, setup?, signal? }): Promise<AgentHandle>`：透過 `ctx.sessionPersistence` 載入持久化工作階段（參見[工作階段持久化](../../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)），使用同一 id 註冊 agent，重建歷史，然後針對全新且尚未發布的 agent 作用域等待 setup，再執行受回滾保護的發布。輪次編號和派生歷史從已載入日誌繼續。此操作要求存在工作階段持久化後端（不會硬注入，因此非持久化 demo 仍能工作；缺少持久化時，`resume` 會以明確錯誤拒絕）。`signal` 僅用於建立。返回 `AgentHandle`。
 
-設定驅動程式的 `ctx.agentLoop.create()` 路徑讓迴圈 fiber 擁有其 agent（該路徑會丟棄 handle）。對於以程式設計方式建立的 agent，handle 持有者是唯一面向消費端的 teardown 能力；AgentLoop 提供方解除安裝是一條獨立的結構性 teardown 邊，而不是向應用程式碼公開的另一個 handle。
+設定驅動的 `ctx.agentLoop.create()` 路徑讓迴圈 fiber 擁有其 agent（該路徑會丟棄 handle）。對於以程式設計方式建立的 agent，handle 持有者是唯一面向消費端的 teardown 能力；AgentLoop 提供方解除安裝是一條獨立的結構性 teardown 邊，而不是向應用程式碼公開的另一個 handle。
 
 ### 注入的服務
 
@@ -51,17 +51,17 @@ interface Config {
 
 透過設定建立的 agent 會自動啟動。模型呼叫同時需要 `provider` 和 `model`；`agent/request` 可以在分發前補齊缺失的這一對值。選填的正數 `maxTokens` 會為每次對話請求提供初始輸出上限，並記錄在請求 header 中。`maxParallelToolCalls` 限制每個 agent 針對平行安全呼叫使用的滾動池，預設值為 `10`；它同時也是 `agent-loop` Settings 段的全部內容，因此疊加在該條目之上的使用者層無需重新啟動即可限制下一組工具呼叫，而非正整數的值會在寫入時被拒絕，而不是到那一組時才失敗。`agents` 刻意不在該段中——它在服務啟動時被消費一次，所以儲存的改動只會看起來生效。`cwd` 僅應用於全新工作階段，而 `resumeSessionId` 保留持久化元資料。透過設定建立的 agent 使用部署 persona；程式設計式 setup 可以按 agent 遮蔽它。該外掛程式為每個 agent 提供 `provider`、`model` 和 `cwd` 提示詞變數；harness 身份與部署 persona 屬於 `dsh-system-prompt`。
 
-### 包內部具體驅動程式器
+### 包內部具體驅動器
 
-具體 `ReactLoopAgent`、其 inbox 與執行控制均為包內部實作。包根只匯出外掛程式／服務／設定約定，包匯出對映不提供 `./src/*` 逃逸路徑；生命週期擁有方透過 `ctx.agents` 建立 agent，而不是點名、構造或啟動驅動程式器內部元件。一個準備完成的工作階段只能由一個具體驅動程式器認領；所有可觀測行為都透過工作階段事件和 `agent/*` 事件分類體系發生。
+具體 `ReactLoopAgent`、其 inbox 與執行控制均為包內部實作。包根只匯出外掛程式／服務／設定約定，包匯出對映不提供 `./src/*` 逃逸路徑；生命週期擁有方透過 `ctx.agents` 建立 agent，而不是點名、構造或啟動驅動器內部元件。一個準備完成的工作階段只能由一個具體驅動器認領；所有可觀測行為都透過工作階段事件和 `agent/*` 事件分類體系發生。
 
-統一的 `send()` 原語按（`target` × `wakeup`）路由內容與來源；`followup`/`steer`/`inject` 是它的固定預設別名。`followup()` 追加到 `next-turn` FIFO 並喚醒驅動程式器，`steer()` 追加到 `next-step` inbox 並喚醒驅動程式器，`inject()` 則追加到同一個 `next-step` inbox，但不喚醒驅動程式器。在輪次邊界，驅動程式器會先打開持久輪次，再原子領取待處理的 next-step 輸入和一條排隊提示詞；在步驟之間則只領取 next-step 輸入。領取操作透過僅執行刪除的 splice 移除整批訊息，並為每則訊息各發出一次 `agent/inbox/claimed { message, turn }`。隨後 `agent/pre-step` 返回拒絕結果，或返回將進入擬議步驟的完整訊息。拒絕後，已領取批次保持已刪除，並關閉不含步驟的輪次；領取後插入的輸入仍等待後續處理，而空閒注入會一直等待，直到 follow-up 或 steering 喚醒驅動程式器。
+統一的 `send()` 原語按（`target` × `wakeup`）路由內容與來源；`followup`/`steer`/`inject` 是它的固定預設別名。`followup()` 追加到 `next-turn` FIFO 並喚醒驅動器，`steer()` 追加到 `next-step` inbox 並喚醒驅動器，`inject()` 則追加到同一個 `next-step` inbox，但不喚醒驅動器。在輪次邊界，驅動器會先打開持久輪次，再原子領取待處理的 next-step 輸入和一條排隊提示詞；在步驟之間則只領取 next-step 輸入。領取操作透過僅執行刪除的 splice 移除整批訊息，並為每則訊息各發出一次 `agent/inbox/claimed { message, turn }`。隨後 `agent/pre-step` 返回拒絕結果，或返回將進入擬議步驟的完整訊息。拒絕後，已領取批次保持已刪除，並關閉不含步驟的輪次；領取後插入的輸入仍等待後續處理，而空閒注入會一直等待，直到 follow-up 或 steering 喚醒驅動器。
 
 每次 inbox 變更都會在修改即時投影之前，先發布一條規範化的 `agent/inbox/spliced` 事件。因此，插入、編輯、移除、領取與取消都透過同一組標準 splice 坐標重播。普通刪除攜帶 `outcome: 'canceled'` 並行出 `agent/inbox/discarded { message }`；領取使用不帶 outcome 的純刪除，隨後由迴圈寄出 `agent/inbox/claimed`。每次插入都會發出 `agent/inbox/inserted { message }`。`MessageId` 在兩個待處理清單之間保持唯一，持久事件的同步觀察方可以從 splice 前投影重建被移除的值。
 
 ### 迴圈生命週期（`agent.ts`）
 
-驅動程式器在其整個生命週期內擁有一個 agent，並在 `ctx.agents.withInitiator(agent, ...)` 內執行。包私有的編排入口點會復原確切的 Agent，一次性派生 `agent.session`，並讓操作區域性的輔助函式捕獲它，而不是透過淺層介面繼續傳遞具體驅動程式器或每次操作的 `Session`。如果顯式 `Session` 正是輔助函式的實際介面，該輔助函式會保留它；建立、持久化載入、未發布 setup、服務、worker、行程、持久化和 wire 協議則繼續保留各自的顯式身份。[agent 服務](../agent/README.md#initiating-agent-scope)規定傳播、teardown 和分離工作規則。
+驅動器在其整個生命週期內擁有一個 agent，並在 `ctx.agents.withInitiator(agent, ...)` 內執行。包私有的編排入口點會復原確切的 Agent，一次性派生 `agent.session`，並讓操作區域性的輔助函式捕獲它，而不是透過淺層介面繼續傳遞具體驅動器或每次操作的 `Session`。如果顯式 `Session` 正是輔助函式的實際介面，該輔助函式會保留它；建立、持久化載入、未發布 setup、服務、worker、行程、持久化和 wire 協議則繼續保留各自的顯式身份。[agent 服務](../agent/README.md#initiating-agent-scope)規定傳播、teardown 和分離工作規則。
 
 每次提供方呼叫成功結束時，都會恰好追加一個 `assistant/message` 完成錨點，包括無內容呼叫和以 `max-tokens` 結束的呼叫。該錨點原樣記錄組裝後的內容，在 `sourceEventSeqs` 中列出確切的區塊 seq（流沒有區塊時為 `[]`），並在用量可用時包含用量；空內容不會進入派生訊息歷史。
 

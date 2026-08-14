@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-06-21-bounded-llm-request-recovery.md
 2026-06-21-bounded-llm-request-recovery.md: 9609facd850f9cd4548c232ac9a61cbb1a84f759
 2026-06-21-bounded-llm-request-recovery.zh.md: 403fc368b5fc204d1f333f9b24270afd33f913b5
-2026-06-21-bounded-llm-request-recovery.zh-tw.md: c746bae563d79c21ecfb55f0375fe1e9334978bc
+2026-06-21-bounded-llm-request-recovery.zh-tw.md: c4bdc6f03f8526c175ed19b8e396190e2c895ee9

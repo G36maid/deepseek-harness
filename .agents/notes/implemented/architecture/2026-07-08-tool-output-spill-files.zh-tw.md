@@ -166,8 +166,8 @@ ctx.tools.register(defineTool({
 
 - `dsh-spill` 單元測試鎖定 seam 約定：註冊為 `ctx.spillStore`、每個上下文只允許一種實作，並在 dispose（資源釋放）時釋放。
 - `dsh-spill-local` 單元測試覆蓋 `saveText`、`encodeSegment` 清理（分隔符／波浪號／完整路徑段的點／空值）、工作階段雜湊目錄、僅所有者權限、每次保存生成不同路徑、設定根目錄／私有根目錄，以及儲存失敗時的拒絕。
-- `dsh-spill-policy` 單元測試透過 `ctx.tools.execute` 驅動程式真實工具：停用模式下無操作、替換超大文字、小結果／非文字結果保持不變、跳過 `read`、盡力回退（保存失敗／無後端／無所有者），以及下游組合（限制已替換結果、保留 `additionalContexts`）。
-- `dsh-tool-web` 整合測試驅動程式 `web_fetch`，其實際執行路徑經過 `ctx.tools.execute`，並使用真實的 `spill-local` 後端與策略；測試證明只有刻意加入的 spill 提示會改變模型可見文字，而 spill 文件保存完整的格式化結果。
+- `dsh-spill-policy` 單元測試透過 `ctx.tools.execute` 驅動真實工具：停用模式下無操作、替換超大文字、小結果／非文字結果保持不變、跳過 `read`、盡力回退（保存失敗／無後端／無所有者），以及下游組合（限制已替換結果、保留 `additionalContexts`）。
+- `dsh-tool-web` 整合測試驅動 `web_fetch`，其實際執行路徑經過 `ctx.tools.execute`，並使用真實的 `spill-local` 後端與策略；測試證明只有刻意加入的 spill 提示會改變模型可見文字，而 spill 文件保存完整的格式化結果。
 - `tui-agent` 示例載入 `spill-local` 與 `spill-policy`，因此其無金鑰 Loader／PTY 冒煙測試會執行真實載入路徑（namespace-plugin 匯出形態與 `inject`）。
 
 ## 影響

@@ -82,13 +82,13 @@ vendored Loader 經其 `internal` 約定消費模組系統——唯一呼叫點�
 4. `settled` = 每個 entry 已建立 + `loader.await()` 完全靜止 + 一次全 ACTIVE 掃描。掃描列出每個 import 失敗、FAILED 或 PENDING 的 fiber 及其缺失的服務。它存在的理由：cordis 的 inject 等待沒有逾時——這次掃描就是大聲失敗的兜底線。
 5. loading 頁的啟動狀態是經 `internal/status` 對真實 fiber 狀態的投影。settled 翻轉即一次性切換到真實 UI。
 
-### 熱重新載入：一個驅動程式外掛程式，自行監視的 bundle
+### 熱重新載入：一個驅動外掛程式，自行監視的 bundle
 
 熱重新載入是一項組合決策：web 組合包無條件掛載 `client-hmr` 行（一個常規的外掛程式包），其 node 半帶來 bundle 監視與 SSE（Server-Sent Events）通道；沒有重建 watcher 改寫用戶端 bundle 時鏈路保持空閒。不應暴露它的組合可以停用該行。
 
 重建好的 bundle 怎麼變成重載訊號？hmr 的 node 半自己觀察——沒有建置器來通知它。它從 `ctx.clientModules.clientPath(id)` 讀取圖上各行的 bundle 路徑，由 HMR 自持的單個定時器對當前圖上的每一行做 stat 輪詢。新增圖行時，順序固定為先同步取得 stat 基線，再立即呼叫 `clientModuleHost.rebuilt(id)`：在模組 host 算出圖雜湊之後、取得基線之前發生的寫入會被這次立即重雜湊捕獲；取得基線之後發生的寫入則會留下 stat 差異，供下一次輪詢捕獲。這避開了 `fs.watchFile`：它以非同步首次 stat 建立基線，可能把構造期間的重建靜默吸收進基線。監視集合的成員隨 `onGraphChanged` 更新；消失的行撤下監視，輪詢時缺失的 bundle 則讓對應行保持標髒狀態，文件重現時即使元資料相同也強制重雜湊。mtime/size 變化或行處於標髒狀態時，`clientModuleHost.rebuilt(id)` 是重雜湊的唯一入口；當 `rev` 真的變了，node 半纔在 `GET /plugins/events` 上廣播 `rebuilt` 幀——這是一條系統級 SSE 通道，連線即發全量圖，變更時發 `rebuilt` 幀，僅供呈現的 wire，永不進工作階段日誌。輪詢是刻意選擇：inotify 在 weka 網路掛載上不觸發，建置側監視器需要 `--poll` 也是同一原因；輪詢間隔是一個經校驗的設定欄位（默認 500ms），dispose（資源釋放）會清掉那一個定時器。重建 bundle 則是任意一個 tsdown watch 行程的事——`scripts/dev-web.ts` 仍作為 watch 建置入口保留，其包清單在啟動時掃描 `packages/*/*/package.json` 按 dsh.client 發現——建置器與 host 共享零協議。寫一半的 bundle 被撕裂讀取會自愈：寫入完成期間 stat 持續變化，下一個輪詢節拍會再次重雜湊並廣播最終的 rev。
 
-瀏覽器側，驅動程式外掛程式每幀重載一個外掛程式，序列執行：
+瀏覽器側，驅動外掛程式每幀重載一個外掛程式，序列執行：
 
 1. `invalidate`——丟棄過時的工廠與記錄。工廠還活著會讓下一步變成 no-op。
 2. `prefetch`——載入外部指令碼並登記新工廠，舊 fiber 此刻仍在服役。
@@ -117,7 +117,7 @@ vendored Loader 經其 `internal` 約定消費模組系統——唯一呼叫點�
 | `dsh-client-runtime` | 工作階段對象層 + slots 服務 + store 引擎 | 外掛程式，聲明 `immediately` | 持續縮向純工作階段對象層 |
 | `dsh-client-ui-theme` | 主題 token/服務 | 外掛程式，聲明 `immediately`，外加 `./styles/*` 原始碼通道 | Theme Registry（另行裁定） |
 | `dsh-client-i18n` | I18nService | 外掛程式，聲明 `immediately` | 按部署組合語言包 |
-| `dsh-client-hmr` | 熱重新載入驅動程式 | 外掛程式，聲明 `immediately` | 回滾；重連握手 |
+| `dsh-client-hmr` | 熱重新載入驅動 | 外掛程式，聲明 `immediately` | 回滾；重連握手 |
 | ui-layout / ui-sidebar / ui-conversation / ui-trajectory | UI 功能 | 外掛程式，按需到達 | conversation 域拆分；trajectory 真實現 |
 
 ## Consequences

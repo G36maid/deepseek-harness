@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-10-child-agents-join-their-parent-preset.md
 2026-08-10-child-agents-join-their-parent-preset.md: 3520571f3491c2216c8ec31af5e7382c48b963e6
 2026-08-10-child-agents-join-their-parent-preset.zh.md: 917ba3ae5f0ddd5f49262bc7cc67bbebc3911c6a
-2026-08-10-child-agents-join-their-parent-preset.zh-tw.md: 1ca5cf722422cf066c68e5285ba763d79319e38c
+2026-08-10-child-agents-join-their-parent-preset.zh-tw.md: 948c8af1f63d27e7f475214553c38753b73fef1c

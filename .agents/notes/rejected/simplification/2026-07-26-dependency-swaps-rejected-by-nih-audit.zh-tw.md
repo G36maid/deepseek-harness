@@ -48,7 +48,7 @@ Status: rejected — 下列每一項替換在證據上都未達到淨簡化門�
 - **以 `pidtree`/`ps-tree` 承擔 pty 行程巡檢器**：它們只給裸 PID 樹；這段程式碼需要對抗 PID 複用的啟動時間身份校驗，加上 `/proc` stdin 等待偵測，沒有包做這些。
 - **以 `execa` 承擔 subagent-subprocess 的 dispose（資源釋放）階梯**：`forceKillAfterDelay` 覆蓋 SIGTERM→SIGKILL，但覆蓋不了先發 stdin EOF 的協作層級，也覆蓋不了「無退出沿即 reject」約定；在這裡採用它意味著重寫各 spawn 呼叫點、同時階梯照舊保留。（測試基礎設施的 spawn 管線是另一回事——見[已歸檔的 execa 測試基礎設施決策](../../archived/testing/2026-07-26-execa-for-test-subprocess-plumbing.md)。）
 - **以 `tree-kill` 承擔 acp-snapshot 拆除與 lsp 行程終止**：那些程式碼行做的是排空順序與錯誤傳播，不是行程樹遍歷；lsp/bash 已經使用分離的行程組加 taskkill。
-- **在 TUI 測試驅動程式器上到處使用 node-pty**：已歸檔的 [Windows TUI 決策](../../archived/feature/2026-07-20-windows-tui-support.md)明確否決了在每個宿主上都使用 node-pty；它當時已經是 Windows 那一條腿。
+- **在 TUI 測試驅動器上到處使用 node-pty**：已歸檔的 [Windows TUI 決策](../../archived/feature/2026-07-20-windows-tui-support.md)明確否決了在每個宿主上都使用 node-pty；它當時已經是 Windows 那一條腿。
 
 **伺服器與 HTTP：**
 

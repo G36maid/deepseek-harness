@@ -89,5 +89,5 @@ reason 為 `max-tokens` 的 `turn/end` 會在該輪位置投影出一個 `turn-m
 ## 已知限制與暫緩事項
 
 - **`loader.unload` 是 stub**：它會拋出 not-implemented；用戶端沒有從 fiber dispose 到註冊與樣式移除的解除安裝鏈。
-- **scope 拆卸由階段驅動程式，目前只能有一個佔用者**：已 staged 的工作階段精確跟隨 `list.current`（staging 就是打開訊號：事件視窗打開 ⟺ 工作階段位於 stage）；在 staged 狀態下被移除的工作階段，其 scope 會凍結保留，直到 stage 轉向其他工作階段，而非直到真實觀察者數量降為零。解析（`binding()`／`scope()`）只是純尋址，可安全用於渲染；渲染層經 `currentProvideInfo` observable 讀取當前 bundle。並行 pane 落地時，staged 狀態可以擴充為多 pane 清單。
+- **scope 拆卸由階段驅動，目前只能有一個佔用者**：已 staged 的工作階段精確跟隨 `list.current`（staging 就是打開訊號：事件視窗打開 ⟺ 工作階段位於 stage）；在 staged 狀態下被移除的工作階段，其 scope 會凍結保留，直到 stage 轉向其他工作階段，而非直到真實觀察者數量降為零。解析（`binding()`／`scope()`）只是純尋址，可安全用於渲染；渲染層經 `currentProvideInfo` observable 讀取當前 bundle。並行 pane 落地時，staged 狀態可以擴充為多 pane 清單。
 - **外掛程式 bundle 從該包匯入值時必須使用 `/client` 子路徑**：裸包名不在 loader externals 表中，會內聯第二個模組實例；其私有 scope-tag Symbol 永遠無法匹配。

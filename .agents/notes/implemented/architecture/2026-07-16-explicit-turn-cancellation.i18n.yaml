@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-16-explicit-turn-cancellation.md
 2026-07-16-explicit-turn-cancellation.md: 49baccfffd35f79ca99b402f4fa96aa42189d1ad
 2026-07-16-explicit-turn-cancellation.zh.md: be9edaf61f1473636bd476054739bf9d1052e825
-2026-07-16-explicit-turn-cancellation.zh-tw.md: 78243abad5329fdcc920347c2c31a7586e6e7ef0
+2026-07-16-explicit-turn-cancellation.zh-tw.md: 6136dfe43f10395b6ca662a5c8aad8c17a519c93

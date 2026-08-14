@@ -17,7 +17,7 @@ Status: implemented
 - `report` 工具，其描述現在說明 child 要在結束前呼叫一次並給出自足的最終結果，並在部分進展會改變 parent 下一步動作時提前呼叫；
 - 一個 order 為 117 的 `tool:report` 系統提示詞 section，用 child 自己的語氣承載同一條義務，使從不細讀工具描述的 child 仍能收到它。
 
-`reportDelivery` 的預設值現在是 `wakeup`。一條被接受的報告恰好建立一個普通的後續 parent 輪次並喚醒停駐的 parent 驅動程式；它仍然絕不 steering（中途引導）已開始的輪次。對於寧可讓報告無人閱讀也要避免輪次放大的部署，`quiet` 依舊可用。
+`reportDelivery` 的預設值現在是 `wakeup`。一條被接受的報告恰好建立一個普通的後續 parent 輪次並喚醒停駐的 parent 驅動；它仍然絕不 steering（中途引導）已開始的輪次。對於寧可讓報告無人閱讀也要避免輪次放大的部署，`quiet` 依舊可用。
 
 ### 為什麼 section 與描述同時存在
 

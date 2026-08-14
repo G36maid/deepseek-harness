@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/rejected/simplification/2026-07-12-prune-unused-skill-registry-api.md
 2026-07-12-prune-unused-skill-registry-api.md: 9d7c088ba47a144e4ae7c91874cdf2806188d328
 2026-07-12-prune-unused-skill-registry-api.zh.md: cec2c2bc89263bde8802f60d790ae4792d30649d
-2026-07-12-prune-unused-skill-registry-api.zh-tw.md: 51715be702e37ed52e9e042c0a291c9d93e73ea3
+2026-07-12-prune-unused-skill-registry-api.zh-tw.md: f4668e6fec3edce2ff1e4cc8fd7f4b5fe9c4d894

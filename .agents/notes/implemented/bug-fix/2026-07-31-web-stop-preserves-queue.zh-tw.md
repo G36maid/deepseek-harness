@@ -14,7 +14,7 @@ Web 停止按鈕呼叫 `session.cancel`，後者對映到廣義 `agent.cancel({ 
 
 `session.cancel` 是 Web Host API 面向普通工作階段的活動輪次停止操作。它會以 `agent-busy` 拒絕由工作階段支撐的 subagent；否則會呼叫 `agent.cancel({ kind: 'user' }, { keepInbox: true })`，在協作式中止當前輪次的同時保留待處理 inbox 工作。底層選項會保留 queued 和 steering 入隊項；Web Queue 投影繼續只暴露 queued 入隊項。
 
-AgentLoop 不會啟動並行的替代輪次。它會關閉並 flush 被中斷的輪次，達到取消的完全靜止，然後透過現有 FIFO 驅動程式器認領下一個可喚醒的 queued 入隊項。該認領會發出 `agent/inbox/dequeue`，因此 Host 的權威 `session/queue` 快照會退役已認領行，並使剩餘隊尾保持可見。瀏覽器既不重發，也不提升任何行。忽略取消的工作會延遲這一交接，直到該工作結帳。
+AgentLoop 不會啟動並行的替代輪次。它會關閉並 flush 被中斷的輪次，達到取消的完全靜止，然後透過現有 FIFO 驅動器認領下一個可喚醒的 queued 入隊項。該認領會發出 `agent/inbox/dequeue`，因此 Host 的權威 `session/queue` 快照會退役已認領行，並使剩餘隊尾保持可見。瀏覽器既不重發，也不提升任何行。忽略取消的工作會延遲這一交接，直到該工作結帳。
 
 該對映只更改 Web 用戶端使用的 Host `session.cancel` 端點。`Agent.cancel()` 默認約定仍為廣義取消，ACP 和 TUI 保留既有取消策略，`AgentHandle.dispose()` 在拆卸期間仍會清除待處理工作。移除 Queue 行仍是用於丟棄單個待處理入隊項的顯式 Web 操作。
 
@@ -30,7 +30,7 @@ AgentLoop 不會啟動並行的替代輪次。它會關閉並 flush 被中斷的
 
 ## 驗證
 
-AgentLoop 覆蓋會保持一個活動模型流，將兩個可喚醒輪次排隊，使用 `keepInbox` 取消，並固定驗證先中止、後完成的輪次原因，FIFO 使用者訊息順序，不存在 discard 事件，以及最終空閒狀態。無金鑰 Web 場景透過 HTTP／SSE 驅動程式已組裝組合：它停止一個卡住的輪次，觀察隊尾保持可見時下一個 queued 入隊項開始，再停止該輪次，並觀察最後一個 queued 入隊項完成。其可訪問性快照固定了中間的 Queue 保留狀態。
+AgentLoop 覆蓋會保持一個活動模型流，將兩個可喚醒輪次排隊，使用 `keepInbox` 取消，並固定驗證先中止、後完成的輪次原因，FIFO 使用者訊息順序，不存在 discard 事件，以及最終空閒狀態。無金鑰 Web 場景透過 HTTP／SSE 驅動已組裝組合：它停止一個卡住的輪次，觀察隊尾保持可見時下一個 queued 入隊項開始，再停止該輪次，並觀察最後一個 queued 入隊項完成。其可訪問性快照固定了中間的 Queue 保留狀態。
 
 ## 後果
 

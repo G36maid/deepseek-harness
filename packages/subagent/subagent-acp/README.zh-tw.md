@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-ACP（Agent Client Protocol）提供方會在全新的子行程中執行每個 subagent，並作為 Agent Client Protocol 用戶端驅動程式它。這是 spawn 與 fork 的行程外替代方案：子 agent（代理）擁有自己的執行時期、工作階段、模型設定和工具。
+ACP（Agent Client Protocol）提供方會在全新的子行程中執行每個 subagent，並作為 Agent Client Protocol 用戶端驅動它。這是 spawn 與 fork 的行程外替代方案：子 agent（代理）擁有自己的執行時期、工作階段、模型設定和工具。
 
 ## 啟動與所有權
 

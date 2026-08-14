@@ -6,7 +6,7 @@ Status: implemented
 
 ## 問題
 
-harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 那樣在生命週期節點擴充或管控 agent（代理）。驅動程式本設計的關鍵視角轉換是：**「原生掛鉤」不是一個包**——原生掛鉤只是一個普通的 Cordis 外掛程式，訂閱規範的生命週期事件。因此真正的產品是一個*強大、類型完備的規範事件介面*；CC/Codex 橋接（`dsh-hooks-claude-code` / `dsh-hooks-codex` 包）只是將外部 shell 掛鉤協議對映到同一介面的翻譯層。橋接能做的事，普通外掛程式可以直接做——而且更強大（無序列化邊界、完整 `ctx`、類型化回傳值）。
+harness 需要一套掛鉤子系統：使用者像 Claude Code（CC）和 Codex 那樣在生命週期節點擴充或管控 agent（代理）。驅動本設計的關鍵視角轉換是：**「原生掛鉤」不是一個包**——原生掛鉤只是一個普通的 Cordis 外掛程式，訂閱規範的生命週期事件。因此真正的產品是一個*強大、類型完備的規範事件介面*；CC/Codex 橋接（`dsh-hooks-claude-code` / `dsh-hooks-codex` 包）只是將外部 shell 掛鉤協議對映到同一介面的翻譯層。橋接能做的事，普通外掛程式可以直接做——而且更強大（無序列化邊界、完整 `ctx`、類型化回傳值）。
 
 該介面需要為以下場景提供各自獨立的約定：逐提示詞策略（CC 的 `UserPromptSubmit`）、工作階段啟動觀測（CC 的 `SessionStart`）、工具執行前策略、環繞調度控制、工具執行後變換、最終結果觀測，以及攜帶面向模型的原因的繼續執行。如果把這些階段混為一談，外掛程式就會獲得不需要的 mutation 通道，而終結性將相依性監聽器的註冊順序。[事件域語義 Agent Note](../architecture/2026-06-30-event-domain-semantics.md) 提供了三域規則與類型化 Decision 慣用法；本 Agent Note 將其應用於生命週期擴充點。
 
@@ -56,4 +56,4 @@ Service Definition 包**不**聲明 `hook/*` 工作階段事件（持久的掛�
 
 ## 後果
 
-規範攔截介面具有統一的類型化，同時不給每個擴充相同的權力：掛鉤返回 decision，執行包裝層做包裝，終結 guard 只能拒絕，最終觀測者只能觀測。迴圈負責 session-start、pre-step 領取結帳、工具執行後上下文緩衝和 stopping；`dsh-tools` 負責身份封存與五階段執行管線。它們的約定記錄在 [architecture.md](../../../../docs/architecture.md)、各包 README、[核心攔截 decision](../../../../docs/subsystems/core.md#interception-decisions) 與[工具結構](../../../../docs/subsystems/tools.md)中。ACP 橋接會把 blocked 無步驟輪次中的首次 pre-step reject 結帳為 `end_turn`，而掛鉤驅動程式的快照端到端驗證可觀測的橋接行為。
+規範攔截介面具有統一的類型化，同時不給每個擴充相同的權力：掛鉤返回 decision，執行包裝層做包裝，終結 guard 只能拒絕，最終觀測者只能觀測。迴圈負責 session-start、pre-step 領取結帳、工具執行後上下文緩衝和 stopping；`dsh-tools` 負責身份封存與五階段執行管線。它們的約定記錄在 [architecture.md](../../../../docs/architecture.md)、各包 README、[核心攔截 decision](../../../../docs/subsystems/core.md#interception-decisions) 與[工具結構](../../../../docs/subsystems/tools.md)中。ACP 橋接會把 blocked 無步驟輪次中的首次 pre-step reject 結帳為 `end_turn`，而掛鉤驅動的快照端到端驗證可觀測的橋接行為。

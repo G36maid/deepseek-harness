@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
-面向 Python SDK 內建 JSON-RPC 執行時期的無人值守編碼 agent（代理）組合。它有意不載入終端機 UI、控制台日誌記錄器、批准介面或使用者互動工具，因為 stdout 屬於 SDK 協議，輪次由 SDK 驅動程式。
+面向 Python SDK 內建 JSON-RPC 執行時期的無人值守編碼 agent（代理）組合。它有意不載入終端機 UI、控制台日誌記錄器、批准介面或使用者互動工具，因為 stdout 屬於 SDK 協議，輪次由 SDK 驅動。
 
 面向模型的工具為：
 

@@ -4,4 +4,4 @@
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-06-export-jsdoc-gate.md
 2026-07-06-export-jsdoc-gate.md: cd2905d00d596b07a2980811c86d563faaf60343
 2026-07-06-export-jsdoc-gate.zh.md: fc1ce2271fec82ee147525f1807509af83d1470a
-2026-07-06-export-jsdoc-gate.zh-tw.md: b12aca7b163d051bdcb3a5cb9ec9e816b2c8100a
+2026-07-06-export-jsdoc-gate.zh-tw.md: 2abc8b3e548f7215296578b5081c417eab6d80ea

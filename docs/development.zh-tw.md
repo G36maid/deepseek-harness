@@ -21,7 +21,7 @@
 pnpm install
 ```
 
-安裝過程還會透過 `scripts/install-lefthook.mjs` 設定 worktree 本機的 Lefthook 掛鉤和 `dsh-translation-pairing` Git 合併驅動程式。[worktree 本機掛鉤 Agent Note](../.agents/notes/implemented/process/2026-07-27-worktree-local-lefthook.md) 負責掛鉤路徑的安全約定；[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md) 負責合併驅動程式。
+安裝過程還會透過 `scripts/install-lefthook.mjs` 設定 worktree 本機的 Lefthook 掛鉤和 `dsh-translation-pairing` Git 合併驅動。[worktree 本機掛鉤 Agent Note](../.agents/notes/implemented/process/2026-07-27-worktree-local-lefthook.md) 負責掛鉤路徑的安全約定；[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md) 負責合併驅動。
 
 如果相依性是從快取復原或 `postinstall` 被跳過而導致任一整合缺失，請手動安裝：
 
@@ -100,9 +100,9 @@ DEEPSEEK_BASE_URL=https://... # optional
 
 ### Git 整合
 
-當兩種語言的文件都使用 Git 默認文字策略且能幹淨合併時，配對合併驅動程式會根據已確認的祖先、當前和另一側的配對文件 blob，推匯出發生衝突的 `.i18n.yaml` 記錄。配對文件發生衝突、存在非文字合併設定或記錄無效時，它會拒絕處理並保留衝突；如果合併已經因衝突而停止，請執行 `pnpm run resolve-translation-pairing-conflicts`，該命令會暫存每份可安全生成的配對記錄；如果其他配對衝突仍需手工處理，則以非零狀態退出。[雙語文件約定](i18n/README.md#the-pairing-contract)列出該驅動程式接受的確切文件和狀態。
+當兩種語言的文件都使用 Git 默認文字策略且能幹淨合併時，配對合併驅動會根據已確認的祖先、當前和另一側的配對文件 blob，推匯出發生衝突的 `.i18n.yaml` 記錄。配對文件發生衝突、存在非文字合併設定或記錄無效時，它會拒絕處理並保留衝突；如果合併已經因衝突而停止，請執行 `pnpm run resolve-translation-pairing-conflicts`，該命令會暫存每份可安全生成的配對記錄；如果其他配對衝突仍需手工處理，則以非零狀態退出。[雙語文件約定](i18n/README.md#the-pairing-contract)列出該驅動接受的確切文件和狀態。
 
-安裝指令碼在發布 worktree 設定前，會探測確切的 Node/tsx 驅動程式入口點。如果該執行時期之後變得不可用，不相依性 Node 的啟動器會寫入 Git 的普通文字合併結果、讓伴隨檔案保持未解決狀態，並列印復原路徑；請復原相依性後執行 `pnpm run resolve-translation-pairing-conflicts`，或執行 `git merge --abort`。如果 `pre-merge-commit` 拒絕原本能幹淨完成的合併，Git 會把完整結果留在暫存區但不建立提交；請修復失敗後執行 `git commit`，或中止合併。確切的索引與 `MERGE_HEAD` 狀態由[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md#failure-contract)負責記錄。
+安裝指令碼在發布 worktree 設定前，會探測確切的 Node/tsx 驅動入口點。如果該執行時期之後變得不可用，不相依性 Node 的啟動器會寫入 Git 的普通文字合併結果、讓伴隨檔案保持未解決狀態，並列印復原路徑；請復原相依性後執行 `pnpm run resolve-translation-pairing-conflicts`，或執行 `git merge --abort`。如果 `pre-merge-commit` 拒絕原本能幹淨完成的合併，Git 會把完整結果留在暫存區但不建立提交；請修復失敗後執行 `git commit`，或中止合併。確切的索引與 `MERGE_HEAD` 狀態由[自動配對合併 Agent Note](../.agents/notes/implemented/process/2026-08-08-automatic-translation-pairing-merges.md#failure-contract)負責記錄。
 
 lefthook 在 `lefthook.yml` 中設定，作為快速的本機檢查點：
 

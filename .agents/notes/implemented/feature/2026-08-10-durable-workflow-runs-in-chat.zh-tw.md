@@ -20,7 +20,7 @@ workflow 包透過 `@deepseek-ai/dsh-workflow/types` 提供瀏覽器安全的執
 
 `ui-workflow-run` 註冊一個 `workflow-run` Conversation Definition 和一個 keyed Chat renderer。每條事件都能獨立給出同一 `runId`；run-start 初始化 State，後續事件按日誌順序更新；只有 update 的歷史尾頁會保持 pending，直到 prepend 補入唯一 start。最終節點保留引擎擁有的 key，並以 run-start 錨定在原工具呼叫之後，從執行中到終態始終保留同一個 React 父級。
 
-renderer 為每一層分配不同視覺職責。執行使用 32 畫素 module-platform 背景行，常駐向右／向下 chevron，並以內聯狀態點加狀態文字表達結局，不使用膠囊。階段使用 32 畫素 disclosure 行，在可伸縮主區顯示標題與成員數，在固定尾部精確顯示聚合狀態且不重複狀態點。成員使用 16 畫素狀態點槽、可省略名稱區和固定 64 畫素狀態列。階段只在成員真正開始時出現，並按精確階段字串分組；欄位預設與空字串保留不同身份和本機化名稱。成員結帳只改變狀態，不刪除或重排成員。所屬 Turn 或 Step 關閉時，缺少執行或成員終點會顯示為已中斷；存在持久終點時仍以它為權威。[狀態驅動程式的工作流程 disclosure](2026-08-11-workflow-run-status-driven-disclosure.md)擁有這些事實變化時執行與階段內容的可見性。
+renderer 為每一層分配不同視覺職責。執行使用 32 畫素 module-platform 背景行，常駐向右／向下 chevron，並以內聯狀態點加狀態文字表達結局，不使用膠囊。階段使用 32 畫素 disclosure 行，在可伸縮主區顯示標題與成員數，在固定尾部精確顯示聚合狀態且不重複狀態點。成員使用 16 畫素狀態點槽、可省略名稱區和固定 64 畫素狀態列。階段只在成員真正開始時出現，並按精確階段字串分組；欄位預設與空字串保留不同身份和本機化名稱。成員結帳只改變狀態，不刪除或重排成員。所屬 Turn 或 Step 關閉時，缺少執行或成員終點會顯示為已中斷；存在持久終點時仍以它為權威。[狀態驅動的工作流程 disclosure](2026-08-11-workflow-run-status-driven-disclosure.md)擁有這些事實變化時執行與階段內容的可見性。
 
 導覽從兩個當前權威派生，不寫入持久記錄。只有持久成員狀態仍為執行中，且當前普通 Session 清單包含同一 id、`origin: 'subagent'`、`parentId` 等於當前父 Session、`running: true` 時，成員行纔可互動。帶底線的成員文字是唯一可見提示；鍵盤聚焦時，名稱區顯示 2 畫素 business-primary 焦點環，固定狀態列繼續只表達生命週期，而不寫動作說明。renderer 只調用注入的普通 `sessions.open(id)` 回呼。僅地址化、遠端、父級不符或終態成員繼續可見，但保持靜態。
 
@@ -28,7 +28,7 @@ renderer 為每一層分配不同視覺職責。執行使用 32 畫素 module-pl
 
 ## 驗證
 
-包測試覆蓋頂層與巢狀准入、零成員與並行執行、先 dispose 後寫終點的順序、四個 append 失敗前綴，以及冷／即時 invariant 拒絕。Conversation 測試比較完整 replace、只有 update 的 prepend 和即時 append，並覆蓋精確階段身份、終態與中斷狀態、disclosure 狀態、清單事實導覽、HMR 移除與重新註冊。shipped Web replay 複用現有工作流程父／子模型 fixture，驅動程式真實 worker、spawn provider、Session 持久化、瀏覽器 bundle、執行中子級導覽、終態保留、原工具行並存、暗色窄列 token 與刷新重建。
+包測試覆蓋頂層與巢狀准入、零成員與並行執行、先 dispose 後寫終點的順序、四個 append 失敗前綴，以及冷／即時 invariant 拒絕。Conversation 測試比較完整 replace、只有 update 的 prepend 和即時 append，並覆蓋精確階段身份、終態與中斷狀態、disclosure 狀態、清單事實導覽、HMR 移除與重新註冊。shipped Web replay 複用現有工作流程父／子模型 fixture，驅動真實 worker、spawn provider、Session 持久化、瀏覽器 bundle、執行中子級導覽、終態保留、原工具行並存、暗色窄列 token 與刷新重建。
 
 ## 曾考慮的替代方案
 
@@ -42,4 +42,4 @@ renderer 為每一層分配不同視覺職責。執行使用 32 畫素 module-pl
 
 ## 後果
 
-工作流程進度與父對話保存在同一日誌中，能跨刷新與行程復原；執行所有權仍屬於工作流程 run holder，原工具卡保持不變。持久協議增加四類小事件和一個包所有的 invariant；首次寫入失敗會刻意犧牲後續觀察，而不是犧牲工作流程正確性。瀏覽器 State 按已載入視窗派生，狀態驅動程式的 disclosure 生命週期把復盤選擇留在本機，導覽會隨清單事實消失。設計只展示真實執行成員與狀態，並放棄靜態圖、輸出、日誌、控制操作和終態成員打開。
+工作流程進度與父對話保存在同一日誌中，能跨刷新與行程復原；執行所有權仍屬於工作流程 run holder，原工具卡保持不變。持久協議增加四類小事件和一個包所有的 invariant；首次寫入失敗會刻意犧牲後續觀察，而不是犧牲工作流程正確性。瀏覽器 State 按已載入視窗派生，狀態驅動的 disclosure 生命週期把復盤選擇留在本機，導覽會隨清單事實消失。設計只展示真實執行成員與狀態，並放棄靜態圖、輸出、日誌、控制操作和終態成員打開。
