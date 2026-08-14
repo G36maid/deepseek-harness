@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-persisted-same-session-goal-domain.md) | 中文
+[English](2026-07-19-persisted-same-session-goal-domain.md) | 简体中文
 
 ## 问题
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-06-parallel-pre-push-gates.zh.md)
+English | [简体中文](2026-07-06-parallel-pre-push-gates.zh.md) | [繁體中文](2026-07-06-parallel-pre-push-gates.zh-tw.md)
 
 The local-hook portion of this record is superseded by [Fast local Git hooks](2026-07-22-fast-local-git-hooks.md). The bounded gate scheduler and package-level `publint` parallelism remain in force for CI, `doc-sync`, and explicit local commands.
 

@@ -2,7 +2,7 @@
 
 Status: rejected — `step/end` 是模型步驟已完成的持久訊號；保留對稱的 `step/start` / `step/end` 對，比從相鄰的步驟級事件推斷完成狀態更便於理解崩潰修復、不變式與 transcript（文字記錄）檢查。
 
-[English](2026-06-20-drop-durable-step-boundaries.md) | 繁體中文
+[English](2026-06-20-drop-durable-step-boundaries.md) | [简体中文](2026-06-20-drop-durable-step-boundaries.zh.md) | 繁體中文
 
 ## 問題
 

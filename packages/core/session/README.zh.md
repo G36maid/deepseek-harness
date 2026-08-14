@@ -1,6 +1,6 @@
 # dsh-session
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 事件溯源的会话日志和内存存储。`Session` 是 agent（智能体）全部交互历史的仅追加真源，LLM（大语言模型）消息历史由它*派生*。原始日志之上维护一个 **surface** 层（产生消息事件的有序投影），以便高效派生和压缩（compaction）。
 

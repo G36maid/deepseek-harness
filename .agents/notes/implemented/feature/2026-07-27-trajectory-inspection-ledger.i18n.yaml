@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-27-trajectory-inspection-ledger.md
-2026-07-27-trajectory-inspection-ledger.md: 7f97bc395ed694a0a750d3b744cc9887834ef32f
-2026-07-27-trajectory-inspection-ledger.zh.md: 34bb8741124c410fe06ec18bdde801caa987f4fb
-2026-07-27-trajectory-inspection-ledger.zh-tw.md: dc2be5cbedba121f1f8dba2e5295c1699d96c1e6
+2026-07-27-trajectory-inspection-ledger.md: f6fc3cd6a150c0ec3f7ae346338cbabfb6e5ee30
+2026-07-27-trajectory-inspection-ledger.zh.md: 9759bb0f29e555f0132db9b5fd308a135a41902d
+2026-07-27-trajectory-inspection-ledger.zh-tw.md: 963a57dc6c507829d0d17523d90bbf94547d8d5e

@@ -1,6 +1,6 @@
 # web/ — web capability family
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 This family provides provider-neutral web search and fetch operations plus the model-facing tools that consume them.
 

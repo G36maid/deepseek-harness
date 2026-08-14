@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-per-agent-tool-presentation.md) | 中文
+[English](2026-08-05-per-agent-tool-presentation.md) | 简体中文
 
 ## 问题
 

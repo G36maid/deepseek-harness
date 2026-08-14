@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-jobs-local
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 [`@deepseek-ai/dsh-jobs`](../jobs/README.md) 注册表约定的进程本地实现：`LocalJobRegistry` 把每条记录保存在内存中，按 kind 签发 `<kind>-N` id，并且只交出全新快照，从不交出实时状态。作为插件加载后即注册为 `ctx.jobs`。
 

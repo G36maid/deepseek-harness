@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-shell-env
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工具無關的 shell 環境外掛程式：擁有 `ctx.shellEnv` 登錄檔，管理受信任的、每次執行收集的 `DSH_*` 變數，供模型可見的 shell 工具（`dsh-tool-bash`、`dsh-tool-pwsh`）收集進每次 shell 呼叫的環境。內建 shell 事實（`DSH_HOME`、`DSH_SHELL=1`、`DSH_SESSION_ID`）歸登錄檔自身所有；其他外掛程式可以註冊額外的可枚舉事實，註冊隨外掛程式纖維（fiber）釋放，重複所有權或未聲明的執行時期鍵會響亮失敗。
 

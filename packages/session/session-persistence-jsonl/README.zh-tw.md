@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence-jsonl
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 JSONL 持久工作階段儲存後端：`SessionPersistence` 的一個具體實作（`dsh-session-persistence` seam）。每個工作階段有一個僅附加的邏輯 JSONL 日誌，默認儲存為 `.jsonl.zstd`；停用壓縮時使用原始 `.jsonl`。
 

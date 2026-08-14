@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-simplify-web-image-input-v1.md) | 中文
+[English](2026-07-29-simplify-web-image-input-v1.md) | 简体中文
 
 ## 问题
 

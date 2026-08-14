@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-pi-ai-route-default-input-modalities.md) | 繁體中文
+[English](2026-08-12-pi-ai-route-default-input-modalities.md) | [简体中文](2026-08-12-pi-ai-route-default-input-modalities.zh.md) | 繁體中文
 
 ## 問題
 

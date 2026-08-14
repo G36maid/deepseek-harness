@@ -1,6 +1,6 @@
 # 6. 組合與 HMR（熱模組替換）
 
-[English](06-composition-and-hmr.md) | 繁體中文
+[English](06-composition-and-hmr.md) | [简体中文](06-composition-and-hmr.zh.md) | 繁體中文
 
 到目前為止建置的每項能力都是外掛程式，`cordis.yml` 則選擇應用的外掛程式樹。本章會改變這種組合、熱重新載入一個外掛程式，並診斷始終無法載入的外掛程式。
 

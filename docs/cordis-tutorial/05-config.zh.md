@@ -1,6 +1,6 @@
 # 5. 配置
 
-[English](05-config.md) | 中文
+[English](05-config.md) | 简体中文
 
 `cordis.yml` 中的每个 Cordis 配置项都可以携带 `config` 块，插件则声明一个 schema，在运行 `apply` 前验证该块。错误配置会导致加载失败，并给出准确的错误：插件绝不会在配置不完整时启动。
 

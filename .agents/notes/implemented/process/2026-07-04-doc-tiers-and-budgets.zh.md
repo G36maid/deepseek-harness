@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-04-doc-tiers-and-budgets.md) | 中文
+[English](2026-07-04-doc-tiers-and-budgets.md) | 简体中文
 
 ## 问题
 

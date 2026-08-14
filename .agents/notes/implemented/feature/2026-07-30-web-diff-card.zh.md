@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-diff-card.md) | 中文
+[English](2026-07-30-web-diff-card.md) | 简体中文
 
 ## Problem
 

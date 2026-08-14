@@ -1,6 +1,6 @@
 # 第一個外掛程式
 
-[English](index.md) | 繁體中文
+[English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
 本教程會建立一個最小的 Harness 外掛程式，並將其載入到 Web UI 中。請從已完成[從原始碼執行路徑](../../../../README.md#run-from-source)的倉庫檢出開始。
 

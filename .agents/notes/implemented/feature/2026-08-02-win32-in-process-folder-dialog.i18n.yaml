@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-02-win32-in-process-folder-dialog.md
-2026-08-02-win32-in-process-folder-dialog.md: ef9232051d0ff6e3e752f08a68e9f04ce3c32ad6
-2026-08-02-win32-in-process-folder-dialog.zh.md: d8aa39b22ba18793a03b01c9af3035e1f829370a
-2026-08-02-win32-in-process-folder-dialog.zh-tw.md: daf550a7618adfdcf1a4c5ab4d81766ba2fe546e
+2026-08-02-win32-in-process-folder-dialog.md: dcfe39a93e19347b1d6b50160d4c3929e0fc0ca0
+2026-08-02-win32-in-process-folder-dialog.zh.md: 0a88fb7e10dfecb5780f6cb72382342bed373bef
+2026-08-02-win32-in-process-folder-dialog.zh-tw.md: 071087126e2b91e918bee5706aa72c377651d50a

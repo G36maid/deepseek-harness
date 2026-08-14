@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-fs-search
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **model-facing filesystem discovery tools**—`glob`, `grep`—are backed by the **packaged ripgrep binary** (`@vscode/ripgrep`), not by `ctx.fs` provider methods and not by a system `rg` install. Registration is unconditional: the binary ships inside the npm dependency, so there is no load-time availability probe. Each call spawns the binary through the `ctx.subprocess` seam with a fixed argv vector (`--no-config` prepended so a host `RIPGREP_CONFIG_PATH` cannot inject a `--pre` preprocessor into the unconfined spawn; model-controlled values are plain argv elements — no shell layer exists, so no quoting applies), parses the raw `rg` output, and returns a workdir-relative canonical value. The package injects `tools`, `systemPrompt`, and `subprocess`—deliberately **not** `fs`; `ctx.spillStore` is read opportunistically with `ctx.get()` because formatted-result spill is optional.
 

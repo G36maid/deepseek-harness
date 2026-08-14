@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-acp
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 透過 JSON-RPC stdio 提供的僅面向自動化的 [ACP（Agent Client Protocol）](https://agentclientprotocol.com) 伺服器。程序化用戶端可以建立新 harness agent（代理）、傳送文字提示詞、收集已提交的 assistant 文字、按策略回應一次性權限請求並取消工作。倉庫中的主要用戶端是 [`dsh-subagent-acp`](../../subagent/subagent-acp/README.md)。
 

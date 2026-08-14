@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-31-english-compaction-checkpoints.md
-2026-07-31-english-compaction-checkpoints.md: dc95ed187a6ba5b86800f06ebefb2776995f9421
-2026-07-31-english-compaction-checkpoints.zh.md: 5b89dca449309abaefe3143f66a2878e2d9eea47
-2026-07-31-english-compaction-checkpoints.zh-tw.md: 76987164ba9654a6ddcb092d0a646eed5ab0fe4f
+2026-07-31-english-compaction-checkpoints.md: 3f8734806fe72d153be56f054a2b0b4cb67ecaf0
+2026-07-31-english-compaction-checkpoints.zh.md: 3c6dfbdd1e66c885fe56462a7dac47d83ec9ec03
+2026-07-31-english-compaction-checkpoints.zh-tw.md: eaf7966e745d3124ece483eb64cdda2f2fb1db55

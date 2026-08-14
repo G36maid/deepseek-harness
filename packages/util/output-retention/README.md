@@ -1,6 +1,6 @@
 # dsh-output-retention
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 A dependency-light **retention** library: bounded model-facing output for tools that must cap how much context they return. A caller feeds items or text chunks into a bounded object, then gets the retained content plus exact omission metadata.
 

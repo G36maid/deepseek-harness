@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tmux-context
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 選填啟用的持久上下文，記錄本 agent（代理）行程所在的 tmux session、window、pane，以及該 window 的 pane 樹版面配置。在準備模型請求時每輪取樣一次；隨附 Web／無頭組合不包含它。決策記錄見：[tmux-context Agent Note](../../../.agents/notes/implemented/feature/2026-07-27-tmux-location-context.md)。
 

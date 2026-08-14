@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-api-gateway
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 為 Host 與 Client 兩側的 Cordis 環境提供 Typert RPC endpoint。Host 入口提供 `ctx.typertGateway`，`@deepseek-ai/dsh-api-gateway/client` 則提供 `ctx.remote`；兩者使用同一份生成的 `InvocationDescriptor` 約定，並將業務選擇交給 API Remotes，將傳輸、請求關聯、信任和回應封裝交給 Connection。
 

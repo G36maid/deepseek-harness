@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-default-presets-single-editor.md) | 中文
+[English](2026-08-10-default-presets-single-editor.md) | 简体中文
 
 ## 问题
 

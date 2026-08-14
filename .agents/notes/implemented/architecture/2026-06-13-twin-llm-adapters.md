@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-13-twin-llm-adapters.zh.md)
+English | [简体中文](2026-06-13-twin-llm-adapters.zh.md) | [繁體中文](2026-06-13-twin-llm-adapters.zh-tw.md)
 
 ## Problem
 

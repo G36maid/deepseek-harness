@@ -1,6 +1,6 @@
 # extensions/ — the agent modifies its own runtime
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Model-facing tools over the live cordis runtime the agent itself runs inside: inspect the loaded plugins and service API, define and run model-written dynamic packages, and retract them again — plus the restricted repository Plugin runtime. Both browser-half packages live here rather than under `packages/client/` because they are halves of this subsystem's dual-half packages; the host aggregate excludes them so each face keeps its own compiler program. Design home: [the toolset Agent Note](../../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md).
 

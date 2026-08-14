@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-webserver
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Web HTTP and upgrade-route registration plugin (default-exported `WebServer`, config `{host, port}`): a `node:http` server that listens on activation and provides `ctx.webServer`. `register(route)` adds a named `exact`/`prefix` HTTP route; `registerUpgrade(route)` adds an upgrade route for an exact pathname. A duplicate path within either table throws because route patterns are a composition-level contract and a collision is a misconfiguration; both methods return a disposer that removes the registration. `registerFallback(handler)` registers the one handler for requests that match no named route. A second registration throws; the SPA dist server [`dsh-host-frontend-static`](../frontend-static/README.md) is the shipped owner, and the server returns 404 while none is registered. `tapIndex(transform)` adds an index.html transform, and `applyIndexTaps(html)` runs a body through the registered transforms in order; the fallback handler calls it on every index response. `port` reads the listening port (the OS-assigned value when `port` is 0), and `host` reads the configured bind host (composition-time facts other plugins adapt to, e.g. the directory-picker chooser). HTTP match order is fixed: exact over the whole table, then longest prefix, then the fallback handler. Upgrades match exactly and unmatched connections are closed; registration order carries no request-facing semantics.
 

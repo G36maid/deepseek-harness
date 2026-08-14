@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-01-packaged-ripgrep-search.md) | 繁體中文
+[English](2026-08-01-packaged-ripgrep-search.md) | [简体中文](2026-08-01-packaged-ripgrep-search.zh.md) | 繁體中文
 
 > 取代 [bash 承載的 grep/glob 發現工具](../../archived/feature/2026-07-09-bash-backed-grep-glob-discovery.md)：v1 決策中明確延期的方案——直接 spawn ripgrep——現在成為實際交付的實作。
 

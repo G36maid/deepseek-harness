@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-31-capability-neutral-sandbox-policy-context.zh.md)
+English | [简体中文](2026-07-31-capability-neutral-sandbox-policy-context.zh.md) | [繁體中文](2026-07-31-capability-neutral-sandbox-policy-context.zh-tw.md)
 
 ## Problem
 

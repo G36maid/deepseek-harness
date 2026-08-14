@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-10-pre-plugin-theme-bootstrap.md
-2026-08-10-pre-plugin-theme-bootstrap.md: 006afffc9a07a3abde4131ec972df3be5949ed09
-2026-08-10-pre-plugin-theme-bootstrap.zh.md: 206390518f3a320e63f699bad6d228010faaf969
-2026-08-10-pre-plugin-theme-bootstrap.zh-tw.md: 799cdd8eb5e94f756bf8caf19f3e55806f545d63
+2026-08-10-pre-plugin-theme-bootstrap.md: 1c134728e1eb9c681921fe6efacbad0af8d5ad0a
+2026-08-10-pre-plugin-theme-bootstrap.zh.md: 75e44ab93141d6e8f6b13eb599b45a35d68f3674
+2026-08-10-pre-plugin-theme-bootstrap.zh-tw.md: dbe3e810751455fc180dbe5ee8d8ea3b09cfeb1c

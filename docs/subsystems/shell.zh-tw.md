@@ -1,6 +1,6 @@
 # Bash 執行器
 
-[English](shell.md) | 繁體中文
+[English](shell.md) | [简体中文](shell.zh.md) | 繁體中文
 
 bash 執行 seam 分為 Service Definition（[dsh-shell](../../packages/shell/shell)，`ctx.shell`）、Service Provider（[dsh-bash-local](../../packages/shell/bash-local) 與 [dsh-bash-sandbox](../../packages/shell/bash-sandbox)）和 Consumer（[dsh-tool-bash](../../packages/shell/tool-bash)，即 `bash` schema）。通用背景工作的 job id、所有權與控制位於 [jobs.md](jobs.md)；本 seam 返回一個不含任務概唸的行程控制代碼。原始行程組機制封裝在[子行程 seam](subprocess.md)之後。
 

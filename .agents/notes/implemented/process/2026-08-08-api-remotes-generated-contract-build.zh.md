@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-api-remotes-generated-contract-build.md) | 中文
+[English](2026-08-08-api-remotes-generated-contract-build.md) | 简体中文
 
 ## 问题
 

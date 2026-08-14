@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-schema-form
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 面向 settings 編輯器的 schema／草稿模型層。wire 側的 `settings.describe` 攜帶每個 namespace 的序列化 schemastery schema（`schema.toJSON()` 的 ref 封裝）；`rehydrateSchema` 用 `new Schema(json)` 將其還原（rehydrate）為活的校驗器——在宿主上校驗分節的那份 schema 對象，就是在瀏覽器裡校驗草稿的那份對象，因此用戶端校驗絕不會偏離 Service Definition 的校驗。編輯器各自渲染自己的控制元件（Models 頁圍繞它在此探測到的欄位手寫自己的卡片）；該包不含任何 React，也不做任何渲染。
 

@@ -1,6 +1,6 @@
 # 6. Composition and HMR
 
-English | [中文](06-composition-and-hmr.zh.md)
+English | [简体中文](06-composition-and-hmr.zh.md) | [繁體中文](06-composition-and-hmr.zh-tw.md)
 
 Every capability built so far is a plugin, and `cordis.yml` selects the application's plugin tree. This chapter changes that composition, hot-reloads a plugin, and diagnoses a plugin that never loads.
 

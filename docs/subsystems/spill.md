@@ -1,6 +1,6 @@
 # Spill Storage
 
-English | [中文](spill.zh.md)
+English | [简体中文](spill.zh.md) | [繁體中文](spill.zh-tw.md)
 
 The spill storage seam — a [capability seam](../../.agents/notes/implemented/architecture/2026-07-08-tool-output-spill-files.md) that persists a tool's oversized text and returns a model-facing locator plus retrieval guidance, split across packages: Service Definition ([dsh-spill](../../packages/spill/spill), `ctx.spillStore`), Service Provider ([dsh-spill-local](../../packages/spill/spill-local), private session-scoped files on the host filesystem), and Consumer ([dsh-spill-policy](../../packages/spill/spill-policy), the `tools/post-execute` policy). Spill is **one optional capability**, not part of the agent-loop spine — so its vocabulary lives here, not in [core.md](core.md). Preview mechanics stay in [dsh-output-retention](../../packages/util/output-retention); this seam only saves the final text the policy hands it.
 

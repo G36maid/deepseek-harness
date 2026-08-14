@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-telemetry
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The telemetry Service Definition declares the `SessionTelemetrySink` contract, and its capture coordinator passes session records to any reporting SDK backend that implements it. Capture can follow live session events or replay a canonical session-log prefix on demand. This package stops after it calls `emit()`: batching, retry, queueing, and loss policy belong to the backend's SDK and are neither specified nor wrapped. Rationale and rejected alternatives: [the revival Agent Note](../../../.agents/notes/implemented/feature/2026-07-23-session-telemetry-otel-revival.md), [feedback-gated delivery](../../../.agents/notes/implemented/feature/2026-08-05-feedback-gated-session-telemetry.md), and [buffer-free feedback replay](../../../.agents/notes/implemented/simplification/2026-08-06-buffer-free-feedback-telemetry.md).
 

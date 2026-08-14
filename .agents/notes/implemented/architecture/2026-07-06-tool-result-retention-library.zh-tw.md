@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-tool-result-retention-library.md) | 繁體中文
+[English](2026-07-06-tool-result-retention-library.md) | [简体中文](2026-07-06-tool-result-retention-library.zh.md) | 繁體中文
 
 ## 問題
 

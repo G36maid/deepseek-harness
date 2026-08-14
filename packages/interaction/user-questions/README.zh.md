@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-user-questions
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 用户交互 Service Definition。它定义 `ctx.userQuestions`，供面向模型的工具或权限插件在需要暂停工作并询问人类决定时使用。
 

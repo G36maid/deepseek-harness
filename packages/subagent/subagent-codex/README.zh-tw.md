@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-codex
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本包註冊固定的 `codex` subagent 提供方。每次接受執行請求後，它都會在發起委託的工作階段工作區中啟動官方 `codex app-server --stdio` 命令，建立一個臨時 Codex 執行緒，提交一個自包含的文字任務，並透過共享的 [`dsh-subagent`](../subagent/README.md) 結果約定僅返回最終答案。
 

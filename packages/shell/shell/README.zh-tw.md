@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-shell
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **`ShellExecutor`**（`ctx.shell`）定義 bash 後端做什麼，即執行前臺命令與啟動後臺行程，但不規定如何實作。job id、所有權、收集、取消與通知屬於通用 `ctx.jobs` 執行時期。
 

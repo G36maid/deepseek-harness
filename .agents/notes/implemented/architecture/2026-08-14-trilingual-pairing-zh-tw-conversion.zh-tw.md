@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-14-trilingual-pairing-zh-tw-conversion.md) | 繁體中文
+[English](2026-08-14-trilingual-pairing-zh-tw-conversion.md) | [简体中文](2026-08-14-trilingual-pairing-zh-tw-conversion.zh.md) | 繁體中文
 
 ## 問題
 

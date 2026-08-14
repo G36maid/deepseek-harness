@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-client-conversation-node-assembly.md) | 繁體中文
+[English](2026-08-09-client-conversation-node-assembly.md) | [简体中文](2026-08-09-client-conversation-node-assembly.zh.md) | 繁體中文
 
 ## 問題
 

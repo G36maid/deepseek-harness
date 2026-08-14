@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-dsh-sdk
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The SDK provider runs each subagent as a complete DeepSeek Harness runtime in a fresh subprocess, driven over stdio JSON-RPC through the [TypeScript SDK client](../../sdk/client/README.md). It is the second out-of-process backend beside [`subagent-acp`](../subagent-acp/README.md), differing in the wire and the child contract: the ACP backend drives any Agent Client Protocol agent; this backend drives specifically a harness SDK runtime (`dsh-jsonrpc-agent` bin or packaged executable), so the child is a full peer harness — own `cordis.yml`-decided composition, session persistence, model route, and tools.
 

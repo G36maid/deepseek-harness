@@ -1,6 +1,6 @@
 # dsh-native-command
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 宿主原生 OS 整合共享的**零相依性免 shell `execFile` 執行器**：一次 `runNativeCommand(command, args, signal)` 呼叫直接 spawn 可執行文件（絕不拼 shell 字串），以 utf8 捕獲 stdout/stderr，把呼叫方的 abort 傳播為子行程終止，並在 Windows 上隱藏瞬時控制台視窗。失敗時，呼叫會以錯誤拒絕；該錯誤附帶退出 `code` 與兩路已捕獲輸出，呼叫方無需重跑即可分類（工具缺失、已取消、真實失敗）。
 

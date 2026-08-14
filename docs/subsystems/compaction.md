@@ -1,6 +1,6 @@
 # Compaction
 
-English | [中文](compaction.zh.md)
+English | [简体中文](compaction.zh.md) | [繁體中文](compaction.zh-tw.md)
 
 The compaction seam — a [capability seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md) split like bash: Service Definition ([dsh-compaction](../../packages/compaction/compaction), `ctx.compaction`), Service Provider (a backend such as [dsh-compaction-basic](../../packages/compaction/compaction-basic)), and human Consumer ([dsh-command-compact](../../packages/compaction/command-compact)). Compaction is **one optional capability**, not part of the agent-loop spine — so its vocabulary lives here, not in [core.md](core.md). A tokenizer- or template-based backend is a sibling package implementing the same interface. Unlike bash, the interface necessarily depends on `dsh-session` and `dsh-llm`: its verbs act on an agent-owned `Session`, and its durable summary event uses the `ContentBlock` vocabulary (see the [compaction capability-seam Agent Note](../../.agents/notes/implemented/feature/2026-06-18-compaction-capability-seam.md)).
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-web-plugin-configuration.md) | 繁體中文
+[English](2026-08-10-web-plugin-configuration.md) | [简体中文](2026-08-10-web-plugin-configuration.zh.md) | 繁體中文
 
 ## 問題
 

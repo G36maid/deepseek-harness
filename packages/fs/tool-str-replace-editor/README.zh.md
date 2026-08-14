@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-str-replace-editor
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 基于 `ctx.fs`、面向模型的独立 `str_replace_editor`。它可与持久 Bash、一次性 Bash、沙箱 Bash 或其他终端接口组合。
 

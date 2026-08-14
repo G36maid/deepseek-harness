@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subprocess
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 子行程 seam（`ctx.subprocess`）是一個執行世界的行程部分。抽象的 `SubprocessRuntime` 公開可執行文件尋找、普通受管 `spawn` 和一項終端機行程原語；其詞彙涵蓋原始／收集式 stdio、行程與終端機控制代碼、退出事實、行程樹／工作階段清理，以及受管的 `DSH_*` 環境命名空間。本機實作位於 [`dsh-subprocess-local`](../subprocess-local/README.md)。
 

@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/rejected/simplification/2026-07-12-prune-unused-skill-registry-api.md
-2026-07-12-prune-unused-skill-registry-api.md: c84c6d8d61e13ebe7e1a5d3d29260637e38dbf9f
-2026-07-12-prune-unused-skill-registry-api.zh.md: 123f7787b8e770851b4a8a9e765ce3792bee4f02
-2026-07-12-prune-unused-skill-registry-api.zh-tw.md: 8376273e6b4ccf39a4433fe2f098fafca21c5030
+2026-07-12-prune-unused-skill-registry-api.md: 9d7c088ba47a144e4ae7c91874cdf2806188d328
+2026-07-12-prune-unused-skill-registry-api.zh.md: cec2c2bc89263bde8802f60d790ae4792d30649d
+2026-07-12-prune-unused-skill-registry-api.zh-tw.md: 51715be702e37ed52e9e042c0a291c9d93e73ea3

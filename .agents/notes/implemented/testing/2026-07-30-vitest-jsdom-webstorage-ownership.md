@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-30-vitest-jsdom-webstorage-ownership.zh.md)
+English | [简体中文](2026-07-30-vitest-jsdom-webstorage-ownership.zh.md) | [繁體中文](2026-07-30-vitest-jsdom-webstorage-ownership.zh-tw.md)
 
 ## Problem
 

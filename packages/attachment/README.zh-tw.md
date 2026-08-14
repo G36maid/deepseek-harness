@@ -1,6 +1,6 @@
 # attachment/：持久附件能力族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 持久二進位附件 seam 及其本機檔案系統實作。兩者均為產品包。
 

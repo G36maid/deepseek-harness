@@ -1,6 +1,6 @@
 # Client 模組
 
-[English](client-modules.md) | 繁體中文
+[English](client-modules.md) | [简体中文](client-modules.zh.md) | 繁體中文
 
 Web 外掛程式表：[dsh-client-modules](../../packages/client/modules) 中 client 模組系統的 Node 半，以 `ctx.clientModules`（`ClientModuleRegistry`）形式提供。它掃描宿主 Loader 的 entry，找出聲明瞭 `dsh.client` 的包，組合出 `window.__DSH_BOOT__` entry 圖，在 `/plugins/<id>/client.js` 提供各個 bundle，並經 index 轉換（index tap）注入啟動 manifest（中繼資料清單）——這是同一個服務的四個面。它是 Web GUI 棧的一項選填能力，不屬於 agent loop（代理循環）主幹，並且是 [dsh-host-webserver](../../packages/host/webserver) 的消費端：[web-server.md](web-server.md) 所述的載體提供本服務註冊的前綴路由與 index 轉換。同一個包的瀏覽器半（`ctx.modules`，即拉取並物化這些 bundle 的 lazy CJS 模組表）屬於核心機件，記錄在[包 README](../../packages/client/modules/README.md)中，不在本頁。
 

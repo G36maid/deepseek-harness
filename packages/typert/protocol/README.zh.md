@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-typert-protocol
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 该包提供不依赖编译器的声明，由业务包、生成的 Typert 产物、宿主网关和客户端 API 共享。它负责 Remote 服务基类、装饰器、显式绑定回退、可通过声明合并扩展的协议映射、调用描述符、编解码器和提供方约定；它不执行 TypeScript 分析，也不注册具体 Cordis 服务。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-16-persistent-pty-sessions.zh.md)
+English | [简体中文](2026-07-16-persistent-pty-sessions.zh.md) | [繁體中文](2026-07-16-persistent-pty-sessions.zh-tw.md)
 
 ## Problem
 

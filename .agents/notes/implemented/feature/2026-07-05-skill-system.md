@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-05-skill-system.zh.md)
+English | [简体中文](2026-07-05-skill-system.zh.md) | [繁體中文](2026-07-05-skill-system.zh-tw.md)
 
 ## Problem
 

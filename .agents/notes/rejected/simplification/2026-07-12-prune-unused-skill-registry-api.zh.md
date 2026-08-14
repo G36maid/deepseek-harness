@@ -2,7 +2,7 @@
 
 Status: rejected — 直接在运行时注册 skill 是为第三方插件保留的有意扩展路径。
 
-[English](2026-07-12-prune-unused-skill-registry-api.md) | 中文
+[English](2026-07-12-prune-unused-skill-registry-api.md) | 简体中文
 
 ## 问题
 

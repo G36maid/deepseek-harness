@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-21-semantic-session-checkpoints.md) | 繁體中文
+[English](2026-07-21-semantic-session-checkpoints.md) | [简体中文](2026-07-21-semantic-session-checkpoints.zh.md) | 繁體中文
 
 ## 問題
 

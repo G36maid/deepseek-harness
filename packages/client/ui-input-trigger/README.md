@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-input-trigger
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Input trigger pipeline plugin: `/` and `@` detection under the caret (word-boundary + guard-tier rules), the grouped candidate menu, and pick routing to registered sources. `ctx.inputTriggers` owns the source roster and resolves one `InputTriggerController` per session scope (`sessionOf`); the conversation wiring layer drives `track`/`arbitrate`/`onSpace`/`adjudicate` on the controller. The same controller exposes `toggleSource` for a chrome launcher to open exactly one registered source over a synthetic selection span; the resulting candidates still use the ordinary menu, keyboard arbitration, pick callback, and scoped input mutations. Sources receive a `ClientSessionContext` projection per call — sessions are always agent-backed, so the projection is the session identity alone. A source is warmed in every session controller it can reach: the roster present at scope birth warms during controller construction, and a source registered later is warmed into every live controller by the registration itself. Sources whose `lexicon` roll changes after warm implement `subscribeLexicon(session, listener)`; the controller re-polls on each notification and publishes the aggregation through its `lexicon` snapshot store. The pipeline is command-agnostic: space/enter adjudication polls the optional `matchSpace`/`matchEnter` hooks in registration order and the first non-undefined answer wins.
 

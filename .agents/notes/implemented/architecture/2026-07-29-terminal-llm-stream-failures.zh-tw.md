@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-terminal-llm-stream-failures.md) | 繁體中文
+[English](2026-07-29-terminal-llm-stream-failures.md) | [简体中文](2026-07-29-terminal-llm-stream-failures.zh.md) | 繁體中文
 
 本說明僅取代[有界 LLM（大型語言模型）請求復原](2026-06-21-bounded-llm-request-recovery.md)與[呼叫後上下文溢位復原](2026-07-10-after-call-compaction-pressure-and-overflow-recovery.md)中關於拋出錯誤身份和呼叫區域性 sidecar 的機制。上述說明繼續規定結構化失敗事實、重試策略、持久嘗試與壓縮（compaction）復原。
 

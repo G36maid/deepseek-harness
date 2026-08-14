@@ -1,6 +1,6 @@
 # llm/ — LLM 能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 LLM（大语言模型）seam 及其提供方适配器。`llm` 包同时承担 Service Definition 和 Consumer 角色：抽象服务、内容块词汇和流式分片组装器。提供方适配器注册到 `ctx.llm`。这些全是**产品**包。
 

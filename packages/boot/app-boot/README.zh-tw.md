@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-app-boot`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 供 app bin（[`dsh`](../../../apps/cli/README.md) 與 [`dsh-acp-demo`](../../examples/acp-demo/README.md)）共用的啟動粘合層：每個 bin 都是在這些輔助函式之上建置的精簡自執行組合，並以自身診斷前綴參數化。這樣，Loader 故障行為只由一處負責，不會在已發布產物之間逐漸分化。
 

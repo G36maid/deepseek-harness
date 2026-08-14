@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-omit-invariants-from-shipped-config.md) | 繁體中文
+[English](2026-08-03-omit-invariants-from-shipped-config.md) | [简体中文](2026-08-03-omit-invariants-from-shipped-config.zh.md) | 繁體中文
 
 ## 問題
 

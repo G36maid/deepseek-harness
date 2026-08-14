@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-14-typescript-program-backed-semantic-gates.md) | 中文
+[English](2026-07-14-typescript-program-backed-semantic-gates.md) | 简体中文
 
 ## 问题
 

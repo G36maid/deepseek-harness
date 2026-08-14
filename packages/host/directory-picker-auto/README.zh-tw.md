@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker-auto
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [目錄選擇 seam](../directory-picker/README.md) 的**自適應選擇器**：一個只有 node 半側的外掛程式，在啟動時一次性判定宿主處境，並把匹配的雙面後端——[`-native`](../directory-picker-native/README.md) 或 [`-browse`](../directory-picker-browse/README.md)——作為真實的 Loader 條目掛進記憶體根樹（絕不持久化到設定檔；根樹的 `write()` 是 no-op）。由於後端以普通條目的形式到達，其 browser half 被 client 模組表發現的方式與設定行完全相同，因此對判定出的選擇，seam 的“一行同時換兩面”不變式依然成立。解除安裝該選擇器會再次移除該條目，連同兩面一起解除安裝。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-goal
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Goal 介面外掛程式（瀏覽器端部分）：`GoalBar` 條帶是 `conversation.input.dock` composer 上下文堆疊中的第二張獨立卡片（order 10，位於 Todo 之後、Queue 之前）。活值經 `useProjection('goal')` 到達——host 計算的全量值由歷史尾頁播種、由 `session/projection` 幀更新——因此本外掛程式不持有領域 store、不設刷新鏈、不掛事件監聽。slot 注入面只攜帶四個變更動詞（edit / pause / resume / clear，經 `ctx.remote.goals` 呼叫——active 的 goal 提供暫停動作，paused 的提供復原）；每個動詞在呼叫時從工作階段當前投影值讀取 CAS ref，並將 Remote 呼叫的拒絕錯誤內聯呈現。由於 React 的 pending 渲染無法攔住同一幀內的點擊，橫條會同步為變更建立 single-flight 防護；清除成功後，會立即抑制該 goal id 對應的目標顯示，直到權威的 null 投影追上。goal 的建立仍歸 `/goal` host 命令；載入中、無 goal、已完成和已成功清除的 goal 一律不渲染。
 

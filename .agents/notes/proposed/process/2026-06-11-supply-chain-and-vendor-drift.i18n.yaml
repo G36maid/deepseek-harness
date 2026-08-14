@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/process/2026-06-11-supply-chain-and-vendor-drift.md
-2026-06-11-supply-chain-and-vendor-drift.md: a27ae64556dc7366279824f1480e5681b1e86bf1
-2026-06-11-supply-chain-and-vendor-drift.zh.md: b52748e4b4c92a161c5b3ff49c079ff909d11c01
-2026-06-11-supply-chain-and-vendor-drift.zh-tw.md: 0e38e99f22eab619ac4f5b463a206183740a0121
+2026-06-11-supply-chain-and-vendor-drift.md: 2e21e7aabd177a8a3a4f44f5597177af760b7503
+2026-06-11-supply-chain-and-vendor-drift.zh.md: eefebd1fefcbbc6136a95aee9a865aff9be66e76
+2026-06-11-supply-chain-and-vendor-drift.zh-tw.md: 57181773ef6e84985b724eb042aab2c557fd0de1

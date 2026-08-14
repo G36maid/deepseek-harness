@@ -1,6 +1,6 @@
 # dsh-timeout
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **timing-and-classification** half of a timeout — a zero-dependency library of pure functions (no runtime harness deps) shared by every capability that clamps a caller's timeout hint, arms a deadline, and later has to tell "timed out" apart from "cancelled".
 

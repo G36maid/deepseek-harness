@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The web GUI host's workspace-directory picker is a capability seam. The abstract `DirectoryPicker` service (`ctx.directoryPicker`) is its Service Definition. Its only method, `capability()`, returns a discriminated union describing how an operator selects a directory. Backends differ in user interaction, not just implementation: `{ kind: 'native', pick(signal) }` opens one native OS chooser on the host display ([`-native`](../directory-picker-native/README.md)); `{ kind: 'browse', list(path?), createDirectory(path, name) }` provides listing and creation operations for an in-app browser, which works for remote clients that cannot reach an OS chooser ([`-browse`](../directory-picker-browse/README.md)). Consumers switch on `capability().kind`; the union derives from the merge-extensible `DirectoryPickerCapabilities` map, and a new backend adds its variant there through declaration merging. For an unknown kind, consumers hide directory picking rather than fail. The capability object must be stable for the service lifetime. Each backend package also has a browser entrypoint that registers the matching interaction in ui-workspace's directory-flow slots, so one composition row selects both the host capability and the client flow. A composition that should choose at runtime mounts [`-auto`](../directory-picker-auto/README.md), which inspects the host once at boot and mounts the matching backend row.
 

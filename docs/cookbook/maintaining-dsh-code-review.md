@@ -1,6 +1,6 @@
 # Maintaining the dsh-code-review skill
 
-English | [中文](maintaining-dsh-code-review.zh.md)
+English | [简体中文](maintaining-dsh-code-review.zh.md) | [繁體中文](maintaining-dsh-code-review.zh-tw.md)
 
 The [`dsh-code-review`](../../.agents/skills/dsh-code-review/SKILL.md) skill is kept current by a single designated operator running a private periodic maintenance tool. This cookbook is the entry point for that operator — and for anyone taking over the role — and for repo contributors who want to understand why skill updates arrive as small periodic PRs rather than one-off audits. The workflow itself is specified in the [human-review skill-maintenance Agent Note](../../.agents/notes/proposed/process/2026-07-13-human-review-skill-maintenance.md).
 

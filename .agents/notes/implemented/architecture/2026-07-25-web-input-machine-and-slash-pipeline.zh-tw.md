@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-web-input-machine-and-slash-pipeline.md) | 繁體中文
+[English](2026-07-25-web-input-machine-and-slash-pipeline.md) | [简体中文](2026-07-25-web-input-machine-and-slash-pipeline.zh.md) | 繁體中文
 
 > 範圍：輸入狀態機（occurrence 表 + claim 看護 + 提交交易）、hub/facade 與傳送編排、跨外掛程式輸入改寫的三個 scoped bail 事件、`/` 與 `@` 觸發偵測與選單管線（ui-input-trigger）、composer 周邊 slot 體系。相依性[工作階段作用域 note](2026-07-25-web-client-session-scope-and-provide-channel.md)的 sctx / provide / session-maybe 與 blank 實體模型；命令知識（三型、目錄、popup）零涉——那是[命令業務面 note](2026-07-25-web-command-surfaces-and-assembly.md)的領地。
 

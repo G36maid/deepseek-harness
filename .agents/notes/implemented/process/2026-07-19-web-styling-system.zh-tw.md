@@ -4,7 +4,7 @@ Status: implemented
 
 > token 體系更新（2026-07-22）：本文框架裁決（CSS Modules + clsx、無元件庫、無 tailwind、顏色只用 token）仍然生效，但兩層 `--bg-*`/`--text-*` token 表及其宿主 `web-ui/src/style/global.css` 已被 `packages/client/ui-theme/src/styles/` 的 `--dsw-*` static+alias 雙層表取代（暗色=`body[data-ds-dark-theme]` 覆寫）——樣式表本身即 token 權威。
 
-[English](2026-07-19-web-styling-system.md) | 繁體中文
+[English](2026-07-19-web-styling-system.md) | [简体中文](2026-07-19-web-styling-system.zh.md) | 繁體中文
 
 > 分工：本 RFC 定框架與約束（少變）；[docs/web-styling.md](../../../../docs/web-styling.md) 是活規範（token 權威值、編碼規範打勾清單、偏離記錄，隨實作演進）。改 token/加規則去那邊；動框架本身才回這裡（推翻須新 RFC）。
 

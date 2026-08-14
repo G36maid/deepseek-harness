@@ -1,6 +1,6 @@
 # dsh-invariants
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 用于包自有运行时不变量检查的可配置注册表服务。根插件注册 `ctx.invariants`；它不包含产品检查或产品包导入。每个工作区包都发布一个 `./invariant` 配套入口，用于注册其精确 npm 包名。
 

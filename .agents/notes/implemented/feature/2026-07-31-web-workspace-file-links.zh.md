@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-web-workspace-file-links.md) | 中文
+[English](2026-07-31-web-workspace-file-links.md) | 简体中文
 
 > 范围：完成的轮次以其产出文件收尾的那一行、读得出是链接的文件路径链接，以及 Host 打开器对浏览器可渲染文档优先选用默认浏览器。经决定不在范围内：以 HTTP 提供工作区文件，以及为不在 Host 机器上的客户端提供预览。
 

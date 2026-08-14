@@ -299,7 +299,10 @@ export function addProjectionFrontmatter(markdown: string, page: Pick<DocsPage, 
 }
 
 /** The switcher line a canonical page carries so its GitHub reader can reach the other language. */
-const LANGUAGE_SWITCHER = /^(?:English \| \[(?:中文|繁體中文)\]\([^)]*\)|\[English\]\([^)]*\) \| (?:中文|繁體中文))$/
+const LANGUAGE_SWITCHER = new RegExp(
+  '^(?:English \\| \\[简体中文\\]\\([^)]*\\) \\| \\[繁體中文\\]\\([^)]*\\)'
+  + '|\\[English\\]\\([^)]*\\) \\| (?:简体中文|\\[简体中文\\]\\([^)]*\\) \\| 繁體中文))$',
+)
 
 /** The repository badge a canonical page carries for its GitHub reader. */
 const REPOSITORY_BADGE = /^\[!\[[^\]]*\]\(https:\/\/img\.shields\.io\/[^)]*\)\]\([^)]*\)$/

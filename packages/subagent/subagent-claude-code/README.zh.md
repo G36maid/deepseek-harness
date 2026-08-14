@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-claude-code
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本包（package）注册固定的 `claude-code` subagent 提供方。每次接受运行请求后，它都会在发起委托的会话工作区中调用官方 Claude Agent SDK，通过共享子进程服务解析原生 `claude` 可执行文件，提交一个自包含的文本任务，并通过共享的 [`dsh-subagent`](../subagent/README.md) 结果约定仅返回最终答案。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-10-single-file-executable-sdk-runtime-distribution.md) | 中文
+[English](2026-07-10-single-file-executable-sdk-runtime-distribution.md) | 简体中文
 
 ## 问题
 

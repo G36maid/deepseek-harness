@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-llm-retry`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個函式外掛程式，透過 agent loop（代理循環）在已關閉步驟上觸發的 `agent/request-error` waterfall（瀑布式事件）應用確切提供方重試策略。它不包裝 `ctx.llm.stream()`：每次配接器呼叫仍是一次提供方嘗試，每次重試都會開啟新的編號輪次。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 进程沙箱 Service Definition。负责定义 `ctx.sandbox` 服务约定（[`SandboxProvider`](src/index.ts)）与 harness 共享的限制词汇：`SandboxMode`（`read-only`／`workspace-write`／`danger-full-access`，仅限文件操作）、`SandboxEnforcement`（`full`／`partial`，针对每种内核 ABI）、`SandboxExecutionPolicy`（每次调用的完整模式及工作区根目录）、`SandboxPolicy`（其中受限制的子集），以及故障时拒绝放行的 `SANDBOX_UNAVAILABLE` 错误。作为[能力 seam 拆分](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)中的 Service Definition 角色，它只依赖 cordis（及 harness 错误基类），绝不依赖后端。
 

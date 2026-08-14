@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-web-latency-throughput-metrics.md) | 繁體中文
+[English](2026-08-04-web-latency-throughput-metrics.md) | [简体中文](2026-08-04-web-latency-throughput-metrics.zh.md) | 繁體中文
 
 ## 問題
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-10-web-remove-steering-interjection-caption.zh.md)
+English | [简体中文](2026-08-10-web-remove-steering-interjection-caption.zh.md) | [繁體中文](2026-08-10-web-remove-steering-interjection-caption.zh-tw.md)
 
 ## Problem
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-in-repository-landlock-release.md) | 中文
+[English](2026-08-06-in-repository-landlock-release.md) | 简体中文
 
 ## 问题
 

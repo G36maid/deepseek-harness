@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-13-session-query-tracing.md
-2026-07-13-session-query-tracing.md: 66ec68cff116c973c723ee086cdb273f9375842b
-2026-07-13-session-query-tracing.zh.md: 315fc8d1b676894966f9d59792fb161babb68624
-2026-07-13-session-query-tracing.zh-tw.md: eebb20aceac1cbdca03091117f8720ef68409534
+2026-07-13-session-query-tracing.md: 6d706c3e7c9baf1652f0dc5b2cce9fab4f568f71
+2026-07-13-session-query-tracing.zh.md: 54bd3cef22a91618acf2fdccfd7d60957f669c8a
+2026-07-13-session-query-tracing.zh-tw.md: 66a59dc12b578a36a039e71d915eb7e248d3e830

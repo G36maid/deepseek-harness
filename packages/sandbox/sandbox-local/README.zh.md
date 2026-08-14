@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox-local
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 [`dsh-sandbox`](../sandbox/) seam 的本地实现。它选择并缓存一个平台 runner：Linux 优先选择可工作的 `bwrap`，否则选择 Landlock；macOS 使用 Seatbelt；Windows 使用 ACL 受限令牌 runner。多个候选项会按顺序探测，只有一个候选项时则直接选择。
 

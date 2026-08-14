@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-parallel-pre-push-gates.md) | 中文
+[English](2026-07-06-parallel-pre-push-gates.md) | 简体中文
 
 本记录中的本地钩子部分已由[快速本地 Git 钩子](2026-07-22-fast-local-git-hooks.md) 取代。有界门禁调度器和包级 `publint` 并行机制仍用于 CI、`doc-sync` 和显式本地命令。
 

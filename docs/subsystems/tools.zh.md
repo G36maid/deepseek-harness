@@ -1,6 +1,6 @@
 # 工具
 
-[English](tools.md) | 中文
+[English](tools.md) | 简体中文
 
 [dsh-tools](../../packages/core/tools) 的工具流水线。[core.md](core.md) 介绍了核心包共用、用于编写流水线的类型 `ToolDefinition`；面向模型的 [`ToolSchema`](llm-streaming.md#the-model-request-and-result) 协议类型与模型请求一起声明。本页记录 `ToolDefinition` 的每个字段、用于构建它的类型化 schema DSL、带守卫的执行类型和 UI 展示类型。
 

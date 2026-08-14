@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-settings-models
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 模型設定與產品引導外掛程式。同一個 client Cordis 外掛程式會註冊 Models 頁面和兩個有序的首次使用彈出視窗：版本化內測聲明，以及按條件顯示的 DeepSeek 官方憑據步驟。兩個步驟共用同一套彈出視窗元件，並繼續由 `settings.onboarding` 排序。Models 平面把三個協議領域匯聚為一個共享快照：`llm.providers`（可設定提供方目錄，含每條路由的存活／休眠狀態）、`settings.describe`（序列化 schema、分層脫敏值、secret slot）與 `credentials.describe`（不含值的 configured/source/writable 徽標）；頁面據此渲染提供方行，一次只展開一張編輯卡片，且不把路由存活狀態呈現為提供方狀態。
 

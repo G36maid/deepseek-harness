@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-unified-send-and-coalesced-user-messages.md) | 繁體中文
+[English](2026-07-22-unified-send-and-coalesced-user-messages.md) | [简体中文](2026-07-22-unified-send-and-coalesced-user-messages.zh.md) | 繁體中文
 
 ## 問題
 

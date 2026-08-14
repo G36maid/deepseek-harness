@@ -2,7 +2,7 @@
 
 Status: rejected — 实现（PR #679）证伪了行为等价前提：vitest 的假时钟不拦截 `node:timers/promises`，这次替换用确定性的快速测试换来约 10 行删除，得不偿失
 
-[English](2026-07-26-builtin-timer-promises-for-hand-rolled-sleeps.md) | 中文
+[English](2026-07-26-builtin-timer-promises-for-hand-rolled-sleeps.md) | 简体中文
 
 ## 问题
 

@@ -1,6 +1,6 @@
 # Plugins and lifecycle
 
-English | [中文](index.zh.md)
+English | [简体中文](index.zh.md) | [繁體中文](index.zh-tw.md)
 
 This page describes the Cordis plugin model and lifecycle state machine.
 

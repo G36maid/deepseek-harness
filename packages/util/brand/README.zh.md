@@ -1,6 +1,6 @@
 # dsh-brand
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 `Branded<B>` 名义类型原语：一个微小的**仅类型**包，无运行时代码，也不依赖其他 harness 包；所有负责跨边界 id 的包都会共享它。
 

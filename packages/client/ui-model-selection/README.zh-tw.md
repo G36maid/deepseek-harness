@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-model-selection
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 模型選擇外掛程式（瀏覽器側）：**兩個入口共用一份工作階段級目錄**，由 `ModelDirectoryResolver`（`ctx.modelDirectories`）持有。對於普通工作階段，`/model` popupSelect 貢獻項（經 `ctx.commandUi` 註冊）與 composer 的具名 `conversation.input.model` slot 都透過同一個 `ModelDirectory` 實例，經 `session.models` 載入工作階段的建議目錄，並經 `session.selectModel` 提交。緊湊型 composer 觸發器會打開兩級 Model/Effort 選單：模型仍按提供方分組，所選具體模型則提供由其配接器持有的推理強度名稱、說明和預設值。`/model` 應用所選模型的默認推理強度，composer 隨後可以選擇任一已公佈的推理強度。
 

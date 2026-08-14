@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-workspace-ui-product-flow.md) | 繁體中文
+[English](2026-07-25-workspace-ui-product-flow.md) | [简体中文](2026-07-25-workspace-ui-product-flow.zh.md) | 繁體中文
 
 ## Problem
 

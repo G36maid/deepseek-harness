@@ -1,6 +1,6 @@
 # 子系統
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 每個子系統一頁，覆蓋 DeepSeek Harness 的全部子系統：它是什麼、它操作哪些資料結構，以及——當它由某個 `ctx` 服務或事件作用域支撐時——一段生成的 **Cordis API** 小節，承載其服務與事件參考。本目錄與 [architecture.md](../architecture.md) 互補：後者描述跨子系統的*行為*（服務對映、工作階段/輪次/步驟生命週期、事件分類體系）；這裡的每一頁是單個子系統詞彙與接線的參考。
 

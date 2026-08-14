@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-request-level-llm-config-credentials.md) | 中文
+[English](2026-07-29-request-level-llm-config-credentials.md) | 简体中文
 
 > 范围：`ctx.settings` 的第一批生产消费方（两个 LLM（大语言模型）适配器插件）、新增的 `packages/credentials/` 能力族，以及 `packages/util/atomic-write` 的抽取。后续的 wire 面（`settings.*`/`credentials.*` RPC、secret 角色脱敏、web 设置表单）是另行开展的工作，不在本 Agent Note 范围内。
 

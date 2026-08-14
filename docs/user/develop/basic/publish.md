@@ -1,6 +1,6 @@
 # Package and install a plugin
 
-English | [中文](publish.zh.md)
+English | [简体中文](publish.zh.md) | [繁體中文](publish.zh-tw.md)
 
 The previous tutorials loaded a local plugin through a `--patch` overlay. This tutorial packages it as an installable **bundle**, installs it into a **profile** with `dsh plugin add`, and explains the layer order that determines the composed configuration. It assumes the `dsh` CLI is installed. Complete [plugin configuration](./config.md) first.
 

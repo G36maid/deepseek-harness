@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-todo-plan-clears-on-next-turn.md) | 繁體中文
+[English](2026-07-28-todo-plan-clears-on-next-turn.md) | [简体中文](2026-07-28-todo-plan-clears-on-next-turn.zh.md) | 繁體中文
 
 ## 問題
 

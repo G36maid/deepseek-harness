@@ -1,6 +1,6 @@
 # workflow/：动态工作流能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本家族通过 subagent 运行由模型编写的编排工作流，并将通用工具与固定策略工具公开给模型。
 

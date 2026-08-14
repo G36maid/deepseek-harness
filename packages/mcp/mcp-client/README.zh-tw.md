@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-mcp-client
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 MCP 用戶端橋接外掛程式：連線外部 [Model Context Protocol](https://modelcontextprotocol.io/) 伺服器，把它們的工具註冊到 `ctx.tools`，使模型能夠透過伺服器限定名稱（`mcp__<serverName>__<rawName>`）將其作為原生工具使用。
 

@@ -1,6 +1,6 @@
 # Subagent
 
-[English](subagent.md) | 中文
+[English](subagent.md) | 简体中文
 
 subagent seam 让一个 agent（智能体）将工作委派给子 agent。与 [bash](shell.md) 一样，它是**一项可选能力**，不属于 agent loop（智能体循环），因此其类型定义在此而非 [core.md](core.md) 中。它不同于其他能力 seam，因为**同一上下文中可共存多个提供方实现**，并按名称注册（`ctx.subagents`），而 bash 只允许一个执行器。该注册表遵循 [LLM（大语言模型）适配器注册表](llm-streaming.md)，而非单服务的 bash 执行器。
 

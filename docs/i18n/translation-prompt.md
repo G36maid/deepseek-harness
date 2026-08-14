@@ -59,7 +59,7 @@ A lower-priority rule may refine but never override a higher-priority requiremen
 - Fenced code blocks must be byte-identical to the source, including info strings, whitespace, and ALL comments inside them. Do NOT translate or reformat any content inside code blocks. This is a hard rule with no exceptions.
 - Inline code spans must be kept verbatim. This includes commands, flags, paths, identifiers, API and event names, config keys, protocol values, version numbers, and other machine-readable tokens. Never translate or reformat them.
 - Every relative link must point to the same target as in the source. Translate link text; do not change link targets.
-- Language switcher line: an English source links to both Chinese sides as `English | [中文](source-filename.zh.md) | [繁體中文](source-filename.zh-tw.md)`. The Simplified Chinese side links back as `[English](source-filename.md) | 中文`; the Taiwan Traditional Chinese side links back as `[English](source-filename.md) | 繁體中文`. Do NOT copy the source switcher unchanged. If the source has no switcher, do not invent a filename or switcher; the pipeline inserts the canonical target switcher after parsing `<final>`.
+- Language switcher line: an English source links to both Chinese sides as `English | [简体中文](source-filename.zh.md) | [繁體中文](source-filename.zh-tw.md)`. The Simplified Chinese side links back as `[English](source-filename.md) | 简体中文`; the Taiwan Traditional Chinese side links back as `[English](source-filename.md) | [简体中文](source-filename.zh.md) | 繁體中文`. Do NOT copy the source switcher unchanged. If the source has no switcher, do not invent a filename or switcher; the pipeline inserts the canonical target switcher after parsing `<final>`.
 - Preserve emphasis marker types and the semantic spans they cover. Do not add, remove, move, or change bold and italic markers.
 
 ### Faithfulness
@@ -255,9 +255,9 @@ Below are representative examples of common problems and their corrections. Foll
 - Good: `# full-screen TUI coding agent (needs DEEPSEEK_API_KEY)` (keep exactly as-is, byte-for-byte)
 
 ### Language switcher — flip direction
-- Source file (English) has: `English | [中文](README.zh.md)`
-- Bad (copying source unchanged): `English | [中文](README.zh.md)`
-- Good (flipped for Chinese file): `[English](README.md) | 中文`
+- Source file (English) has: `English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)`
+- Bad (copying source unchanged): `English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)`
+- Good (flipped for Chinese file): `[English](README.md) | 简体中文`
 
 ---
 

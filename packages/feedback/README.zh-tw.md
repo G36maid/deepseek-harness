@@ -1,6 +1,6 @@
 # feedback/：記錄的人類回饋
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 回饋家族公開兩份刻意分離的契約：寫入權威 Session 日誌的不可變評價，以及掛在單條 assistant 訊息上的可編輯本機伴隨記錄（sidecar）回饋。兩者都不會進入模型對話。
 

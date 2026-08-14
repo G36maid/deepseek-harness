@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-jobs-local
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-jobs`](../jobs/README.md) 登錄檔約定的行程本機實作：`LocalJobRegistry` 把每條記錄保存在記憶體中，按 kind 簽發 `<kind>-N` id，並且只交出全新快照，從不交出即時狀態。作為外掛程式載入後即註冊為 `ctx.jobs`。
 

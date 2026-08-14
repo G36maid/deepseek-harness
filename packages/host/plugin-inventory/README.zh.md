@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-plugin-inventory
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 当前 Cordis Loader 树的只读 Host 投影。`PluginInventoryGateway` 注册 `pluginInventory` 服务，并发布一个由 Typert 生成的直接 Remote：`pluginInventory/list`。每次调用都直接读取 `ctx.loader.entries()`，跳过结构性的 group 行，再按 Loader 顺序返回其余条目，并且只包含 Loader 条目 id、模块标识、有效启用状态与当前根 Fiber 阶段。
 

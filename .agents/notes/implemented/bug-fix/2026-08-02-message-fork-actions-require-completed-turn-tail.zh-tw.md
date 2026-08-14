@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-message-fork-actions-require-completed-turn-tail.md) | 繁體中文
+[English](2026-08-02-message-fork-actions-require-completed-turn-tail.md) | [简体中文](2026-08-02-message-fork-actions-require-completed-turn-tail.zh.md) | 繁體中文
 
 ## 問題
 

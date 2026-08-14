@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 会话持久化是一项能力 seam。抽象的 `SessionPersistence` 服务（`ctx.sessionPersistence`）是其 Service Definition。它要求持久化后端持久存储、重新加载和列出会话，但不规定具体存储实现。该 seam 采用与 `dsh-shell` 相同的角色划分（见[能力 seam](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：本包负责 Service Definition，同级包负责 Service Provider，Consumer 注入该服务。
 

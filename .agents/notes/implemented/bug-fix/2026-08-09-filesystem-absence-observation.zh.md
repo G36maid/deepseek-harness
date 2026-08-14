@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-filesystem-absence-observation.md) | 中文
+[English](2026-08-09-filesystem-absence-observation.md) | 简体中文
 
 ## 问题
 

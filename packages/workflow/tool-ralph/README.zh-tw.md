@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-ralph
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 面向模型的 `ralph` 工具執行固定的前臺工作流程，把一個不可變目標依次交給多個全新子 agent（代理）。它展示如何把專用編排策略實作為基於 [`ctx.workflowEngine`](../workflow/README.md) 和 [`ctx.subagents`](../../subagent/subagent/README.md) 的普通外掛程式：不會向 `agent-loop` 新增 Ralph 模式或全新 agent loop（代理循環），同工作階段的[目標領域](../../goal/goal/README.md)也保持獨立。策略和暫緩事項由 [Ralph Agent Note（agent 決策記錄）](../../../.agents/notes/implemented/feature/2026-07-19-fresh-agent-ralph-workflow-tool.md)負責。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-settings-models
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Models settings and product-onboarding plugin. The same client Cordis plugin registers the Models page plus two ordered first-run dialogs: a versioned internal-testing notice and the conditional official-DeepSeek credential step. Both steps share one modal wrapper and remain sequenced by `settings.onboarding`. The Models plane joins three wire domains into one shared snapshot — `llm.providers` (the configurable-provider directory with each route's live/dormant state), `settings.describe` (serialized schemas, layered redacted values, secret slots), and `credentials.describe` (value-free configured/source/writable badges) — and renders provider rows with one editor card at a time, without presenting route liveness as provider status.
 

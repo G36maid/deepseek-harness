@@ -300,6 +300,9 @@ for (const source of [...pairAnchors].sort()) {
   const counterpartTargets = languageSwitcherTargetsForAll(
     PAIRED_LANGUAGES.filter(language => language !== 'en').map(language => paths.languages[language]),
   )
+  // Every language side links to the English source and to its siblings;
+  // the signature must skip all three switcher targets on every side.
+  const allSwitcherTargets = [...sourceSwitcherTargets, ...counterpartTargets]
   for (const language of PAIRED_LANGUAGES) {
     if (language === 'en') continue
     const side = paths.languages[language]
@@ -310,13 +313,13 @@ for (const source of [...pairAnchors].sort()) {
   if (requiresSourceLanguageSwitcher(source) && !linksTo(trees.en, counterpartTargets)) {
     errors.push(`${source}: missing language switcher — no link back to any counterpart`)
   }
-  const sourceSignature = translationStructureSignature(trees.en, counterpartTargets)
+  const sourceSignature = translationStructureSignature(trees.en, allSwitcherTargets)
   for (const language of PAIRED_LANGUAGES) {
     if (language === 'en') continue
     const side = paths.languages[language]
     for (const divergence of translationStructureDiff(
       sourceSignature,
-      translationStructureSignature(trees[language], sourceSwitcherTargets),
+      translationStructureSignature(trees[language], allSwitcherTargets),
     )) {
       errors.push(`${source} ↔ ${side}: ${divergence}`)
     }

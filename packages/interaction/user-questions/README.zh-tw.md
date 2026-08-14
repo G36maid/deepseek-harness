@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-user-questions
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 使用者互動 Service Definition。它定義 `ctx.userQuestions`，供面向模型的工具或權限外掛程式在需要暫停工作並詢問人類決定時使用。
 

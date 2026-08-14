@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-web-syntax-highlighting-shiki.md) | 繁體中文
+[English](2026-07-26-web-syntax-highlighting-shiki.md) | [简体中文](2026-07-26-web-syntax-highlighting-shiki.zh.md) | 繁體中文
 
 > 範圍：web client 唯一的一套文法高亮體系——相依性裁決、單例形態、token 表約定與各消費表面。本篇是 Code Mode UI 堆疊 PR（Pull Request）鏈的第五個 PR；[chat 子呼叫行 Agent Note](../feature/2026-07-26-code-mode-chat-subcall-rows.md)交付了 `run_code` 程序正文，而本體系存在的意義正是讓它可讀。樣式的基本規則由 [Web 樣式體系裁決](2026-07-19-web-styling-system.md)規定。
 

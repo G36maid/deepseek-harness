@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-plan-specific-collaboration-state.md) | 繁體中文
+[English](2026-07-22-plan-specific-collaboration-state.md) | [简体中文](2026-07-22-plan-specific-collaboration-state.zh.md) | 繁體中文
 
 ## 問題
 

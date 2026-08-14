@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-skill
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 skill（技能）调用 source 的浏览器端：把 `/` 触发的 `skill` source 注册进 `ctx.inputTriggers`。普通会话的候选来自 `skill.list` RPC，以每次调用的 `ClientSessionContext` 投影中的 `{sessionId}` 寻址，host 从会话 header 解析 `cwd`。宿主提供每一个用户可调用的 skill；`modelInvocable: false` 的条目（即 `disable-model-invocation` skill，此路径是其唯一入口）会以当前语言把仅限用户标记作为描述前缀带上。由目录寻址的可继续 subagent 在客户端解析为没有 skill 候选，因为现有 skill RPC 要求会话已挂载；查看其持久化历史不得激活它。目录按普通会话缓存，拉取走 single-flight；scope 创建时的 `warm` 钩子预热该会话的缓存项，转发的 owner 事件 `agent-preset/selected` 丢弃该会话这一项（目录属于 preset，而空会话可能在预热之后才切换），`connection/reset` 清空全部缓存。结果按 `startsWith(query)` 过滤。
 

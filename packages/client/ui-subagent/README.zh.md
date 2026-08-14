@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-subagent
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Web subagent 功能 owner：向 `conversation.session.header.actions` 贡献可懒加载展开的目录树，向会话编辑器链贡献按原因区分的只读替代呈现，并保留注册到 `ctx.inputTriggers` 的既有 `@` 引用 source。
 

@@ -1,6 +1,6 @@
 # interaction/：人機協作平面
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 人與執行中的 agent（代理）協作所經由的服務與外掛程式——提問、審批、權限預設、命令。這些是**產品**包：由使用者直接操作的真實介面。
 

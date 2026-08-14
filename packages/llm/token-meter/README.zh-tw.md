@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-token-meter
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 透過單例 `ctx.tokenMeter` 服務進行具備重播感知能力的 token 測量。它從持久日誌為每個工作階段推進一個隔離 fold，因此壓縮（compaction）與其他壓力敏感外掛程式可以共享計量，無需相依性 `CompactionEngine`。
 

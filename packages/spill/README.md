@@ -1,6 +1,6 @@
 # spill/ — tool-output spill capability family
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 This family persists oversized tool output and replaces the inline result with a bounded preview and retrieval locator.
 

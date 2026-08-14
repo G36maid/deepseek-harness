@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-10-message-feedback-sidecar.md
-2026-08-10-message-feedback-sidecar.md: eb1f8786f9ec0363b3c98d5b80a796b9c0fc0b4c
-2026-08-10-message-feedback-sidecar.zh.md: 573d3b30e3bd14b492925f4a00424db588736943
-2026-08-10-message-feedback-sidecar.zh-tw.md: e0dc062f12b2992146e3543381413e86aa319fd0
+2026-08-10-message-feedback-sidecar.md: 7d53454092beab6bd4f9e59192cfdf91aeca7257
+2026-08-10-message-feedback-sidecar.zh.md: b60334c31606cf3dd18be852453df42f1b38ca5b
+2026-08-10-message-feedback-sidecar.zh-tw.md: a8969067af4edc1a9d3c1938171122ee4bddd8ca

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-telemetry-otel
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The OpenTelemetry backend for [the telemetry seam](../session-telemetry/) — the only entry a deployment loads. Its `mode` decides whether the seam follows session events live, replays the canonical log only at recorded feedback, or keeps telemetry local. Uploading modes compose the OTel JS SDK as-is (`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP log exporter) and map each handed-over record onto `logger.emit()`, under two instrumentation scopes: ledger records on `@deepseek-ai/dsh-session-sessionTelemetry-otel`, operational records on `@deepseek-ai/dsh-session-sessionTelemetry-otel/ops`. Resource identity contains `service.name`/`service.version` from `dsh-llm`'s `APP_IDENTITY` plus this package's anonymous `user.id` (`$DSH_HOME/.anonymous-user-id`, a random UUID created on first use and reset by deleting the file), carried once per export batch rather than per record.
 

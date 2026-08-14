@@ -3,7 +3,7 @@
 
 # Agent 輪次與步驟生命週期
 
-[English](agent-lifecycle.md) | 繁體中文
+[English](agent-lifecycle.md) | [简体中文](agent-lifecycle.zh.md) | 繁體中文
 
 此時序圖是 [architecture.md](architecture.md#turn-flow) 的配套圖示。持久的重播事實保存在 `session/event` 中，即時控制與狀態則保存在 `agent/*` 中。
 

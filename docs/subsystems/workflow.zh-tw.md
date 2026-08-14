@@ -1,6 +1,6 @@
 # 工作流程
 
-[English](workflow.md) | 繁體中文
+[English](workflow.md) | [简体中文](workflow.zh.md) | 繁體中文
 
 工作流程 seam 允許 agent（代理）執行由模型編寫、會啟動 subagent 的編排指令碼。與 [subagent](subagent.md) 一樣，它是**一項選填能力**，不屬於 agent loop，因此其類型和操作記錄在此處，而非 [core.md](core.md)。與 bash 一樣，每個上下文只允許一個引擎實作提供 `ctx.workflowEngine`；沒有命名提供方登錄檔（第二個引擎透過外掛程式設定替換第一個，而不與它同時執行）。
 

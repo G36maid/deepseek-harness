@@ -1,6 +1,6 @@
 # dsh-system-prompt
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 系統提示詞組裝登錄檔。外掛程式可以貢獻有序段、工具 schema 和具名變數。迴圈在每個步驟組裝一次，並將結果渲染為完整的模型提示詞。此外掛程式擁有靜態 harness 身份和全域性部署 persona；agent（代理）作用域的 persona 會遮蔽全域性預設值。
 

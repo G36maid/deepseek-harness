@@ -1,6 +1,6 @@
 # 会话查询
 
-[English](session-query.md) | 中文
+[English](session-query.md) | 简体中文
 
 本文定义逻辑会话语料库的查询词汇；当 live 数据存在时，该语料库优先使用 live 数据。[Service Definition 包](../../packages/session-query/session-query)负责精确读取、来源优先级、关系追踪、语义提取，以及与提供方无关的过滤器；[SQLite 提供方](../../packages/session-query/session-query-sqlite)负责具体全文索引的生命周期。
 

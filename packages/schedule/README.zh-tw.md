@@ -1,6 +1,6 @@
 # schedule/：僅限 Session 內的提醒
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Schedule 家族負責管理提醒，其持久狀態保存在原 Session 日誌中。行程內 owner 只會在該 Session 擁有 live 根 Agent 時等待；cold Session 再次 live 後會復原逾期工作，但這不意味著存在外部通知渠道。
 

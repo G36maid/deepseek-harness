@@ -1,6 +1,6 @@
 # 7. 進入 harness
 
-[English](07-into-the-harness.md) | 繁體中文
+[English](07-into-the-harness.md) | [简体中文](07-into-the-harness.zh.md) | 繁體中文
 
 本章會向 harness 的 `tools` 服務註冊一個可由模型呼叫的工具，透過 harness 工具管線執行它，並觀察結果事件。整個示例無需金鑰，也不會呼叫模型。
 

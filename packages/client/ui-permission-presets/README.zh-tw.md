@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-permission-presets
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 面向兩種不同生命週期的瀏覽器權限介面。「通用」設定行讀取顯式暴露的 `permission` Settings 描述符，從 host 的動態 `defaultPreset` enum 中推導選項，並攜帶描述符的 revision 寫入一條 `settings.mutate` 路徑操作。它的 observable 經 slot 系統的 `hooks` 格傳遞，因此 React 掛鉤由渲染器綁定；推送的失效通知會重新取得描述符。這個值僅在後續工作階段建立時生效；改變它不會切換當前工作階段。選擇 Full access 時必須先顯式確認風險，該行隨後才會寫入。
 

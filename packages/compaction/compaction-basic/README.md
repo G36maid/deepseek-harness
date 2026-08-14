@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-compaction-basic
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **basic compaction backend**: a `BasicCompactionEngine` implementing the `@deepseek-ai/dsh-compaction` Service Definition with reusable `ctx.tokenMeter` pressure, token-budget retention, and summarization as a direct one-shot `ctx.llm.stream()` call that replays the conversation prefix to reuse the provider's KV cache (interceptable at `llm/stream`).
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-lsp
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 面向模型的 **`lsp` 工具**，基於 `ctx.lsp`：一個只讀工具，透過四種操作執行精確程式碼導覽。它擁有模型 schema、提示詞指引、坐標轉換、結果限制與格式化，以及 UI 呈現；不匯入任何提供方。
 

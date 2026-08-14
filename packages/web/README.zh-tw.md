@@ -1,6 +1,6 @@
 # web/：web 能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本家族提供與提供方無關的 web 搜尋和抓取操作，以及消費這些操作的面向模型工具。
 

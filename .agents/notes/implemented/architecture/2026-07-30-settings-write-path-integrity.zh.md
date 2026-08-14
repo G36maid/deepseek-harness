@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-settings-write-path-integrity.md) | 中文
+[English](2026-07-30-settings-write-path-integrity.md) | 简体中文
 
 > 范围：`dsh-settings-file` 的写路径数据完整性（操作链、读-改-写、跨进程写锁、diff 形态的 YAML 编辑）与 `dsh-settings` 的观察者生命周期（watch 的 dispose（资源释放）、异步监听器收容、JSON 形态写入边界）。本 note 推翻了[用户设置 seam note](2026-07-28-user-settings-seam.md)所记录的一项延后决定：跨进程锁文件现已交付。
 

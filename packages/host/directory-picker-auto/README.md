@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker-auto
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **adaptive chooser** of the [directory-picker seam](../directory-picker/README.md): a node-half-only plugin that resolves the host's situation once at boot and mounts the matching dual-face backend — [`-native`](../directory-picker-native/README.md) or [`-browse`](../directory-picker-browse/README.md) — as a real Loader entry in the in-memory root tree (never persisted to a config file; the root tree's `write()` is a no-op). Because the backend arrives as an ordinary entry, its browser half is discovered by the client module table exactly as a config-row's would be, so the seam's one-row-swaps-both-faces invariant holds for the resolved choice. Unloading the chooser removes the entry again, unloading both faces with it.
 

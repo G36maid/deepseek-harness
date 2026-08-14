@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-adapter-owned-reasoning-effort-capabilities.md) | 繁體中文
+[English](2026-07-24-adapter-owned-reasoning-effort-capabilities.md) | [简体中文](2026-07-24-adapter-owned-reasoning-effort-capabilities.zh.md) | 繁體中文
 
 ## 問題
 

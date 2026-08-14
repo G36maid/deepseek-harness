@@ -1,6 +1,6 @@
 # apps/web 浏览器 e2e
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 这些测试在进程内启动真实的 web 组合，并用真实 Chromium 通过真实 HTTP 驱动它。该 lane
 的运行机制——模式、fixture、golden，以及与 `dsh web` 之间刻意保留的组合差异——记录在

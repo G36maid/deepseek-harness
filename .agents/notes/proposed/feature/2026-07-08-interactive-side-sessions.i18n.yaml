@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/feature/2026-07-08-interactive-side-sessions.md
-2026-07-08-interactive-side-sessions.md: 653f77b931fe1149aad9e15b82f40fe3272f5469
-2026-07-08-interactive-side-sessions.zh.md: 7a5c1a7409902edc50c4020cebf7c2e3a736816c
-2026-07-08-interactive-side-sessions.zh-tw.md: 89bfe7530c06e8deca459b655f2b8dc73e113091
+2026-07-08-interactive-side-sessions.md: 357240ee0178b38fac96bc9cd74b2fc771580bce
+2026-07-08-interactive-side-sessions.zh.md: ab5b1cc1a2d5a6837d2b867bd1687bb20db816fc
+2026-07-08-interactive-side-sessions.zh-tw.md: b5a3c923243fa8e8cd222fce41573876544f4832

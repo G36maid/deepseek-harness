@@ -1,6 +1,6 @@
 # LLM adapters
 
-English | [中文](llm-adapter.zh.md)
+English | [简体中文](llm-adapter.zh.md) | [繁體中文](llm-adapter.zh-tw.md)
 
 This guide connects a new LLM provider to Harness.
 

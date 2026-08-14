@@ -3,7 +3,7 @@
 
 # 工具 Schema 目录
 
-[English](tool-catalog.md) | 中文
+[English](tool-catalog.md) | 简体中文
 
 已发布插件向 `ctx.tools` 提供的所有面向模型的工具：模型通过系统提示词组装获得的 `name`、`description` 和 JSON Schema `parameters`。本目录是[子系统页面](subsystems/core.md)（类型及每页生成的 `cordis-surface` 接线区域）的补充；本页列出的是向 agent（智能体）提供的*工具*。
 

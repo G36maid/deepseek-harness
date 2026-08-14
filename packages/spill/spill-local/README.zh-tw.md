@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-spill-local
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-spill`](../spill) 儲存 seam 的**本機檔案系統**實作。它註冊為 `ctx.spillStore`，將工具產生的過大文字持久化到私有的工作階段級文件；定位資訊是檔案路徑，取回指引會告訴模型對該路徑使用 `read` 或 `grep`。
 

@@ -1,6 +1,6 @@
 # plan/：plan 協作狀態
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Plan mode 是按 agent（代理）記錄的協作狀態，而不是通用模式登錄檔或能力 seam。
 

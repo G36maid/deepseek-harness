@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-subagent-empty-terminal-message-output.md) | 繁體中文
+[English](2026-08-10-subagent-empty-terminal-message-output.md) | [简体中文](2026-08-10-subagent-empty-terminal-message-output.zh.md) | 繁體中文
 
 ## 問題
 

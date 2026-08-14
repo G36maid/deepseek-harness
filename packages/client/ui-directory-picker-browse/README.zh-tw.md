@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-directory-picker-browse
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 應用內目錄瀏覽介面：瀏覽式選取互動的瀏覽器半邊。它透過 ui-workspace 的兩個 directory-flow 洞（`conversation.hero.workspace.directoryFlow` 與 `sidebar.workspaces.directoryFlow`）裝入「選擇工作區目錄」對話框，經 `ctx.workspaces` 驅動程式本機 Host 的 `host.listDirectory` 與 `host.createDirectory` 原語。它的 node 對側是 [`dsh-host-directory-picker-browse`](../../host/directory-picker-browse/README.md)；掛載本包即用一行 cordis.yml 把介面與該後端組合起來，因此沒有任何用戶端程式碼按能力種類分支。與 [`-native`](../ui-directory-picker-native/README.md) 介面不同，本對話框不需要本機作業系統選擇框，因此也服務於行程內與遠端瀏覽器部署。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-web
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向模型的 web 工具套件 `web_search` 与 `web_fetch`，构建于 [web 能力 seam](../web/README.md)（`ctx.web`）之上。它只负责面向模型的事项：工具名称、JSON Schema、snake_case 参数名称、提示词区段、结果数量上限、结果格式、HTML→markdown 呈现，以及 UI 呈现投影——`presentCall`、`presentResult`（以 `kind: 'search' | 'fetch'` 区分的 `card: 'web'` 结果卡片），以及承载有损渲染文本无法携带的结构化搜索来源或抓取摘要的 `output.presentationMeta`（见 [web-result-card Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-web-result-card.md)）。所有 web 访问都通过 `ctx.web`；该包绝不导入具体提供方。两个工具都不公开面向模型的超时：每个工具的协作式工具调用超时预算通过配置在此声明（`fetchTimeoutMs`／`searchTimeoutMs`，附加为 `ToolDefinition.timeoutMs`），由 [`@deepseek-ai/dsh-tool-call-timeout-policy`](../../guard/timeout-policy/README.md)（`tools/execute` 包装层）强制执行；每个工具只把 `exec.signal` 转发给 seam。
 

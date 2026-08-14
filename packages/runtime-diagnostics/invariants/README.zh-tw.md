@@ -1,6 +1,6 @@
 # dsh-invariants
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用於包自有執行時期不變數檢查的可設定登錄檔服務。根外掛程式註冊 `ctx.invariants`；它不包含產品檢查或產品包匯入。每個工作區包都發布一個 `./invariant` 配套入口，用於註冊其精確 npm 包名。
 

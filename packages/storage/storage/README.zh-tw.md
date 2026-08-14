@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-storage
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 非工作階段資料的儲存中心（`ctx.storage`）：具名後端登錄檔加已掛載的資料形式設施。中心自身不執行 IO：後端擁有介質，資料形式擁有語義。[儲存家族概述](../README.md)列出了這些包；[領域 KV 儲存 Agent Note](../../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md)記錄了設計理由。
 

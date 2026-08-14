@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-message-feedback
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 單則訊息回饋外掛程式的瀏覽器側：一對 Like/Dislike 按鈕加一個選填備注，作為 `conversation.chat.assistant-actions` 條帶的 `feedback` 條目（order 10）貢獻。該條帶由 `ui-conversation` 聲明，渲染在已定稿助手訊息的 IconActions 行內、複製與分支之間，因此控制元件沿用該行的樣式與 hover 行為。只有已定稿的訊息能到達這個 slot——被中斷凍結的部分輸出不帶 `messageId`，因此也沒有回饋控制元件。該操作欄每個 Turn 渲染一次，位於持有該 Turn IconActions 行的收尾助手訊息上：多步驟 Turn 中較早的步驟產出的是工具行而非可評分正文，因此即使 Host 會接受它們作為目標，介面上也不出現控制元件。
 

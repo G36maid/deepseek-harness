@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-browser-gif-evidence-chain.md) | 繁體中文
+[English](2026-08-08-browser-gif-evidence-chain.md) | [简体中文](2026-08-08-browser-gif-evidence-chain.zh.md) | 繁體中文
 
 ## 問題
 

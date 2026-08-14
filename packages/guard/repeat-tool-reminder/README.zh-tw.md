@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-repeat-tool-reminder
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這是一個僅提供建議的迴圈中斷器，而非面向模型的工具：它不會出現在工具清單中，不會否決或改寫呼叫，只增加一種行為。它監視每個 agent（代理）的工具呼叫流，統計以完全相同的規範化參數連續呼叫同一工具的次數；達到所設定的連續次數時，它會注入逐級增強的提示，要求模型停止重複、重新閱讀上一次結果，並改用其他方案或結束任務。究竟是換一種方式重試、收集更多證據還是完成任務，仍完全由模型決定：合理的重複呼叫既不會延遲，也不會受阻。決策記錄見 [repeat-tool-reminder Agent Note](../../../.agents/notes/archived/feature/2026-07-08-repeat-tool-guard.md)。
 

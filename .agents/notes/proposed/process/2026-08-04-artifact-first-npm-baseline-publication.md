@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [中文](2026-08-04-artifact-first-npm-baseline-publication.zh.md)
+English | [简体中文](2026-08-04-artifact-first-npm-baseline-publication.zh.md) | [繁體中文](2026-08-04-artifact-first-npm-baseline-publication.zh-tw.md)
 
 ## Problem
 

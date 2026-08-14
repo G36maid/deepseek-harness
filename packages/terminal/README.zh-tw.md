@@ -1,6 +1,6 @@
 # terminal/：持久 PTY 能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `PTY` 的全稱是 **Pseudo-Terminal（偽終端機）**。這項能力提供持久且限定所有者範圍的終端機工作階段，適用於需要跨工具呼叫保留狀態或使用互動式 stdin 的工作流程。PTY 是單次 bash 與檔案系統工具的補充，不會取代後兩者更嚴格的逐操作約定。
 

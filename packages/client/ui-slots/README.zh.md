@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-slots
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Slot 注册表纯核心、slot 终端设计：SlotMap 声明合并、SlotCore 上唯一的 `register` 组合 API、四 share 组件 props 类型家族、store seat 类型家族，以及 renderer 安装约定。只使用 React 类型；该包不依赖 React，也不依赖 Cordis。
 

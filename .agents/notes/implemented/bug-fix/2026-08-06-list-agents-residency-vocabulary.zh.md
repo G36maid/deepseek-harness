@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-list-agents-residency-vocabulary.md) | 中文
+[English](2026-08-06-list-agents-residency-vocabulary.md) | 简体中文
 
 ## 问题
 

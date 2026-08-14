@@ -1,6 +1,6 @@
 # 事故复盘（postmortem）
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 事故复盘记录的是：一个 bug 出现在了不该出现的地方（真实用户、已合并的 PR（Pull Request）、已发布的版本），值得关注的是*为什么我们的流程放过了它*，而不仅仅是那一行修复。
 

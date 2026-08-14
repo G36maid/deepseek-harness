@@ -1,6 +1,6 @@
 # @deepseek-ai/node-addon-landlock-run-linux-arm64
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向 linux-arm64 的预构建 `bin/landlock-run` Landlock 启动器：一个由 [`@deepseek-ai/node-addon-landlock-run`](https://www.npmjs.com/package/@deepseek-ai/node-addon-landlock-run) 包所附的 C 源码原生编译而成的静态 musl 二进制文件（不使用交叉工具链）。npm 的 `os`/`cpu` 字段在安装时选择此包；入口包将其定位到文件路径。该包不包含 JavaScript，也绝不会被导入。
 

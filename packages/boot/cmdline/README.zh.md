@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-cmdline`
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 dsh 启动器交给它所引导应用的那条命令行。启动器只解析属于自己的 flag（`--profile`、`--patch`、配置 dump），并把**其后的一切**原样交给配置树，因此 flag 家族、`--help` 文本和解析错误都由应用自己持有，启动器不必知道它们。
 

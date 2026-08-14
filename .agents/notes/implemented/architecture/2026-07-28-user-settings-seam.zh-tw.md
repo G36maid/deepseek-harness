@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-user-settings-seam.md) | 繁體中文
+[English](2026-07-28-user-settings-seam.md) | [简体中文](2026-07-28-user-settings-seam.zh.md) | 繁體中文
 
 > 範圍：`packages/settings/` 能力族——Service Definition、文件提供方，以及使用者設定與 `cordis.yml` 的組合邊界。[web config-tree note](2026-07-24-web-config-tree-boot-and-transport-layering.md) 曾把「profile 寫路徑」記為延後項；本 seam 就是該寫路徑的歸屬。消費端遷移（主題、語言、默認模型路由）與 web `settings.*` RPC 面是後續工作，不在本 note 已交付範圍內。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-08-self-referential-cordis-toolset.md) | 繁體中文
+[English](2026-07-08-self-referential-cordis-toolset.md) | [简体中文](2026-07-08-self-referential-cordis-toolset.zh.md) | 繁體中文
 
 ## 問題
 

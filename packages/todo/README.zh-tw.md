@@ -1,6 +1,6 @@
 # todo/：todo／規劃能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 面向模型的 todo 能力。它是單一**產品**包，因為一個 agent（代理）工作階段擁有該清單；不存在可替換的提供方約定。
 

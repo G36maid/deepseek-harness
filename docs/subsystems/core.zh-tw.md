@@ -1,6 +1,6 @@
 # 核心
 
-[English](core.md) | 繁體中文
+[English](core.md) | [简体中文](core.zh.md) | 繁體中文
 
 **核心**子系統即 [`packages/core`](../../packages/core/README.md)，包含每個組合都會啟動的包：事件溯源的工作階段日誌、系統提示詞組裝、工具登錄檔、agent（代理）類型，以及驅動程式它們的具體迴圈。本頁說明 `agent`/`agent-loop` 這對包所聲明的內容：agent 如何被建立與擁有，以及 `Agent` 控制代碼的投遞、取消與攔截約定；本頁還說明每個子系統都遵循的兩個類型模式。該組的專屬頁面與目錄其餘部分見[子系統 README](README.md)。
 

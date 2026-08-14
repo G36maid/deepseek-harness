@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox-local
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Local implementation of the [`dsh-sandbox`](../sandbox/) seam. It selects and caches one platform runner: Linux prefers a working `bwrap` then Landlock; macOS uses Seatbelt; Windows uses the ACL restricted-token runner. Multiple candidates are probed in order, while a sole candidate is selected directly.
 

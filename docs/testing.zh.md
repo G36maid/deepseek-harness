@@ -1,6 +1,6 @@
 # 测试策略
 
-[English](testing.md) | 中文
+[English](testing.md) | 简体中文
 
 本文说明本仓库的分层测试方式，以及保持绿色测试套件有意义的规则。命令见根目录 [AGENTS.md](../AGENTS.md)；相关 Agent Note 承载设计动机。
 

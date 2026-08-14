@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-skill
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Skill invocation source, browser half: registers the `/`-trigger `skill` source into `ctx.inputTriggers`. Ordinary-session candidates come from the `skill.list` RPC addressed by the per-call `ClientSessionContext` projection's `{sessionId}`, with the host resolving `cwd` from the session header. The host serves every user-invocable skill; a `modelInvocable: false` entry (a `disable-model-invocation` skill, whose only entry point is this path) wears the user-only marker as a description prefix in the active language. Catalog-addressed continuable children resolve no skill candidates locally because the existing skill RPC requires an attached session; viewing their persisted history must not activate them. Catalogs cache per ordinary session with a single-flight fetch; the scope-birth `warm` hook prewarms the session's entry, the forwarded `agent-preset/selected` owner event drops that one session's entry (the catalog belongs to the preset, and a blank session may switch after the warm), and `connection/reset` clears everything. Results filter by `startsWith(query)`.
 

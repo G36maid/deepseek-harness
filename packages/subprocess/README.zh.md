@@ -1,6 +1,6 @@
 # subprocess/：子进程能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 这里集中提供一个执行世界的共享进程基底：可执行文件查找、具有原始或收集式 stdio 的完全明确指定的受管子进程树，以及一项底层终端进程原语，负责 PTY 分配、前台进程组和提供方仍可观察到的会话成员清理。命令默认值补全、shell 语义、时限、协议分帧、就绪状态与呈现留在消费方：[bash 执行器](../shell/README.md)、[LSP 主机](../lsp/README.md)、[PTY shell 后端](../terminal/README.md)与 [ACP（Agent Client Protocol）subagent 后端](../subagent/README.md)。参见 [subprocess seam Agent Note](../../.agents/notes/implemented/architecture/2026-07-26-subprocess-seam.md)。
 

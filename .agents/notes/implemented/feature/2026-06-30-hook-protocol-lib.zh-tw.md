@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-30-hook-protocol-lib.md) | 繁體中文
+[English](2026-06-30-hook-protocol-lib.md) | [简体中文](2026-06-30-hook-protocol-lib.zh.md) | 繁體中文
 
 ## 問題
 

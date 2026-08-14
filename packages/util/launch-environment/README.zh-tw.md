@@ -1,6 +1,6 @@
 # dsh-launch-environment
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 把本次執行的環境凍結為一份不可變快照，並記住**每個值來自哪一層**。消費端用它而不是 `process.env` 解析面向使用者的值，因為各層的可信程度並不相同，而壓平後的檢視表無法區分它們。
 

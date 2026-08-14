@@ -1,6 +1,6 @@
 # Post-mortem 0001: ACP server crashed on connect — `export default` dropped the plugin's `inject`
 
-English | [中文](0001-acp-default-export-drops-inject.zh.md)
+English | [简体中文](0001-acp-default-export-drops-inject.zh.md) | [繁體中文](0001-acp-default-export-drops-inject.zh-tw.md)
 
 Status: resolved (fix in PR #41 `feat/acp-2-bridge`)
 

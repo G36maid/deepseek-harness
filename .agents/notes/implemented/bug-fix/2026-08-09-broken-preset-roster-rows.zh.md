@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-broken-preset-roster-rows.md) | 中文
+[English](2026-08-09-broken-preset-roster-rows.md) | 简体中文
 
 ## 问题
 

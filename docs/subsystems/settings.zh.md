@@ -1,6 +1,6 @@
 # 用户设置
 
-[English](settings.md) | 中文
+[English](settings.md) | 简体中文
 
 [dsh-settings](../../packages/settings/settings) 的用户设置 seam 持有一份按 namespace 分节的用户文档，并把每个已注册 namespace 解析为：schema 默认值，然后注册方的组合 `base`，最后用户分节。[dsh-settings-file](../../packages/settings/settings-file) 这类提供方存储原始文档并推送外部编辑；消费方插件注册 schema 后读取或观察解析值。组合配置仍留在 `cordis.yml`——namespace 只承载用户可编辑子集。
 

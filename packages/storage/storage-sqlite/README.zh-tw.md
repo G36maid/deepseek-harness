@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-storage-sqlite
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [儲存中心](../storage/README.md)的 SQLite 後端：註冊為後端 `sqlite`，透過一個數據函式庫提供 `kv` facet；該資料庫由 `node:sqlite` 操作，可以是單個文件，也可以是 `:memory:`。設計與取捨見[領域 KV 儲存 Agent Note](../../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.zh.md)。
 

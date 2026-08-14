@@ -1,6 +1,6 @@
 # api/：Remote API 层
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向应用的 Remote 技术栈。`remotes` 负责 BFF 策略和选定的业务 API，`gateway` 则实现 Host 与 Client 环境共用的 Typert 一元 RPC endpoint。
 

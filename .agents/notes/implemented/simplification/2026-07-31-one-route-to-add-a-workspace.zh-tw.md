@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-one-route-to-add-a-workspace.md) | 繁體中文
+[English](2026-07-31-one-route-to-add-a-workspace.md) | [简体中文](2026-07-31-one-route-to-add-a-workspace.zh.md) | 繁體中文
 
 ## 問題
 

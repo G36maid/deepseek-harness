@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-bash-local
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 `@deepseek-ai/dsh-shell` 执行器 seam 的本地 Service Provider，构建在 [`@deepseek-ai/dsh-subprocess`](../../subprocess/subprocess/README.md) 服务之上：`LocalBashExecutor` 每次调用都通过 `ctx.subprocess` 把 `bash -c <command>` 作为受管进程组 spawn，并负责所有 Bash 层职责（命令默认值补全与上限、超时与取消分类、适合模型的终端环境，以及后台读取时面向模型的 stdout/stderr 合并）。以 spill 文件兜底的有界输出、凭据清除、kill 升级和 dispose（资源释放）等进程组机制则由 subprocess 服务负责。
 

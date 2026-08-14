@@ -1,6 +1,6 @@
 # 防禦性模式
 
-[English](defensive-patterns.md) | 繁體中文
+[English](defensive-patterns.md) | [简体中文](defensive-patterns.zh.md) | 繁體中文
 
 來之不易的缺陷類別規則：下面每條模式都是本項目實際發布或差點發布的一類缺陷，以防止其復發的規則形式陳述。在編寫生命週期、並行、子行程或清理程式碼之前請先閱讀本文。測試層面的對應規則（真實入口路徑、驗證實際結果、資源歸屬）見 [testing.md](testing.md)。
 

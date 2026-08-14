@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-06-user-bubbles-drop-the-branch-action.md
-2026-08-06-user-bubbles-drop-the-branch-action.md: 817b5e72b7e18b03ddb3a160e6f7a86b04f02764
-2026-08-06-user-bubbles-drop-the-branch-action.zh.md: a80f723242383cc9a35b9933dcc9c63ebeacd9d8
-2026-08-06-user-bubbles-drop-the-branch-action.zh-tw.md: b4247d0e8e5bf192bb2274af9dd53fcf683b3bc7
+2026-08-06-user-bubbles-drop-the-branch-action.md: d485c07a7782c09016c78bf3298419fddbfd9dc1
+2026-08-06-user-bubbles-drop-the-branch-action.zh.md: 74f427144d83fae8dcccb1714159fc9ddb9f9720
+2026-08-06-user-bubbles-drop-the-branch-action.zh-tw.md: 2f6cf62c953a6005a9a3f7a4a14cd531956d2f30

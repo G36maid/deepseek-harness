@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-fork-in-process
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 fork 提供方会创建一个进程内子 agent（智能体），并以父 agent 已完成的对话轮次作为初始内容。它与 spawn 共用全部运行机制；唯一的行为差异是会话初始内容。
 

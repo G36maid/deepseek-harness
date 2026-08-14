@@ -55,6 +55,6 @@
   "response": {
     "translation": "---\nlayout: doc\n---\n\n# 快照说明\n\nagent（智能体）执行一个步骤。",
     "review": "- 无修正",
-    "final": "---\nlayout: doc\n---\n\n# 快照说明\n\n[English](snapshot-note.md) | 中文\n\nagent（智能体）执行一个步骤。\n"
+    "final": "---\nlayout: doc\n---\n\n# 快照说明\n\n[English](snapshot-note.md) | 简体中文\n\nagent（智能体）执行一个步骤。\n"
   }
 }

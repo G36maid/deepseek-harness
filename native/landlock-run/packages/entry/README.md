@@ -1,6 +1,6 @@
 # @deepseek-ai/node-addon-landlock-run
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Landlock self-restrict-then-exec launcher for confining subprocesses on Linux: this entry package resolves the per-platform prebuilt binary, runs its functional enforcement probe, and builds its grant argv — consumers never spell launcher flags or parse launcher output themselves.
 

@@ -3,7 +3,7 @@
 
 # Fiber
 
-[English](fiber.md) | 中文
+[English](fiber.md) | 简体中文
 
 fiber 是一个已加载的插件实例，包含其生命周期状态、经过校验的配置以及已注册的作用。`ctx.fiber` 是当前 fiber，`ctx.effect()` 会将调用委托给它。
 

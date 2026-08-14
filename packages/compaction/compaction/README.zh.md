@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-compaction
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **`CompactionEngine`**（`ctx.compaction`）定义压缩（compaction）做什么，即判定历史记录是否过大，并将较早范围摘要为单个表层节点，但不规定如何实现。
 

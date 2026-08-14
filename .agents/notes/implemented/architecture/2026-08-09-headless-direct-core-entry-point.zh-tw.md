@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-headless-direct-core-entry-point.md) | 繁體中文
+[English](2026-08-09-headless-direct-core-entry-point.md) | [简体中文](2026-08-09-headless-direct-core-entry-point.zh.md) | 繁體中文
 
 ## 問題
 

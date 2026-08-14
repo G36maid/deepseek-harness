@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-06-api-key-format-validation.zh.md)
+English | [简体中文](2026-08-06-api-key-format-validation.zh.md) | [繁體中文](2026-08-06-api-key-format-validation.zh-tw.md)
 
 ## Problem
 

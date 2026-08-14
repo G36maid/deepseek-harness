@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-incremental-pr-base-retargeting.md) | 繁體中文
+[English](2026-07-26-incremental-pr-base-retargeting.md) | [简体中文](2026-07-26-incremental-pr-base-retargeting.zh.md) | 繁體中文
 
 ## 問題
 

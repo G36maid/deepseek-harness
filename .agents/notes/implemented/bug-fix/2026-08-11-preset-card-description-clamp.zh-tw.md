@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-preset-card-description-clamp.md) | 繁體中文
+[English](2026-08-11-preset-card-description-clamp.md) | [简体中文](2026-08-11-preset-card-description-clamp.zh.md) | 繁體中文
 
 ## 問題
 

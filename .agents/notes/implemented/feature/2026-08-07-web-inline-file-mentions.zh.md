@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-07-web-inline-file-mentions.md) | 中文
+[English](2026-08-07-web-inline-file-mentions.md) | 简体中文
 
 > 范围：引导最终回复以行内代码点名主要输出文件，再把这些 token 链接到本轮变更的文件。不在范围内：识别普通正文中的路径、链接成功修改位置中不存在的文件，以及流式或轮次中途消息里的提及。
 

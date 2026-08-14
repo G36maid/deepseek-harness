@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-lightweight-routine-documentation-translation.md) | 繁體中文
+[English](2026-08-08-lightweight-routine-documentation-translation.md) | [简体中文](2026-08-08-lightweight-routine-documentation-translation.zh.md) | 繁體中文
 
 ## 問題
 

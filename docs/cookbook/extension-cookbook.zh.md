@@ -1,6 +1,6 @@
 # 实操手册：扩展插件形态
 
-[English](extension-cookbook.md) | 中文
+[English](extension-cookbook.md) | 简体中文
 
 harness 扩展的参考模式。代码片段省略了 import 和辅助实现，无法直接复制运行。具体编写路径见[包检查清单](adding-a-package.md)、[第一个工具教程](../user/develop/basic/tool.md)、[工具参考](adding-a-tool.md)和 [LLM（大语言模型）适配器指南](adding-an-llm-adapter.md)；系统与扩展点映射由[架构文档](../architecture.md)负责。
 

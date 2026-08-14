@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-11-content-block-vocabulary.zh.md)
+English | [简体中文](2026-06-11-content-block-vocabulary.zh.md) | [繁體中文](2026-06-11-content-block-vocabulary.zh-tw.md)
 
 ## Problem
 

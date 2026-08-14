@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-llm-mock-server`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 可編指令碼的 OpenAI 相容 HTTP／SSE（Server-Sent Events）伺服器，用於在無提供方金鑰的情況下測試真實 LLM（大型語言模型）配接器、agent loop（代理循環）和復原策略。它接受 `POST /chat/completions` 和 `POST /v1/chat/completions`；每個已接受請求按到達順序消費一個已設定行為。無效的請求方法、路徑、Bearer token 和 JSON 不會消費指令碼條目。
 

@@ -1,6 +1,6 @@
 # 使用者憑據
 
-[English](credentials.md) | 繁體中文
+[English](credentials.md) | [简体中文](credentials.zh.md) | 繁體中文
 
 [dsh-credentials](../../packages/credentials/credentials) 的憑據 seam 把機密擋在設定之外：settings 分節與 `cordis.yml` 條目攜帶的是*引用*（環境變數名），值歸 [dsh-credentials-local](../../packages/credentials/credentials-local) 這類提供方所有，消費端每個操作解析一次引用——LLM（大型語言模型）配接器每次模型請求解析一次，因此輪換後的憑據無需任何重新啟動即可作用於緊隨其後的下一次請求。一條 seam 級規則約束每個提供方：空的儲存值在任何地方都視為不存在。
 

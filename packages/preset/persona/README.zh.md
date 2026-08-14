@@ -1,6 +1,6 @@
 # dsh-persona
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 把 agent（智能体）人设做成一个可组装的行：它既可以遮蔽部署级人设，也可以拥有完整系统提示词。
 

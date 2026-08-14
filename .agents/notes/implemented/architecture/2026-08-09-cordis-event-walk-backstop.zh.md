@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-cordis-event-walk-backstop.md) | 中文
+[English](2026-08-09-cordis-event-walk-backstop.md) | 简体中文
 
 ## 问题
 

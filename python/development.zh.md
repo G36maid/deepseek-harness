@@ -1,6 +1,6 @@
 # Python 贡献者工作流
 
-[English](development.md) | 中文
+[English](development.md) | 简体中文
 
 根据所需的贡献者成果选择工作流：构建运行时产物、验证 SDK、从源码运行或构建分发包。包行为分别见 [SDK 参考](sdk/README.md) 和[运行时载体参考](sdk-runtime/README.md)。
 

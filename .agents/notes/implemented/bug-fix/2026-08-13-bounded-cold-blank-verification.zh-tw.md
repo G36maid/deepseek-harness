@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-13-bounded-cold-blank-verification.md) | 繁體中文
+[English](2026-08-13-bounded-cold-blank-verification.md) | [简体中文](2026-08-13-bounded-cold-blank-verification.zh.md) | 繁體中文
 
 ## Problem
 

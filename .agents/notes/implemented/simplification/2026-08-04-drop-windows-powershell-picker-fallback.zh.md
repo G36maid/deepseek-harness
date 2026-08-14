@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-drop-windows-powershell-picker-fallback.md) | 中文
+[English](2026-08-04-drop-windows-powershell-picker-fallback.md) | 简体中文
 
 ## 问题
 

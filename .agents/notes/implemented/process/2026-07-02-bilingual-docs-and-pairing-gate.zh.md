@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-02-bilingual-docs-and-pairing-gate.md) | 中文
+[English](2026-07-02-bilingual-docs-and-pairing-gate.md) | 简体中文
 
 ## 问题
 

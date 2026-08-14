@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-agent-loop-testkit`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 為執行具體 `AgentLoop` 的測試共享掛載先決相依性。`mountAgentLoopTestDependencies(ctx, options?)` 按相依性順序安裝 LLM（大型語言模型）、工作階段、系統提示詞、工具和 agent（代理）服務，然後在 agent loop 掛載前返回。
 

@@ -2,7 +2,7 @@
 
 Status: rejected — full-output recovery is a real bash behavior. A future artifact/blob service may generalize it, but dropping spill files before that replacement would lose useful command output.
 
-English | [中文](2026-06-20-drop-bash-output-spill-files.zh.md)
+English | [简体中文](2026-06-20-drop-bash-output-spill-files.zh.md) | [繁體中文](2026-06-20-drop-bash-output-spill-files.zh-tw.md)
 
 ## Problem
 

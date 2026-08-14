@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-21-bounded-llm-request-recovery.md) | 繁體中文
+[English](2026-06-21-bounded-llm-request-recovery.md) | [简体中文](2026-06-21-bounded-llm-request-recovery.zh.md) | 繁體中文
 
 [按提供方設定的請求重試策略](../feature/2026-07-24-provider-retry-policies.md)在此基礎上增加了確切提供方設定與顯式無界 mode。本說明繼續負責結構化失敗事實、已關閉步驟的復原邊界、normal mode 的暫時性預設值、可見的單次嘗試和持久重試狀態。[LLM（大型語言模型）流的終止失敗](2026-07-29-terminal-llm-stream-failures.md)取代了其中關於拋出錯誤身份和流 sidecar 的機制。
 

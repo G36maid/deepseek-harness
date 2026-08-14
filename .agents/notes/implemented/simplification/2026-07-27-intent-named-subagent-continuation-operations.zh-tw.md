@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-intent-named-subagent-continuation-operations.md) | 繁體中文
+[English](2026-07-27-intent-named-subagent-continuation-operations.md) | [简体中文](2026-07-27-intent-named-subagent-continuation-operations.zh.md) | 繁體中文
 
 當前基於 Activation 的實作由[可繼續的 subagent](../feature/2026-07-28-continuable-subagent-conversations.md)負責。它保留本記錄命名的 `followup` 操作，返回已接受的 `MessageId`，使用裸 `Agent` 參數作為確切的線上直屬父級權限，並將提供方對可繼續 child 的參與限制為 `prepareContinuable`。
 

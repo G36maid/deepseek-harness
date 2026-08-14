@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-session-log-version-mechanism.md) | 繁體中文
+[English](2026-08-10-session-log-version-mechanism.md) | [简体中文](2026-08-10-session-log-version-mechanism.zh.md) | 繁體中文
 
 ## 問題
 

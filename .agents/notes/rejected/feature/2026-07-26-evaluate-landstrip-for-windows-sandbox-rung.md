@@ -2,7 +2,7 @@
 
 Status: rejected — landstrip is not battle-tested (a days-old single-maintainer project, ~48 GitHub stars at rejection); a security-invariant dependency must have proven adoption, so the win32 rung keeps the in-house-launcher plan
 
-English | [中文](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh.md)
+English | [简体中文](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh.md) | [繁體中文](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh-tw.md)
 
 ## Problem
 

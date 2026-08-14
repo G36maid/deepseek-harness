@@ -1,6 +1,6 @@
 # Subagent
 
-[English](subagent.md) | 繁體中文
+[English](subagent.md) | [简体中文](subagent.zh.md) | 繁體中文
 
 subagent seam 讓一個 agent（代理）將工作委派給子 agent。與 [bash](shell.md) 一樣，它是**一項選填能力**，不屬於 agent loop（代理循環），因此其類型定義在此而非 [core.md](core.md) 中。它不同於其他能力 seam，因為**同一上下文中可共存多個提供方實作**，並按名稱註冊（`ctx.subagents`），而 bash 只允許一個執行器。該登錄檔遵循 [LLM（大型語言模型）配接器登錄檔](llm-streaming.md)，而非單服務的 bash 執行器。
 

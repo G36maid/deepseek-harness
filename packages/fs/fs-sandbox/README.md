@@ -1,6 +1,6 @@
 # dsh-fs-sandbox — the sandbox-enforcing filesystem backend
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 `SandboxedFileSystem` extends [`LocalFileSystem`](../fs-local/README.md) and registers as `ctx.fs`. It inherits every text-storage mechanic verbatim (resolve, stat, read/stream, list, the atomic write, the read-match-write edit critical section) and adds only a per-call MODE fence on `writeText`/`editText`. Reads always pass through — every mode permits reading.
 

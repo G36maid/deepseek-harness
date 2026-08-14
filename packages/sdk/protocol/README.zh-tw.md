@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sdk-protocol
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 DeepSeek Harness SDK 執行時期的共享協定格式（wire format）：一個按換行分幀的 JSON-RPC 2.0 傳輸類，加上協議兩端共同使用的具名請求、結果與通知類型。包根枚舉協議消費端介面；源模組不支持深層匯入。伺服器端是 [`dsh-sdk-jsonrpc-server`](../server/README.md) 外掛程式；用戶端是 [`dsh-sdk-client`](../client/README.md)（TypeScript）與 [Python SDK](../../../python/README.md)（後者復現這些結構但不匯入它們）。純庫——無外掛程式、無 Config、無註冊。
 

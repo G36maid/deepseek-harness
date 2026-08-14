@@ -1,6 +1,6 @@
 # 6. 组合与 HMR（热模块替换）
 
-[English](06-composition-and-hmr.md) | 中文
+[English](06-composition-and-hmr.md) | 简体中文
 
 到目前为止构建的每项能力都是插件，`cordis.yml` 则选择应用的插件树。本章会改变这种组合、热重载一个插件，并诊断始终无法加载的插件。
 

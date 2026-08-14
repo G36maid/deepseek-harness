@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-gui-web-client-architecture.md) | 中文
+[English](2026-07-19-gui-web-client-architecture.md) | 简体中文
 
 > 分工线：通道无关的分层模型与 RPC 协议（消息模型/类型体系/约定面/客户端基类）见 [分层与 RPC 协议笔记](2026-07-19-gui-layering-and-rpc-protocol.md)；本篇 = 浏览器侧：client cordis 树如何装载、UI 插件如何经 slot 与服务组合、React-free 对象层如何以不可变快照供给 React。
 

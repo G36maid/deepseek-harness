@@ -3,7 +3,7 @@
 
 # Fiber
 
-[English](fiber.md) | 繁體中文
+[English](fiber.md) | [简体中文](fiber.zh.md) | 繁體中文
 
 fiber 是一個已載入的外掛程式實例，包含其生命週期狀態、經過校驗的設定以及已註冊的作用。`ctx.fiber` 是當前 fiber，`ctx.effect()` 會將呼叫委託給它。
 

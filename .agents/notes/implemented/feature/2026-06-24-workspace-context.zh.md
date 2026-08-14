@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-24-workspace-context.md) | 中文
+[English](2026-06-24-workspace-context.md) | 简体中文
 
 ## 问题
 

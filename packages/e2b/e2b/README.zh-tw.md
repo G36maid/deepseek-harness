@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-e2b
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個 E2B 沙盒的共享生命週期所有者。檔案系統與行程管理配接器注入 `ctx.e2b`，等待其唯一的 SDK 控制代碼，因此處於同一個遠端 Linux 工作樹與行程環境中。本包固定使用 `e2b@2.29.1`；選填組合見[包族索引](../README.md)。
 

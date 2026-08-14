@@ -26,7 +26,7 @@ const retainedExamples = [
   ['### Slang/jargon → Professional phrasing', 'The committed agent workflow lives in .agents/skills/dsh-translate-docs', '仓库内置的 agent 工作流见 .agents/skills/dsh-translate-docs'],
   ['### "For humans" — translate the intent, not the word', 'For humans, start with the development guide', '面向开发者：请先阅读开发指南'],
   ['### Code block comments — NEVER translate', '# full-screen TUI coding agent (needs DEEPSEEK_API_KEY)', 'keep exactly as-is, byte-for-byte'],
-  ['### Language switcher — flip direction', 'English | [中文](README.zh.md)', '[English](README.md) | 中文'],
+  ['### Language switcher — flip direction', 'English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)', '[English](README.md) | 简体中文'],
 ]
 
 describe('translation prompt rendering', () => {
@@ -159,12 +159,12 @@ describe('translation response sections', () => {
     const response = renderTranslationResponse({
       translation: '# 指南\n\n初稿。',
       review: '- 无修正',
-      final: '# 指南\n\nEnglish | [中文](guide.zh.md)\n\n定稿。',
+      final: '# 指南\n\nEnglish | [简体中文](guide.zh.md)\n\n定稿。',
     })
     expect(consumeTranslationResponse(response, { sourceLanguage: 'English', targetLanguage: 'Chinese', sourceFilename: 'guide.md' }).final).toBe([
       '# 指南',
       '',
-      '[English](guide.md) | 中文',
+      '[English](guide.md) | 简体中文',
       '',
       '定稿。',
       '',
@@ -192,7 +192,7 @@ describe('translation response sections', () => {
       '',
       '# 指南',
       '',
-      '[English](guide.md) | 中文',
+      '[English](guide.md) | 简体中文',
       '',
       '定稿。',
       '',
@@ -231,7 +231,7 @@ describe('translation response sections', () => {
       sourceLanguage: 'Chinese',
       targetLanguage: 'English',
       sourceFilename: 'guide.zh.md',
-    }).final).toContain('\n\nEnglish | [中文](guide.zh.md) | [繁體中文](guide.zh-tw.md)\n\n')
+    }).final).toContain('\n\nEnglish | [简体中文](guide.zh.md) | [繁體中文](guide.zh-tw.md)\n\n')
   })
 
   it('inserts the Traditional Chinese target switcher for a zh-to-zh-TW transcription', () => {
@@ -244,7 +244,7 @@ describe('translation response sections', () => {
       sourceLanguage: 'Chinese',
       targetLanguage: 'Chinese-TW',
       sourceFilename: 'guide.zh.md',
-    }).final).toContain('\n\n[English](guide.md) | 繁體中文\n\n')
+    }).final).toContain('\n\n[English](guide.md) | [简体中文](guide.zh.md) | 繁體中文\n\n')
   })
 
   it('resolves the zh-tw target filename for a zh-to-zh-TW transcription', () => {

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-title-all-prompts-llm
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 選填的 `ctx.sessionTitle` 提供方，透過 `ctx.llm` 總結所有符合條件的使用者訊息。它註冊 `all-prompts` 節奏，並在每條新使用者提示詞後啟動新 revision，同時使用預置歷史與子工作階段提示詞。較新的 revision 會中止並取代舊工作；即使提供方忽略取消，也無法提交過時輸出。
 

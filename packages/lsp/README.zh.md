@@ -1,6 +1,6 @@
 # lsp/ - LSP 能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 语言服务器能力 seam：LSP Service Definition、通用 stdio 提供方，以及面向模型的 `lsp` 工具。这些全是**产品**包。
 

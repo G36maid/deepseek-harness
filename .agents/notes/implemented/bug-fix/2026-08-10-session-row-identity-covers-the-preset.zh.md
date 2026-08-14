@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-session-row-identity-covers-the-preset.md) | 中文
+[English](2026-08-10-session-row-identity-covers-the-preset.md) | 简体中文
 
 ## 问题
 

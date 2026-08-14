@@ -1,6 +1,6 @@
 # dsh-sandbox-policy：沙箱策略归属位置（`ctx.sandboxPolicy`）
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 沙箱策略解析的唯一归属位置：部署默认 [`SandboxMode`](../sandbox/README.md) 与回退根目录，加上每个会话的持久模式覆盖和不可变工作区根目录。每项负责强制执行的能力在每次调用时都会收到一项解析完成的模式与根目录策略；模型在每次请求前会收到当前策略，而不会另收一份能力清单。
 

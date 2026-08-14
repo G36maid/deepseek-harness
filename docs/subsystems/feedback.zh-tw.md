@@ -1,6 +1,6 @@
 # 訊息回饋
 
-[English](feedback.md) | 繁體中文
+[English](feedback.md) | [简体中文](feedback.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-message-feedback`](../../packages/feedback/message-feedback)擁有針對單條 assistant 訊息的可編輯回饋。它刻意與不可變的 Session 級 `feedback/record` 事件分離：message feedback 是本機 storage-domain 伴隨記錄（sidecar），不是 Session 日誌內容或投影，也不執行遙測交接。
 

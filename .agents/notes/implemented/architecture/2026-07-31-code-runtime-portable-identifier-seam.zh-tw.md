@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-code-runtime-portable-identifier-seam.md) | 繁體中文
+[English](2026-07-31-code-runtime-portable-identifier-seam.md) | [简体中文](2026-07-31-code-runtime-portable-identifier-seam.zh.md) | 繁體中文
 
 ## Problem
 

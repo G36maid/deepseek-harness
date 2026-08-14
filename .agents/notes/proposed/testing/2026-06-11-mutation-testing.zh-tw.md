@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-06-11-mutation-testing.md) | 繁體中文
+[English](2026-06-11-mutation-testing.md) | [简体中文](2026-06-11-mutation-testing.zh.md) | 繁體中文
 
 ## 問題
 

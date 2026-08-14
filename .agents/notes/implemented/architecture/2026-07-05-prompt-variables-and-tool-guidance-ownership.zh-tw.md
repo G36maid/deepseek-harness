@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-05-prompt-variables-and-tool-guidance-ownership.md) | 繁體中文
+[English](2026-07-05-prompt-variables-and-tool-guidance-ownership.md) | [简体中文](2026-07-05-prompt-variables-and-tool-guidance-ownership.zh.md) | 繁體中文
 
 ## 問題
 

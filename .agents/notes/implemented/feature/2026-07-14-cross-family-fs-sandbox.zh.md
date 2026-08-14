@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-14-cross-family-fs-sandbox.md) | 中文
+[English](2026-07-14-cross-family-fs-sandbox.md) | 简体中文
 
 ## 问题
 

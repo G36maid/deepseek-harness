@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-durable-workflow-runs-in-chat.md) | 中文
+[English](2026-08-10-durable-workflow-runs-in-chat.md) | 简体中文
 
 ## 问题
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs-local
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `ctx.fs` 提供方約定（[`@deepseek-ai/dsh-fs`](../fs)）的**本機檔案系統實作**。它使用宿主檔案系統支持十二個 `FileSystem` 原語；將其作為外掛程式載入會填充 `ctx.fs`。
 

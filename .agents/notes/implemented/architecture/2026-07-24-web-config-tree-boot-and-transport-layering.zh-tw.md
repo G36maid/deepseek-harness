@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-web-config-tree-boot-and-transport-layering.md) | 繁體中文
+[English](2026-07-24-web-config-tree-boot-and-transport-layering.md) | [简体中文](2026-07-24-web-config-tree-boot-and-transport-layering.zh.md) | 繁體中文
 
 > 範圍：`dsh web` 如何組合（cordis.yml + cordis 之前的 boot 類 + 設定源），以及 web 傳輸如何跨包分層（閘道 / 載體 / 綁定 / 圖 / 開發期重載）。瀏覽器側裝載鏈歸 [client 外掛程式裝載 note](2026-07-23-client-plugin-loading-model.md) 所有，本組合只是它的供給方。
 

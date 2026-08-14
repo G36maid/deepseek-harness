@@ -1,6 +1,6 @@
 # dsh-fs-sandbox：強制沙盒的檔案系統後端
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `SandboxedFileSystem` 擴充 [`LocalFileSystem`](../fs-local/README.md) 並註冊為 `ctx.fs`。它逐字繼承全部文字儲存機制（解析、stat、讀取／流式讀取、列出、原子寫入、按讀取、匹配、寫入順序執行的編輯臨界區），只為 `writeText`/`editText` 增加按呼叫的模式圍欄。讀取始終直接透過：所有模式都允許讀取。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-connection
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 協議消費層：用戶端外掛程式的 apply 會掛載 `ctx.connection`（共享 API 用戶端 + 當前頁面的 loopback 狀態 + 可觀察且按 generation 生效的 `hostDescription` + 單消費端流迴圈啟動器）；匯出表層攜帶協議約定類型、`AbstractApiClient` 抽象，以及迴圈的 sink／設定類型。每次就緒握手成功後，都會在 `onConnected` 之前發布完整的 `host.describe` 值；generation 失效或顯式 stop 會清空它，因此原生能力消費者不會保留已經斷線的判斷。瀏覽器載體以 HTTP POST 傳送 unary／respond，並為 `events.mux` 與 `events.host` 各開一條只下行的 WebSocket；行程內載體滿足同一雙流抽象。Host half 持有唯一 `/api` route 及其 Fetch bridge；已註冊的 Typert interceptor 會先認領自己的 Remote endpoint，未認領請求再回退 API Proxy。Loopback hostname 判定邏輯留在包內部：`/api` Host fence 與 WebSocket upgrade 會直接使用它，其他用戶端外掛程式則消費派生的 `ctx.connection.isLoopback` 狀態。node 半側的 `/api` 路由讓特權方法集（`host.pickDirectory`、`host.openPath`，以及整個設定面——`settings.describe`/`openDocument`/`update`/`replace`/`mutate` 與 `credentials.describe`/`set`/`unset`；讀取與原生操作也在內，因為 describe 會返回已暴露的設定、打開操作會作用於 Host 桌面，而探測任意引用會報出某條憑據來自何處——以及 agent（代理） preset 的創作面 `agentPreset.read`/`copy`/`openDocument`/`remove`，因為組裝指明瞭一個工作階段所執行的外掛程式，讀取它是偵察，而 copy/remove/openDocument 管理名單並驅動宿主桌面（創作只有複製一種寫入，因此這些方法都不接收組裝文字或路徑）；`agentPreset.list` 與 `agentPreset.select` 不在其中——名單只攜帶 id 與信任等級，而選擇一個 preset 並不比 `session.create` 自帶的 `agentPreset` 多給任何能力，何況默認 preset 本就帶著 bash）以空信任表過信任 fence，從而釘在回環——已聲明的 `trustedHosts` 授權可達其餘全部方法，而這些方法在真正的認證層出現之前仍只限回環本機。平臺載體與 ConnectionController 迴圈屬於包內部；apply 負責選擇並驅動它們。下行邊界見 [WebSocket 下行載體 Agent Note](../../../.agents/notes/implemented/architecture/2026-08-04-websocket-downlink-carrier.md)。
 

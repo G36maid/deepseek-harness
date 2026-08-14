@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-deepseek-onboarding-credential-setup.md) | 中文
+[English](2026-07-30-deepseek-onboarding-credential-setup.md) | 简体中文
 
 ## 问题
 

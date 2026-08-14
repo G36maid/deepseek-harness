@@ -3,7 +3,7 @@
 
 # 工作階段持久化事件目錄
 
-[English](persistence-catalog.md) | 繁體中文
+[English](persistence-catalog.md) | [简体中文](persistence-catalog.zh.md) | 繁體中文
 
 工作階段持久事件日誌中可能出現的所有事件類型：完整持久化的 `SessionEvent` 信封，以及可透過合併擴充的 `SessionEventMap` 中的每個成員，包括 `@deepseek-ai/dsh-session` 所屬的詞彙和本倉庫中每個外掛程式對 `@deepseek-ai/dsh-session/types` 的聲明合併，並附有源 JSDoc、完整 payload 聲明、surface 標記和聲明位置。本文件是 [session.md](subsystems/session.md)（surface 排序與 `deriveMessages()` 投影）、[persistence.md](subsystems/persistence.md)（如何讓日誌持久化）和 [session.md](subsystems/session.md#cordis-surface) 中生成區域（即時總線接線；日誌事件**不是** cordis 事件，它透過唯一的 `session/event` emit 到達監聽器）的補充。
 

@@ -1,6 +1,6 @@
 # test-support/ — development and test infrastructure
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 These packages support repository development, tests, and examples rather than product APIs. Their compatibility follows the development need they serve.
 

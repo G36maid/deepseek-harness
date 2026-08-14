@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-remote-markdown-images.md) | 繁體中文
+[English](2026-07-30-web-remote-markdown-images.md) | [简体中文](2026-07-30-web-remote-markdown-images.zh.md) | 繁體中文
 
 ## 問題
 

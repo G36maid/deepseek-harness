@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-oxlint-linter.md) | 繁體中文
+[English](2026-07-29-oxlint-linter.md) | [简体中文](2026-07-29-oxlint-linter.zh.md) | 繁體中文
 
 ## 問題
 

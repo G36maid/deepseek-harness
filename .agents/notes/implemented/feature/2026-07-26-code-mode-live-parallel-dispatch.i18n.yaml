@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-26-code-mode-live-parallel-dispatch.md
-2026-07-26-code-mode-live-parallel-dispatch.md: 998152ee43d93e5190062cb632e20a3123cda4f9
-2026-07-26-code-mode-live-parallel-dispatch.zh.md: 44279f3345ca1deb5626f550a2030e30c4e3a741
-2026-07-26-code-mode-live-parallel-dispatch.zh-tw.md: b4f6dd467bfeeb1dd4eb5080b98ded2e5f2d299c
+2026-07-26-code-mode-live-parallel-dispatch.md: fe3862b169d86e6ce2601a184b26309632914829
+2026-07-26-code-mode-live-parallel-dispatch.zh.md: 149181984f326816d3e99ff30182da1e89323028
+2026-07-26-code-mode-live-parallel-dispatch.zh-tw.md: 84b404e1844e5a1b141ffd83c1c702993859224a

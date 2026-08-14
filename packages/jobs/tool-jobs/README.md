@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-jobs
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The model-facing controller for `ctx.jobs`: three kind-independent tools, completion notices, and one background-work prompt section. Loading the plugin attaches the controller required by `ctx.jobs.start()`.
 

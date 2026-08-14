@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-settings-general
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 設定外殼、無特定功能歸屬文案與持久化產品引導 namespace。它以觸發控制元件和模態設定面板佔用 `sidebar.settings`，把 `settings.section` 帳本投影成導覽、把 `settings.onboarding` 帳本投影成每次只掛載一個步驟的引導流程，並在設定頁面上註冊所有不屬於單一功能的內容：觸發器、標題欄與關閉控制元件內容、本機設定檔操作，「通用」分區及其 `settings.general.item` slot，以及 `settings` 字典。它渲染進的那些 slot 類型歸 ui-settings——設定領域底座——所有；只有外殼自身的契約類型放在這裡，因為它們引用 ui-sidebar 的 slot 類型，而底座不得相依性任何 `ui-*` 包。歸具體功能所有的行（「權限」、「語言」、「外觀」）、分區（「模型」）和條件式首次使用引導步驟仍由各自的功能包提供。
 

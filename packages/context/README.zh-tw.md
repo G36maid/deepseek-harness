@@ -1,6 +1,6 @@
 # context/ — 請求上下文擴充
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 在不定義工具的情況下新增模型可見的請求上下文的產品外掛程式。`agent-instructions` 包含在默認 `dsh-agent-spine-demo` 組合包中，可透過組合包設定停用；`time-context`、`tmux-context` 和 `session-reference` 需主動啟用。
 

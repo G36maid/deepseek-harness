@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-30-generated-third-party-notices.zh.md)
+English | [简体中文](2026-07-30-generated-third-party-notices.zh.md) | [繁體中文](2026-07-30-generated-third-party-notices.zh-tw.md)
 
 ## Problem
 

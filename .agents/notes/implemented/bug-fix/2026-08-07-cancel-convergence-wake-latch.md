@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-07-cancel-convergence-wake-latch.zh.md)
+English | [简体中文](2026-08-07-cancel-convergence-wake-latch.zh.md) | [繁體中文](2026-08-07-cancel-convergence-wake-latch.zh-tw.md)
 
 ## Problem
 

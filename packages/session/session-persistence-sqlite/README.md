@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence-sqlite
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 A SQLite durable session-persistence backend — a second `SessionPersistence` provider ([session persistence](../../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)) satisfying the same contract as `dsh-session-persistence-jsonl` (append-only, contiguous-seq, lazy materialization, interrupted-turn close on load), expressed over `node:sqlite` rows instead of file bytes.
 

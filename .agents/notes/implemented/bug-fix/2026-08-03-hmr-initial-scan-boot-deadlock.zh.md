@@ -2,7 +2,7 @@
 
 状态：已实现
 
-[English](2026-08-03-hmr-initial-scan-boot-deadlock.md) | 中文
+[English](2026-08-03-hmr-initial-scan-boot-deadlock.md) | 简体中文
 
 ## 问题
 

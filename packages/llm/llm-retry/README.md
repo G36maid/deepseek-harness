@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-llm-retry`
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Function plugin that applies exact-provider retry policy through the agent loop's closed-step `agent/request-error` waterfall. It does not wrap `ctx.llm.stream()`: every adapter call remains one provider attempt, and every retry opens a fresh numbered turn.
 

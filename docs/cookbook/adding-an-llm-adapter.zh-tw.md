@@ -1,6 +1,6 @@
 # 實作手冊：新增 LLM（大型語言模型）配接器
 
-[English](adding-an-llm-adapter.md) | 繁體中文
+[English](adding-an-llm-adapter.md) | [简体中文](adding-an-llm-adapter.zh.md) | 繁體中文
 
 如何接入一個新的模型提供方。參考實作：`packages/llm/llm-deepseek`（直接 HTTP，SSE（Server-Sent Events）由 `eventsource-parser` 分幀）與 `packages/llm/llm-pi-ai`（封裝 LLM 庫）。請先閱讀 `packages/llm/llm/src/types.ts` 中的 `StreamChunk` 文件——它記錄了兩個配接器都經過驗證的協議約定。
 

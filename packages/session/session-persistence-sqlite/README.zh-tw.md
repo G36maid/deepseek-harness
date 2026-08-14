@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence-sqlite
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 SQLite 持久工作階段儲存後端：第二個 `SessionPersistence` 提供方（見[工作階段持久化](../../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)），滿足與 `dsh-session-persistence-jsonl` 相同的約定（僅附加、連續 seq、延遲實體化、在 load 時關閉中斷輪次），但用 `node:sqlite` 行而非文件位元組表達。
 

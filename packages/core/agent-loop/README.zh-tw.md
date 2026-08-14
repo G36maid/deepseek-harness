@@ -1,6 +1,6 @@
 # dsh-agent-loop
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 agent（代理）的唯一具體實作外掛程式和迴圈驅動程式器。其包內部實作滿足 `Agent` 介面，並驅動工作階段、輪次和步驟的生命週期。
 

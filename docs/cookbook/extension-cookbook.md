@@ -1,6 +1,6 @@
 # Cookbook: extension plugin shapes
 
-English | [中文](extension-cookbook.zh.md)
+English | [简体中文](extension-cookbook.zh.md) | [繁體中文](extension-cookbook.zh-tw.md)
 
 Reference patterns for harness extensions. The snippets omit imports and helper implementations and are not copy-paste-complete. For concrete authoring paths, see the [package checklist](adding-a-package.md), [first-tool tutorial](../user/develop/basic/tool.md), [tool reference](adding-a-tool.md), and [LLM adapter guide](adding-an-llm-adapter.md); the [architecture](../architecture.md) owns the system and extension-point map.
 

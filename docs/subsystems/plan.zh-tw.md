@@ -1,6 +1,6 @@
 # 計畫模式
 
-[English](plan.md) | 繁體中文
+[English](plan.md) | [简体中文](plan.zh.md) | 繁體中文
 
 計畫模式是 [dsh-plan-mode](../../packages/plan/plan-mode) 擁有的、記錄到日誌的逐 agent（代理）協作狀態（`ctx.planMode`，`PlanModeController`）：激活期間，每個模型請求都會包含一段部署持有的指引。計畫模式是**軟性指引**。[沙盒模式](sandbox.md)與[審批策略](approval.md)分別強制限制；兩者都不讀寫計畫狀態，因此部署需要分別設定它們。該包是選填項，agent loop（代理循環）不相依性它。它貢獻 `plan:policy` 提示詞段落，並註冊 `exit_plan_mode` 工具和 `/plan` 命令。[設計說明](../../.agents/notes/implemented/simplification/2026-07-22-plan-specific-collaboration-state.md)負責決策依據；[包 README](../../packages/plan/plan-mode/README.md)負責模型體驗與限制細節。
 

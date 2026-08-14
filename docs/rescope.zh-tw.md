@@ -1,6 +1,6 @@
 # Vendored 包改名
 
-[English](rescope.md) | 繁體中文
+[English](rescope.md) | [简体中文](rescope.zh.md) | 繁體中文
 
 Cordis 框架及其基礎庫以原始碼形式 vendored 在 [`vendor/`](../vendor/README.md) 下，並以 `@deepseek-ai` scope 發布：每個 harness 包都把框架聲明為 peer dependency，發布 harness 就會連帶發布這一層，用上游名發布等於在 registry 上佔用別人的名字。本頁是名字對映表；決策與影響見 [改名 Agent Note](../.agents/notes/implemented/process/2026-08-10-vendor-package-rescope.md)，上游 commit 見 [`vendor/README.md`](../vendor/README.md)。
 

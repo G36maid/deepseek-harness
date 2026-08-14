@@ -1,6 +1,6 @@
 # User Interaction
 
-English | [中文](user-questions.zh.md)
+English | [简体中文](user-questions.zh.md) | [繁體中文](user-questions.zh-tw.md)
 
 The user-questions seam of [dsh-user-questions](../../packages/interaction/user-questions). It is the provider-neutral vocabulary a tool or permission plugin uses when it needs the human to answer before the agent can continue. UI surfaces provide the active `UserQuestionProvider`; the host runtime relays requests to its connected client.
 

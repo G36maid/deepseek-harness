@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-projection
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工作階段投影 Service Definition 與驅動程式登錄檔。它擁有 `ctx.sessionProjections`：該登錄檔在已提交的工作階段事件上驅動程式每個已註冊的投影單元，並向載體提供完整的最終值，目前包括 api-proxy 歷史尾頁和 `session/projection` 推送幀。領域註冊的只是純數學；驅動程式權歸框架。[session-projection RFC](../../../.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md) 記錄了設計理由。
 

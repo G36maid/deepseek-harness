@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-repository-naming-contract-and-rename-ledger.md) | 中文
+[English](2026-08-11-repository-naming-contract-and-rename-ledger.md) | 简体中文
 
 ## 问题
 

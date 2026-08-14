@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-spill-policy
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **工具结果 spill 策略**：一个 `tools/post-execute` 转换器，用于防止过大的纯文本工具结果进入模型上下文。当最终结果超过 `maxInlineBytes` 时，它会通过 [`ctx.spillStore`](../spill) 保存完整文本，并将面向模型的结果替换为有界的首尾预览、后端定位信息与取回指引。
 

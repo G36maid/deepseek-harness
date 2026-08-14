@@ -3,7 +3,7 @@
 
 # Service
 
-[English](service.md) | 中文
+[English](service.md) | 简体中文
 
 上下文服务的基类。以插件形式加载的子类会将自身注册为 `ctx.<name>`。
 

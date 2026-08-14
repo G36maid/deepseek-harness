@@ -1,6 +1,6 @@
 # Token 計量
 
-[English](token-meter.md) | 繁體中文
+[English](token-meter.md) | [简体中文](token-meter.zh.md) | 繁體中文
 
 `@deepseek-ai/dsh-token-meter` 公開一個獨立的重播快照，用於表示請求壓力與按位置計算的表層定價。`logRevision` 表示生成該計量中每個欄位時所消費的持久事件數量。
 

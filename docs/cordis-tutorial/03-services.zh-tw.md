@@ -1,6 +1,6 @@
 # 3. 服務
 
-[English](03-services.md) | 繁體中文
+[English](03-services.md) | [简体中文](03-services.zh.md) | 繁體中文
 
 **服務**是一個外掛程式提供、其他外掛程式透過 `ctx` 消費的具名能力。在 harness 中，`ctx.tools`、`ctx.llm` 和 `ctx.agents` 都是服務。消費端只指定 `'tools'` 之類的能力，而不匯入其提供方，因此設定可以選擇提供方，無需修改消費端。
 

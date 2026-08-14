@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-05-web-preview-product-badge.md
-2026-08-05-web-preview-product-badge.md: c20dedf8caa497d17a577cf46261c6a24c09a1ce
-2026-08-05-web-preview-product-badge.zh.md: 415a7cb3eb02030ef5481f4eba9110b56547ce64
-2026-08-05-web-preview-product-badge.zh-tw.md: b31f1ba5b354978630ea567e8d6cedd659faa851
+2026-08-05-web-preview-product-badge.md: 9388402a70c494235eba01a954edb0c54304d96a
+2026-08-05-web-preview-product-badge.zh.md: e90d7508ea4310e571e9608e111e03dba753e256
+2026-08-05-web-preview-product-badge.zh-tw.md: 1b5c41ea75e706a5b95637fb52120edaf573a688

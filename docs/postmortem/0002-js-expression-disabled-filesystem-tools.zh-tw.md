@@ -1,6 +1,6 @@
 # 事後檢討（postmortem） 0002：檔案系統快照工具被永久停用
 
-[English](0002-js-expression-disabled-filesystem-tools.md) | 繁體中文
+[English](0002-js-expression-disabled-filesystem-tools.md) | [简体中文](0002-js-expression-disabled-filesystem-tools.zh.md) | 繁體中文
 
 狀態：已解決
 

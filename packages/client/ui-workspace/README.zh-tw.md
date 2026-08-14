@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-workspace
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 共享 Workspace 瀏覽器與選擇器外掛程式。`WorkspaceBrowser` 填充側邊欄的 `sidebar.workspaces` slot，`WorkspacePicker` 則填充頁面區域性 Session Intent 主視覺區的 `conversation.hero.workspace` slot；兩個介面使用同一套 Workspace 選單和新增流程。
 

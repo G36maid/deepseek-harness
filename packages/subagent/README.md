@@ -1,6 +1,6 @@
 # subagent/ — subagent capability family
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 This family lets an agent delegate work to child agents. Multiple named providers may coexist in one context.
 

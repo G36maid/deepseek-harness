@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-telemetry
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 遙測（telemetry）Service Definition 聲明 `SessionTelemetrySink` 後端約定，捕獲協調器把工作階段記錄傳給實作該約定的任意上報 SDK 後端。捕獲側可跟隨即時工作階段事件，也可按需重播權威工作階段日誌前綴。本包呼叫 `emit()` 後就停止處理：批次處理、重試、排隊與丟失策略都屬於後端自身的 SDK，本包既不規定也不包裝。設計依據與被否決的替代方案見[復活 Agent Note](../../../.agents/notes/implemented/feature/2026-07-23-session-telemetry-otel-revival.md)、[回饋門控投遞](../../../.agents/notes/implemented/feature/2026-08-05-feedback-gated-session-telemetry.md)與[無緩衝回饋重播](../../../.agents/notes/implemented/simplification/2026-08-06-buffer-free-feedback-telemetry.md)。
 

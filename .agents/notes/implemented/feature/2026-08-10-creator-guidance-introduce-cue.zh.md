@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-creator-guidance-introduce-cue.md) | 中文
+[English](2026-08-10-creator-guidance-introduce-cue.md) | 简体中文
 
 ## 问题
 

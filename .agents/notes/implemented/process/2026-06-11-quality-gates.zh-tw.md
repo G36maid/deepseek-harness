@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-11-quality-gates.md) | 繁體中文
+[English](2026-06-11-quality-gates.md) | [简体中文](2026-06-11-quality-gates.zh.md) | 繁體中文
 
 本記錄中的掛鉤/CI 對稱設計已由[快速本機 Git 掛鉤](2026-07-22-fast-local-git-hooks.md)取代；CI 仍是執行完整檢查的路徑。
 

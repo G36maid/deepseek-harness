@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-tool-call-file-open-in-os.md) | 中文
+[English](2026-07-28-tool-call-file-open-in-os.md) | 简体中文
 
 ## 问题
 

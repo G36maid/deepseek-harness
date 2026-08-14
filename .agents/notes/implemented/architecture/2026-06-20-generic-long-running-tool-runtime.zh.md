@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-20-generic-long-running-tool-runtime.md) | 中文
+[English](2026-06-20-generic-long-running-tool-runtime.md) | 简体中文
 
 ## 问题
 

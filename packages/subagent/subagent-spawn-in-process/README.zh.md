@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-spawn-in-process
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 spawn 提供方会在当前进程中创建一个全新的子 `Agent`。子 agent（智能体）有自己的会话，看不到父 agent 的对话历史，并复用宿主的 agent 工厂及 LLM（大语言模型）/工具服务。
 

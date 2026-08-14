@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-web-client-session-scope-and-provide-channel.md) | 繁體中文
+[English](2026-07-25-web-client-session-scope-and-provide-channel.md) | [简体中文](2026-07-25-web-client-session-scope-and-provide-channel.zh.md) | 繁體中文
 
 > 範圍：client Agent scope（actx）與定向事件、client/host 實體化對等模型、空工作階段 blank 位與複用（`connectWorkspace`）、逐工作階段供數通道（`sessions.provide`），以及承載這些能力的 host wire 小件（summary `blank` 列、`host/session-added` 幀欄位、`host/commands-changed` 幀）。輸入狀態機與 slash 管線見[輸入狀態機 note](2026-07-25-web-input-machine-and-slash-pipeline.md)；命令業務面見[命令業務面 note](2026-07-25-web-command-surfaces-and-assembly.md)。
 

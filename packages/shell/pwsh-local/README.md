@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-pwsh-local
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Local PowerShell Service Provider for the `@deepseek-ai/dsh-shell` executor seam over the [`@deepseek-ai/dsh-subprocess`](../../subprocess/subprocess/README.md) service: `PwshLocalExecutor` spawns `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` per call as a managed process through `ctx.subprocess`, and owns everything PowerShell-shaped — executable resolution, command defaulting and caps, timeout/cancel classification, the model-friendly terminal environment, and the model-facing stdout/stderr merge for background reads. Group mechanics (bounded spill-backed output, credential scrub, kill escalation, disposal) are the subprocess service's.
 

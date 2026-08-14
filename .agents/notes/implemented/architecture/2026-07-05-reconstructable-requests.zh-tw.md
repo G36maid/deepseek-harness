@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-05-reconstructable-requests.md) | 繁體中文
+[English](2026-07-05-reconstructable-requests.md) | [简体中文](2026-07-05-reconstructable-requests.zh.md) | 繁體中文
 
 ## 問題
 

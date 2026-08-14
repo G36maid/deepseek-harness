@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-subagent-control
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 選填的全域性具名 `send_message`、`interrupt_agent` 與 `list_agents` 工具是 `ctx.subagents` 之上的輕量配接器。綁定提供方的 `@deepseek-ai/dsh-tool-subagent` 實例會為每種傳輸註冊不同的委派工具；這個單獨載入的包只註冊一次共享控制工具，因此多個委派工具絕不會重複註冊全域性控制工具。根外掛程式註冊 `send_message` 與 `interrupt_agent`，且只要求 `subagents`；可單獨載入的 `./list-agents` 外掛程式註冊 `list_agents`，並將 `subagents` 與 `agents` 聲明為載入時相依性。其目錄讀取在呼叫時還要求工作階段儲存與投影登錄檔，但不要求任何查詢服務。部署可保留根外掛程式工具並省略清單工具。是否載入這些工具不會決定委派工具是否啟動可繼續工作。這些工具只負責父到子的方向；單獨安裝的 [`@deepseek-ai/dsh-tool-subagent-report`](../tool-subagent-report/README.md) 負責子到父的方向。
 

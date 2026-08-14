@@ -1,6 +1,6 @@
 # 持久 PTY 工作階段
 
-[English](terminal.md) | 繁體中文
+[English](terminal.md) | [简体中文](terminal.zh.md) | 繁體中文
 
 PTY 後端、`ctx.terminals` 與面向模型的消費端共享的類型。[持久 PTY Agent Note](../../.agents/notes/implemented/feature/2026-07-16-persistent-pty-sessions.md) 負責記錄決策依據；本頁記錄來自 [`packages/terminal/terminal/src/types.ts`](../../packages/terminal/terminal/src/types.ts) 的跨包詞彙。
 

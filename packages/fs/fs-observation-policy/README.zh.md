@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs-observation-policy
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **fs-observation-policy 插件**：它记录观测到的存在或缺失状态，并在 `ctx.fs` 提供方约定（[`@deepseek-ai/dsh-fs`](../fs)）之上增加编辑前读取和带防护的写入/编辑；它通过 `fs/*` 事件门禁参与，**不是**通过方法服务。该插件**不**注册 `ctx.fsPolicy` 服务，也没有公开的 `read`/`write`/`edit`/`resolve` 方法。它是文件系统栈的政策层：不是可替换 seam，而是不应位于 `FileSystem` 提供方基类上的政策。
 

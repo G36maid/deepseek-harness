@@ -1,6 +1,6 @@
 # plan/：plan 协作状态
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Plan mode 是按 agent（智能体）记录的协作状态，而不是通用模式注册表或能力 seam。
 

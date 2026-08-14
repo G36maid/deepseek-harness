@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-shell-env
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 工具无关的 shell 环境插件：拥有 `ctx.shellEnv` 注册表，管理受信任的、每次执行收集的 `DSH_*` 变量，供模型可见的 shell 工具（`dsh-tool-bash`、`dsh-tool-pwsh`）收集进每次 shell 调用的环境。内置 shell 事实（`DSH_HOME`、`DSH_SHELL=1`、`DSH_SESSION_ID`）归注册表自身所有；其他插件可以注册额外的可枚举事实，注册随插件纤维（fiber）释放，重复所有权或未声明的运行时键会响亮失败。
 

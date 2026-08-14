@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工作階段持久化是一項能力 seam。抽象的 `SessionPersistence` 服務（`ctx.sessionPersistence`）是其 Service Definition。它要求持久化後端持久儲存、重新載入和列出工作階段，但不規定具體儲存實作。該 seam 採用與 `dsh-shell` 相同的角色劃分（見[能力 seam](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：本包負責 Service Definition，同級包負責 Service Provider，Consumer 注入該服務。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-02-tool-render-intent-union.md) | 繁體中文
+[English](2026-07-02-tool-render-intent-union.md) | [简体中文](2026-07-02-tool-render-intent-union.zh.md) | 繁體中文
 
 > render-intent 聯合類型對 UI 傳輸層仍然有效；其 ACP（Agent Client Protocol）對映已被 [ACP 作為僅面向自動化的協議](../simplification/2026-07-23-acp-automation-only-protocol.md)取代。
 

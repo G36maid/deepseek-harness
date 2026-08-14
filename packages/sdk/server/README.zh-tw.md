@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sdk-jsonrpc-server
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `jsonrpc` 外掛程式透過 stdio 提供以換行符分隔的 JSON-RPC，使行程外 SDK 用戶端能夠驅動程式 harness agent（代理）。[`HarnessSdkJsonRpcServer`](src/server.ts) 負責協議方法和通知；傳輸與具名協議類型位於 [`dsh-sdk-protocol`](../protocol/README.md)，與用戶端 SDK 共享；[`jsonrpc-demo`](../../examples/jsonrpc-demo/README.md) 提供外圍的 `cordis.yml` 應用。
 

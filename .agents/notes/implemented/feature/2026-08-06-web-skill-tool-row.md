@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-06-web-skill-tool-row.zh.md)
+English | [简体中文](2026-08-06-web-skill-tool-row.zh.md) | [繁體中文](2026-08-06-web-skill-tool-row.zh-tw.md)
 
 ## Problem
 

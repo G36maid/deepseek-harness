@@ -1,6 +1,6 @@
 # 仅限 Session 内的 Schedule
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 此 overlay 让一个 `dsh web` 进程显式启用 Schedule 提醒，同时不改变交付的默认 Web 组合：
 

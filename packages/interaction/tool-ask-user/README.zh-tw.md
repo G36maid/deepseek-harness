@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-ask-user
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 模型側 `ask_user_question` 工具，基於 `ctx.userQuestions` 實作。當模型需要確認、選擇結果或缺失的資訊才能繼續時，它可以藉此向使用者提出簡明問題。
 

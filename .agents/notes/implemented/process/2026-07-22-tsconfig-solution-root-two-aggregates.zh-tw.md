@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-tsconfig-solution-root-two-aggregates.md) | 繁體中文
+[English](2026-07-22-tsconfig-solution-root-two-aggregates.md) | [简体中文](2026-07-22-tsconfig-solution-root-two-aggregates.zh.md) | 繁體中文
 
 ## 問題
 

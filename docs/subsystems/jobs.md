@@ -1,6 +1,6 @@
 # Background Task Runtime
 
-English | [中文](jobs.zh.md)
+English | [简体中文](jobs.zh.md) | [繁體中文](jobs.zh-tw.md)
 
 Types shared by long-running producers, `ctx.jobs`, and job controls. The [runtime Agent Note](../../.agents/notes/implemented/architecture/2026-06-20-generic-long-running-tool-runtime.md) owns the design; this page records the exact fields and variants from [`packages/jobs/jobs/src/types.ts`](../../packages/jobs/jobs/src/types.ts).
 

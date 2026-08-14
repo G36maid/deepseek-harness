@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-22-acp-subagent-backend.zh.md)
+English | [简体中文](2026-06-22-acp-subagent-backend.zh.md) | [繁體中文](2026-06-22-acp-subagent-backend.zh-tw.md)
 
 ## Problem
 

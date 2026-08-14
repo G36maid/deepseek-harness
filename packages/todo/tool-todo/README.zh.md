@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-todo
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向模型的 `todo_write` 工具：agent（智能体）的完整任务列表，每次调用都会整体替换。
 

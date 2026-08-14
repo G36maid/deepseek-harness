@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-pwsh-ui-bash-parity.md) | 中文
+[English](2026-08-05-pwsh-ui-bash-parity.md) | 简体中文
 
 ## Problem
 

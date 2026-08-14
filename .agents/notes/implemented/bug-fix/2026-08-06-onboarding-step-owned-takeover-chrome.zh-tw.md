@@ -2,7 +2,7 @@
 
 狀態：已實作
 
-[English](2026-08-06-onboarding-step-owned-takeover-chrome.md) | 繁體中文
+[English](2026-08-06-onboarding-step-owned-takeover-chrome.md) | [简体中文](2026-08-06-onboarding-step-owned-takeover-chrome.zh.md) | 繁體中文
 
 ## 問題
 

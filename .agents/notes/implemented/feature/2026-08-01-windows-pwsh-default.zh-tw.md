@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-01-windows-pwsh-default.md) | 繁體中文
+[English](2026-08-01-windows-pwsh-default.md) | [简体中文](2026-08-01-windows-pwsh-default.zh.md) | 繁體中文
 
 ## 問題
 

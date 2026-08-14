@@ -1,6 +1,6 @@
 # skill/：skill（技能）能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本家族发现可复用的 agent（智能体）指令，并通过与提供方无关的目录和 loader 将其公开给模型。
 

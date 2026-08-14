@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-06-subagent-list-identity-projection.zh.md)
+English | [简体中文](2026-08-06-subagent-list-identity-projection.zh.md) | [繁體中文](2026-08-06-subagent-list-identity-projection.zh-tw.md)
 
 ## Problem
 

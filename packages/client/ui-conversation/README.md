@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-conversation
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Conversation domain: skeleton (header/tabs/composer/empty state), chat view (grouped step-summary flow, streaming tail isolation, and turn status), composer dock (session stats sticky with the input), input dock (queue rows plus the todo plan strip), details shell, and scope-addressed ConversationController. Tool presentation belongs to [`ui-tool`](../ui-tool/README.md).
 

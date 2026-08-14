@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-pwsh-sandbox
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Sandbox-consuming PowerShell implementation of the [`ctx.shell` executor seam](../shell/): every command runs as `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` **confined through `ctx.sandbox`**, with the selected mode, enforcement, and denial facts stamped on each settled result. The pwsh twin of [`@deepseek-ai/dsh-bash-sandbox`](../bash-sandbox/), a call-for-call mirror per the [pwsh executor and tool decision](../../../.agents/notes/implemented/feature/2026-08-01-pwsh-tool-and-executor.md) — the confinement substance is platform-neutral: on Windows the sandbox seam resolves to the ACL restricted-token runner chain ([`@deepseek-ai/dsh-sandbox-windows-acl`](../../sandbox/sandbox-windows-acl/)), on Linux/macOS to bwrap/Landlock/Seatbelt.
 

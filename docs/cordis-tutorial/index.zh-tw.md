@@ -1,6 +1,6 @@
 # Cordis 教程
 
-[English](index.md) | 繁體中文
+[English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
 Cordis 是 DeepSeek Harness 底層的外掛程式框架：它是一個小型執行時期，其中的每項能力，包括工具、LLM（大型語言模型）配接器、文件訪問乃至 agent loop（代理循環）本身，都是掛載到共享上下文中的外掛程式。本教程透過動手實踐講解 Cordis：每一章都是一個可以執行的示例，你將在本倉庫內的臨時目錄中逐步建置它，最後把一個外掛程式接入真實的 harness 服務。
 

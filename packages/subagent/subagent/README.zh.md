@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 subagent seam 允许一个 agent（智能体）通过具名提供方把工作委派给子 agent。调用方统一使用 `ctx.subagents` 服务 API；提供方决定子 agent 在当前进程、其他进程，还是通过未来的传输方式运行。
 

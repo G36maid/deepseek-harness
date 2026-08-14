@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-cross-platform-test-fixtures.md) | 中文
+[English](2026-07-22-cross-platform-test-fixtures.md) | 简体中文
 
 ## 问题
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-07-web-inline-file-mentions.md) | 繁體中文
+[English](2026-08-07-web-inline-file-mentions.md) | [简体中文](2026-08-07-web-inline-file-mentions.zh.md) | 繁體中文
 
 > 範圍：引導最終回覆以行內程式碼點名主要輸出文件，再把這些 token 連結到本輪變更的文件。不在範圍內：識別普通正文中的路徑、連結成功修改位置中不存在的文件，以及流式或輪次中途訊息裡的提及。
 

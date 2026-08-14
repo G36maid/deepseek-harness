@@ -1,6 +1,6 @@
 # 代码运行时
 
-[English](code-runtime.md) | 中文
+[English](code-runtime.md) | 简体中文
 
 代码执行 seam 是一个[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)：其 Service Definition（[dsh-code-runtime](../../packages/code-runtime/code-runtime)，`ctx.codeRuntime`）使用宿主提供的异步绑定运行一段模型编写的程序，并报告其打印内容与返回值。代码执行是**一项可选能力**，不属于 agent loop（智能体循环）主干，因此其词汇定义在此而非 [core.md](core.md) 中。各后端的执行基底与源语言不同，这两项均为服务上的只读描述符；worker-thread Service Provider 与工具注册表 Consumer 的约定见 [Code Mode 基础设计](../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) 和[类型化返回约定](../../.agents/notes/implemented/feature/2026-07-20-code-mode-typed-tool-returns.md)。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-bash
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The model-facing `bash` tool registered over the `ctx.shell` executor seam. Foreground execution stays behind that seam; a background process handle is registered with the generic `ctx.jobs` runtime and controlled through `job_output`, `job_list`, and `job_kill` from `@deepseek-ai/dsh-tool-jobs`.
 

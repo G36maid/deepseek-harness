@@ -1,6 +1,6 @@
 # 使用者命令
 
-[English](commands.md) | 繁體中文
+[English](commands.md) | [简体中文](commands.zh.md) | 繁體中文
 
 [`dsh-commands`](../../packages/interaction/commands) 提供的使用者命令登錄檔服務。互動式配接器用它發現外掛程式擁有的命令，並針對確切的 agent（代理）直接執行這些命令，而不建立模型訊息。[命令 Agent Note](../../.agents/notes/implemented/feature/2026-07-19-plugin-command-registration.md) 負責分發與生命週期的決策依據；[包 README](../../packages/interaction/commands/README.md) 負責組合方式與限制。
 

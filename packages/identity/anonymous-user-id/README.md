@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-anonymous-user-id
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Shared anonymous identity for session telemetry, direct feedback acknowledgement, and DeepSeek provider requests. `getOrCreateAnonymousUserId()` returns a random UUID v4 scoped to one harness home, persisted as the bare line `$DSH_HOME/.anonymous-user-id` (`~/.dsh/.anonymous-user-id` when `DSH_HOME` is unset). The OpenTelemetry backend reports it as Resource `user.id`; `/feedback` includes the same value in its acknowledgement; and `dsh-llm-deepseek` sends it as `x-deepseek-harness-user-id`, allowing the receiving systems to correlate records without independently generated identities.
 

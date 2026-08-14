@@ -1,6 +1,6 @@
 # dsh-client-ui-agent-preset
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 agent preset 的各個表層：General 設定中的一行，用於選擇新建工作階段據以組裝的 [preset](../../preset/agent-presets/README.md)；新建工作階段介面上的一枚 chip，用於選擇**下一個工作階段**的 preset；工作階段標題旁的一個只讀標籤；以及一個設定頁分區，用於管理名單——複製、刪除、預設值，以及通往 preset 自身文件的入口。
 

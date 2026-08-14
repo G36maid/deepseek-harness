@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-bash
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 模型側 `bash` 工具，註冊在 `ctx.shell` 執行器 seam 上。前臺執行始終位於該 seam 之後；後臺行程控制代碼會註冊到通用 `ctx.jobs` 執行時期，並透過 `job_output`、`job_list` 和 `job_kill` 控制；這些工具由 `@deepseek-ai/dsh-tool-jobs` 提供。
 

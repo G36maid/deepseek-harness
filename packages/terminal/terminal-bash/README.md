@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-terminal-bash
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Persistent shell backend for `ctx.terminals` over `ctx.subprocess.spawnTerminal`. It starts an interactive shell under the shared `ctx.sandboxPolicy`, retains bounded line-oriented output, and detects readiness while the subprocess provider owns PTY allocation, environment scrubbing, foreground process groups, signalling, and complete terminal-session cleanup. The same PTY backend therefore composes with local or remote execution-world providers.
 

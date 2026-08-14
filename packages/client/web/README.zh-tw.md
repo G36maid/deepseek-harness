@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-web
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Web 外殼核心：`new AppWebEntry(el, seams?).run()` 透過兩階段啟動（web2）掛載整個用戶端。第一階段（模組側）：建置用戶端模組系統（`@deepseek-ai/dsh-client-modules`），以主機推送的設定項圖（`window.__DSH_BOOT__`）為基礎，平行預取 `immediately` 層級；執行組合包只會註冊 factory。第二階段（外掛程式側）：掛載倉庫內建的 Cordis Loader，並透過其 `internal` 約定注入模組系統；為每一行圖資料建立一個 loader 設定項，另建立外殼自身的 app-shell 組裝設定項（tree.import 會物化各模組）；以 settle 作為 AppRoot 的閘門（loader 完全靜止 + 每個設定項 fiber 都為 ACTIVE → 一次切換顯示完整 UI）。組合完全由主機圖決定：花名冊和 immediately 層級都位於負責組合的應用中；外殼不作任何組合決策。
 

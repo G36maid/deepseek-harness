@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-02-fs-per-session-cwd.md
-2026-07-02-fs-per-session-cwd.md: 23c9f414590df8c79109e46f24af031b765b8f58
-2026-07-02-fs-per-session-cwd.zh.md: 6a8ffb357d43bdd61c09a2766e9977d4ad33b128
-2026-07-02-fs-per-session-cwd.zh-tw.md: 320334bd11c085a7624f7e379fd4b9377d69f494
+2026-07-02-fs-per-session-cwd.md: 569c34e717aa6573201ecee060c879ca3a00b317
+2026-07-02-fs-per-session-cwd.zh.md: 87843768cf14b0cc05958108d8a8dcebd04481c8
+2026-07-02-fs-per-session-cwd.zh-tw.md: 2d28403a8e5c85aff7e618bf800e4849167b067e

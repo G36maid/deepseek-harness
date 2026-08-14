@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-session-end-seed-log-boundary.md) | 繁體中文
+[English](2026-07-30-session-end-seed-log-boundary.md) | [简体中文](2026-07-30-session-end-seed-log-boundary.zh.md) | 繁體中文
 
 ## 問題
 

@@ -3,7 +3,7 @@
 
 # Service
 
-[English](service.md) | 繁體中文
+[English](service.md) | [简体中文](service.zh.md) | 繁體中文
 
 上下文服務的基類。以外掛程式形式載入的子類會將自身註冊為 `ctx.<name>`。
 

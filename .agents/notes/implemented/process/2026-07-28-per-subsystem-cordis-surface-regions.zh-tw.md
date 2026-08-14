@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-per-subsystem-cordis-surface-regions.md) | 繁體中文
+[English](2026-07-28-per-subsystem-cordis-surface-regions.md) | [简体中文](2026-07-28-per-subsystem-cordis-surface-regions.zh.md) | 繁體中文
 
 ## 問題
 

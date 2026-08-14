@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-acp-snapshot`
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 ACP（Agent Client Protocol）快照套件工具包：无密钥快照层（`pnpm run test:snapshot`，见[测试策略](../../../docs/testing.md)）背后的共享机制。示例只需场景表和 fixture（测试前置数据）目录就能获得完整快照套件；每项比较/保护机制都位于此处，受每文件覆盖率门禁约束，而不是在每个示例中复制。
 

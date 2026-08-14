@@ -2,7 +2,7 @@
 
 Status: rejected — 高保真區塊重播、失敗流的部分輸出與快照重播目前相依性持久化的 `assistant/chunk` 事件。只有具備無資訊損失的重播或產物替代方案後，才能刪除區塊。
 
-[English](2026-06-20-assembled-assistant-messages-only.md) | 繁體中文
+[English](2026-06-20-assembled-assistant-messages-only.md) | [简体中文](2026-06-20-assembled-assistant-messages-only.zh.md) | 繁體中文
 
 ## 問題
 

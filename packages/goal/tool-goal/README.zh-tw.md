@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-goal
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`ctx.goals`](../goal/README.md) 的面向模型控制 API：`get_goal`、`create_goal` 和 `update_goal`。[goal 工具 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-model-facing-goal-tools.md) 負責權限拆分與 Codex 風格使用者體驗。
 

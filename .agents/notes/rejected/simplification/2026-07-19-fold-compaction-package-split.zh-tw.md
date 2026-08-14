@@ -2,7 +2,7 @@
 
 Status: rejected — 計畫增加更多壓縮後端，因此 Service Definition 包與 basic 提供方包繼續分離。
 
-[English](2026-07-19-fold-compaction-package-split.md) | 繁體中文
+[English](2026-07-19-fold-compaction-package-split.md) | [简体中文](2026-07-19-fold-compaction-package-split.zh.md) | 繁體中文
 
 ## 問題
 

@@ -1,6 +1,6 @@
 # session-query/：会话检索能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本家族提供经过授权的实时与持久会话日志检索，且独立于压缩（compaction）。
 

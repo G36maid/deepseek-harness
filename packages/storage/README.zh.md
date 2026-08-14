@@ -1,6 +1,6 @@
 # storage/：非会话存储家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本家族通过具名后端和类型化数据形式，持久化会话事件日志以外的应用数据。
 

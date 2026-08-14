@@ -1,6 +1,6 @@
 # credentials/：憑據引用
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 憑據能力家族將引用解析與提供方分離：
 

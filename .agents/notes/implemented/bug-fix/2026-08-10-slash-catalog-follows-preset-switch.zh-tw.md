@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-slash-catalog-follows-preset-switch.md) | 繁體中文
+[English](2026-08-10-slash-catalog-follows-preset-switch.md) | [简体中文](2026-08-10-slash-catalog-follows-preset-switch.zh.md) | 繁體中文
 
 ## 問題
 

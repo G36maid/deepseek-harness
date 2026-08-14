@@ -2,7 +2,7 @@
 
 狀態：implemented
 
-[English](2026-08-12-web-image-intake-and-limits-alignment.md) | 繁體中文
+[English](2026-08-12-web-image-intake-and-limits-alignment.md) | [简体中文](2026-08-12-web-image-intake-and-limits-alignment.zh.md) | 繁體中文
 
 ## 問題
 

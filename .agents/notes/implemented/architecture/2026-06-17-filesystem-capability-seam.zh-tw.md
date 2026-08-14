@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-17-filesystem-capability-seam.md) | 繁體中文
+[English](2026-06-17-filesystem-capability-seam.md) | [简体中文](2026-06-17-filesystem-capability-seam.zh.md) | 繁體中文
 
 ## 問題
 

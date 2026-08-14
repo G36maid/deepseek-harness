@@ -1,6 +1,6 @@
 # 行程沙盒
 
-[English](sandbox.md) | 繁體中文
+[English](sandbox.md) | [简体中文](sandbox.zh.md) | 繁體中文
 
 [dsh-sandbox](../../packages/sandbox/sandbox) 的行程沙盒 seam 將與宿主共享檔案系統和核心的子行程 argv 包裝在文件效果策略中，而不將消費端耦合到特定平臺執行器。[dsh-sandbox-local](../../packages/sandbox/sandbox-local) 提供 Linux bwrap/Landlock、macOS Seatbelt 與 Windows ACL 受限權杖後端；[dsh-bash-sandbox](../../packages/shell/bash-sandbox) 和 [dsh-pwsh-sandbox](../../packages/shell/pwsh-sandbox) 是其消費端。容器、microVM 和遠端執行是完整能力 seam 的同級實作，而非 `ctx.sandbox` 的提供方。
 

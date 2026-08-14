@@ -2,7 +2,7 @@
 
 狀態：implemented
 
-[English](2026-08-10-web-session-log-export.md) | 繁體中文
+[English](2026-08-10-web-session-log-export.md) | [简体中文](2026-08-10-web-session-log-export.zh.md) | 繁體中文
 
 ## 問題
 

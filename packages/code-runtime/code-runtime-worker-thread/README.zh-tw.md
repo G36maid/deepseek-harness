@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-code-runtime-worker-thread
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這是 [`@deepseek-ai/dsh-code-runtime`](../code-runtime/README.md) seam 的 worker 執行緒實作：`WorkerThreadCodeRuntime` 會在每次執行中使用一個全新的 Node `worker_threads.Worker`，輸入 TypeScript，由宿主側剝離類型，透過訊息埠橋接綁定，輸出 `{ value, logs, error? }`。**這是隔離措施，而非安全邊界**：其信任立場有意與 bash 等價（參見 [Code Mode Agent Note](../../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) 的 Trust posture 章節），但提供 bash 沒有的隔離：獨立 isolate、空環境、堆上限與強制終止。
 

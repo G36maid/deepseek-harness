@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-package-anchored-subsystem-pages.md) | 中文
+[English](2026-08-03-package-anchored-subsystem-pages.md) | 简体中文
 
 ## 问题
 

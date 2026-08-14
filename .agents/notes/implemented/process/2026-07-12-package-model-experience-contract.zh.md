@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-12-package-model-experience-contract.md) | 中文
+[English](2026-07-12-package-model-experience-contract.md) | 简体中文
 
 ## 问题
 

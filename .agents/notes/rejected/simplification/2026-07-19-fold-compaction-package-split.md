@@ -2,7 +2,7 @@
 
 Status: rejected — More compaction backends are planned, so the Service Definition and basic provider packages remain separate.
 
-English | [中文](2026-07-19-fold-compaction-package-split.zh.md)
+English | [简体中文](2026-07-19-fold-compaction-package-split.zh.md) | [繁體中文](2026-07-19-fold-compaction-package-split.zh-tw.md)
 
 ## Problem
 

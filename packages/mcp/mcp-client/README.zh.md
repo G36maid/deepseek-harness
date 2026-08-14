@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-mcp-client
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 MCP 客户端桥接插件：连接外部 [Model Context Protocol](https://modelcontextprotocol.io/) 服务器，把它们的工具注册到 `ctx.tools`，使模型能够通过服务器限定名称（`mcp__<serverName>__<rawName>`）将其作为原生工具使用。
 

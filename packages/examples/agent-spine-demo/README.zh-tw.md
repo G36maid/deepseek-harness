@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-agent-spine-demo
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 將**默認的不含執行器、不含 UI 的 agent（代理）主幹**作為一個 Cordis 組合包外掛程式。它載入每個 harness agent 所需的固定服務集合，包括本機 skill（技能）提供方，並將迴圈的 `agents` 清單作為自身設定轉發。因此，應用包只需新增入口和可替換後端，就能組合出可工作的 agent。
 

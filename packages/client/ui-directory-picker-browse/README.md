@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-directory-picker-browse
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 In-app directory browsing surface: the browser half of the browse picking interaction. It fills ui-workspace's two directory-flow holes (`conversation.hero.workspace.directoryFlow` and `sidebar.workspaces.directoryFlow`) with the Select Workspace Directory dialog, driving the local Host's `host.listDirectory` and `host.createDirectory` primitives through `ctx.workspaces`. Its node counterpart is [`dsh-host-directory-picker-browse`](../../host/directory-picker-browse/README.md); mounting this package composes the surface with that backend from one cordis.yml row, so no client code branches on a capability kind. Unlike the [`-native`](../ui-directory-picker-native/README.md) surface, the dialog needs no local operating-system chooser, so it also serves in-process and remote-browser deployments.
 

@@ -1,6 +1,6 @@
 # HTTP 伺服器
 
-[English](web-server.md) | 繁體中文
+[English](web-server.md) | [简体中文](web-server.zh.md) | 繁體中文
 
 [dsh-host-webserver](../../packages/host/webserver) 是 GUI 宿主的瀏覽器 HTTP 載體：它是一個提供 `ctx.webServer` 的 `node:http` 外掛程式，包含具名路由登錄檔、index.html 轉換回呼，以及一個可由外掛程式認領的回退處理器。它不屬於 agent loop（代理循環），也不是能力 seam；它不瞭解任何 harness 概念。其他外掛程式負責註冊所有功能路由，包括 `/api` 橋接、外掛程式 bundle 和 HMR（熱模組替換）事件串流（[分層說明](../../.agents/notes/implemented/architecture/2026-07-19-gui-layering-and-rpc-protocol.md)）。該伺服器只服務瀏覽器：Electron 透過 `file://` 載入已建置文件，並經 IPC 橋接傳送 fetch 請求，不使用本伺服器。
 

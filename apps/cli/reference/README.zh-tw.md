@@ -1,6 +1,6 @@
 # `dsh` CLI（命令列介面）行為參考
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本參考定義 profile 啟動、web 別名、外掛程式管理和設定 dump 等命令模式。argv 由 [`src/args.ts`](../src/args.ts) 統一解析一次，[`src/bin.ts`](../src/bin.ts) 只會動態匯入選中的執行器。
 

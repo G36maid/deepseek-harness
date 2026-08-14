@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-app-owned-command-line.md) | 中文
+[English](2026-08-06-app-owned-command-line.md) | 简体中文
 
 ## 问题
 

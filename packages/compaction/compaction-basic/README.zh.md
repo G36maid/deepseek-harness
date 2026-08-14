@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-compaction-basic
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **基础压缩（compaction）后端**：`BasicCompactionEngine` 实现 `@deepseek-ai/dsh-compaction` Service Definition，使用可复用的 `ctx.tokenMeter` 压力、token 预算保留与摘要。摘要是直接的一次性 `ctx.llm.stream()` 调用，它会回放会话前缀以复用提供方的 KV Cache（可在 `llm/stream` 处拦截）。
 

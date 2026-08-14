@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-client-plugin-loading-model.md) | 中文
+[English](2026-07-23-client-plugin-loading-model.md) | 简体中文
 
 > 范围：浏览器侧的插件装载机件——什么是插件、代码怎么到达、热重载如何搭在这套模型上。装载链归本篇所有；[Web 客户端架构笔记](2026-07-19-gui-web-client-architecture.md) 在装载问题上以本篇为准，继续拥有 slot、数据对象层与 React 面。
 

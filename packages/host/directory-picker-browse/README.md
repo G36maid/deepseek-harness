@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker-browse
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **in-app browsing backend** of the [directory-picker seam](../directory-picker/README.md): `BrowseDirectoryPicker` registers `ctx.directoryPicker` with the `browse` capability — one-level directory listing and child-directory creation over Node's stdlib, which already carries the per-OS adaptation. Nothing renders on the host display, so this backend serves remote clients the native backend cannot.
 

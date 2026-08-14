@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-hmr
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 為透過指令碼載入的用戶端外掛程式提供熱重新載入。web 組合包無條件掛載該行；沒有重建 watcher（`pnpm run dev:web`）改寫用戶端 bundle 時，輪詢觀察不到變化，鏈路保持空閒。
 

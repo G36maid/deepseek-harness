@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-29-simplify-web-image-input-v1.md
-2026-07-29-simplify-web-image-input-v1.md: e7847dc2ae18f48146cb2b686dcda64beebf2350
-2026-07-29-simplify-web-image-input-v1.zh.md: 47f6bb5face5b896b5184f7198eef7d99ee25afe
-2026-07-29-simplify-web-image-input-v1.zh-tw.md: 9a27daf91ca8fa18b2750dca2c0c023e5e4d248f
+2026-07-29-simplify-web-image-input-v1.md: 8d2626a8ae92697b31066203903f7633a02bbc31
+2026-07-29-simplify-web-image-input-v1.zh.md: 8b783d81fa302ba7e878442f2a26e23fa7e5e904
+2026-07-29-simplify-web-image-input-v1.zh-tw.md: cc961bb9b7a3b18801d7e6b6b393c3ec0fa00a00

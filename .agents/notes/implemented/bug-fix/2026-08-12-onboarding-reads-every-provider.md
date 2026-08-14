@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-12-onboarding-reads-every-provider.zh.md)
+English | [简体中文](2026-08-12-onboarding-reads-every-provider.zh.md) | [繁體中文](2026-08-12-onboarding-reads-every-provider.zh-tw.md)
 
 ## Problem
 

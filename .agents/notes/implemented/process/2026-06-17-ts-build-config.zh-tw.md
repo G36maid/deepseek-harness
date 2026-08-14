@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-17-ts-build-config.md) | 繁體中文
+[English](2026-06-17-ts-build-config.md) | [简体中文](2026-06-17-ts-build-config.zh.md) | 繁體中文
 
 > 根項目拓撲由一個 solution 根文件統轄兩個 aggregate program；見 [solution 根文件 Agent Note](2026-07-22-tsconfig-solution-root-two-aggregates.md)。Host 生成 Remote 約定後再編譯 Client 的當前命令順序見 [API Remotes 建置 Agent Note](2026-08-08-api-remotes-generated-contract-build.md)。本文確定的 tsc-first 職責保持不變。
 

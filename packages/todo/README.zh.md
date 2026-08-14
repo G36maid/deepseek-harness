@@ -1,6 +1,6 @@
 # todo/：todo／规划能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向模型的 todo 能力。它是单一**产品**包，因为一个 agent（智能体）会话拥有该列表；不存在可替换的提供方约定。
 

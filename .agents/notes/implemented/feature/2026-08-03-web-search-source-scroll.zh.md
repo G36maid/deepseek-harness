@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-web-search-source-scroll.md) | 中文
+[English](2026-08-03-web-search-source-scroll.md) | 简体中文
 
 ## 问题
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-21-log-backed-session-titles.md) | 繁體中文
+[English](2026-07-21-log-backed-session-titles.md) | [简体中文](2026-07-21-log-backed-session-titles.zh.md) | 繁體中文
 
 ## 問題
 

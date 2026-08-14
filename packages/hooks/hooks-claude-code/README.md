@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-hooks-claude-code
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 A cordis plugin that runs the supported command-hook subset of a user's existing **Claude Code** hook config (a `hooks.json`, or a settings file's `hooks` key) on the harness's canonical interception points. It is the **CC dialect** half of the hooks subsystem: it owns the bridge's CC-shaped per-event stdin payloads, CC's env + `${CLAUDE_PLUGIN_ROOT}`/`${CLAUDE_PROJECT_DIR}` substitution, and the mapping from a hook's neutral outcome onto the harness's typed Decisions. The dialect-agnostic primitives (matcher, exit-code/stdout codec, `ctx.shell` execution, most-restrictive merge, the `hook/*` events) come from [`@deepseek-ai/dsh-hook-protocol`](../hook-protocol/README.md).
 

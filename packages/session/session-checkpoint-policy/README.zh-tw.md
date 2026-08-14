@@ -1,6 +1,6 @@
 # dsh-session-checkpoint-policy
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 已持久化的 agent（代理）的語義持久性策略。它會在模型配接器收到請求前、頂層工具正文可產生外部副作用前，以及每個 `agent/pre-step` 邊界為事件溯源工作階段建立檢查點，使前一回應與有序工具結果在下一個請求前已持久化。
 

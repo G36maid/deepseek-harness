@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-client-locale-full-rollout.md) | 繁體中文
+[English](2026-07-30-client-locale-full-rollout.md) | [简体中文](2026-07-30-client-locale-full-rollout.zh.md) | 繁體中文
 
 ## Problem
 

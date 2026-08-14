@@ -93,7 +93,7 @@ try {
     '',
     '# 快照说明',
     '',
-    '[English](snapshot-note.md) | 中文',
+    '[English](snapshot-note.md) | 简体中文',
     '',
   ].join('\n')
   if (!consumed.final.startsWith(expectedFinalPrefix)) {

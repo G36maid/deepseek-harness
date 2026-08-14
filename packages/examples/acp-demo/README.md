@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-acp-demo
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 ACP automation server app: the default agent spine, client-created agents through [`@deepseek-ai/dsh-acp`](../../acp/acp/README.md), JSONL persistence, and semantic checkpointing behind one JSON-RPC stdio bin. Programmatic clients create fresh sessions; this package mounts no human UI.
 

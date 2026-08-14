@@ -1,6 +1,6 @@
 # Add a Web Client conversation node
 
-English | [中文](adding-a-conversation-node.zh.md)
+English | [简体中文](adding-a-conversation-node.zh.md) | [繁體中文](adding-a-conversation-node.zh-tw.md)
 
 This tutorial adds one business-owned row to the Web Client Chat view. The finished plugin correlates a durable Session event family into one Context, incrementally builds business State, publishes typed Step data, and renders a keyed Chat Node without scanning the Session window or other rendered nodes. It assumes the Host already records the events and the client plugin is composed into the Web bundle; external Host-side UIs and additional view targets such as Trajectory are outside this tutorial.
 

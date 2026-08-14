@@ -1,6 +1,6 @@
 # 扩展
 
-[English](extensions.md) | 中文
+[English](extensions.md) | 简体中文
 
 extensions 子系统允许 agent（智能体）定义带版本的 Cordis 包、运行其 host 与浏览器两半，并在编写代码前查询获准公开的运行时元数据。包生命周期与沙箱行为由 [`packages/extensions`](../../packages/extensions/README.md) 包组说明。
 

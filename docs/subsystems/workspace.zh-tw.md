@@ -1,6 +1,6 @@
 # 工作區
 
-[English](workspace.md) | 繁體中文
+[English](workspace.md) | [简体中文](workspace.zh.md) | 繁體中文
 
 工作區（workspace）是使用者工作目錄的持久記錄：一個建立在規範路徑之上的穩定 id、一個顯示標題，以及歸屬於它的工作階段的有序帳本。該子系統是單個包（package）（[dsh-workspace](../../packages/workspace/workspace)，`ctx.workspaceRegistry`）——一項宿主側選填能力，不屬於 agent loop（代理循環）主幹，並且對模型不可見（沒有工具、沒有提示詞文字、沒有工作階段事件）。它透過[儲存領域資料形式](storage.md)儲存自己的記錄，並對照 [`SessionHeader.cwd`](persistence.md#sessionheader--metadata-beside-the-log) 校驗工作階段成員資格，因此 `storageDomain` 與 `sessionPersistence` 是必需的啟動相依性：持久化這一相依性不可用時，外掛程式保持 pending，而不是把這種不可用誤當作空歷史。設計記錄：[領域 KV 儲存 Agent Note（agent 決策記錄）](../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md)；引導與 GUI 順序：[Workspace UI 產品流程 Agent Note](../../.agents/notes/implemented/feature/2026-07-25-workspace-ui-product-flow.md)。
 

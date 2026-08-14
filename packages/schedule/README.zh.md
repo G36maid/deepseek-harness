@@ -1,6 +1,6 @@
 # schedule/：仅限 Session 内的提醒
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Schedule 家族负责管理提醒，其持久状态保存在原 Session 日志中。进程内 owner 只会在该 Session 拥有 live 根 Agent 时等待；cold Session 再次 live 后会恢复逾期工作，但这不意味着存在外部通知渠道。
 

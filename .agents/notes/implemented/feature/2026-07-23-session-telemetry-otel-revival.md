@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-23-session-telemetry-otel-revival.zh.md)
+English | [简体中文](2026-07-23-session-telemetry-otel-revival.zh.md) | [繁體中文](2026-07-23-session-telemetry-otel-revival.zh-tw.md)
 
 ## Problem
 

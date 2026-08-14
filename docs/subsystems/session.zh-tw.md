@@ -1,6 +1,6 @@
 # 工作階段
 
-[English](session.md) | 繁體中文
+[English](session.md) | [简体中文](session.zh.md) | 繁體中文
 
 [dsh-session](../../packages/core/session) 的記憶體事件溯源模型。`Session` 是一份由類型化 `SessionEvent` 組成的**僅附加日誌**，是 agent（代理）完整互動歷史的唯一真源。LLM（大型語言模型）訊息歷史從日誌*派生*而來，從不單獨儲存；重播即從同一組事件重新派生。日誌如何實作**持久化**（持久化 seam、後端、當機復原）是兄弟文件 [persistence.md](persistence.md) 的關注點。
 

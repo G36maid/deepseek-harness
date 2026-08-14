@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-remove-synthetic-log-only-turns.md) | 中文
+[English](2026-07-28-remove-synthetic-log-only-turns.md) | 简体中文
 
 ## 问题
 

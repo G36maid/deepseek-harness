@@ -1,6 +1,6 @@
 # dsh-client-ui-agent-preset
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 agent preset 的各个表层：General 设置中的一行，用于选择新建会话据以组装的 [preset](../../preset/agent-presets/README.md)；新建会话界面上的一枚 chip，用于选择**下一个会话**的 preset；会话标题旁的一个只读标签；以及一个设置页分区，用于管理名单——复制、删除、默认值，以及通往 preset 自身文件的入口。
 

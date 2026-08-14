@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-04-draft-provider-endpoint-interrogation.md
-2026-08-04-draft-provider-endpoint-interrogation.md: 6a545ea5c97ef7e7f0e916c1676c1361f7a9bf3b
-2026-08-04-draft-provider-endpoint-interrogation.zh.md: 845b1b27d5bbc683ee6ac56373d909dce0a9f424
-2026-08-04-draft-provider-endpoint-interrogation.zh-tw.md: 05a76e7e6b06f18a6acd1cfb82855469e4d9e730
+2026-08-04-draft-provider-endpoint-interrogation.md: fadc7ddb48b27a2698f3f334be0b8bdcc89e2acc
+2026-08-04-draft-provider-endpoint-interrogation.zh.md: a0edde328ad41aaaa99fc7a1da488ac460327d0a
+2026-08-04-draft-provider-endpoint-interrogation.zh-tw.md: 3967336f9f691a223597c39a622955909db39b64

@@ -1,6 +1,6 @@
 # code-runtime/ — 程式碼執行能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 程式碼執行能力 seam（參見[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：執行時期 Service Definition，用於對宿主提供的非同步綁定執行模型編寫的程序，並捕獲它列印和返回的內容；可替換的提供方；以及工具登錄檔的 [Code Mode](../core/tools/README.md) Consumer（`tools: { mode: code }`，即 `run_code` 工具和按所載入執行時期 `language` 生成的 SDK）。設計見 [Code Mode Agent Note](../../.agents/notes/implemented/feature/2026-06-15-code-mode.md)。這些全是**產品**包。
 

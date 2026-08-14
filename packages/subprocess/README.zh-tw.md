@@ -1,6 +1,6 @@
 # subprocess/：子行程能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這裡集中提供一個執行世界的共享行程基底：可執行文件尋找、具有原始或收集式 stdio 的完全明確指定的受管子行程樹，以及一項底層終端機行程原語，負責 PTY 分配、前臺行程組和提供方仍可觀察到的工作階段成員清理。命令預設值補全、shell 語義、時限、協議分幀、就緒狀態與呈現留在消費端：[bash 執行器](../shell/README.md)、[LSP 主機](../lsp/README.md)、[PTY shell 後端](../terminal/README.md)與 [ACP（Agent Client Protocol）subagent 後端](../subagent/README.md)。參見 [subprocess seam Agent Note](../../.agents/notes/implemented/architecture/2026-07-26-subprocess-seam.md)。
 

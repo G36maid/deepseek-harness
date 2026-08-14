@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-cmdline`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 dsh 啟動器交給它所引導應用的那條命令列。啟動器只解析屬於自己的 flag（`--profile`、`--patch`、設定 dump），並把**其後的一切**原樣交給設定樹，因此 flag 家族、`--help` 文字和解析錯誤都由應用自己持有，啟動器不必知道它們。
 

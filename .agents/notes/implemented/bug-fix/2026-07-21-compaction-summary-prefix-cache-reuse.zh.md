@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-21-compaction-summary-prefix-cache-reuse.md) | 中文
+[English](2026-07-21-compaction-summary-prefix-cache-reuse.md) | 简体中文
 
 ## 问题
 

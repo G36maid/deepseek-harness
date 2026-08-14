@@ -1,6 +1,6 @@
 # 1. 編寫第一個外掛程式
 
-[English](01-first-plugin.md) | 繁體中文
+[English](01-first-plugin.md) | [简体中文](01-first-plugin.zh.md) | 繁體中文
 
 在本教程使用的 loader 設定中，Cordis 外掛程式模組透過命名匯出提供 `apply` 函式。Cordis 載入模組時，會用一個 **上下文** 呼叫 `apply`；該上下文就是 `ctx` 對象，外掛程式透過它註冊自己貢獻的所有內容。
 

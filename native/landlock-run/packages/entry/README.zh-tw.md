@@ -1,6 +1,6 @@
 # @deepseek-ai/node-addon-landlock-run
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用於在 Linux 上限制子行程的 Landlock「先限制自身、再執行」啟動器：此入口包定位對應平臺的預建置二進位檔案，執行功能性強制執行探測，並建置其授權 argv。消費端無需自行拼寫啟動器標志或解析啟動器輸出。
 

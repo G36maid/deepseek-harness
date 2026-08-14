@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-20-remove-agent-boundary-mirror-events.zh.md)
+English | [简体中文](2026-06-20-remove-agent-boundary-mirror-events.zh.md) | [繁體中文](2026-06-20-remove-agent-boundary-mirror-events.zh-tw.md)
 
 ## Problem
 

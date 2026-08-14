@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-bash-sandbox
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 这是使用沙箱能力的 [`@deepseek-ai/dsh-shell`](../shell/) 执行器 seam 的 Service Provider。加载它时，应**用它替代** `@deepseek-ai/dsh-bash-local`，并同时加载 [`ctx.sandbox`](../../sandbox/sandbox/) 提供方（例如 [`@deepseek-ai/dsh-sandbox-local`](../../sandbox/sandbox-local/)）及 [`ctx.sandboxPolicy`](../../sandbox/sandbox-policy/)；默认模式和工作区根目录由后者负责，并与受沙箱约束的文件系统共享这些设置。无需使用替代工具插件；`dsh-tool-bash` 会检测执行器的 `sandboxMode` 能力并添加升权字段。
 

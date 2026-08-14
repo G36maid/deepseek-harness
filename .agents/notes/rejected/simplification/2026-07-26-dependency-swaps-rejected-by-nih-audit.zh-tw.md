@@ -2,7 +2,7 @@
 
 Status: rejected — 下列每一項替換在證據上都未達到淨簡化門檻；記錄在案，以免這輪普查日後從零重來
 
-[English](2026-07-26-dependency-swaps-rejected-by-nih-audit.md) | 繁體中文
+[English](2026-07-26-dependency-swaps-rejected-by-nih-audit.md) | [简体中文](2026-07-26-dependency-swaps-rejected-by-nih-audit.zh.md) | 繁體中文
 
 ## 問題
 

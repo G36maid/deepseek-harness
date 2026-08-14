@@ -1,6 +1,6 @@
 # Web UI style reference
 
-English | [中文](web-styling.zh.md)
+English | [简体中文](web-styling.zh.md) | [繁體中文](web-styling.zh-tw.md)
 
 This reference defines styling ownership and component rules for browser client packages. The current token values live in [`packages/client/ui-theme/src/styles/`](../packages/client/ui-theme/src/styles/); this document does not duplicate that generated-by-source inventory.
 

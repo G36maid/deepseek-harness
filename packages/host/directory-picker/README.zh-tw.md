@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 web GUI 宿主的工作區目錄選擇是一項能力 seam。抽象的 `DirectoryPicker` 服務（`ctx.directoryPicker`）是其 Service Definition。該服務只提供一個方法：`capability()`，它返回一個可辨識聯合類型，說明操作者如何選擇目錄。後端之間的使用者互動不同，不只是實作不同：`{ kind: 'native', pick(signal) }` 在宿主螢幕上打開一個原生 OS 選擇器（[`-native`](../directory-picker-native/README.md)）；`{ kind: 'browse', list(path?), createDirectory(path, name) }` 提供應用內瀏覽器使用的列舉與建立操作，也能服務於無法訪問 OS 對話框的遠端用戶端（[`-browse`](../directory-picker-browse/README.md)）。消費端按 `capability().kind` 分支；聯合類型由可合併擴充的 `DirectoryPickerCapabilities` 對映派生，新後端透過聲明合併在其中加入自己的變體。遇到未知 kind 時，消費端會隱藏目錄選擇入口，而不是失敗。能力對象在服務生命週期內必須保持穩定。每個後端包還提供 browser 入口，在 ui-workspace 的 directory-flow slot 中註冊匹配的互動，因此一項組合設定會同時選擇宿主能力與 client 流程。需要在執行時期選擇互動的組合掛載 [`-auto`](../directory-picker-auto/README.md)，它在啟動時檢查一次宿主情況，並掛載匹配的後端行。
 

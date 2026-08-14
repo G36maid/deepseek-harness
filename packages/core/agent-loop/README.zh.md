@@ -1,6 +1,6 @@
 # dsh-agent-loop
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 agent（智能体）的唯一具体实现插件和循环驱动器。其包内部实现满足 `Agent` 接口，并驱动会话、轮次和步骤的生命周期。
 

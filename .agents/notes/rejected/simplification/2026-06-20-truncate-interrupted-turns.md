@@ -2,7 +2,7 @@
 
 Status: rejected — a single turn can contain substantial real work, including many steps and large tool output. Preserving interrupted turns is preferable to silently dropping that tail on load.
 
-English | [中文](2026-06-20-truncate-interrupted-turns.zh.md)
+English | [简体中文](2026-06-20-truncate-interrupted-turns.zh.md) | [繁體中文](2026-06-20-truncate-interrupted-turns.zh-tw.md)
 
 ## Problem
 

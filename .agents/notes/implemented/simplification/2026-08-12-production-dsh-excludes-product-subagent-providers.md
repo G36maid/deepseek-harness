@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-12-production-dsh-excludes-product-subagent-providers.zh.md)
+English | [简体中文](2026-08-12-production-dsh-excludes-product-subagent-providers.zh.md) | [繁體中文](2026-08-12-production-dsh-excludes-product-subagent-providers.zh-tw.md)
 
 ## Problem
 

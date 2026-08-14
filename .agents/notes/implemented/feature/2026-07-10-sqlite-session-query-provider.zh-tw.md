@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-10-sqlite-session-query-provider.md) | 繁體中文
+[English](2026-07-10-sqlite-session-query-provider.md) | [简体中文](2026-07-10-sqlite-session-query-provider.zh.md) | 繁體中文
 
 ## 問題
 

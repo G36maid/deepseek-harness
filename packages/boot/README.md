@@ -1,6 +1,6 @@
 # boot/ — shared app-bin boot glue
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The channel-neutral boot library shared by `apps/cli` and the [`examples/`](../examples/README.md) demo bins.
 

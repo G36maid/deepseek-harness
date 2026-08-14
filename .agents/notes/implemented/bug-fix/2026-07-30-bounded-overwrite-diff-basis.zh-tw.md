@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-bounded-overwrite-diff-basis.md) | 繁體中文
+[English](2026-07-30-bounded-overwrite-diff-basis.md) | [简体中文](2026-07-30-bounded-overwrite-diff-basis.zh.md) | 繁體中文
 
 ## 問題
 

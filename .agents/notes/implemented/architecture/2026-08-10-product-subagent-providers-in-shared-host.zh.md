@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-product-subagent-providers-in-shared-host.md) | 中文
+[English](2026-08-10-product-subagent-providers-in-shared-host.md) | 简体中文
 
 ## 问题
 

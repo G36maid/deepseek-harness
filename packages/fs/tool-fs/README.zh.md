@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-fs
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **面向模型的文件系统工具**（`read`、`read_image`、`write`、`edit`）及其**执行器**。这是文件系统栈的消费方层：拥有工具名称、JSON Schema、参数校验、提示词段、**读取窗口逻辑**和结果格式化。它**直接**通过 `ctx.fs` 提供方约定（[`@deepseek-ai/dsh-fs`](../fs)）读取／写入／编辑。新鲜度／观察策略由独立插件（[`@deepseek-ai/dsh-fs-observation-policy`](../fs-observation-policy)）通过 `fs/*` 事件门禁贡献；工具不与其方法耦合。使用施加沙箱限制的提供方时，逐会话执行需要共享沙箱策略服务，工具还会为文件系统变更提供升权路径。
 

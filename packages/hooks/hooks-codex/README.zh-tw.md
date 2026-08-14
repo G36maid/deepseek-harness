@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-hooks-codex
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個 Cordis 外掛程式，在 harness 的規範攔截點上執行使用者現有 **Codex** hook 設定的受支持子集。它是 hooks 子系統中採用 **Codex 方言** 的一側。方言無關原語來自 [`@deepseek-ai/dsh-hook-protocol`](../hook-protocol/README.md)；該橋接負責處理 Codex 形狀的 payload、matcher 模式和決策對映。
 

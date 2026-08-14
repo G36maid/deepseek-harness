@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-15-llm-model-catalog-and-acp-selection.md) | 繁體中文
+[English](2026-07-15-llm-model-catalog-and-acp-selection.md) | [简体中文](2026-07-15-llm-model-catalog-and-acp-selection.zh.md) | 繁體中文
 
 > 目錄決策仍然有效。ACP（Agent Client Protocol）工作階段級模型選擇已由 [ACP 作為僅面向自動化的協議](../simplification/2026-07-23-acp-automation-only-protocol.md)取代。
 

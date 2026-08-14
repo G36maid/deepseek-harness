@@ -1,6 +1,6 @@
 # 事後檢討（postmortem） 0003：Web agent（代理）驗收了替代伺服器，而非其當前 GUI
 
-[English](0003-web-agent-gui-feedback-loop.md) | 繁體中文
+[English](0003-web-agent-gui-feedback-loop.md) | [简体中文](0003-web-agent-gui-feedback-loop.zh.md) | 繁體中文
 
 狀態：已解決
 

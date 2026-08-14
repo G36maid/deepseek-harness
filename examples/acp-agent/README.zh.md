@@ -1,6 +1,6 @@
 # acp-agent 示例
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 通过 JSON-RPC stdio 提供的面向自动化的 [ACP（Agent Client Protocol）](https://agentclientprotocol.com) 服务器。它面向 parent agent（父智能体）、subagent 提供方和其他程序化客户端，而非产品 UI。
 

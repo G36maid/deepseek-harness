@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-composer-context-meter-breakdown.md) | 繁體中文
+[English](2026-08-05-composer-context-meter-breakdown.md) | [简体中文](2026-08-05-composer-context-meter-breakdown.zh.md) | 繁體中文
 
 ## 問題
 

@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-llm-mock-server`
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 可编脚本的 OpenAI 兼容 HTTP／SSE（Server-Sent Events）服务器，用于在无提供方密钥的情况下测试真实 LLM（大语言模型）适配器、agent loop（智能体循环）和恢复策略。它接受 `POST /chat/completions` 和 `POST /v1/chat/completions`；每个已接受请求按到达顺序消费一个已配置行为。无效的请求方法、路径、Bearer token 和 JSON 不会消费脚本条目。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-gui-layering-and-rpc-protocol.md) | 中文
+[English](2026-07-19-gui-layering-and-rpc-protocol.md) | 简体中文
 
 > 分工线：本篇 = 分层模型 + 通道无关的 RPC 协议；协议的 Web 实现由 HTTP 上行加 [WebSocket 下行载体](2026-08-04-websocket-downlink-carrier.md)组成，浏览器对象层见 [Web 客户端架构笔记](2026-07-19-gui-web-client-architecture.md)。
 

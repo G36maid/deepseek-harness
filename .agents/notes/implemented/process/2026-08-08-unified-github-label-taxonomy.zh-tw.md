@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-unified-github-label-taxonomy.md) | 繁體中文
+[English](2026-08-08-unified-github-label-taxonomy.md) | [简体中文](2026-08-08-unified-github-label-taxonomy.zh.md) | 繁體中文
 
 ## 問題
 

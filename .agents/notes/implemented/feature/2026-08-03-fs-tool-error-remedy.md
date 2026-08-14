@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-03-fs-tool-error-remedy.zh.md)
+English | [简体中文](2026-08-03-fs-tool-error-remedy.zh.md) | [繁體中文](2026-08-03-fs-tool-error-remedy.zh-tw.md)
 
 ## Problem
 

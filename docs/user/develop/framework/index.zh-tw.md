@@ -1,6 +1,6 @@
 # 外掛程式與生命週期
 
-[English](index.md) | 繁體中文
+[English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
 本頁介紹 Cordis 外掛程式模型和生命週期狀態機。
 

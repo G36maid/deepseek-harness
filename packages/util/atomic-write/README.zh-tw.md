@@ -1,6 +1,6 @@
 # dsh-atomic-write
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 零相依性的原子文件替換，供絕不允許在磁碟上留下不完整、被符號連結劫持或權限過寬內容的文件型儲存共用：使用者設定文件（`dsh-settings-file`）與憑據儲存（`dsh-credentials-local`）。
 

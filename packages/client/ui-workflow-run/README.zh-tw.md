@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-workflow-run
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這個瀏覽器外掛程式把持久化的頂層工作流程執行重建為獨立 Chat 節點。它消費由 [`dsh-tool-workflow`](../../workflow/tool-workflow/README.md) 擁有的四類 `tool-workflow/*` Session 事件，註冊一個 `ConversationNodeDefinition`，並透過 keyed `conversation.chat.node` slot 渲染，不改變現有工作流程工具卡。
 

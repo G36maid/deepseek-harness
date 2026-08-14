@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-title
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 由日誌支持的工作階段標題，提供即時確定性回退與一個選填非同步提供方。每次已接受的修訂都是僅寫入日誌的 `session/title` 事件；`foldSessionTitle()` 與 `ctx.sessionTitle.get()` 會選擇最新事件，並返回其事件 seq 和時間戳。
 

@@ -51,7 +51,7 @@ describe('zh-CN to zh-TW Markdown conversion', () => {
 
     const converted = convertChineseMarkdown(source)
 
-    expect(converted).toContain('[English](server.md) | 繁體中文')
+    expect(converted).toContain('[English](server.md) | [简体中文](server.zh.md) | 繁體中文')
     expect(converted).toContain('伺服器的軟體需要最佳化，使用者權限請聯絡管理員。')
     // code fence content stays byte-identical (comments included)
     expect(converted).toContain('// 这是注释：const x = "信息"')
@@ -109,7 +109,7 @@ describe('zh-CN to zh-TW Markdown conversion', () => {
     const codes = Array.from({ length: 14 }, (_unused, index) => `\`code${index}\``).join(' ')
     const source = `# 服务器\n\n[English](server.md) | 中文\n\n${codes}\n\n命令是 \`print("信息")\`。`
     const converted = convertChineseMarkdown(source)
-    expect(converted).toContain('[English](server.md) | 繁體中文')
+    expect(converted).toContain('[English](server.md) | [简体中文](server.zh.md) | 繁體中文')
     for (let index = 0; index < 14; index++) {
       expect(converted).toContain(`\`code${index}\``)
     }

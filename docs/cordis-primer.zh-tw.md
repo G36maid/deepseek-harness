@@ -1,6 +1,6 @@
 # Cordis 入門
 
-[English](cordis-primer.md) | 繁體中文
+[English](cordis-primer.md) | [简体中文](cordis-primer.zh.md) | 繁體中文
 
 Cordis 是 DeepSeek Harness 底層以 vendor 方式引入的外掛程式框架。本文介紹 harness 外掛程式作者在閱讀[子系統頁面](subsystems/core.md)上生成的服務/事件參考之前需要瞭解的 Cordis 核心概念；[Cordis 教程](cordis-tutorial/index.md)則透過實踐逐一講解這些概念。vendor 原始碼與同步流程見 [vendor/README.md](../vendor/README.md)。
 

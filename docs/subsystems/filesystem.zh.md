@@ -1,6 +1,6 @@
 # 文件系统
 
-[English](filesystem.md) | 中文
+[English](filesystem.md) | 简体中文
 
 可选的文件系统能力由四个部分组成：[dsh-fs](../../packages/fs/fs) 拥有 `ctx.fs` 以及带可选守卫的原子文本操作；[dsh-fs-local](../../packages/fs/fs-local) 实现本地磁盘后端；[dsh-fs-observation-policy](../../packages/fs/fs-observation-policy) 记录观测到的存在或缺失状态，并通过事件（而非服务）添加新鲜度规则；[dsh-tool-fs](../../packages/fs/tool-fs) 直接执行面向模型的 read/write/edit 调用并渲染窗口。它位于 agent loop（智能体循环）主干之外；替换后端不会改变策略或工具 schema。
 

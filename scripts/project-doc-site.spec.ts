@@ -503,13 +503,11 @@ describe('projectedPageContent', () => {
   })
 
   it('drops the language switcher the navigation bar already offers', () => {
-    expect(projectedPageContent('# Guide\n\nEnglish | [中文](./en/guide)\n\nBody.\n', page('zh-guide')))
+    expect(projectedPageContent('# Guide\n\nEnglish | [简体中文](./guide) | [繁體中文](./zh-TW/guide)\n\nBody.\n', page('zh-guide')))
       .toBe('# Guide\n\nBody.\n')
-    expect(projectedPageContent('# 指南\n\n[English](./en/guide) | 中文\n\n正文。\n', page('zh-guide')))
+    expect(projectedPageContent('# 指南\n\n[English](./en/guide) | 简体中文\n\n正文。\n', page('zh-guide')))
       .toBe('# 指南\n\n正文。\n')
-    expect(projectedPageContent('# 指南\n\nEnglish | [繁體中文](./zh-TW/guide)\n\n正文。\n', page('zh-guide')))
-      .toBe('# 指南\n\n正文。\n')
-    expect(projectedPageContent('# 指南\n\n[English](./en/guide) | 繁體中文\n\n正文。\n', page('zh-guide')))
+    expect(projectedPageContent('# 指南\n\n[English](./en/guide) | [简体中文](./guide) | 繁體中文\n\n正文。\n', page('zh-guide')))
       .toBe('# 指南\n\n正文。\n')
   })
 
@@ -521,7 +519,7 @@ describe('projectedPageContent', () => {
 
   it('keeps a switcher-shaped line that is not the page header', () => {
     // A tutorial showing the convention must still render the example.
-    const sample = '# Guide\n\nA\n\nB\n\nC\n\nD\n\nE\n\nEnglish | [中文](./x)\n'
+    const sample = '# Guide\n\nA\n\nB\n\nC\n\nD\n\nE\n\nEnglish | [简体中文](./x) | [繁體中文](./y)\n'
     expect(projectedPageContent(sample, page('zh-guide'))).toBe(sample)
   })
 

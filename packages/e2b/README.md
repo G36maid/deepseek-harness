@@ -1,6 +1,6 @@
 # e2b/ — E2B remote runtime family
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 An experimental provider-composition POC that places one filesystem/process execution world in an E2B Linux sandbox. E2B supplies only sandbox lifecycle and the two fundamental OS adapters; provider-neutral consumers build higher capabilities above them.
 

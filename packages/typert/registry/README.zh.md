@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-typert-registry
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 生成的 Typert 产物所用的运行时注册表。每个注册项包含某个包在一个 face 上的业务反射信息，以及可选的运行时 Zod schema；`ctx.typert` 会以原子方式同时注册两者，并在发起调用的 Cordis fiber 释放时一并移除它们。TypeScript 分析和代码生成由 [`dsh-typert-generator`](../generator/README.md) 负责。
 

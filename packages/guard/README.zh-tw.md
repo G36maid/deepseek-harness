@@ -1,6 +1,6 @@
 # guard/ — 迴圈衛生 guard 家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 行為 guard 外掛程式監視 agent loop（代理循環）中的無效模式，並強制執行單次呼叫預算。guard 是核心服務和擴充點的自包含消費端，而非可替換能力。
 

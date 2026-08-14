@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-typert-registry
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Runtime registry for generated Typert artifacts. A contribution carries one package face's business reflection and optional live Zod schemas; `ctx.typert` registers both atomically and withdraws them with the calling Cordis fiber. TypeScript analysis and code generation live in [`dsh-typert-generator`](../generator/README.md).
 

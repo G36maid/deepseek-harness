@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-11-runtime-arg-validation.zh.md)
+English | [简体中文](2026-06-11-runtime-arg-validation.zh.md) | [繁體中文](2026-06-11-runtime-arg-validation.zh-tw.md)
 
 ## Problem
 

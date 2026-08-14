@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-config-plane-boundaries.md) | 繁體中文
+[English](2026-07-30-config-plane-boundaries.md) | [简体中文](2026-07-30-config-plane-boundaries.zh.md) | 繁體中文
 
 > 範圍：對 [Web 設定面](2026-07-30-web-config-plane.md)的邊界加固——哪些 namespace 能抵達協議、哪些呼叫方能抵達它們，以及一個只持有區域性且可能過時的檢視表的編輯器該如何寫入，纔不會毀掉它看不見的東西。
 

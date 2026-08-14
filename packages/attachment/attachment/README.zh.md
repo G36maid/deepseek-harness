@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-attachment
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 持久附件服务边界。`ctx.attachments` 校验并以原子方式提交不可变图片字节，随后返回可序列化的 `ImageAttachmentRef`；消费方绝不会在会话事件中持久保存浏览器路径、对象 URL、提供方 URL 或 base64。
 

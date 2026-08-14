@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-spill-policy
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **tool-result spill policy**: a `tools/post-execute` transformer that keeps oversized plain-text tool results out of the model's context. When a final result exceeds `maxInlineBytes`, it saves the FULL text through [`ctx.spillStore`](../spill) and replaces the model-facing result with a bounded head/tail preview plus the backend's locator and retrieval hint.
 

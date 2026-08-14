@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-agent-instructions
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 为每个会话加载与 `AGENTS.md` 兼容的工作区指令文件。该插件会将初始的用户全局指令与项目指令链注入持久历史，随后发现嵌套文件，并在成功的文件系统工具调用后报告后续变更或移除。
 

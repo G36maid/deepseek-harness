@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-tool-row-unified-expand-and-inspect.md) | 繁體中文
+[English](2026-07-30-web-tool-row-unified-expand-and-inspect.md) | [简体中文](2026-07-30-web-tool-row-unified-expand-and-inspect.zh.md) | 繁體中文
 
 ## 問題
 

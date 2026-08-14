@@ -1,6 +1,6 @@
 # test-support/：開發和測試基礎設施
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這些包為倉庫開發、測試和示例提供支持，而不是產品 API。其相容性取決於所服務的開發需求。
 

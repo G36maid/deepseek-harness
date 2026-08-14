@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-separate-source-launch-from-build.md) | 繁體中文
+[English](2026-08-12-separate-source-launch-from-build.md) | [简体中文](2026-08-12-separate-source-launch-from-build.zh.md) | 繁體中文
 
 ## 問題
 

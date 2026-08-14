@@ -1,6 +1,6 @@
 # 第三方記憶 MCP 示例
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這三份**預設關閉的參考設定**透過 [`@deepseek-ai/dsh-mcp-client`](../../packages/mcp/mcp-client/README.md) 將一個記憶系統連線到 DSH。請選擇其中一份，或複製相同的通用 MCP 設定項來連線其他伺服器。
 

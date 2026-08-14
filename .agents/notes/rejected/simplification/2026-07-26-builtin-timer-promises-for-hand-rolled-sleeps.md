@@ -2,7 +2,7 @@
 
 Status: rejected — implementation (PR #679) falsified the parity premise: vitest's fake clock does not intercept `node:timers/promises`, so the swap costs deterministic fast tests for ~10 deleted lines
 
-English | [中文](2026-07-26-builtin-timer-promises-for-hand-rolled-sleeps.zh.md)
+English | [简体中文](2026-07-26-builtin-timer-promises-for-hand-rolled-sleeps.zh.md) | [繁體中文](2026-07-26-builtin-timer-promises-for-hand-rolled-sleeps.zh-tw.md)
 
 ## Problem
 

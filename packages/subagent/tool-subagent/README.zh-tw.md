@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-subagent
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 基於一個已設定 `ctx.subagents` 提供方、面向模型的委派工具。更換提供方只會改變傳輸，不會改變執行約定。
 

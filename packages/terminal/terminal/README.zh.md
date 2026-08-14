@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-terminal
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 限定所有者范围的持久 PTY seam。`TerminalSessionService` 注册为 `ctx.terminals`，生成不透明的会话 id，通过具名后端路由创建操作，将每个操作限制在完全相同的活跃 `Agent` 内，并在该 agent（智能体）或服务 dispose（资源释放）时等待后端完全停稳。
 

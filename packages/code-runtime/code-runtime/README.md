@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-code-runtime
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **`CodeRuntime`** (`ctx.codeRuntime`) defines WHAT a code runtime does — run one model-written program against a set of host-provided async bindings and report `{ value, logs, error? }` — without saying HOW.
 

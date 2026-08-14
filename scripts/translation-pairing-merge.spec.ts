@@ -127,7 +127,7 @@ function record(
   return content
 }
 
-const baseSource = '# Guide\n\nEnglish | [中文](guide.zh.md) | [繁體中文](guide.zh-tw.md)\n\nAlpha base.\n\nBeta base.\n'
+const baseSource = '# Guide\n\nEnglish | [简体中文](guide.zh.md) | [繁體中文](guide.zh-tw.md)\n\nAlpha base.\n\nBeta base.\n'
 const baseZh = '# 指南\n\n[English](guide.md) | 中文\n\n甲基础。\n\n乙基础。\n'
 const baseZhTw = '# 指南\n\n[English](guide.md) | 繁體中文\n\n甲基礎。\n\n乙基礎。\n'
 const currentSource = baseSource.replace('Alpha base.', 'Alpha current.')
@@ -316,7 +316,7 @@ describe('translation pairing merge composition', { timeout: 15_000 }, () => {
 
   it('rejects an authored source without an English language switcher', () => {
     const fixture = createFixture(false)
-    const source = baseSource.replace('English | [中文](guide.zh.md) | [繁體中文](guide.zh-tw.md)\n\n', '')
+    const source = baseSource.replace('English | [简体中文](guide.zh.md) | [繁體中文](guide.zh-tw.md)\n\n', '')
     const ancestor = record(fixture.root, 'docs/guide.md', source, baseZh, baseZhTw)
     const current = record(fixture.root, 'docs/guide.md', source, baseZh, baseZhTw)
     const other = record(fixture.root, 'docs/guide.md', source, baseZh, baseZhTw)

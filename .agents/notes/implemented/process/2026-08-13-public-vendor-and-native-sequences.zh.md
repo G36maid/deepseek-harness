@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-13-public-vendor-and-native-sequences.md) | 中文
+[English](2026-08-13-public-vendor-and-native-sequences.md) | 简体中文
 
 ## Problem
 

@@ -1,6 +1,6 @@
 # LLM（大型語言模型）流式輸出
 
-[English](llm-streaming.md) | 繁體中文
+[English](llm-streaming.md) | [简体中文](llm-streaming.zh.md) | 繁體中文
 
 [`packages/llm`](../../packages/llm/README.md) 提供對話與流式輸出類型：每個請求和持久歷史共用的 `Message`/`ContentBlock` 變體、完整組裝的模型請求、原始 `StreamChunk` 協議、每個配接器必須實作的配接器約定（adapter contract），以及共享的 assembler。[核心包](core.md)在每個輪次持有並記錄這些值；本頁聲明它們。
 

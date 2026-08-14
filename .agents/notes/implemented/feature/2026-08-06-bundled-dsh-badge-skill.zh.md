@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-bundled-dsh-badge-skill.md) | 中文
+[English](2026-08-06-bundled-dsh-badge-skill.md) | 简体中文
 
 ## 问题
 

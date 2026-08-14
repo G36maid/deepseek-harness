@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-06-11-api-extractor-reports.md) | 繁體中文
+[English](2026-06-11-api-extractor-reports.md) | [简体中文](2026-06-11-api-extractor-reports.zh.md) | 繁體中文
 
 > 文件塊型別檢查與事件分類體系兩部分已交付（[doc-sync（文件同步閘門）強制](../../archived/process/2026-06-11-doc-sync-enforcement.md)）；剩餘的 API 報告部分作為獨立提案被推遲。
 

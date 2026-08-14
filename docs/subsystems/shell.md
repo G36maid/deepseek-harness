@@ -1,6 +1,6 @@
 # Bash Executor
 
-English | [中文](shell.zh.md)
+English | [简体中文](shell.zh.md) | [繁體中文](shell.zh-tw.md)
 
 The bash execution seam is split across a Service Definition ([dsh-shell](../../packages/shell/shell), `ctx.shell`), Service Providers ([dsh-bash-local](../../packages/shell/bash-local) and [dsh-bash-sandbox](../../packages/shell/bash-sandbox)), and Consumer ([dsh-tool-bash](../../packages/shell/tool-bash), the `bash` schema). Generic background-job ids, ownership, and controls live in [jobs.md](jobs.md); this seam returns a task-free process handle. Raw process-group mechanics live behind the [subprocess seam](subprocess.md).
 

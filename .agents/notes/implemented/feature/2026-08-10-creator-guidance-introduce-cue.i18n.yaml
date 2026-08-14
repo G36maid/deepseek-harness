@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-10-creator-guidance-introduce-cue.md
-2026-08-10-creator-guidance-introduce-cue.md: 888fee7b3def585ed3098fedcb7bc6169ee26a22
-2026-08-10-creator-guidance-introduce-cue.zh.md: d80260abd1995df1f95e3f24fefcb265bda64c11
-2026-08-10-creator-guidance-introduce-cue.zh-tw.md: c20eecfcb0eb9a45a10701a6c7c4947ce8841bc6
+2026-08-10-creator-guidance-introduce-cue.md: 3bd8ccd66eb8eeddfdc69adfd97f66f1953a8f19
+2026-08-10-creator-guidance-introduce-cue.zh.md: 126c30ba9392bf5217bd43cb20e164de61adbfeb
+2026-08-10-creator-guidance-introduce-cue.zh-tw.md: 6072023c61dd6901145f2a0b9e765c0f142c2ec7

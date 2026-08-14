@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-27-session-projection-and-command-log.md) | 中文
+[English](2026-07-27-session-projection-and-command-log.md) | 简体中文
 
 ## 问题
 

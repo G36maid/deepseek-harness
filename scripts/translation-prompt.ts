@@ -66,7 +66,7 @@ const TEMPLATE_OPEN = '## 模板正文\n\n````text\n'
 const TEMPLATE_CLOSE = '\n````'
 const RESPONSE_SECTIONS = ['translation', 'review', 'final'] as const
 const RESPONSE_DELIMITERS = new Set(RESPONSE_SECTIONS.flatMap(section => [`<${section}>`, `</${section}>`]))
-const LANGUAGE_SWITCHER = /^(?:English \| \[中文\]\(.+\)(?: \| \[繁體中文\]\(.+\))?|\[English\]\(.+\) \| (?:中文|繁體中文))$/
+const LANGUAGE_SWITCHER = /^(?:English \| \[简体中文\]\(.+\)(?: \| \[繁體中文\]\(.+\))?|\[English\]\(.+\) \| (?:简体中文|\[简体中文\]\(.+\) \| 繁體中文))$/
 
 interface TranslationFiles {
   targetFilename: string
@@ -100,8 +100,10 @@ function translationFiles(input: Pick<TranslationPromptInput, 'sourceFilename' |
   const stem = input.sourceFilename.replace(/\.(zh-tw|zh)\.md$/, '').replace(/\.md$/, '')
   const targetFilename = `${stem}${suffixOf(input.targetLanguage)}.md`
   const targetSwitcher = input.targetLanguage === 'English'
-    ? `English | [中文](${stem}.zh.md) | [繁體中文](${stem}.zh-tw.md)`
-    : `[English](${stem}.md) | ${input.targetLanguage === 'Chinese' ? '中文' : '繁體中文'}`
+    ? `English | [简体中文](${stem}.zh.md) | [繁體中文](${stem}.zh-tw.md)`
+    : input.targetLanguage === 'Chinese'
+      ? `[English](${stem}.md) | 简体中文`
+      : `[English](${stem}.md) | [简体中文](${stem}.zh.md) | 繁體中文`
   return { targetFilename, targetSwitcher }
 }
 

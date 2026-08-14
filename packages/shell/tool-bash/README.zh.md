@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-bash
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 模型侧 `bash` 工具，注册在 `ctx.shell` 执行器 seam 上。前台执行始终位于该 seam 之后；后台进程句柄会注册到通用 `ctx.jobs` 运行时，并通过 `job_output`、`job_list` 和 `job_kill` 控制；这些工具由 `@deepseek-ai/dsh-tool-jobs` 提供。
 

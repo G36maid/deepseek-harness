@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-06-11-vendor-cordis-as-source.md
-2026-06-11-vendor-cordis-as-source.md: 265966ad0a28900f511efb3091889081d56db2b4
-2026-06-11-vendor-cordis-as-source.zh.md: af8c640e2164c2f14183b29f371e234e59035180
-2026-06-11-vendor-cordis-as-source.zh-tw.md: d29c333933d0c4e2430825789927d6d20bad292c
+2026-06-11-vendor-cordis-as-source.md: ee39053756576f487faa73e17d54d40fb7348983
+2026-06-11-vendor-cordis-as-source.zh.md: 3666be478796bfa3c1728f2b3f21a976f2bafa0a
+2026-06-11-vendor-cordis-as-source.zh-tw.md: aa5a0caa59280308addf1126b9d2e98676d4242f

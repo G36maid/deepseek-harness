@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-user-questions
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Web 提問功能外掛程式：其瀏覽器側把 `question` 條目註冊到工作階段擁有的 `conversation.composer` 鍵控 slot 中。其主機側刻意為空——在那裡掛載 `dsh-tool-ask-user` 會把工具放進登錄檔的**全域性層**，而全域性層會並入每一個 agent（代理），無論它由哪個 preset 組裝，於是一個「兩工具」的 benchmark preset 實際會呈現三個。渲染提問是宿主的 UI 能力，擁有該工具則是 agent 的能力，因此 `tool-ask-user` 行屬於需要它的各個 preset（以及沒有 preset 的 TUI 組裝）。
 

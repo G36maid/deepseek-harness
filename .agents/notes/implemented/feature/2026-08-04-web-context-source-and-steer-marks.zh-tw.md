@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-web-context-source-and-steer-marks.md) | 繁體中文
+[English](2026-08-04-web-context-source-and-steer-marks.md) | [简体中文](2026-08-04-web-context-source-and-steer-marks.zh.md) | 繁體中文
 
 ## 問題
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-settings-file
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 File-backed settings provider. One YAML or JSON document carries every namespace section; external edits hot-publish through `ctx.settings`, and `update()` re-reads the document under a writer lock before writing back atomically, preserving the user's YAML comments, any section owned by a plugin that is not currently loaded, and any on-disk change this process has not observed yet.
 

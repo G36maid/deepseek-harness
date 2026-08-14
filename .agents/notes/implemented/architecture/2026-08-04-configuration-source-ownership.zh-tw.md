@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-configuration-source-ownership.md) | 繁體中文
+[English](2026-08-04-configuration-source-ownership.md) | [简体中文](2026-08-04-configuration-source-ownership.zh.md) | 繁體中文
 
 ## Problem
 

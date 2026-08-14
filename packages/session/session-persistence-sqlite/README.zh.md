@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence-sqlite
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 SQLite 持久会话存储后端：第二个 `SessionPersistence` 提供方（见[会话持久化](../../../.agents/notes/implemented/architecture/2026-06-14-session-persistence.md)），满足与 `dsh-session-persistence-jsonl` 相同的约定（仅追加、连续 seq、延迟实体化、在 load 时关闭中断轮次），但用 `node:sqlite` 行而非文件字节表达。
 

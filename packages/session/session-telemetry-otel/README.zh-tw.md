@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-telemetry-otel
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [遙測（telemetry）seam](../session-telemetry/) 的 OpenTelemetry 後端，也是部署方唯一要載入的條目。其 `mode` 決定 seam 是即時跟隨工作階段事件、僅在記錄回饋時重播權威日誌，還是將遙測留在本機。上傳模式會原樣組合 OTel JS SDK（`LoggerProvider` → `BatchLogRecordProcessor` → OTLP/HTTP 日誌匯出器），把每條已交接記錄對映到 `logger.emit()`，並使用兩個插樁作用域（instrumentation scope）：ledger 記錄掛在 `@deepseek-ai/dsh-session-sessionTelemetry-otel` 下，運維記錄掛在 `@deepseek-ai/dsh-session-sessionTelemetry-otel/ops` 下。資源身份包含 `service.name`/`service.version`（來自 `dsh-llm` 的 `APP_IDENTITY`），以及本包的匿名 `user.id`（`$DSH_HOME/.anonymous-user-id`；首次使用時建立的隨機 UUID，刪除該文件可重設）；這些身份隨每個匯出批次攜帶一次，而非逐條記錄攜帶。
 

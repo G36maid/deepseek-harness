@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-shell-env
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The tool-independent shell environment plugin: owns the `ctx.shellEnv` registry of trusted, per-execution `DSH_*` variables that the model-facing shell tools (`dsh-tool-bash`, `dsh-tool-pwsh`) collect into every shell call's environment. Built-in shell facts (`DSH_HOME`, `DSH_SHELL=1`, `DSH_SESSION_ID`) are owned by the registry itself; other plugins register additional enumerable facts with effect-scoped disposal, and duplicate ownership or undeclared runtime keys fail loudly.
 

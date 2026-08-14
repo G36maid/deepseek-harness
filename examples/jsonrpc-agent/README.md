@@ -1,6 +1,6 @@
 # jsonrpc-agent
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The unattended coding-agent composition for the Python SDK's bundled JSON-RPC runtime. It intentionally loads no terminal UI, console logger, approval UI, or user-questions tool because stdout belongs to the SDK protocol and turns are driven by the SDK.
 

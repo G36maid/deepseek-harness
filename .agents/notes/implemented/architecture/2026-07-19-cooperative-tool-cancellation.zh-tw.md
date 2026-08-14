@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-cooperative-tool-cancellation.md) | 繁體中文
+[English](2026-07-19-cooperative-tool-cancellation.md) | [简体中文](2026-07-19-cooperative-tool-cancellation.zh.md) | 繁體中文
 
 ## 問題
 

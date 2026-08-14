@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-conversation
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工作階段領域：骨架（標題欄／分頁標籤／編輯器／空狀態）、聊天檢視表（分組步驟摘要流、流式尾部隔離與輪次狀態）、編輯器 dock（與輸入區一同 sticky 的工作階段統計行）、輸入區 dock（佇列行加 todo 計畫條）、詳情殼層，以及按 scope 尋址的 ConversationController。工具展示屬於 [`ui-tool`](../ui-tool/README.md)。
 

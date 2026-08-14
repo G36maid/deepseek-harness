@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-web-session-search.md) | 中文
+[English](2026-07-27-web-session-search.md) | 简体中文
 
 ## 问题
 

@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-26-remove-packed-session-fixture-migrator.md) | 中文
+[English](2026-07-26-remove-packed-session-fixture-migrator.md) | 简体中文
 
 ## 问题
 

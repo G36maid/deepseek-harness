@@ -1,6 +1,6 @@
 # 子行程
 
-[English](subprocess.md) | 繁體中文
+[English](subprocess.md) | [简体中文](subprocess.zh.md) | 繁體中文
 
 子行程 seam 分為 Service Definition（[dsh-subprocess](../../packages/subprocess/subprocess)，`ctx.subprocess`）與 Service Provider（[dsh-subprocess-local](../../packages/subprocess/subprocess-local)）；它的 Consumer 是其他能力 seam 與行程外後端：[bash 執行器家族](shell.md)使用收集模式的批次輸出，LSP 使用原始協議管道，PTY 後端使用終端機原語，ACP（Agent Client Protocol）subagent 後端則使用透過管道傳輸的 ndjson，並讓 stderr 採用 inherit。該 seam 擁有受管的 `DSH_*` 環境命名空間、共享的憑據清除（`scrubbedParentEnv`）與 `CollectedOutput` 形狀；[dsh-shell](../../packages/shell/shell) 重匯出這套詞彙，使 bash 消費端保持單一匯入入口。
 

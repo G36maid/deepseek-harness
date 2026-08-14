@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-sidebar
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 側邊欄外殼外掛程式：負責字標、New Session 操作、版面配置持有的摺疊控制元件、可感知滾動的區域 seat，以及固定在底部的 Settings seat。[ui-workspace](../ui-workspace/README.md) 持有渲染到 `sidebar.workspaces` 的 Workspace 與 Session 瀏覽器；本包既不派生其中的行，也不持有其檢視表偏好。摺疊到版面配置擁有的 56px 軌道仍屬於本機呈現行為。約定：[slot 系統標準](../../../.agents/notes/implemented/architecture/2026-07-22-slot-type-chain-implementation.md)。
 

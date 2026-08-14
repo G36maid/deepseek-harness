@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-translation-prompt-v4-contract.md) | 繁體中文
+[English](2026-07-23-translation-prompt-v4-contract.md) | [简体中文](2026-07-23-translation-prompt-v4-contract.zh.md) | 繁體中文
 
 ## 問題
 

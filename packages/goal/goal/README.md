@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-goal
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Event-sourced same-session goal state. The service retains one current completion objective in an agent's existing session while keeping permission to continue as process-local activation. The [goal-domain Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-persisted-same-session-goal-domain.md) owns the design rationale; the [goal type catalog](../../../docs/subsystems/goal.md) records the literal data shapes.
 

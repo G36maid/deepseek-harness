@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sdk-jsonrpc-demo
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Bin-only app that boots an external `cordis.yml`; its [`jsonrpc`](../../sdk/server/README.md) entry serves SDK clients over newline-delimited stdio. The config composes the spine, backends, and serving plugin. The published `dsh-jsonrpc-agent` bin resolves bare plugins from the configuration project. The Python SDK's `dsh-jsonrpc-agent-pkg` [single-executable runtime](../../../.agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md) uses `lib/packaged-bin.js` instead: packaged bare plugins resolve from its closed runtime tree, while relative plugins remain configuration-relative.
 

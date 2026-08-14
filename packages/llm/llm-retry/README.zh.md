@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-llm-retry`
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 一个函数插件，通过 agent loop（智能体循环）在已关闭步骤上触发的 `agent/request-error` waterfall（瀑布式事件）应用确切提供方重试策略。它不包装 `ctx.llm.stream()`：每次适配器调用仍是一次提供方尝试，每次重试都会开启新的编号轮次。
 

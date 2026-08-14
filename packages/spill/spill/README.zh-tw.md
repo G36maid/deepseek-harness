@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-spill
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **`SpillStore`**（`ctx.spillStore`）定義 spill 後端做什麼，即持久化某個工具過大的文字，並返回面向模型的定位資訊與取回指引；它不規定如何實作。
 

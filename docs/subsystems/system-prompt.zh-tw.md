@@ -1,6 +1,6 @@
 # 系統提示詞組裝
 
-[English](system-prompt.md) | 繁體中文
+[English](system-prompt.md) | [简体中文](system-prompt.zh.md) | 繁體中文
 
 [system-prompt 包](../../packages/core/system-prompt)負責管理提示詞貢獻者與一次組裝呼叫之間交換的資料。該包的 [README](../../packages/core/system-prompt/README.md) 記錄註冊、排序、作用域與渲染行為；本頁記錄各外掛程式實作或傳遞的確切跨包類型。
 

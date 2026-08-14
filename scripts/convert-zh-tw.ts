@@ -61,7 +61,10 @@ export function loadZhTwCorrections(table: string): ZhTwCorrections {
 
 /** Fix the language-switcher line for the Traditional Chinese side. */
 function fixSwitcher(markdown: string): string {
-  return markdown.replace(/^(\[English\]\([^)]*\.md\)) \| 中文$/gm, '$1 | 繁體中文')
+  return markdown.replace(
+    /^\[English\]\(([^)]*\.md)\) \| 中文$/gm,
+    (_match, enRef: string) => `[English](${enRef}) | [简体中文](${enRef.replace(/\.md$/, '.zh.md')}) | 繁體中文`,
+  )
 }
 
 /**

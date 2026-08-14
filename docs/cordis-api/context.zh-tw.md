@@ -3,7 +3,7 @@
 
 # 上下文
 
-[English](context.md) | 繁體中文
+[English](context.md) | [简体中文](context.zh.md) | 繁體中文
 
 上下文是 Cordis 的核心對象：所有服務、事件和生命週期 API 都透過 `ctx` 訪問。事件方法見[事件](events.md)，副作用與當前 fiber 見 [Fiber](fiber.md)，外掛程式載入見[登錄檔](registry.md)。
 

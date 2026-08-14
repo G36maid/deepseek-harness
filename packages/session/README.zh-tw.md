@@ -1,6 +1,6 @@
 # session/：持久工作階段資料平面
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這是圍繞 `core/session` 記憶體中執行的服務建置的持久功能族：包括持久化 seam 及其儲存後端和檢查點策略、提供日誌派生全量值的投影 seam、日誌支持的標題，以及外發工作階段遙測。它們全部都是**產品**包（package）。`session-query/` 仍是同級獨立組：讀取／工具介面的消費不相依性持久化內部實作。
 

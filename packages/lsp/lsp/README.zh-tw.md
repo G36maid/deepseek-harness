@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-lsp
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **LSP 能力 seam**：抽象 `LspService`（`ctx.lsp`）定義 harness 具備哪些語義程式碼導覽能力（轉到定義、尋找引用、尋找實作、懸停），並透過語言伺服器提供方實作，不把模型約定綁定到本機子行程。
 

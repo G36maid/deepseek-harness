@@ -1,6 +1,6 @@
 # Human Commands
 
-English | [中文](commands.zh.md)
+English | [简体中文](commands.zh.md) | [繁體中文](commands.zh-tw.md)
 
 The human-command registry service from [`dsh-commands`](../../packages/interaction/commands). Interactive adapters use it to discover and directly execute plugin-owned commands for an exact agent without creating a model message. The [command Agent Note](../../.agents/notes/implemented/feature/2026-07-19-plugin-command-registration.md) owns dispatch and lifecycle rationale; the [package README](../../packages/interaction/commands/README.md) owns composition and limitations.
 

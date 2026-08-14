@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-in-process-driver
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本包是兩個行程內提供方共用的執行驅動程式器。spawn 不傳入工作階段初始內容；fork 傳入父 agent（代理）已完成輪次的前綴。其餘機制，包括深度、子 agent 建立、選填的子 agent 訂製、結果讀取、取消和 dispose（資源釋放），都在此共用同一套實作。
 

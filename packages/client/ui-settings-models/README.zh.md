@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-settings-models
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 模型设置与产品引导插件。同一个 client Cordis 插件会注册 Models 页面和两个有序的首次使用弹窗：版本化内测声明，以及按条件显示的 DeepSeek 官方凭据步骤。两个步骤共用同一套弹窗组件，并继续由 `settings.onboarding` 排序。Models 平面把三个协议领域汇聚为一个共享快照：`llm.providers`（可配置提供方目录，含每条路由的存活／休眠状态）、`settings.describe`（序列化 schema、分层脱敏值、secret slot）与 `credentials.describe`（不含值的 configured/source/writable 徽标）；页面据此渲染提供方行，一次只展开一张编辑卡片，且不把路由存活状态呈现为提供方状态。
 

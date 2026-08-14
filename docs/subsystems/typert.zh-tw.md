@@ -1,6 +1,6 @@
 # Typert 遠端呼叫
 
-[English](typert.md) | 繁體中文
+[English](typert.md) | [简体中文](typert.zh.md) | 繁體中文
 
 以下類型由生成的 Remote 產物、Host Gateway 與消費端 API assembly 共用。[Typert Gateway Agent Note](../../.agents/notes/implemented/architecture/2026-08-02-typert-remote-method-calls.md) 負責架構與傳輸決策；本頁記錄 [`dsh-typert-protocol`](../../packages/typert/protocol/src/types.ts) 和 [`dsh-api-gateway`](../../packages/api/gateway/src/types.ts) 中公共約定的字面定義。
 

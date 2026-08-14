@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-composer-text-layers-share-one-scrollport.md) | 中文
+[English](2026-07-31-composer-text-layers-share-one-scrollport.md) | 简体中文
 
 ## 问题
 

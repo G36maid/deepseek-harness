@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-jobs
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `ctx.jobs` 的面向模型控制器：三個與 kind 無關的工具、完成通知和一個後臺工作提示詞區段。載入該外掛程式會附加 `ctx.jobs.start()` 所要求的控制器。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/node-addon-landlock-run-linux-x64
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Prebuilt `bin/landlock-run` Landlock launcher for linux-x64 — a static musl binary compiled natively (no cross toolchain) from the C source shipped in [`@deepseek-ai/node-addon-landlock-run`](https://www.npmjs.com/package/@deepseek-ai/node-addon-landlock-run). npm's `os`/`cpu` fields select this package at install time; the entry package resolves it to a file path — it ships no JavaScript and is never imported.
 

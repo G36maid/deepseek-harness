@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-win32-in-process-folder-dialog.md) | 繁體中文
+[English](2026-08-02-win32-in-process-folder-dialog.md) | [简体中文](2026-08-02-win32-in-process-folder-dialog.zh.md) | 繁體中文
 
 ## 問題
 

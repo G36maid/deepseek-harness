@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-webserver
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Web HTTP 與 upgrade route 註冊外掛程式（默認匯出 `WebServer`，設定為 `{host, port}`）：一個在啟用時開始監聽的 `node:http` 伺服器，提供 `ctx.webServer`。`register(route)` 新增具名的 `exact`／`prefix` HTTP route；`registerUpgrade(route)` 新增精確 pathname 的 upgrade route；同一張表內的重複路徑會拋錯，因為 route 模式是組合層約定，衝突即設定錯誤；兩者返回的 disposer 都會移除註冊。`registerFallback(handler)` 註冊一個 handler，處理所有未被具名 route 命中的請求。第二次註冊會拋錯；隨附的 SPA dist 伺服器 [`dsh-host-frontend-static`](../frontend-static/README.md) 是該 handler 的所有者，沒有註冊 handler 時伺服器返回 404。`tapIndex(transform)` 新增一個 index.html 轉換，`applyIndexTaps(html)` 按註冊順序對一段回應體執行已註冊的轉換；fallback handler 在每次 index 回應時呼叫它。`port` 讀取正在監聽的埠（當 `port` 為 0 時讀取 OS 分配的值），`host` 讀取設定的綁定宿主（這些是其他外掛程式據以自適應的組合期事實，例如 directory-picker 選擇器）。HTTP 匹配順序固定不變：先在整張表中匹配精確 route，再匹配最長前綴，最後交給 fallback handler。upgrade 只做精確匹配，未命中連線直接關閉；註冊順序不影響請求處理。
 

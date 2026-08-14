@@ -1,6 +1,6 @@
 # dsh-brand
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `Branded<B>` 名義類型原語：一個微小的**僅類型**包，無執行時期程式碼，也不相依性其他 harness 包；所有負責跨邊界 id 的包都會共享它。
 

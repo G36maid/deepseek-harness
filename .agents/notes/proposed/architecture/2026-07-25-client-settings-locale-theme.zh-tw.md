@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-25-client-settings-locale-theme.md) | 繁體中文
+[English](2026-07-25-client-settings-locale-theme.md) | [简体中文](2026-07-25-client-settings-locale-theme.zh.md) | 繁體中文
 
 ## 問題
 

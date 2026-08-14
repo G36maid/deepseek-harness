@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-command-feedback
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 与触发方式无关的会话反馈，以及面向用户的 `/feedback` 采集。本包导出 `recordFeedback(session, text)`；该函数会追加一个仅写入日志的 `feedback/record` 事件。该插件通过 [`ctx.commands`](../../interaction/commands/README.md) 注册一个全局命令，因此每个已组合的命令适配器都能发现它；随附的 Web 客户端无需模型轮次即可执行。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-workflow
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 工作流 seam（扩展点，`ctx.workflowEngine`）执行由模型编写、可扇出 subagent 的编排脚本。该 seam 定义脚本、运行、结果、错误和事件契约；引擎负责决定如何隔离并执行脚本。
 

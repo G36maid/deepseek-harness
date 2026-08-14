@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-26-web-syntax-highlighting-shiki.zh.md)
+English | [简体中文](2026-07-26-web-syntax-highlighting-shiki.zh.md) | [繁體中文](2026-07-26-web-syntax-highlighting-shiki.zh-tw.md)
 
 > Scope: the web client's one syntax-highlighting system — the dependency ruling, the singleton shape, the token-sheet contract, and the consuming surfaces. Fifth PR of the Code Mode UI stack; the [chat sub-call rows note](../feature/2026-07-26-code-mode-chat-subcall-rows.md) shipped the `run_code` program body this exists to make readable. Styling ground rules are owned by [the web styling ruling](2026-07-19-web-styling-system.md).
 

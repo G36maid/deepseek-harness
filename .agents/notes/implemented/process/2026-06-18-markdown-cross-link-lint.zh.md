@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-markdown-cross-link-lint.md) | 中文
+[English](2026-06-18-markdown-cross-link-lint.md) | 简体中文
 
 ## 问题
 

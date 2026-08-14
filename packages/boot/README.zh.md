@@ -1,6 +1,6 @@
 # boot/：共享的 app bin 启动粘合层
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 由 `apps/cli` 和 [`examples/`](../examples/README.md) demo bin 共享、与渠道无关的启动库。
 

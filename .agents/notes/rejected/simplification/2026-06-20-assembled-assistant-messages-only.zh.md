@@ -2,7 +2,7 @@
 
 Status: rejected — 高保真分片回放、失败流的部分输出与快照回放目前依赖持久化的 `assistant/chunk` 事件。只有具备无信息损失的回放或产物替代方案后，才能删除分片。
 
-[English](2026-06-20-assembled-assistant-messages-only.md) | 中文
+[English](2026-06-20-assembled-assistant-messages-only.md) | 简体中文
 
 ## 问题
 

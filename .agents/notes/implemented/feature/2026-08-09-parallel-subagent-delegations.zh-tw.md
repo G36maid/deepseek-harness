@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-parallel-subagent-delegations.md) | 繁體中文
+[English](2026-08-09-parallel-subagent-delegations.md) | [简体中文](2026-08-09-parallel-subagent-delegations.zh.md) | 繁體中文
 
 ## 問題
 

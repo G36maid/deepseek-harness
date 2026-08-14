@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs-local
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **local-filesystem implementation** of the `ctx.fs` provider contract ([`@deepseek-ai/dsh-fs`](../fs)). Backs the twelve `FileSystem` primitives with the host filesystem; loading it as a plugin populates `ctx.fs`.
 

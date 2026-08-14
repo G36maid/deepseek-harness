@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-web-assistant-markdown.md) | 中文
+[English](2026-07-23-web-assistant-markdown.md) | 简体中文
 
 ## 问题
 

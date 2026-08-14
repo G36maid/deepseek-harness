@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-19-plugin-command-registration.zh.md)
+English | [简体中文](2026-07-19-plugin-command-registration.zh.md) | [繁體中文](2026-07-19-plugin-command-registration.zh-tw.md)
 
 ## Problem
 

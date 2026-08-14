@@ -1,6 +1,6 @@
 # storage/：非工作階段儲存家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本家族透過具名後端和類型化資料形式，持久化工作階段事件日誌以外的應用資料。
 

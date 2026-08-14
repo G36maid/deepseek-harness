@@ -1,6 +1,6 @@
 # LLM 配接器
 
-[English](llm-adapter.md) | 繁體中文
+[English](llm-adapter.md) | [简体中文](llm-adapter.zh.md) | 繁體中文
 
 本文介紹如何為 Harness 接入新的模型提供方。
 

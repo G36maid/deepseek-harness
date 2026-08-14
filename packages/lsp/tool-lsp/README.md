@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-lsp
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The model-facing **`lsp` tool** over `ctx.lsp`: one read-only tool with four operations for precise code navigation. It owns the model schema, prompt guidance, coordinate conversion, result limits and formatting, and UI presentation; it imports no provider.
 

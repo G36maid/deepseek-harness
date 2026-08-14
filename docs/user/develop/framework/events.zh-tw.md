@@ -1,6 +1,6 @@
 # 事件系統
 
-[English](events.md) | 繁體中文
+[English](events.md) | [简体中文](events.zh.md) | 繁體中文
 
 事件是 Cordis 外掛程式間通訊的核心機制。Harness 大量使用事件來實作松耦合的擴充點。
 

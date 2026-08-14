@@ -1,6 +1,6 @@
 # 打包與安裝外掛程式
 
-[English](publish.md) | 繁體中文
+[English](publish.md) | [简体中文](publish.zh.md) | 繁體中文
 
 前幾篇教程透過 `--patch` overlay 載入本機外掛程式。本教程把它打包成可安裝的**組合包**（bundle），用 `dsh plugin add` 安裝進一個 **profile**，並解釋決定組合後設定的層順序。本文假設 `dsh` CLI 已安裝。請先完成[外掛程式設定](./config.md)。
 

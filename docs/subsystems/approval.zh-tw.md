@@ -1,6 +1,6 @@
 # 使用者審批
 
-[English](approval.md) | 繁體中文
+[English](approval.md) | [简体中文](approval.zh.md) | 繁體中文
 
 [dsh-user-approval](../../packages/interaction/user-approval) 的使用者審批 seam 回答一個問題：這個具體操作是否可以繼續？它擁有共享的請求/結果詞彙、`ctx.approval` 分發服務、`approval/request` 應答者 waterfall（瀑布式事件）、僅記錄日誌的審計事件對，以及按工作階段的 `ask`/`never` 策略。UI 通道可以提供人類應答者；[ACP（Agent Client Protocol）自動化橋接層](../../packages/acp/acp)為其擁有的 agent（代理）提供一次性機器決策。呼叫方如 [dsh-tools](../../packages/core/tools) 和 [dsh-tool-bash](../../packages/shell/tool-bash) 消費閉合的結果，除非結果為 `allowed-once`，否則一律拒絕。
 

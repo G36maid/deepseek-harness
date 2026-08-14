@@ -1,6 +1,6 @@
 # preset/：按工作階段組裝 agent
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **agent preset** 是一個目錄，其中放置一份 `agent.cordis.yml`。把它掛載到某個 agent（代理）的 scope 上下文之下，該工作階段就獲得自己的工具與提示詞段落，而其他在執行的工作階段各自保持不變，因此一個行程可以同時執行多個組裝方式不同的 agent。
 

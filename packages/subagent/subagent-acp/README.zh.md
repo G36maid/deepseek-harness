@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-acp
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 ACP（Agent Client Protocol）提供方会在全新的子进程中运行每个 subagent，并作为 Agent Client Protocol 客户端驱动它。这是 spawn 与 fork 的进程外替代方案：子 agent（智能体）拥有自己的运行时、会话、模型配置和工具。
 

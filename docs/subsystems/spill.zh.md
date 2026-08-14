@@ -1,6 +1,6 @@
 # spill 存储
 
-[English](spill.md) | 中文
+[English](spill.md) | 简体中文
 
 spill 存储 seam 是一项[能力 seam](../../.agents/notes/implemented/architecture/2026-07-08-tool-output-spill-files.md)，它持久保存工具的超大文本，并返回面向模型的定位符与检索指引；该能力拆分到三个包：Service Definition（[dsh-spill](../../packages/spill/spill)，`ctx.spillStore`）、Service Provider（[dsh-spill-local](../../packages/spill/spill-local)，宿主文件系统中会话作用域的私有文件）和 Consumer（[dsh-spill-policy](../../packages/spill/spill-policy)，`tools/post-execute` 策略）。spill 是**一项可选能力**，不属于 agent loop（智能体循环）主干，因此其词汇记录在此处，而不在 [core.md](core.md) 中。预览机制仍归 [dsh-output-retention](../../packages/util/output-retention) 所有；该 seam 只保存策略交给它的最终文本。
 

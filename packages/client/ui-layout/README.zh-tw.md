@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-layout
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 外殼外掛程式：三欄 AppFrame（拖動手柄與讓步鏈）加 `ctx.layout` 面板幾何服務；它註冊到執行時期擁有的 `root` slot，並聲明 `sidebar`、`conversation`、`details` 和 `conversation.empty`。側邊欄的縮放邊界是不可見命中條帶，詳情欄邊界則保留其浮動膠囊；讓步期間只有詳情欄會收縮並隨後自動關閉。關閉的側邊欄仍保留 56px 控制欄，詳情欄則關閉到零寬度。該包還提供主題呈現器：它消費解析後的 `ctx.theme` 快照，並將其投影到 document（用 `html { color-scheme }` 驅動程式原生 UA 控制元件，依據當前配色方案設定 `body[data-ds-dark-theme]`，並將主題的別名 token 設為 body 上的內聯變數，同時擁有一個 `<meta name="theme-color">`，其內容隨計算後的 body 背景色更新）。在應用調色板和 token 後進行測量，可確保渲染後的背景成為唯一的顏色依據；呈現器在 dispose（資源釋放）時會移除其自有的元資料節點，並一並清除其寫入的其他全域性狀態。
 

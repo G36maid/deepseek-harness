@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-31-fork-anchor-floors-to-event-seq.zh.md)
+English | [简体中文](2026-07-31-fork-anchor-floors-to-event-seq.zh.md) | [繁體中文](2026-07-31-fork-anchor-floors-to-event-seq.zh-tw.md)
 
 ## Problem
 

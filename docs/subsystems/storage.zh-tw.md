@@ -1,6 +1,6 @@
 # 儲存
 
-[English](storage.md) | 繁體中文
+[English](storage.md) | [简体中文](storage.zh.md) | 繁體中文
 
 儲存子系統持久保存一切不屬於工作階段事件日誌的資料（工作階段日誌有自己的 seam——見 [persistence.md](persistence.md)）。它是一項選填能力，不屬於 agent loop（代理循環）主幹，並按[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md) 拆分：樞紐（hub）與 Service Definition（[dsh-storage](../../packages/storage/storage)，`ctx.storage`）、Service Provider（註冊為 `json` 的 [dsh-storage-json](../../packages/storage/storage-json) 與註冊為 `sqlite` 的 [dsh-storage-sqlite](../../packages/storage/storage-sqlite)），以及 Consumer 資料形式（[dsh-storage-domain](../../packages/storage/storage-domain)，`ctx.storageDomain`，也可經 `ctx.storage.domain` 訪問）——它是後端約定的唯一 Consumer，也是其他一切所使用的類型化 API。樞紐自身不做任何 IO：後端擁有介質，資料形式擁有語義，產品包絕不直接觸碰後端。設計記錄：[領域 KV 儲存 Agent Note](../../.agents/notes/proposed/architecture/2026-07-24-domain-kv-storage-and-workspace.md)。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox-windows-acl
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Windows write-restriction sandbox backend for the [harness sandbox seam](../sandbox/): a Node.js/[koffi](https://koffi.dev/) port of the mechanism in [huoyaoyuan/windows-acl-restrict-poc](https://github.com/huoyaoyuan/windows-acl-restrict-poc) (`10e4dfb`, the fixed revision), mounted as the `enforcement: 'partial'` win32 rung of the [`@deepseek-ai/dsh-sandbox-local`](../sandbox-local/) chain (`workspace-write` / `read-only` modes); the same package carries the Linux/macOS backends.
 

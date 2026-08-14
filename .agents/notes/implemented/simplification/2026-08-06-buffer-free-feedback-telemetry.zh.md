@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-buffer-free-feedback-telemetry.md) | 中文
+[English](2026-08-06-buffer-free-feedback-telemetry.md) | 简体中文
 
 ## 问题
 

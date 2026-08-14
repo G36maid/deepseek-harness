@@ -1,6 +1,6 @@
 # 工作階段投影
 
-[English](session-projection.md) | 繁體中文
+[English](session-projection.md) | [简体中文](session-projection.zh.md) | 繁體中文
 
 工作階段投影 seam 是一項[能力 seam](../capability-seams.md)：領域 host 外掛程式經由它向用戶端載體供給按工作階段的日誌派生狀態的當前全量值；三方分別是 Service Definition 與登錄檔（[dsh-session-projection](../../packages/session/session-projection)，`ctx.sessionProjections`）、領域貢獻方（每個領域註冊一個純單元）與載體（[dsh-host-apiproxy](../../packages/host/apiproxy) 的歷史尾頁與 `session/projection` 推送幀）。它是一項選填能力，不屬於 agent loop（代理循環）主幹。框架負責驅動程式，領域負責計算：登錄檔只訂閱一次 `session/event`，並把每個已提交事件摺疊進每個單元；領域不持有任何訂閱，用戶端也從不摺疊領域事件——它們收到的是成品值。設計權威：[session-projection RFC](../../.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md)；驅動程式、快取與變更流約定：[包 README](../../packages/session/session-projection/README.md)。
 

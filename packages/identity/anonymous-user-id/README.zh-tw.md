@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-anonymous-user-id
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工作階段遙測、直接回饋確認與 DeepSeek 提供方請求共用的匿名身份。`getOrCreateAnonymousUserId()` 返回一個限定於單個 harness home 的隨機 UUID v4，並以裸行形式持久化到 `$DSH_HOME/.anonymous-user-id`（未設定 `DSH_HOME` 時為 `~/.dsh/.anonymous-user-id`）。OpenTelemetry 後端將其作為 Resource 的 `user.id` 上報；`/feedback` 在確認文字中包含同一個值；`dsh-llm-deepseek` 則透過 `x-deepseek-harness-user-id` 傳送該值，使接收系統無需獨立生成身份即可關聯記錄。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-dsh-sdk
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 SDK 提供方会在全新的子进程中把每个 subagent 作为完整的 DeepSeek Harness 运行时运行，并经由 [TypeScript SDK 客户端](../../sdk/client/README.md) 通过 stdio JSON-RPC 驱动。它是 [`subagent-acp`](../subagent-acp/README.md) 之外的第二个进程外后端，差异在协议格式（wire format）和子进程约定：ACP（Agent Client Protocol）后端能驱动任何 Agent Client Protocol agent（智能体）；本后端专门驱动 harness SDK 运行时（`dsh-jsonrpc-agent` bin 或打包后的可执行文件），因此子进程是一个完整的对等 harness，拥有由 `cordis.yml` 决定的组合、会话持久化、模型路由和工具。
 

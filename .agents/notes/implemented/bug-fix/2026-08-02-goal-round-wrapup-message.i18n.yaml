@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-02-goal-round-wrapup-message.md
-2026-08-02-goal-round-wrapup-message.md: c6bc3d5912b0789efde55880c2be892e98e34a5b
-2026-08-02-goal-round-wrapup-message.zh.md: f223516e1255f2dafe026a48d1faafa838af6cb8
-2026-08-02-goal-round-wrapup-message.zh-tw.md: 812a6a008400677b4d8b5837d96474ae1daed6ef
+2026-08-02-goal-round-wrapup-message.md: e44b7f7099f5dfd7cc73633a8f220355e63c4c38
+2026-08-02-goal-round-wrapup-message.zh.md: 174d80d89565efabd0dc8179ca5df6ee19566829
+2026-08-02-goal-round-wrapup-message.zh-tw.md: 780b7cc75535f9f6070361b81ba6ca04ec5b3b03

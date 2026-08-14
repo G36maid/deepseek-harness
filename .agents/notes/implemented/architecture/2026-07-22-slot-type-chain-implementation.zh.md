@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-slot-type-chain-implementation.md) | 中文
+[English](2026-07-22-slot-type-chain-implementation.md) | 简体中文
 
 > 范围：Web 客户端 slot 体系的终版设计——UI 插件如何拼合页面、渲染权威落在哪里、组件 props 如何定型、业务活数据住在哪里。周边语境（装载链、对象层、服务）归 [Web 客户端架构 RFC](2026-07-19-gui-web-client-architecture.md) 所有，其 slot 各节移交本文。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-13-session-query-tracing.md) | 繁體中文
+[English](2026-07-13-session-query-tracing.md) | [简体中文](2026-07-13-session-query-tracing.zh.md) | 繁體中文
 
 ## 問題
 

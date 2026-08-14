@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-08-12-face-named-client-test-files.md
-2026-08-12-face-named-client-test-files.md: e83ebe4fda25218d96bab546af025b59064ca18f
-2026-08-12-face-named-client-test-files.zh.md: 7062c67f9c98d87f480e119df807955c1a10820a
-2026-08-12-face-named-client-test-files.zh-tw.md: 9fbfaaa890b068f9b8a2755286900df3321732c8
+2026-08-12-face-named-client-test-files.md: ca9faddd8bddb6e2a4760cdcd72b2cb59d646e5a
+2026-08-12-face-named-client-test-files.zh.md: 5603182fdcffe62952ad3274a13a44b546c14591
+2026-08-12-face-named-client-test-files.zh-tw.md: 1477612689d08bbbecab91f31f35291353215428

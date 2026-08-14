@@ -1,6 +1,6 @@
 # 僅限 Session 內的 Schedule
 
-[English](schedule.md) | 繁體中文
+[English](schedule.md) | [简体中文](schedule.zh.md) | 繁體中文
 
 Schedule 擁有持久提醒；這些提醒會作為普通的後續對話輪次返回原 live Session。[持久 Schedule Agent Note](../../.agents/notes/implemented/feature/2026-08-05-durable-web-schedule.md) 負責持久化與生命週期決策，[對話式交付](../../.agents/notes/implemented/simplification/2026-08-09-conversational-schedule-delivery.md) 負責無回執邊界，[顯式時區邊界](../../.agents/notes/implemented/simplification/2026-08-09-explicit-schedule-time-zone.md) 負責瀏覽器本機解釋，[有界固定速率 Schedule](../../.agents/notes/implemented/simplification/2026-08-09-bounded-fixed-rate-schedule.md) 負責重複調度。本頁記錄 [`packages/schedule/schedule/src/types.ts`](../../packages/schedule/schedule/src/types.ts) 中的持久資料形狀和麵向模型的資料形狀；[包 README](../../packages/schedule/schedule/README.md) 負責組合、工具行為與確切的提醒 framing。
 

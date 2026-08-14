@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-lsp-stdio
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 A **generic stdio language-server backend** for `ctx.lsp`. One plugin instance accepts a named server table and registers one isolated provider per entry. It reads through `ctx.fs` and launches through `ctx.subprocess`, so the server and source always inhabit the mounted execution world. This is a generic host, not a language-server catalog or installer — deployments configure commands and mappings explicitly; presets belong in `cordis.yml` overlays.
 

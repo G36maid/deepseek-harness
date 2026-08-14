@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-message-feedback
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本包提供由 Host 擁有、針對單條已完成 assistant 訊息的可編輯回饋。它註冊 `ctx.messageFeedback`，在 storage-domain 中為每個 Session 持久化一條綁定生命週期的伴隨記錄（sidecar），並行布 Host `messageFeedback.list`、`messageFeedback.put` 與 `messageFeedback.delete` 一元 Remote 契約。它與不可變的 Session 級 `feedback/record` 事件相互獨立，不執行遙測交接。[訊息回饋伴隨記錄 Agent Note](../../../.agents/notes/implemented/architecture/2026-08-10-message-feedback-sidecar.md)擁有其設計邊界。
 

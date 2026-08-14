@@ -1,6 +1,6 @@
 # apps/web browser e2e
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 These tests boot the real web composition in-process and drive it with a real
 Chromium over real HTTP. The lane's mechanics — modes, fixtures, goldens, and

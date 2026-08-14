@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-command-goal
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 面向使用者的 `/goal` 控制，基於 [`ctx.goals`](../goal/README.md) 實作。該外掛程式透過 [`ctx.commands`](../../interaction/commands/README.md) 註冊一個全域性命令，因此每個已組合的命令配接器都能發現並執行它，無需模型輪次。[使用者 goal 命令 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-human-goal-command.md) 負責使用者體驗與組合決策。
 

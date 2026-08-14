@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-cordis-client-runner
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Browser half of dynamic dual-half plugin packages. The host-side runner holds every definition's code in process memory and asks the open pages, over a `cordis/request-run` event, whether to run one; this package answers that request, turns the definition into a live browser plugin, and turns a `dynamicCordisRunner/retract` event back into a clean page.
 

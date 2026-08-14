@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-25-web-command-surfaces-and-assembly.md) | 繁體中文
+[English](2026-07-25-web-command-surfaces-and-assembly.md) | [简体中文](2026-07-25-web-command-surfaces-and-assembly.zh.md) | 繁體中文
 
 > 範圍：命令目錄快取與三型派發（ui-commands）、popup 選擇流、skill（技能） / subagent 兩個引用源、fixture（測試前置資料）命令路由與裝配驗收（slash-flow 快照）。承載 wire 見[工作階段作用域 note](2026-07-25-web-client-session-scope-and-provide-channel.md)；觸發、選單和輸入機器見[輸入狀態機 note](2026-07-25-web-input-machine-and-slash-pipeline.md)。
 

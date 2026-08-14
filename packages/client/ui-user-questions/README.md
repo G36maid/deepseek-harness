@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-user-questions
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Web question feature plugin: its browser half registers the `question` entry in the conversation-owned `conversation.composer` keyed slot. Its host half is empty on purpose — mounting `dsh-tool-ask-user` there put the tool in the registry's GLOBAL layer, which merges into every agent regardless of the preset that composed it, so a two-tool benchmark preset really presented three. Rendering a question is a host UI capability; having the tool is an agent capability, so the `tool-ask-user` row belongs to the presets that want it (and to the TUI composition, which has no presets).
 

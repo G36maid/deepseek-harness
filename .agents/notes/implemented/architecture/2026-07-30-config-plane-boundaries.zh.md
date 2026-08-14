@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-config-plane-boundaries.md) | 中文
+[English](2026-07-30-config-plane-boundaries.md) | 简体中文
 
 > 范围：对 [Web 配置面](2026-07-30-web-config-plane.md)的边界加固——哪些 namespace 能抵达协议、哪些调用方能抵达它们，以及一个只持有局部且可能陈旧的视图的编辑器该如何写入，才不会毁掉它看不见的东西。
 

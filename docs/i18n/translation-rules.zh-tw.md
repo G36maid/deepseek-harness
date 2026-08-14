@@ -1,6 +1,6 @@
 # 翻譯規則
 
-[English](translation-rules.md) | 繁體中文
+[English](translation-rules.md) | [简体中文](translation-rules.zh.md) | 繁體中文
 
 本文規定：如何在本倉庫文件配對的英文、繁體中文與繁體中文三種語言之間進行翻譯。所有語言同權（見 [README.md](README.md)）：每次變更可以用任一語言撰寫，被編輯的一側即為本次更新的源；本文的規則約束如何產出或更新其他對側檔案。這些規則對人類和 agent（代理）同等生效。日常工作中，agent 會在術語指導下直接一次完成有改動內容的翻譯；擴充版 [.agents/skills/dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) 工作流程僅在使用者顯式呼叫時執行。規則等級沿用 RFC 2119 的用法：**必須（MUST）** ／ **禁止（MUST NOT）** 會卡閘門或評審；**應當（SHOULD）** 偏離時要說明理由；**可以（MAY）** 自行裁量。
 

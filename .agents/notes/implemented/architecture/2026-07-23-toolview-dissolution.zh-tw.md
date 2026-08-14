@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-toolview-dissolution.md) | 繁體中文
+[English](2026-07-23-toolview-dissolution.md) | [简体中文](2026-07-23-toolview-dissolution.zh.md) | 繁體中文
 
 > 範圍：獨立工具環（ToolViewRegistry/ctx.toolviews/outlet）為何退役、被什麼取代。本決策產出的落地態敘述歸 [Web 用戶端架構注](2026-07-19-gui-web-client-architecture.md)；一切現在所執行其上的註冊模型歸 [slot 體系標準](2026-07-22-slot-type-chain-implementation.md) 所有。後續的 [Client Tool 展示所有權](2026-08-08-client-tool-presentation-ownership.md) 決策僅取代本篇的 per-view 放置方式：Tool 名稱分發仍使用 keyed slot，而非平行登錄檔。
 

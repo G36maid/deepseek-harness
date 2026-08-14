@@ -1,6 +1,6 @@
 # session-query/：工作階段檢索能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本家族提供經過授權的即時與持久工作階段日誌檢索，且獨立於壓縮（compaction）。
 

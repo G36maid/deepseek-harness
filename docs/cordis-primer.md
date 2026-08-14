@@ -1,6 +1,6 @@
 # Cordis Primer
 
-English | [中文](cordis-primer.zh.md)
+English | [简体中文](cordis-primer.zh.md) | [繁體中文](cordis-primer.zh-tw.md)
 
 Cordis is the vendored plugin framework underneath DeepSeek Harness. This primer teaches the Cordis ideas a harness plugin author needs before reading the generated service/event reference on the [subsystem pages](subsystems/core.md); the [Cordis tutorial](cordis-tutorial/index.md) walks the same ideas hands-on. The vendored source and sync procedure live in [vendor/README.md](../vendor/README.md).
 

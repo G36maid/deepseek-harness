@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-theme
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Theme plugin: ThemeRuntime over the --dsw-* token base stylesheets (static scale + alias semantic layers). The service owns the live theme preference (`light`/`dark`/`system`), resolves `system` through `prefers-color-scheme`, and publishes immutable `ThemeSnapshot`s on the `theme/change` event; it never touches the DOM — ui-layout's presenter applies the resolved snapshot (`html { color-scheme }`, `body[data-ds-dark-theme]`, and inline alias tokens). A loopback browser provides the service immediately with `system`, then loads `ui-theme.preference` in the background and writes each built-in selection through the Host settings API, whose local provider stores it in `$DSH_HOME/settings.yaml` by default; pushed settings changes and reconnects refetch it, rapid selections are serialized in gesture order with namespace revisions, and a rejected latest write reloads the durable value. A remote browser cannot access the privileged settings API, so its selection remains process-local. Third-party registered theme ids remain an in-process extension and do not cross the built-in settings schema; removing one never overwrites the last durable built-in preference. The [Host-backed preferences decision](../../../.agents/notes/implemented/bug-fix/2026-08-06-host-backed-web-preferences.md) owns the persistence boundary.
 

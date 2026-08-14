@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-explicit-tool-order.md) | 繁體中文
+[English](2026-07-06-explicit-tool-order.md) | [简体中文](2026-07-06-explicit-tool-order.zh.md) | 繁體中文
 
 ## 問題
 

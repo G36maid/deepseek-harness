@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-jobs
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Web 后台任务特性的归属方：向 `conversation.session.header.actions` 贡献一个条目，列出当前会话可见的 `ctx.jobs` 记录。数据完全来自 [`dsh-client-runtime`](../runtime/README.md) 从 `session/jobs` 帧折叠出的 `jobsBySession` 列表镜像，因此本包不发任何 RPC，除弹层开合外不持有任何状态。
 

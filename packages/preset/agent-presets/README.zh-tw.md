@@ -1,6 +1,6 @@
 # dsh-agent-presets
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 按 preset 組裝 agent（代理）。**preset** 是一個目錄，其中放置一份 `agent.cordis.yml`；roster 在整個行程內只把它掛載一次（常駐 scope），命名它的每個工作階段透過把自己 agent 的 scope key 認父到該掛載（`dsh-scope` 的父鏈）來加入。掛載的工具、提示詞段落與投影單元只存在一份，覆蓋所有已加入的 agent——其外掛程式本就按 Session/Agent 分鍵存狀態，工作階段在共享實例內互不串擾——而完全沒有 agent 的宿主讀取方（冷讀記錄）也能按 preset id 解析到同一份常駐註冊。
 

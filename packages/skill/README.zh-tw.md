@@ -1,6 +1,6 @@
 # skill/：skill（技能）能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本家族發現可複用的 agent（代理）指令，並透過與提供方無關的目錄和 loader 將其公開給模型。
 

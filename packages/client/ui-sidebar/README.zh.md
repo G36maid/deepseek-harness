@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-sidebar
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 侧边栏外壳插件：负责字标、New Session 操作、布局持有的折叠控件、可感知滚动的区域 seat，以及固定在底部的 Settings seat。[ui-workspace](../ui-workspace/README.md) 持有渲染到 `sidebar.workspaces` 的 Workspace 与 Session 浏览器；本包既不派生其中的行，也不持有其视图偏好。折叠到布局拥有的 56px 轨道仍属于本地呈现行为。约定：[slot 系统标准](../../../.agents/notes/implemented/architecture/2026-07-22-slot-type-chain-implementation.md)。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-typert-generator
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 TypeScript project analyzer and model-driven Typert generator. It converts the developer-authored source type tree into compiler-independent `FaceModel` and `TypeGraph` data before any artifact is rendered. Static analysis can consume that model without Cordis; emitters never receive TypeScript AST or checker objects.
 

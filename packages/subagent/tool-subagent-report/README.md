@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-subagent-report
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The optional child-scoped `report` tool is a thin adapter over `ctx.subagents.reportFrom()`. It gives every continuable in-process child a return channel to the Agent that started it, and installs the prompt section that instructs the child to use it. The package registers a continuable-child setup contribution instead of a global tool, so the tool and its guidance exist only inside those children. Roots, one-shot subagents, remote subagent providers, sibling scopes, and agentless tool execution never present or execute it. Installing this package grants only that child-scoped capability; the parent-to-child direction remains the independent [`@deepseek-ai/dsh-tool-subagent-control`](../tool-subagent-control/README.md), and continuable mode depends on neither package.
 

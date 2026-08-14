@@ -3,5 +3,5 @@
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/tool-execution-pipeline.md
 tool-execution-pipeline.md: d04d2e4e5093fee92f8921f0eb0112c960a81bb8
-tool-execution-pipeline.zh.md: 15627023d3be6ac2b3aae70c2ef01ef9f1077d3e
-tool-execution-pipeline.zh-tw.md: 2dc91f7eb0dd27f45c2c024a3c1f3d58f8a4577b
+tool-execution-pipeline.zh.md: 8a62702914e5bd7514939a9132a49a7977475e70
+tool-execution-pipeline.zh-tw.md: aa29f4643eb92eb93ee615f249ecd2b545d75756

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-08-remove-cli-demo.zh.md)
+English | [简体中文](2026-08-08-remove-cli-demo.zh.md) | [繁體中文](2026-08-08-remove-cli-demo.zh-tw.md)
 
 ## Problem
 

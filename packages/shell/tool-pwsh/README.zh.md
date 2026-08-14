@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-pwsh
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 注册在 `ctx.shell` 执行器 seam 之上的面向模型的 `pwsh` 工具。面向由 PowerShell 执行器（如 `@deepseek-ai/dsh-pwsh-local`）支撑 `ctx.shell` 的 Windows 组合；工具约定是 PowerShell 方言：原生 `C:\...` 路径与 `$env:NAME` 变量。行为与 `dsh-tool-bash` 逐调用对齐——通过通用任务运行时执行前台与 `run_in_background`、通过共享 `shell-env` 注册表管理 `DSH_*` 环境、sandbox 拒绝渲染与同轮次 `sandbox_permissions` 升级面、以及 bash 的 marker/截断渲染故事（干净退出不产生 marker）。
 

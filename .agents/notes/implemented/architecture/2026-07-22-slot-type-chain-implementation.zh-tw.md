@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-slot-type-chain-implementation.md) | 繁體中文
+[English](2026-07-22-slot-type-chain-implementation.md) | [简体中文](2026-07-22-slot-type-chain-implementation.zh.md) | 繁體中文
 
 > 範圍：Web 用戶端 slot 體系的終版設計——UI 外掛程式如何拼合頁面、渲染權威落在哪裡、元件 props 如何定型、業務活資料住在哪裡。周邊語境（裝載鏈、對象層、服務）歸 [Web 用戶端架構 RFC](2026-07-19-gui-web-client-architecture.md) 所有，其 slot 各節移交本文。
 

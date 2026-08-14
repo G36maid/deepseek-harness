@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox-windows-acl
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向 [harness 沙盒 seam](../sandbox/) 的 Windows 写入限制沙盒后端：一个 Node.js/[koffi](https://koffi.dev/) 实现的、对 [huoyaoyuan/windows-acl-restrict-poc](https://github.com/huoyaoyuan/windows-acl-restrict-poc)（`10e4dfb`，固定修订版本）机制的移植，挂载为 [`@deepseek-ai/dsh-sandbox-local`](../sandbox-local/) 链中报告 `enforcement: 'partial'` 的 win32 一级（`workspace-write` / `read-only` 两种模式）；Linux/macOS 后端在同一包中。
 

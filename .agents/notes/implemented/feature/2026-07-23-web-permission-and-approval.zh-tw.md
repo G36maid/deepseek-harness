@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-web-permission-and-approval.md) | 繁體中文
+[English](2026-07-23-web-permission-and-approval.md) | [简体中文](2026-07-23-web-permission-and-approval.zh.md) | 繁體中文
 
 ## 問題
 

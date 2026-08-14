@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-29-pnpm-setup-runner-isolation.md
-2026-07-29-pnpm-setup-runner-isolation.md: 74b672b3f90ea445ad1a8e283a5904056059b2f8
-2026-07-29-pnpm-setup-runner-isolation.zh.md: fde4cb747e41ea7dafe87ca3ccd0e872c45dd3b1
-2026-07-29-pnpm-setup-runner-isolation.zh-tw.md: 02347a6dd7beb476652bcfd01117dec5396b734a
+2026-07-29-pnpm-setup-runner-isolation.md: 17d069d6d43d56f109efbae335b741f2347d1df4
+2026-07-29-pnpm-setup-runner-isolation.zh.md: 5769c7cef2332b3fefcbcfa4497392bb45893149
+2026-07-29-pnpm-setup-runner-isolation.zh-tw.md: 9b7a66bc17451de41fd37b6946b54579fd2ee6c2

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-workspace
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Workspace entity registry (`ctx.workspaceRegistry`) for the DeepSeek Harness: durable workspace records, stable workspace order, and a newest-first candidate session index stored through the domain data form. Consumers see the `Workspace` interface; the entity implementation stays package-private.
 

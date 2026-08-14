@@ -1,6 +1,6 @@
 # plan/ — plan collaboration state
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Plan mode is logged, per-agent collaboration state rather than a generic mode registry or capability seam.
 

@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [中文](2026-06-11-supply-chain-and-vendor-drift.zh.md)
+English | [简体中文](2026-06-11-supply-chain-and-vendor-drift.zh.md) | [繁體中文](2026-06-11-supply-chain-and-vendor-drift.zh-tw.md)
 
 ## Problem
 

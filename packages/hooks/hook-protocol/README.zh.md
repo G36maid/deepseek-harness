@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-hook-protocol
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Claude Code／Codex hook 协议格式（wire format）的**共享核心**。它不是 Cordis 插件：不注册也不注入任何内容。它是一个**库**，提供两个桥接插件（`@deepseek-ai/dsh-hooks-claude-code`、`@deepseek-ai/dsh-hooks-codex`）导入的方言无关原语，使两者都无需重复实现协议中相同的部分。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 行程沙盒 Service Definition。負責定義 `ctx.sandbox` 服務約定（[`SandboxProvider`](src/index.ts)）與 harness 共享的限制詞匯：`SandboxMode`（`read-only`／`workspace-write`／`danger-full-access`，僅限文件操作）、`SandboxEnforcement`（`full`／`partial`，針對每種核心 ABI）、`SandboxExecutionPolicy`（每次呼叫的完整模式及工作區根目錄）、`SandboxPolicy`（其中受限制的子集），以及故障時拒絕放行的 `SANDBOX_UNAVAILABLE` 錯誤。作為[能力 seam 拆分](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)中的 Service Definition 角色，它只相依性 cordis（及 harness 錯誤基類），絕不相依性後端。
 

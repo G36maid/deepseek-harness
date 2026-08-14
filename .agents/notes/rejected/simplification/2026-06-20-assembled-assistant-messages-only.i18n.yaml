@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/rejected/simplification/2026-06-20-assembled-assistant-messages-only.md
-2026-06-20-assembled-assistant-messages-only.md: edc756f71271065ec579a2becb8597190b34cdc8
-2026-06-20-assembled-assistant-messages-only.zh.md: 6f0611a57550c53a9881e551f24098869c807c3e
-2026-06-20-assembled-assistant-messages-only.zh-tw.md: b705cb64a3fd93912043efb6fbf298ebe1b9e919
+2026-06-20-assembled-assistant-messages-only.md: 37c83e5ba7b41473e5bf9ff83019ac8ca074ff41
+2026-06-20-assembled-assistant-messages-only.zh.md: 10d55a637698d7384dbf0d762388552e81594731
+2026-06-20-assembled-assistant-messages-only.zh-tw.md: 73909cd67ba30e1ee78af0437d3462a777cf94e0

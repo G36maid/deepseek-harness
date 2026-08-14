@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker-browse
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [目錄選擇 seam](../directory-picker/README.md) 的**應用內瀏覽後端**：`BrowseDirectoryPicker` 以 `browse` 能力註冊 `ctx.directoryPicker`——基於 Node 標準庫（跨 OS 適配本就由它承擔）提供單層目錄列舉與子目錄建立。宿主螢幕上不渲染任何東西，因此該後端能服務原生後端無法觸及的遠端用戶端。
 

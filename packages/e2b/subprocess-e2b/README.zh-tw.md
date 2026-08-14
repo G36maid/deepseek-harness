@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subprocess-e2b
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-subprocess`](../../subprocess/subprocess/README.md) seam 的 E2B 實作。先載入 [`@deepseek-ai/dsh-e2b`](../e2b/README.md)，再用本服務取代 `dsh-subprocess-local`。現有的 Bash、PTY 和 LSP 消費端隨後會在共享遠端沙盒中執行，無需 E2B 專用的能力包。
 

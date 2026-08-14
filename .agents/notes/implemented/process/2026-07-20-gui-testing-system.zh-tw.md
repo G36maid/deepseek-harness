@@ -4,7 +4,7 @@ Status: implemented
 
 > 路徑更新（2026-07-22，外掛程式體系重構）：本文三層理念與黃金路徑方法仍為現行；家搬了——對象層 spec 現居 `packages/client/runtime/tests/`（原 web-runtime）、wire spec 現居 `packages/client/connection/tests/`，`web-ui` 覆蓋豁免隨包消亡（元件 spec 為各 `packages/client/*/tests/` 的 jsdom 套件）。元件 spec 形態遵循 [slot 體系標準](../architecture/2026-07-22-slot-type-chain-implementation.md)：props 直喂——store 份額來自 `createXXXStore().create()`（真引擎，獲認可的無額外機制路徑），框架掛鉤用普通樁；無渲染機制、不掛載提供方。slot 歸屬/登錄檔語義歸 2 層地界（`runtime` + `ui-slots` 套件），不歸元件 spec。
 
-[English](2026-07-20-gui-testing-system.md) | 繁體中文
+[English](2026-07-20-gui-testing-system.md) | [简体中文](2026-07-20-gui-testing-system.zh.md) | 繁體中文
 
 > 分工線：本篇只講 GUI（`packages/{client,host}/*` + `apps/web`）特有的測試結構；全倉測試政策（分層原則、with-key 政策、真實實作優先、REAL-composition）見 [docs/testing.md](../../../../docs/testing.md)，不在此複述。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-windows-atomic-write-dacl-preservation.md) | 繁體中文
+[English](2026-07-19-windows-atomic-write-dacl-preservation.md) | [简体中文](2026-07-19-windows-atomic-write-dacl-preservation.zh.md) | 繁體中文
 
 ## 問題
 

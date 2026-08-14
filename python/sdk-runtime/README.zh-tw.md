@@ -1,6 +1,6 @@
 # DeepSeek Harness 執行時期 wheel 套件
 
-[English](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.md) | 繁體中文
+[English](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.md) | [简体中文](https://github.com/deepseek-ai/deepseek-harness/blob/master/python/sdk-runtime/README.zh.md) | 繁體中文
 
 Python SDK 的執行時期載體包（分發名 `deepseek-harness-runtime-bin`，模組名 `deepseek_harness_runtime`）：它定位 `deepseek-harness-sdk` 用戶端要 spawn 的內建執行時期二進位，並附帶支撐零設定執行的預設配置。
 

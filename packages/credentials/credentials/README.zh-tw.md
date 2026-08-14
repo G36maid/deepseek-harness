@@ -1,6 +1,6 @@
 # dsh-credentials
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 憑據 Service Definition（`ctx.credentials`）。一條準則，三個推論：
 

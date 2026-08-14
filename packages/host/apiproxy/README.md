@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-apiproxy
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The API gateway shared by every client consists of the TypeScript API contract (`src/api/`, zero Node dependencies, importable from the browser), the fetch carrier pair (`src/fetch/`: `toFetchHandler` on the host side, `AbstractApiClient` plus platform subclasses on the client side), and the host-side implementation (`src/api-proxy.ts`: `createApiProxy` plus the default-exported `ApiProxyService` gateway plugin — config `{nativeOpen?, sessionExportCompressionLevel?, coldBlankProbeMaxBytes?}`, provides `ctx.apiProxy`). This package registers no routes; carriers such as HTTP wrap `ctx.apiProxy` themselves. The shipped Web composition lives in [`packages/bundle/web-app/cordis.patch.yml`](../../bundle/web-app/cordis.patch.yml), while its default Agent model selection belongs to [`@deepseek-ai/dsh-agent-default-model`](../../core/agent-default-model/README.md) in the base bundle.
 

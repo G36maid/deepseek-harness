@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/architecture/2026-07-19-required-cancellation-through-tool-capability-seams.md
-2026-07-19-required-cancellation-through-tool-capability-seams.md: 478cd887d84ceae8a5a0cd455fb7cf4b4d562950
-2026-07-19-required-cancellation-through-tool-capability-seams.zh.md: f3afdc953b50751798b412d24ecd7a9efd7d9af2
-2026-07-19-required-cancellation-through-tool-capability-seams.zh-tw.md: c228bb4d28e088caad949f0673df2812bee67a83
+2026-07-19-required-cancellation-through-tool-capability-seams.md: 86497390eaf75edf498d4678f860fbb38f5271a2
+2026-07-19-required-cancellation-through-tool-capability-seams.zh.md: e29f4a7bdacbec9130fa8436702b9f5271f4e44b
+2026-07-19-required-cancellation-through-tool-capability-seams.zh-tw.md: e5bf3de4e677728945e9116ebef9d46570624eba

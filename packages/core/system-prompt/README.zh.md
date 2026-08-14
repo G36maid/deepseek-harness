@@ -1,6 +1,6 @@
 # dsh-system-prompt
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 系统提示词组装注册表。插件可以贡献有序段、工具 schema 和具名变量。循环在每个步骤组装一次，并将结果渲染为完整的模型提示词。此插件拥有静态 harness 身份和全局部署 persona；agent（智能体）作用域的 persona 会遮蔽全局默认值。
 

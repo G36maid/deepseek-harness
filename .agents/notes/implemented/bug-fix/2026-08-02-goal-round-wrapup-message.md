@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-02-goal-round-wrapup-message.zh.md)
+English | [简体中文](2026-08-02-goal-round-wrapup-message.zh.md) | [繁體中文](2026-08-02-goal-round-wrapup-message.zh-tw.md)
 
 ## Problem
 

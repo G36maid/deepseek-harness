@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-26-code-mode-chat-subcall-rows.zh.md)
+English | [简体中文](2026-07-26-code-mode-chat-subcall-rows.zh.md) | [繁體中文](2026-07-26-code-mode-chat-subcall-rows.zh-tw.md)
 
 > Scope: how the web chat view renders a `run_code` turn — the client-side half of the Code Mode UI stack, built on the [host foundation](2026-07-26-code-dispatch-ui-foundation.md) (full-content `tool/code-dispatch`, the required `description` parameter). The [toolview dissolution](../architecture/2026-07-23-toolview-dissolution.md) owns the slot model this rides on.
 

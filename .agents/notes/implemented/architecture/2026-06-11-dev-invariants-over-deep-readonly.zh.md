@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-11-dev-invariants-over-deep-readonly.md) | 中文
+[English](2026-06-11-dev-invariants-over-deep-readonly.md) | 简体中文
 
 ## 问题
 

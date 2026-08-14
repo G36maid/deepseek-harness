@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-web-queue-steer-all-gesture.md) | 中文
+[English](2026-08-06-web-queue-steer-all-gesture.md) | 简体中文
 
 ## 问题
 

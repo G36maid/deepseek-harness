@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-dsh-source-launch-tsx-esm.md) | 中文
+[English](2026-07-29-dsh-source-launch-tsx-esm.md) | 简体中文
 
 > 取代[原生 TypeScript 源码启动](../../archived/architecture/2026-07-28-dsh-native-typescript-source-launch.md)：Node 移除了该决策所依赖的能力。
 

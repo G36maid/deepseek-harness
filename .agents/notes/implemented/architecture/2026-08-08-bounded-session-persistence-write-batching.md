@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-08-bounded-session-persistence-write-batching.zh.md)
+English | [简体中文](2026-08-08-bounded-session-persistence-write-batching.zh.md) | [繁體中文](2026-08-08-bounded-session-persistence-write-batching.zh-tw.md)
 
 ## Problem
 

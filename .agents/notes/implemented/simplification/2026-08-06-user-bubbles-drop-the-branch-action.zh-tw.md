@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-user-bubbles-drop-the-branch-action.md) | 繁體中文
+[English](2026-08-06-user-bubbles-drop-the-branch-action.md) | [简体中文](2026-08-06-user-bubbles-drop-the-branch-action.zh.md) | 繁體中文
 
 ## 問題
 

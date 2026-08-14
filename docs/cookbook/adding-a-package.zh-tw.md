@@ -1,6 +1,6 @@
 # 實作手冊：新增 workspace 包
 
-[English](adding-a-package.md) | 繁體中文
+[English](adding-a-package.md) | [简体中文](adding-a-package.zh.md) | 繁體中文
 
 為新建 `@deepseek-ai/dsh-<name>` 包提供的逐文件清單。本清單以 bash 和配接器這兩個包為範本進行驗證；如果清單與範本有出入，請在此修正。
 

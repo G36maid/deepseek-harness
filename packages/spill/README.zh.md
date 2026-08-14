@@ -1,6 +1,6 @@
 # spill/：工具输出 spill 能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本家族持久化过大的工具输出，并以有界预览和取回定位信息替换内联结果。
 

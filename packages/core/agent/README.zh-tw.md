@@ -1,6 +1,6 @@
 # dsh-agent
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Agent 介面、登錄檔、行程本機發起方作用域，以及 `agent/*` 事件詞彙。每個外掛程式（UI、掛鉤、編排器）都面向此處定義的 `Agent` handle 程式設計；它不相依性迴圈，因此迴圈可以替換。
 

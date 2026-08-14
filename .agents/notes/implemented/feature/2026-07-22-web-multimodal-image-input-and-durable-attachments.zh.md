@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-web-multimodal-image-input-and-durable-attachments.md) | 中文
+[English](2026-07-22-web-multimodal-image-input-and-durable-attachments.md) | 简体中文
 
 ## 问题
 

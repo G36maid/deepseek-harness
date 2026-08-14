@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-goal
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Goal surface plugin, browser half: the `GoalBar` strip is the second standalone card in the `conversation.input.dock` composer-context stack (order 10, after Todo and before Queue). The live goal arrives through `useProjection('goal')` — the host-computed whole value seeded by the history tail page and updated by `session/projection` frames — so the plugin owns no domain store, refresh chain, or event listener. The slot inject face carries only the four mutation verbs (edit / pause / resume / clear through `ctx.remote.goals` — an active goal offers the pause action, a paused one resume); each reads the CAS ref from the session's current projected value at call time and surfaces the rejected Remote error inline. The strip single-flights mutations synchronously because React's pending render cannot fence same-frame clicks; after a successful clear it immediately suppresses that exact goal id while the authoritative null projection catches up. Goal creation stays on the `/goal` host command; loading, absent, completed, and successfully cleared goals render nothing.
 

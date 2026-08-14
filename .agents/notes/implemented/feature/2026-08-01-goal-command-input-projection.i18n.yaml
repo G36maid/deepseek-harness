@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-01-goal-command-input-projection.md
-2026-08-01-goal-command-input-projection.md: 02836de7ea2d79122d7650d1b37406802ee1489f
-2026-08-01-goal-command-input-projection.zh.md: 8c28ba1c90be5942aa526fb9d8d2d8b1f014742e
-2026-08-01-goal-command-input-projection.zh-tw.md: 31698009dfa708db5b3ff8cf833d4fec33efff5b
+2026-08-01-goal-command-input-projection.md: 2e3b49f5612ce6f3d9a71b518c75eb275f37d28b
+2026-08-01-goal-command-input-projection.zh.md: 2a82e2a50520837104dc98b942736af5b9a5b163
+2026-08-01-goal-command-input-projection.zh-tw.md: 49a5912d608b888cff2b777e19d0e283f41cd85f

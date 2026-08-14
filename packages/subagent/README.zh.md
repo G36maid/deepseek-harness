@@ -1,6 +1,6 @@
 # subagent/：subagent 能力家族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本家族允许一个 agent（智能体）将工作委派给子 agent。多个具名提供方可在同一上下文中共存。
 

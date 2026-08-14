@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-attachment
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 纯 React 附件原子组件（零 cordis）：输入框草稿图片栏（`AttachmentRail`）、聊天历史图片画廊（`MessageImage`/`ImageGallery`）、原图灯箱（`ImageLightbox`）与整页拖放遮罩（`DropOverlay`）。所有文案都由持有方插件在自己的语言命名空间中解析后经 label props 传入，此包不读取任何应用状态；当前消费者是 `@deepseek-ai/dsh-client-ui-conversation`，经其 `image-labels` 模块桥接 `conversation` 词典。
 

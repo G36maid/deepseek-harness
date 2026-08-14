@@ -1,6 +1,6 @@
 # Python SDK 快速上手
 
-[English](python-sdk.md) | 繁體中文
+[English](python-sdk.md) | [简体中文](python-sdk.zh.md) | 繁體中文
 
 本教程介紹 Web UI 之外的程序化使用方式：安裝已發布的 Python SDK、執行倉庫內建的 agent（代理）組合，並在自己的程序中呼叫同一套 API。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-project-session-directories.md) | 繁體中文
+[English](2026-07-24-project-session-directories.md) | [简体中文](2026-07-24-project-session-directories.zh.md) | 繁體中文
 
 ## 問題
 

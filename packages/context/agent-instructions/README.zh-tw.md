@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-agent-instructions
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 為每個工作階段載入與 `AGENTS.md` 相容的工作區指令文件。該外掛程式會將初始的使用者全域性指令與項目指令鏈注入持久歷史，隨後發現巢狀文件，並在成功的檔案系統工具呼叫後報告後續變更或移除。
 

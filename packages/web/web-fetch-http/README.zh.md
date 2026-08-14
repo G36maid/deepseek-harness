@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-web-fetch-http
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 一个匿名公共 HTTP(S) `WebFetchProvider`，用于 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它获取具体 URL，返回状态码和长度受限的解码内容。
 

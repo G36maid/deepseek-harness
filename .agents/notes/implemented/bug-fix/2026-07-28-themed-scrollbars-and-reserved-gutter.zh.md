@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-themed-scrollbars-and-reserved-gutter.md) | 中文
+[English](2026-07-28-themed-scrollbars-and-reserved-gutter.md) | 简体中文
 
 ## 问题
 

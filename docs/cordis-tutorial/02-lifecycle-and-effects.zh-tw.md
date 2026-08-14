@@ -1,6 +1,6 @@
 # 2. 生命週期與 effect
 
-[English](02-lifecycle-and-effects.md) | 繁體中文
+[English](02-lifecycle-and-effects.md) | [简体中文](02-lifecycle-and-effects.zh.md) | 繁體中文
 
 Cordis 外掛程式可能因修改設定、熱重新載入、顯式資源釋放或所需服務消失而解除安裝。透過 Cordis API 建立的註冊屬於 effect，會在所屬外掛程式解除安裝時撤銷；在這些 API 之外管理的資源必須包裝在 `ctx.effect()` 中。
 

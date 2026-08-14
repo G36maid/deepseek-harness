@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-09-bounded-fixed-rate-schedule.md
-2026-08-09-bounded-fixed-rate-schedule.md: 83d7e149f654d80fd988d0e4247aad3c4b34c6be
-2026-08-09-bounded-fixed-rate-schedule.zh.md: 3cc86786a0400edbf4a2aea00e85f0ee6f7c0199
-2026-08-09-bounded-fixed-rate-schedule.zh-tw.md: 570a82086235f1095acf1264277c37e87ac58972
+2026-08-09-bounded-fixed-rate-schedule.md: 673062ceccd9e287f6db55d1183f68bfa77f3e2e
+2026-08-09-bounded-fixed-rate-schedule.zh.md: 53c23040d395c52f5415775435c626eedca28eb7
+2026-08-09-bounded-fixed-rate-schedule.zh-tw.md: d5c0038511d38bbcd2207fc818b35e5bc4b60f47

@@ -1,6 +1,6 @@
 # 示例
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 展示 DeepSeek Harness 主要介面和擴充點的可執行演示。每個子目錄負責自己的設定、前置條件、命令和詳細行為。
 

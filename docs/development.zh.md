@@ -1,6 +1,6 @@
 # 开发指南
 
-[English](development.md) | 中文
+[English](development.md) | 简体中文
 
 搭建教程引导新贡献者从准备前置条件开始，直到检出目录通过检查。后面的贡献者参考介绍仓库布局、日常工作流和 CI 组织方式。设计依据与实现细节属于链接的 Agent Note 和脚本。
 

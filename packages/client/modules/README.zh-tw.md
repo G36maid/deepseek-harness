@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-modules
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用戶端模組系統：Node 內部 ESM loader 的瀏覽器端對等實作，以惰性 CJS 表實作。web 外殼掛載 vendored cordis Loader 來治理設定項（fiber 生命週期、inject 等待、update/refresh），並透過其 `internal` 約定注入該包的 `ClientModuleLoader`；vendored 一側唯一的消費點是 `EntryTree.import`，因此替換 `internal` 恰好只會替換「外掛程式程式碼如何到達」，不會改變其他內容。
 

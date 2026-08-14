@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-continuable-subagent-conversations.md) | 繁體中文
+[English](2026-07-28-continuable-subagent-conversations.md) | [简体中文](2026-07-28-continuable-subagent-conversations.zh.md) | 繁體中文
 
 本記錄取代[可繼續的後臺 subagent](../../implemented/feature/2026-07-21-continuable-background-subagents.md)中由 Task 支撐的繼續執行管理器。它保留[將 subagent 控制合併到 subagent 服務](../../implemented/simplification/2026-07-26-merge-subagent-control-service.md)確立的單一 `ctx.subagents` 服務，以及[以意圖命名的 subagent 繼續執行操作](../../implemented/simplification/2026-07-27-intent-named-subagent-continuation-operations.md)確立的 `followup` 操作。
 

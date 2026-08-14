@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/proposed/architecture/2026-08-08-semantic-composer-chain-phases.md
-2026-08-08-semantic-composer-chain-phases.md: 7d85518e9d5e5aa3e44e443cb1b90b325b0ffc6a
-2026-08-08-semantic-composer-chain-phases.zh.md: c0c0bca32ffcc174929c3cbef4878138e1268e98
-2026-08-08-semantic-composer-chain-phases.zh-tw.md: 87029f27f5320d84d558fb47f8f14ea32fe05936
+2026-08-08-semantic-composer-chain-phases.md: e0f82556b9a6489ea4bc16676bb8e59bc8db5ade
+2026-08-08-semantic-composer-chain-phases.zh.md: 999658ffd3195f7ce0d2adf8d0f618395747b06f
+2026-08-08-semantic-composer-chain-phases.zh-tw.md: 5f6dc55fde87f2130c4020c6297b552f2dda0e30

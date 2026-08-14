@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-deliverables
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 产出文件与可点击文件引用功能的属主。Node 侧向系统提示词 registry 注册最终回复指引；浏览器侧把已完成轮次末尾的产出文件行注册到 chat 视图的 `conversation.chat.turnTail` slot，并将收尾正文中匹配的行内代码引用转换为链接。正式提供的组合中只有 Web patch 加载本包；从 cordis.yml 中删去这一项会同时移除提示词、文件行与正文链接。
 

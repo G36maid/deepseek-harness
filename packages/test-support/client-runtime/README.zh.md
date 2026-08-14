@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-test-runtime
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向客户端功能测试的 jsdom slot 测试运行时：真实 Cordis `Context`、生产 `SlotRegistry` 与 web-react 渲染器，围绕带类型的 session/workspace 测试替身组装。功能套件无需逐套件手搭机器即可测遍声明、注册、scope、store、inject、渲染、更新与销毁——且不存在任何生产逻辑的第二份实现。
 

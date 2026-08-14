@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-09-layered-skill-registry.md) | 繁體中文
+[English](2026-08-09-layered-skill-registry.md) | [简体中文](2026-08-09-layered-skill-registry.zh.md) | 繁體中文
 
 ## 問題
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-command-compact
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 透過 [`ctx.compaction`](../compaction/README.md) 提供面向使用者的 `/compact` 壓縮（compaction）控制。該外掛程式透過 [`ctx.commands`](../../interaction/commands/README.md) 註冊一個全域性命令，因此組閤中的每個命令配接器都能發現並執行它，無需模型輪次。[排隊手動壓縮 Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-queued-manual-compaction.md)擁有接納、鎖與持久性決策。
 

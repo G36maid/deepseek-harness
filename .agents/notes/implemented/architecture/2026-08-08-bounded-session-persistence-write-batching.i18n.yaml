@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-08-bounded-session-persistence-write-batching.md
-2026-08-08-bounded-session-persistence-write-batching.md: 6d77ef90276dcf143bb63019f801379b702b43b2
-2026-08-08-bounded-session-persistence-write-batching.zh.md: 762e1f37e92814a89e000d428468e660f49e04a0
-2026-08-08-bounded-session-persistence-write-batching.zh-tw.md: 9c06e77db249e0f256d42c7ad4de9ea96d2f2d18
+2026-08-08-bounded-session-persistence-write-batching.md: 2067059fa1db88ca722df7a2b2a2eac6b3a50627
+2026-08-08-bounded-session-persistence-write-batching.zh.md: dd059ade2c68b49a30aec89b78f98a4e88427b16
+2026-08-08-bounded-session-persistence-write-batching.zh-tw.md: f11dab43ae32c92fbd9dfebb6c12c19e5b41b0f0

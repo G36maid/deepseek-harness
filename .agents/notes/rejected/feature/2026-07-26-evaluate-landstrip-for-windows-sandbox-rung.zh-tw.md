@@ -2,7 +2,7 @@
 
 Status: rejected — landstrip 未經實戰檢驗（駁回時問世僅數天，只有一名維護者，GitHub 星標約 48 個）；關係到安全不變數的相依性必須經過廣泛採用的驗證，因此 win32 層級維持自研啟動器的原計畫
 
-[English](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.md) | 繁體中文
+[English](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.md) | [简体中文](2026-07-26-evaluate-landstrip-for-windows-sandbox-rung.zh.md) | 繁體中文
 
 ## 問題
 

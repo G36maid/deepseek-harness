@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-llm-replay
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用於無金鑰快照測試的 LLM（大型語言模型）重播外掛程式。它根據已記錄的**工作階段 JSONL** fixture（測試前置資料）重建模型流，使測試無需 API 金鑰即可針對固定的模型 transcript（文字記錄）啟動真實 agent（代理）。設定 `providers` 後，它會註冊僅用於重播的配接器，其模型目錄可供測試模型發現功能的場景使用；未設定 `providers` 時，它會安裝無需模型發現功能的測試所用 catch-all `llm/stream` waterfall（瀑布式事件）。
 

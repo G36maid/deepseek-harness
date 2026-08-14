@@ -1,6 +1,6 @@
 # apps/web 瀏覽器 e2e
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這些測試在行程內啟動真實的 web 組合，並用真實 Chromium 透過真實 HTTP 驅動程式它。該 lane
 的執行機制——模式、fixture、golden，以及與 `dsh web` 之間刻意保留的組合差異——記錄在

@@ -1,6 +1,6 @@
 # 新增 Web Client Conversation Node
 
-[English](adding-a-conversation-node.md) | 繁體中文
+[English](adding-a-conversation-node.md) | [简体中文](adding-a-conversation-node.zh.md) | 繁體中文
 
 本教程為 Web Client Chat 檢視表新增一行由業務自行擁有的內容。完成後的外掛程式會把一個持久 Session 事件族關聯成一個 Context，增量構造業務 State，發布類型化 Step 資料，再渲染 keyed Chat Node；整個過程不掃描 Session 視窗或其他已渲染節點。本教程假設 Host 已經記錄這些事件，且該 Client 外掛程式已組裝進 Web bundle；Host 側外部 UI 和 Trajectory 等額外檢視表目標不在本文範圍內。
 

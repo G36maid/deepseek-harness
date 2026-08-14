@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-code-mode-live-parallel-dispatch.md) | 繁體中文
+[English](2026-07-26-code-mode-live-parallel-dispatch.md) | [简体中文](2026-07-26-code-mode-live-parallel-dispatch.zh.md) | 繁體中文
 
 > 範圍：`tool/code-dispatch-start` 事件、Web chat 中每個子呼叫的執行狀態，以及橋接層調度器對原生並行約定的複用。建置在[宿主側基礎](2026-07-26-code-dispatch-ui-foundation.md)與 [chat 子呼叫行](2026-07-26-code-mode-chat-subcall-rows.md)之上；原生約定本身歸[平行工具呼叫 Agent Note](2026-07-10-parallel-tool-call-execution.md) 所有。
 

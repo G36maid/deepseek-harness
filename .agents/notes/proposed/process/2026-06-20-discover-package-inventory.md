@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [中文](2026-06-20-discover-package-inventory.zh.md)
+English | [简体中文](2026-06-20-discover-package-inventory.zh.md) | [繁體中文](2026-06-20-discover-package-inventory.zh-tw.md)
 
 ## Problem
 

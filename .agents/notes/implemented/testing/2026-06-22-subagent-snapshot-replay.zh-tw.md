@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-22-subagent-snapshot-replay.md) | 繁體中文
+[English](2026-06-22-subagent-snapshot-replay.md) | [简体中文](2026-06-22-subagent-snapshot-replay.zh.md) | 繁體中文
 
 ## 問題
 

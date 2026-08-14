@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-composer-context-stack-order.md) | 中文
+[English](2026-07-30-composer-context-stack-order.md) | 简体中文
 
 ## 问题
 

@@ -1,6 +1,6 @@
 # DeepSeek Harness 架構
 
-[English](architecture.md) | 繁體中文
+[English](architecture.md) | [简体中文](architecture.zh.md) | 繁體中文
 
 改動 `packages/` 下的任何內容之前，請先閱讀本文。本文假定你已瞭解 Cordis；如果尚未瞭解，請先閱讀[入門](cordis-primer.md)或[教程](cordis-tutorial/index.md)。
 

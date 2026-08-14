@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-message-feedback
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Host-owned editable feedback for one finalized assistant message. The package registers `ctx.messageFeedback`, persists one lifecycle-bound sidecar row per Session in storage-domain, and publishes the Host `messageFeedback.list`, `messageFeedback.put`, and `messageFeedback.delete` unary Remote contract. It is separate from the immutable Session-level `feedback/record` event and performs no telemetry handoff. The [message-feedback sidecar Agent Note](../../../.agents/notes/implemented/architecture/2026-08-10-message-feedback-sidecar.md) owns the design boundary.
 

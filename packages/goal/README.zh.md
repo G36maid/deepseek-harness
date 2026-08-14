@@ -1,6 +1,6 @@
 # goal/：持久化的同会话目标
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 agent 会话的持久目标状态，独立于消费它的面向模型工具与续行策略。goal 状态是所属会话日志的一部分；消费方依赖 `dsh-goal`，绝不依赖具体的 agent loop（智能体循环）。
 

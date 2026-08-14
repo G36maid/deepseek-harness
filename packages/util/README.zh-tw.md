@@ -1,6 +1,6 @@
 # util/：底層共享工具
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這些零相依性包提供由多個能力家族共享的小型原語。業務語義仍歸各個消費這些原語的能力所有。
 

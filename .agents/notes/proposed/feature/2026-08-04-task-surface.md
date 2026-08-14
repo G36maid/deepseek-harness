@@ -2,7 +2,7 @@
 
 Status: proposed
 
-English | [中文](2026-08-04-task-surface.zh.md)
+English | [简体中文](2026-08-04-task-surface.zh.md) | [繁體中文](2026-08-04-task-surface.zh-tw.md)
 
 ## Problem
 

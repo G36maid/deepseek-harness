@@ -1,6 +1,6 @@
 # Durable Image Attachments
 
-English | [中文](attachment.zh.md)
+English | [简体中文](attachment.zh.md) | [繁體中文](attachment.zh-tw.md)
 
 The attachment seam separates binary image ownership from the session log. A producer gives validated encoded bytes to [`ctx.attachments`](#ctxattachments--attachmentstore-abstract-seam); the service publishes an immutable content-addressed reference only after the object is durable. Session events and model-visible `ImageBlock`s contain that reference and metadata, never a browser object URL, host temporary path, provider URL, or base64 payload.
 

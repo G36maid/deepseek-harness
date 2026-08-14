@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-web-session-fork-actions.md) | 中文
+[English](2026-07-27-web-session-fork-actions.md) | 简体中文
 
 ## Problem
 

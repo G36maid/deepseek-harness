@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-cordis
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Cordis 動態外掛程式的瀏覽器半：一個覆蓋整個框架的面板，操作 host 持有的全部定義；以及一張只讀的 `cordis_define` 卡片，記錄某個工作階段定義了什麼。
 

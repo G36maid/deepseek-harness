@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-24-provider-retry-policies.zh.md)
+English | [简体中文](2026-07-24-provider-retry-policies.zh.md) | [繁體中文](2026-07-24-provider-retry-policies.zh-tw.md)
 
 ## Problem
 

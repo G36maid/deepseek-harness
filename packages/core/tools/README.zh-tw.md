@@ -1,6 +1,6 @@
 # dsh-tools
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工具登錄檔與執行管線。工具外掛程式註冊各自的 schema 和執行器；agent loop（代理循環）依次讓每次呼叫經過 `tools/pre-execute`（可擴充的允許／拒絕閘門）→ 已註冊的單調守衛 → `tools/execute`（供逾時／重試／指標外掛程式使用的環繞分發包裝層）→ `tools/post-execute`（檢查／替換結果、附加上下文）→ 由工具定義持有的 `finalizeContent` 邊界 → 僅觀測的 `tools/result` 通知。登錄檔還決定以何種方式向模型呈現工具：`mode` 設定可以選擇原生 Function Calling（函式呼叫）、[Code Mode](#code-mode)，或同時選擇兩者；單個 agent 可用 `presentAs` 為自己遮蔽該預設值。
 

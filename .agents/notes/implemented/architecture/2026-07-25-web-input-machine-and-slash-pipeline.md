@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-25-web-input-machine-and-slash-pipeline.zh.md)
+English | [简体中文](2026-07-25-web-input-machine-and-slash-pipeline.zh.md) | [繁體中文](2026-07-25-web-input-machine-and-slash-pipeline.zh-tw.md)
 
 > Scope: the input state machine (the occurrence table + claim watch + the submit transaction), the hub/facade and send orchestration, the three scoped bail events for cross-plugin input rewrites, `/` and `@` trigger detection and the menu pipeline (ui-input-trigger), and the slot system around the composer. It depends on the [session scope note](2026-07-25-web-client-session-scope-and-provide-channel.md)'s sctx / provide / session-maybe and blank entity model; command knowledge (the three kinds, the directory, popups) is untouched here — that is the [command surfaces note](2026-07-25-web-command-surfaces-and-assembly.md)'s territory.
 

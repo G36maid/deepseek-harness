@@ -1,6 +1,6 @@
 # @deepseek-ai/node-addon-landlock-run
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 A [Landlock](https://landlock.io/) self-restrict-then-exec launcher for confining subprocesses on Linux, distributed as prebuilt per-platform npm packages plus a thin JS entry package that resolves the binary and speaks its CLI contract. Built for agent harnesses and other hosts that need to run untrusted commands under a filesystem allow-list without confining themselves.
 

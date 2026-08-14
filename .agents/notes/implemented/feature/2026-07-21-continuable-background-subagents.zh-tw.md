@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-21-continuable-background-subagents.md) | 繁體中文
+[English](2026-07-21-continuable-background-subagents.md) | [简体中文](2026-07-21-continuable-background-subagents.zh.md) | 繁體中文
 
 本記錄已由[可繼續的 subagent](2026-07-28-continuable-subagent-conversations.md)取代——後者以一個持久 Session 加至多一個行程內 Activation（駐留期）替換了其基於 Task 的 activation 模型、路由、取消和持久性語義。其服務放置與提供方功能策略此前已由[將 subagent 控制合併到 subagent 服務](../simplification/2026-07-26-merge-subagent-control-service.md)和[以意圖命名的 subagent 繼續執行操作](../simplification/2026-07-27-intent-named-subagent-continuation-operations.md)取代。僅持久 child 工作階段與 descriptor 的設計依據仍然有效。
 

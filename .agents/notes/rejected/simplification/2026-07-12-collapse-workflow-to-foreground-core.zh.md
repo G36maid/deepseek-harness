@@ -2,7 +2,7 @@
 
 Status: rejected — 工作流进度是有意设计的观测接口；应通过消费方使其发挥作用，而非删除它。
 
-[English](2026-07-12-collapse-workflow-to-foreground-core.md) | 中文
+[English](2026-07-12-collapse-workflow-to-foreground-core.md) | 简体中文
 
 ## 问题
 

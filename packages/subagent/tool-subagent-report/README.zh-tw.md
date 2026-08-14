@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-subagent-report
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 選填的子級作用域 `report` 工具是 `ctx.subagents.reportFrom()` 之上的輕量配接器。它為每個可繼續的行程內子級提供一條返回通道，指向啟動該子級的 Agent（代理），並安裝指示子級使用該通道的提示詞 section。本包註冊的是可繼續子級設定貢獻，而不是全域性工具，因此該工具及其指引只存在於這些子級內部。根 Agent、一次性 subagent、遠端 subagent 提供方、同級作用域以及不關聯 Agent 的工具執行都不會提供或執行它。安裝本包只授予這項子級作用域能力；父到子方向仍由獨立的 [`@deepseek-ai/dsh-tool-subagent-control`](../tool-subagent-control/README.md) 負責，可繼續模式不相依性這兩個包中的任一個。
 

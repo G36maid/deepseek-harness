@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-adapter-owned-max-token-defaults.md) | 繁體中文
+[English](2026-07-30-adapter-owned-max-token-defaults.md) | [简体中文](2026-07-30-adapter-owned-max-token-defaults.zh.md) | 繁體中文
 
 ## Problem
 

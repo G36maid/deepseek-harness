@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-slots
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Slot 登錄檔純核心、slot 終端機設計：SlotMap 聲明合併、SlotCore 上唯一的 `register` 組合 API、四 share 元件 props 類型家族、store seat 類型家族，以及 renderer 安裝約定。只使用 React 類型；該包不相依性 React，也不相依性 Cordis。
 

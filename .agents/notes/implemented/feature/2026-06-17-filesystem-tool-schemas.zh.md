@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-17-filesystem-tool-schemas.md) | 中文
+[English](2026-06-17-filesystem-tool-schemas.md) | 简体中文
 
 ## 问题
 

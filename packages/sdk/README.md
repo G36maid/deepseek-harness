@@ -1,6 +1,6 @@
 # sdk/ — drive Harness runtimes from another process
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 This group contains the protocol stack for driving a Harness runtime from another process. Callers supply the runtime executable and its `cordis.yml`; this group does not create, configure, build, or launch developer projects. The [TypeScript SDK decision](../../.agents/notes/implemented/feature/2026-07-27-typescript-sdk-and-sdk-subagent-backend.md) owns the client contract, and the [toolchain removal](../../.agents/notes/implemented/simplification/2026-08-11-remove-sdk-project-toolchain.md) owns the product boundary.
 

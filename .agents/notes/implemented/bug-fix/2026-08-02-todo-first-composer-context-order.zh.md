@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-todo-first-composer-context-order.md) | 中文
+[English](2026-08-02-todo-first-composer-context-order.md) | 简体中文
 
 ## 问题
 

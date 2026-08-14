@@ -1,6 +1,6 @@
 # 使用者設定
 
-[English](settings.md) | 繁體中文
+[English](settings.md) | [简体中文](settings.zh.md) | 繁體中文
 
 [dsh-settings](../../packages/settings/settings) 的使用者設定 seam 持有一份按 namespace 分節的使用者文件，並把每個已註冊 namespace 解析為：schema 預設值，然後註冊方的組合 `base`，最後使用者分節。[dsh-settings-file](../../packages/settings/settings-file) 這類提供方儲存原始文件並推送外部編輯；消費端外掛程式註冊 schema 後讀取或觀察解析值。組合設定仍留在 `cordis.yml`——namespace 只承載使用者可編輯子集。
 

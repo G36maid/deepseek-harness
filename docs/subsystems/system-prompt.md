@@ -1,6 +1,6 @@
 # System Prompt Assembly
 
-English | [中文](system-prompt.zh.md)
+English | [简体中文](system-prompt.zh.md) | [繁體中文](system-prompt.zh-tw.md)
 
 The [system-prompt package](../../packages/core/system-prompt) owns the data exchanged between prompt contributors and one assembly call. The package [README](../../packages/core/system-prompt/README.md) documents registration, ordering, scoping, and rendering behavior; this page records the exact cross-package types that plugins implement or pass.
 

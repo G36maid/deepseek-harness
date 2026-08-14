@@ -1,6 +1,6 @@
 # dsh-persona
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The agent persona as a composable row. It can either shadow the deployment persona or own the complete system prompt.
 

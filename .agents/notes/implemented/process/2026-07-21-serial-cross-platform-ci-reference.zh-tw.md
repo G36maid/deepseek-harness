@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-21-serial-cross-platform-ci-reference.md) | 繁體中文
+[English](2026-07-21-serial-cross-platform-ci-reference.md) | [简体中文](2026-07-21-serial-cross-platform-ci-reference.zh.md) | 繁體中文
 
 ## 問題
 

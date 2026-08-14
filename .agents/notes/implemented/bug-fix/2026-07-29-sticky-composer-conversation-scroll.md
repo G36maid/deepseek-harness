@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-29-sticky-composer-conversation-scroll.zh.md)
+English | [简体中文](2026-07-29-sticky-composer-conversation-scroll.zh.md) | [繁體中文](2026-07-29-sticky-composer-conversation-scroll.zh-tw.md)
 
 ## Problem
 

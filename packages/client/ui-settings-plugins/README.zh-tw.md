@@ -1,6 +1,6 @@
 # dsh-client-ui-settings-plugins
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **外掛程式**設定分區及其**外掛程式設定**分頁標籤。該分區擁有標題與緊湊的標籤欄；功能外掛程式透過 `settings.plugins.tab` 貢獻頁面。本包自己的分頁標籤為每個設定由使用者擁有的 Host 外掛程式展示一張可展開卡片。卡片展示外掛程式名稱及其管轄範圍；就地展開後是綁定到該外掛程式 settings 命名空間的手寫控制元件，每個欄位標注使用者是否覆蓋過它，並提供重設回部署組裝值的入口。
 

@@ -1,6 +1,6 @@
 # attachment/：持久附件能力族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 持久二进制附件 seam 及其本地文件系统实现。两者均为产品包。
 

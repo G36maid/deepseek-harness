@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-portable-execution-world-consumers.md) | 繁體中文
+[English](2026-07-28-portable-execution-world-consumers.md) | [简体中文](2026-07-28-portable-execution-world-consumers.zh.md) | 繁體中文
 
 ## 問題
 

@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-31-web-stop-preserves-queue.md
-2026-07-31-web-stop-preserves-queue.md: b8bba45009c126495a8b03ee36d6eb2cccac9a93
-2026-07-31-web-stop-preserves-queue.zh.md: af9c114fd06452e58322f2554a0f2ccd861c81c9
-2026-07-31-web-stop-preserves-queue.zh-tw.md: 60fc1a02306cc3b1296d976bc59e17975de65557
+2026-07-31-web-stop-preserves-queue.md: e9f0e2eccb2cc2f0eaeebc3b9df7f8426527f334
+2026-07-31-web-stop-preserves-queue.zh.md: ac9ca9f88d4fc11798fb26c1d7df7224730c98e3
+2026-07-31-web-stop-preserves-queue.zh-tw.md: 4f4e21bb1ccc8bb3ab1766e7f56479a4df38f909

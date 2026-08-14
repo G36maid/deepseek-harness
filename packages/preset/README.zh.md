@@ -1,6 +1,6 @@
 # preset/：按会话组装 agent
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **agent preset** 是一个目录，其中放置一份 `agent.cordis.yml`。把它挂载到某个 agent（智能体）的 scope 上下文之下，该会话就获得自己的工具与提示词段落，而其他在运行的会话各自保持不变，因此一个进程可以同时运行多个组装方式不同的 agent。
 

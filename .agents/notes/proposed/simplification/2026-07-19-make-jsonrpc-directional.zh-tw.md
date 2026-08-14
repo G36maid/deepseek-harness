@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-07-19-make-jsonrpc-directional.md) | 繁體中文
+[English](2026-07-19-make-jsonrpc-directional.md) | [简体中文](2026-07-19-make-jsonrpc-directional.zh.md) | 繁體中文
 
 ## 問題
 

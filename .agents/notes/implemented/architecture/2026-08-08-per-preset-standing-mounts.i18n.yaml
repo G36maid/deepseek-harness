@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-08-per-preset-standing-mounts.md
-2026-08-08-per-preset-standing-mounts.md: fe4bb0e2c39712d4b975b30c8b36d853d2051709
-2026-08-08-per-preset-standing-mounts.zh.md: bd9b29612015149cccdd1e5d38e6e50855286006
-2026-08-08-per-preset-standing-mounts.zh-tw.md: 0d4c5d3edde7a37e5a6bde8cd95d77b1a4d27878
+2026-08-08-per-preset-standing-mounts.md: e56e04a719948fec73daa865876d4f3634fda78e
+2026-08-08-per-preset-standing-mounts.zh.md: 6ec7183d5736ed664defca9c4bcd9b45918357c5
+2026-08-08-per-preset-standing-mounts.zh-tw.md: 410aebf8eacc231fd6d29acad9bad84c0191f457

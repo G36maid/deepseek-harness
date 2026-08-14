@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-06-parallel-pre-push-gates.md) | 繁體中文
+[English](2026-07-06-parallel-pre-push-gates.md) | [简体中文](2026-07-06-parallel-pre-push-gates.zh.md) | 繁體中文
 
 本記錄中的本機掛鉤部分已由[快速本機 Git 掛鉤](2026-07-22-fast-local-git-hooks.md) 取代。有界閘門調度器和包級 `publint` 平行機制仍用於 CI、`doc-sync` 和顯式本機命令。
 

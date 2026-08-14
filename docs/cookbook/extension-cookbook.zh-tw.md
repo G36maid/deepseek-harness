@@ -1,6 +1,6 @@
 # 實作手冊：擴充外掛程式形態
 
-[English](extension-cookbook.md) | 繁體中文
+[English](extension-cookbook.md) | [简体中文](extension-cookbook.zh.md) | 繁體中文
 
 harness 擴充的參考模式。程式碼片段省略了 import 和輔助實作，無法直接複製執行。具體編寫路徑見[包檢查清單](adding-a-package.md)、[第一個工具教程](../user/develop/basic/tool.md)、[工具參考](adding-a-tool.md)和 [LLM（大型語言模型）配接器指南](adding-an-llm-adapter.md)；系統與擴充點對映由[架構文件](../architecture.md)負責。
 

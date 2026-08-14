@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-pwsh-sandbox
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 沙盒消费型的 [`ctx.shell` 执行器 seam](../shell/) 的 PowerShell 实现：每条命令以 `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>` 运行，**经 `ctx.sandbox` 隔离**，选定模式、强制完整性、拒绝事实都盖在每次结算的结果上。它是 [`@deepseek-ai/dsh-bash-sandbox`](../bash-sandbox/) 的 pwsh 孪生，按 [pwsh 执行器与工具决策](../../../.agents/notes/implemented/feature/2026-08-01-pwsh-tool-and-executor.md) 逐调用镜像——隔离实体本身是平台无关的：Windows 上沙盒 seam 解析到 ACL 受限令牌 runner 链（[`@deepseek-ai/dsh-sandbox-windows-acl`](../../sandbox/sandbox-windows-acl/)），Linux/macOS 上解析到 bwrap/Landlock/Seatbelt。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-stats
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 註冊 `sessionStats` projection 單元的函式外掛程式：從步邊界、流式 chunk、工具配對與已組裝的 assistant 訊息摺疊出全日誌工作階段數字——輪/步計數以及 LLM、工具、首 token、解碼牆鐘時間——經 session-projection 縫對外提供（registry 快照、變更流，以及每一個 projection 載體：history 尾頁、`session/projection` 推送幀、工作階段清單行）。用戶端由此渲染分頁與壓縮都無法改變的全工作階段數字；參考消費者是 Web 聊天統計條，其視窗摺疊以相同欄位名充當無單元時的回退。
 

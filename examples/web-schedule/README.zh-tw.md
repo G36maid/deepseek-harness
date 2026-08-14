@@ -1,6 +1,6 @@
 # 僅限 Session 內的 Schedule
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 此 overlay 讓一個 `dsh web` 行程顯式啟用 Schedule 提醒，同時不改變交付的默認 Web 組合：
 

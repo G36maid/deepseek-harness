@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-16-explicit-turn-cancellation.md) | 繁體中文
+[English](2026-07-16-explicit-turn-cancellation.md) | [简体中文](2026-07-16-explicit-turn-cancellation.zh.md) | 繁體中文
 
 ## 問題
 

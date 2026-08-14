@@ -1,6 +1,6 @@
 # 能力的三种角色设计
 
-[English](index.md) | 中文
+[English](index.md) | 简体中文
 
 本文分为两部分：先参考三种角色能力模式的概念，再通过高级教程构建一项能力。请先完成[基础插件路径](../basic/)和[服务教程](../framework/service.md)。
 

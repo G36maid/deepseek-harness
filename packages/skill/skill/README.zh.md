@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-skill
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 纯 agent skill（智能体技能）提供方注册表。
 

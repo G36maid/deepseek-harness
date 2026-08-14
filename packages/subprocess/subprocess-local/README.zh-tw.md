@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subprocess-local
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-subprocess`](../subprocess/README.md) seam 的本機 Service Provider。`LocalSubprocessRuntime` 解析本機可執行文件，以顯式 stdio spawn 普通 detached 行程樹，並透過 `node-pty` 加平臺行程檢查實作終端機行程。該實作沒有任何設定：每項處置方式、限制、終端機尺寸、寬限期與目錄都來自呼叫方能力 seam（[`dsh-bash-local`](../../shell/bash-local/README.md)、[`dsh-lsp-stdio`](../../lsp/lsp-stdio/README.md) 和 [`dsh-terminal-bash`](../../terminal/terminal-bash/README.md)）。
 

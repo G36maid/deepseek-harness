@@ -1,6 +1,6 @@
 # e2b/ — E2B 遠端執行時期家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這是一個實驗性提供方組合 POC，把一個檔案系統／行程執行環境放進 E2B Linux 沙盒。E2B 只提供沙盒生命週期與兩個基礎 OS 配接器；提供方無關的消費端在其上建置更高層能力。
 

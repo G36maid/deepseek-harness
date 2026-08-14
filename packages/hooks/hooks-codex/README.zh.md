@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-hooks-codex
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 一个 Cordis 插件，在 harness 的规范拦截点上运行用户现有 **Codex** hook 配置的受支持子集。它是 hooks 子系统中采用 **Codex 方言** 的一侧。方言无关原语来自 [`@deepseek-ai/dsh-hook-protocol`](../hook-protocol/README.md)；该桥接负责处理 Codex 形状的 payload、matcher 模式和决策映射。
 

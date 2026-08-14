@@ -1,6 +1,6 @@
 # 示例
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 展示 DeepSeek Harness 主要接口和扩展点的可运行演示。每个子目录负责自己的配置、前置条件、命令和详细行为。
 

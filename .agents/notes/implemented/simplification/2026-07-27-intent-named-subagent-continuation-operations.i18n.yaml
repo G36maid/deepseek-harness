@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-07-27-intent-named-subagent-continuation-operations.md
-2026-07-27-intent-named-subagent-continuation-operations.md: 72fb042978cdb8faa238d7483c17eb7c7fce80bd
-2026-07-27-intent-named-subagent-continuation-operations.zh.md: 09af0a3ba343a441306d9c1eec3f00c582d510e6
-2026-07-27-intent-named-subagent-continuation-operations.zh-tw.md: 04ae06906b49e729273465458ffd3a64a066bd4c
+2026-07-27-intent-named-subagent-continuation-operations.md: 5b1ef04b5ddd640a1e903a4e652b96de9a855359
+2026-07-27-intent-named-subagent-continuation-operations.zh.md: a35070c830f0bbd2c00f957461987cb51a17d6fe
+2026-07-27-intent-named-subagent-continuation-operations.zh-tw.md: 0e72195567c37a910b1465858b520eef33e1e2e7

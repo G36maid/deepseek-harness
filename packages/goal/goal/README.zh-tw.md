@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-goal
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 事件溯源的同工作階段目標狀態。該服務在 agent（代理）的現有工作階段中保留一個當前待完成目標，同時將繼續執行的權限作為行程本機續行啟用狀態。[goal 領域 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-persisted-same-session-goal-domain.md) 負責設計理由；[goal 類型目錄](../../../docs/subsystems/goal.md)記錄具體的資料形狀。
 

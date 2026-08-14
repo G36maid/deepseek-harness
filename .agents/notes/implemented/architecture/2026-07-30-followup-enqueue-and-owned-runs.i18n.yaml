@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-followup-enqueue-and-owned-runs.md
-2026-07-30-followup-enqueue-and-owned-runs.md: 9978b3a8ab8678fe98e000476505cee9dcaa1bc6
-2026-07-30-followup-enqueue-and-owned-runs.zh.md: 26d9ada6760041729460d76e8058ed0ba2280a64
-2026-07-30-followup-enqueue-and-owned-runs.zh-tw.md: 1f7ad667d58bd57fab17fad3a48b18eec7aee58d
+2026-07-30-followup-enqueue-and-owned-runs.md: 18dd7fc21ef990f25b0f9ac005313754706f3b32
+2026-07-30-followup-enqueue-and-owned-runs.zh.md: bd8788ecdcec0604e7de76c053598c67d877baeb
+2026-07-30-followup-enqueue-and-owned-runs.zh-tw.md: d4cf780ca93e346cdfe7355bc01164d14a910b46

@@ -1,6 +1,6 @@
 # 在堆疊 PR 鏈中回應評審意見
 
-[English](responding-to-pr-review-on-a-stack.md) | 繁體中文
+[English](responding-to-pr-review-on-a-stack.md) | [简体中文](responding-to-pr-review-on-a-stack.zh.md) | 繁體中文
 
 評審意見可能同時針對一條相依性堆疊（`A ← B ← C …`）中的多個 PR（Pull Request）。請透過 GitHub 官方的堆疊 PR 功能保持這條鏈的關聯。本指南負責評審修復的歸屬與傳播；[dsh-merging-stacked-prs](../../.agents/skills/dsh-merging-stacked-prs/SKILL.md) skill（技能）負責檢查關聯關係和落地。
 

@@ -1,6 +1,6 @@
 # 術語表
 
-[English](glossary.md) | 繁體中文
+[English](glossary.md) | [简体中文](glossary.zh.md) | 繁體中文
 
 DeepSeek Harness 的領域詞彙為每個概念規定一個規範術語。各術語透過標準 Markdown 錨點連結到相應條目；實作細節留在各包的 README 與 Agent Note 中。
 

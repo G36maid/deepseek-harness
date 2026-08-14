@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-copy-only-preset-authoring.md) | 繁體中文
+[English](2026-08-08-copy-only-preset-authoring.md) | [简体中文](2026-08-08-copy-only-preset-authoring.zh.md) | 繁體中文
 
 ## 問題
 

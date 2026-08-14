@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-compaction-tool-result-pruner
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 可安全重播、不相依性模型的剪枝服務（`ctx.toolResultPruner`）。它會將超出預算的 `tool/result` 表層節點改寫為長度受限的頭部、固定省略標記和長度受限的尾部，同時在僅附加工作階段日誌中保留完整原始事件。
 

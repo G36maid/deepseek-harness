@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-time-context
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 選填的持久上下文，包含當前帶時區時間、附加到當前開放請求的瀏覽器時區，以及在模型請求準備期間取樣的經過時長。默認組合不啟用它；Schedule Web overlay 會掛載它，使模型可以按使用者的瀏覽器時區解釋未明確限定時區的日期和時間。決策記錄：[持久 time-context Agent Note](../../../.agents/notes/implemented/feature/2026-07-16-durable-per-step-time-context.md)。
 

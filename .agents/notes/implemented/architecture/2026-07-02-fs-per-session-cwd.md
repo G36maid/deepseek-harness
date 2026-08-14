@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-02-fs-per-session-cwd.zh.md)
+English | [简体中文](2026-07-02-fs-per-session-cwd.zh.md) | [繁體中文](2026-07-02-fs-per-session-cwd.zh-tw.md)
 
 ## Problem
 

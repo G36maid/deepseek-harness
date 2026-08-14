@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-27-skill-catalog-hot-refresh.zh.md)
+English | [简体中文](2026-07-27-skill-catalog-hot-refresh.zh.md) | [繁體中文](2026-07-27-skill-catalog-hot-refresh.zh-tw.md)
 
 ## Problem
 

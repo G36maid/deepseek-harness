@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-pwsh
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The model-facing `pwsh` tool registered over the `ctx.shell` executor seam. Intended for Windows compositions where a PowerShell executor (e.g. `@deepseek-ai/dsh-pwsh-local`) backs `ctx.shell`; the tool contract is PowerShell-dialect: native `C:\...` paths and `$env:NAME` variables. Behavior mirrors `dsh-tool-bash` call-for-call — foreground and `run_in_background` execution through the generic job runtime, the managed `DSH_*` environment through the shared `shell-env` registry, the sandbox denial rendering with the same-turn `sandbox_permissions` escalation surface, and the bash marker/truncation rendering story (a clean exit produces no marker).
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-plan-mode
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 按 agent（智能体）分别记录到日志的 plan 协作状态，提供由部署方配置的引导内容、用于直接进入的 `/plan [message]` 命令、用于直接退出的 `/plan off` 命令，以及经用户评审的 `exit_plan_mode` 退出方式。Plan mode 是软引导；沙箱模式和批准策略各自强制执行限制，且不读写 plan 状态。
 

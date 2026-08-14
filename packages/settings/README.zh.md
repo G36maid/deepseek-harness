@@ -1,6 +1,6 @@
 # settings/：用户设置能力族
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 该包族通过注册的命名空间与可替换存储提供方解析用户可编辑配置。
 

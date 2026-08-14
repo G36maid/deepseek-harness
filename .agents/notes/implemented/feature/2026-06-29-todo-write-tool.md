@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-29-todo-write-tool.zh.md)
+English | [简体中文](2026-06-29-todo-write-tool.zh.md) | [繁體中文](2026-06-29-todo-write-tool.zh-tw.md)
 
 ## Problem
 

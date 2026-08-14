@@ -1,6 +1,6 @@
 # Code Runtime
 
-English | [中文](code-runtime.zh.md)
+English | [简体中文](code-runtime.zh.md) | [繁體中文](code-runtime.zh-tw.md)
 
 The code-execution seam — a [capability seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md) whose Service Definition ([dsh-code-runtime](../../packages/code-runtime/code-runtime), `ctx.codeRuntime`) runs one model-written program against host-provided async bindings and reports what it printed and returned. Code execution is **one optional capability**, not part of the agent-loop spine — so its vocabulary lives here, not in [core.md](core.md). Backends differ by execution substrate and source language, both readonly descriptors on the service; the worker-thread Service Provider and tool-registry Consumer are specified by the [Code Mode foundation](../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) and [typed-return contract](../../.agents/notes/implemented/feature/2026-07-20-code-mode-typed-tool-returns.md).
 

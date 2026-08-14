@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-query-sqlite
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Concrete `ctx.sessionQuery` provider. `SqliteSessionQueryEngine` inherits exact reads, traces, and provider-independent filters from the Service Definition package and implements its two full-text methods with SQLite FTS5. Search uses the live-preferred logical session corpus and groups cross-session results by their strongest event.
 

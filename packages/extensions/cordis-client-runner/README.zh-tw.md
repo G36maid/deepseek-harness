@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-cordis-client-runner
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 動態雙半外掛程式包的瀏覽器半。host 側 runner 把每個定義的程式碼留在行程記憶體裡，並經一條 `cordis/request-run` 事件向打開的頁面發問「要不要執行它」；本包回答這個請求、把定義變成活的瀏覽器外掛程式，並把 `dynamicCordisRunner/retract` 事件變回乾淨的頁面。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-web-config-tree-boot-and-transport-layering.md) | 中文
+[English](2026-07-24-web-config-tree-boot-and-transport-layering.md) | 简体中文
 
 > 范围：`dsh web` 如何组合（cordis.yml + cordis 之前的 boot 类 + 配置源），以及 web 传输如何跨包分层（网关 / 载体 / 绑定 / 图 / 开发期重载）。浏览器侧装载链归 [client 插件装载 note](2026-07-23-client-plugin-loading-model.md) 所有，本组合只是它的供给方。
 

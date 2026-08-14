@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-frozen-agent-note-archive.md) | 中文
+[English](2026-07-26-frozen-agent-note-archive.md) | 简体中文
 
 ## 问题
 

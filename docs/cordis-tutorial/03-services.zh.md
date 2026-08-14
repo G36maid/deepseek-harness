@@ -1,6 +1,6 @@
 # 3. 服务
 
-[English](03-services.md) | 中文
+[English](03-services.md) | 简体中文
 
 **服务**是一个插件提供、其他插件通过 `ctx` 消费的具名能力。在 harness 中，`ctx.tools`、`ctx.llm` 和 `ctx.agents` 都是服务。消费方只指定 `'tools'` 之类的能力，而不导入其提供方，因此配置可以选择提供方，无需修改消费方。
 

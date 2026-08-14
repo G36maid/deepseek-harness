@@ -1,6 +1,6 @@
 # dsh-agent-tool-presentation
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The row an [agent preset](../../preset/agent-presets/README.md) carries to say which form of its tools the model sees: `native` (every schema), `code` (only `run_code` plus a generated TypeScript SDK), or `both`.
 

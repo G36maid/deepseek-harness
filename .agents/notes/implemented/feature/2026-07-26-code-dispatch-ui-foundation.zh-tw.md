@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-code-dispatch-ui-foundation.md) | 繁體中文
+[English](2026-07-26-code-dispatch-ui-foundation.md) | [简体中文](2026-07-26-code-dispatch-ui-foundation.zh.md) | 繁體中文
 
 > 範圍：讓 UI 能以與原生工具呼叫相同的保真度渲染 Code Mode 輪次的宿主側約定變更，即其他 Code Mode UI Agent Note 賴以建置的基礎。傳輸設計歸 [Code Mode 基礎](2026-06-15-code-mode.md)所有；模型可見的 `description` 參數、攜帶完整內容的 `tool/code-dispatch` 載荷，以及 `dsh` 設定樹上臨時的 `DSH_TOOLS_MODE` 啟用開關，歸本篇所有。
 

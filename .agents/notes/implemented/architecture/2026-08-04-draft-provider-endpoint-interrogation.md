@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-04-draft-provider-endpoint-interrogation.zh.md)
+English | [简体中文](2026-08-04-draft-provider-endpoint-interrogation.zh.md) | [繁體中文](2026-08-04-draft-provider-endpoint-interrogation.zh-tw.md)
 
 ## Problem
 

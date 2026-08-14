@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-remove-stdio-and-echo-agents.md) | 中文
+[English](2026-07-20-remove-stdio-and-echo-agents.md) | 简体中文
 
 ## 问题
 

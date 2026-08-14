@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-hooks-claude-code
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個 Cordis 外掛程式，在 harness 的規範攔截點上執行使用者現有 **Claude Code** hook 設定（`hooks.json` 或 settings 文件的 `hooks` key）中受支持的 command hook 子集。它是 hooks 子系統的 **CC 方言**部分，負責橋接中 CC 格式的逐事件 stdin payload、CC 的 env 和 `${CLAUDE_PLUGIN_ROOT}`／`${CLAUDE_PROJECT_DIR}` 替換，以及將 hook 的中性結果對映為 harness 的類型化 Decision。方言無關原語（matcher、退出碼／stdout codec、`ctx.shell` 執行、最嚴格合併、`hook/*` 事件）來自 [`@deepseek-ai/dsh-hook-protocol`](../hook-protocol/README.md)。
 

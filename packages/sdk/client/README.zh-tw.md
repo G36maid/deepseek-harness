@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sdk-client
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 以子行程方式驅動程式 DeepSeek Harness 執行時期、走 stdio JSON-RPC 的 TypeScript 用戶端 SDK——[Python SDK](../../../python/README.md)（`deepseek-harness`）的設計孿生，共享同一個執行時期對端、協議與分層：`DeepSeekHarness` 是高層自有執行 API，`HarnessClient` 是低層協議用戶端。包（package）根枚舉消費端介面：兩層用戶端、面向呼叫方的類型和 `JsonRpcResponseError`；源模組、規範化輔助函式與訂閱投遞機制不供消費端匯入。純庫：不在任何 Cordis 上下文註冊；它所 spawn 的執行時期行程是一個完整 harness，其組成由自己的 `cordis.yml` 決定。
 

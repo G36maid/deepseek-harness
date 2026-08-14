@@ -1,6 +1,6 @@
 # workflow/：動態工作流程能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本家族透過 subagent 執行由模型編寫的編排工作流程，並將通用工具與固定策略工具公開給模型。
 

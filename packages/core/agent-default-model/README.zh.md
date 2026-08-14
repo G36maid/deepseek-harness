@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-agent-default-model
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 该部署默认值供入口在创建尚无会话级模型选择的 Agent 时使用。`AgentDefaultModelConfig` 提供 `ctx.agentDefaultModel`；`dsh --profile headless` 这类直接入口与 ApiProxy 这类由 Host 支撑的入口读取同一服务，而不是分别持有平行的提供方／模型默认值。
 

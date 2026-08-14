@@ -1,6 +1,6 @@
 # 消息反馈
 
-[English](feedback.md) | 中文
+[English](feedback.md) | 简体中文
 
 [`@deepseek-ai/dsh-message-feedback`](../../packages/feedback/message-feedback)拥有针对单条 assistant 消息的可编辑反馈。它刻意与不可变的 Session 级 `feedback/record` 事件分离：message feedback 是本地 storage-domain 伴随记录（sidecar），不是 Session 日志内容或投影，也不执行遥测交接。
 

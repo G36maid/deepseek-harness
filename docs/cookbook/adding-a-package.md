@@ -1,6 +1,6 @@
 # Cookbook: adding a workspace package
 
-English | [中文](adding-a-package.zh.md)
+English | [简体中文](adding-a-package.zh.md) | [繁體中文](adding-a-package.zh-tw.md)
 
 The file-by-file checklist for a new `@deepseek-ai/dsh-<name>` package. This checklist is validated against the bash and adapter packages as templates; if it drifts from them, fix it here.
 

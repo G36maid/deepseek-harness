@@ -1,6 +1,6 @@
 # Skills
 
-[English](skills.md) | 繁體中文
+[English](skills.md) | [简体中文](skills.zh.md) | 繁體中文
 
 [skill（技能）能力族](../../packages/skill) 包含 Service Definition（[dsh-skill](../../packages/skill/skill)，`ctx.skills`）、本機 Service Provider（[dsh-skill-filesystem](../../packages/skill/skill-filesystem)）、選填的隨包徽章提供方（[dsh-skill-badge](../../packages/skill/skill-badge)）和 Consumer（[dsh-tool-skill](../../packages/skill/tool-skill)）。登錄檔在其宿主層與各 scope 層之間合併各提供方的目錄；提供方貢獻本機或隨包 skill；Consumer 擁有初始目錄和替換目錄，以及面向模型的 `skill` 工具。skill 是選填的指令而非工作階段事件，因此其詞彙定義在此處而非 [core.md](core.md)。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-jobs
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 背景工作登錄檔約定（`ctx.jobs`）。抽象的 `JobRegistry` 及其詞彙類型在同一份約定下為長時間執行的生產方提供共享 id、owner 隔離、讀取、取消、等待、通知和清理；行程區域性登錄檔位於 [`dsh-jobs-local`](../jobs-local/README.md)。生產方外掛程式使用其不透明 id namespace 擴充 `JobKindMap`。
 

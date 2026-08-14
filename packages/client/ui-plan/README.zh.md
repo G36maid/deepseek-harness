@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-plan
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Plan mode 状态徽章，纯浏览器 surface 插件。浏览器侧占用会话声明的 `conversation.input.plan` 单实例 seat（位于 access 模式控件右侧）；node 侧是空 apply（roster 行）。plan 行为本身——`/plan` 命令、边界或空闲即时提交的 `plan/mode` 状态、`plan` 投影单元与 policy 段——归 [`@deepseek-ai/dsh-plan-mode`](../../plan/plan-mode/README.md) 所有，由 host roster 独立组合。
 

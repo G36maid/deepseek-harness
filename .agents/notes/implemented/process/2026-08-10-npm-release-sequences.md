@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-10-npm-release-sequences.zh.md)
+English | [简体中文](2026-08-10-npm-release-sequences.zh.md) | [繁體中文](2026-08-10-npm-release-sequences.zh-tw.md)
 
 ## Problem
 

@@ -1,6 +1,6 @@
 # 遙測（telemetry）
 
-[English](session-telemetry.md) | 繁體中文
+[English](session-telemetry.md) | [简体中文](session-telemetry.zh.md) | 繁體中文
 
 對外的工作階段上報拆分為一項[能力 seam](../capability-seams.md)：Service Definition 與捕獲協調器（[dsh-session-telemetry](../../packages/session/session-telemetry)，`ctx.sessionTelemetry`）擁有捕獲點、固定區塊投影、`session-telemetry/record` 脫敏 waterfall（瀑布式事件）、handoff 遊標與最小後端約定；部署方載入的 Service Provider（[dsh-session-telemetry-otel](../../packages/session/session-telemetry-otel)）則是原樣設定的 OpenTelemetry JS SDK 日誌管線。它是一項選填能力，不屬於 agent loop（代理循環）主幹，這裡也沒有任何內容會進入模型請求。邊界公理（harness 的職責止於 `emit()`；批次處理、重試、排隊與丟失策略都屬於上報 SDK）連同被否決的替代方案，均已在[復活 Agent Note](../../.agents/notes/implemented/feature/2026-07-23-session-telemetry-otel-revival.md)中定案；捕獲點、遊標與投影的約定見 [Service Definition README](../../packages/session/session-telemetry/README.md)。
 

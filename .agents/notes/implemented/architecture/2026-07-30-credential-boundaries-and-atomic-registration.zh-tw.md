@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-credential-boundaries-and-atomic-registration.md) | 繁體中文
+[English](2026-07-30-credential-boundaries-and-atomic-registration.md) | [简体中文](2026-07-30-credential-boundaries-and-atomic-registration.zh.md) | 繁體中文
 
 > 範圍：加固[請求級 LLM（大型語言模型）設定邊界](2026-07-29-request-level-llm-config-credentials.md)——存下來的憑據落在哪裡、誰能讀到它，一次請求所用的事實如何保持在同一代，以及一組路由如何在不留空窗的前提下更換。本 note 與 [settings 寫路徑 note](2026-07-30-settings-write-path-integrity.md) 配套：它把那篇 note 的提供方修復套用到 `credentials-local`，並把其中的寫鎖提升進 `dsh-atomic-write`。
 

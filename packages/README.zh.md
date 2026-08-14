@@ -1,6 +1,6 @@
 # 包
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 npm scope 为 `@deepseek-ai/dsh-*`；Cordis `Service` 子类和函数插件通过 `ctx.effect()`、`ctx.on()` 或 `ctx.waterfall()` 注册。规则见[包](AGENTS.md)与[根规则](../AGENTS.md#conventions)。
 

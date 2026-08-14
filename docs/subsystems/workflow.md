@@ -1,6 +1,6 @@
 # Workflow
 
-English | [中文](workflow.zh.md)
+English | [简体中文](workflow.zh.md) | [繁體中文](workflow.zh-tw.md)
 
 The workflow seam lets an agent run a model-written orchestration SCRIPT that starts subagents. Like [subagent](subagent.md) it is **one optional capability**, not part of the agent loop, so its types and operations live here rather than in [core.md](core.md). Like bash, it permits ONE engine implementation per context to provide `ctx.workflowEngine`; there is no named-provider registry (a second engine replaces the first through plugin configuration rather than running beside it).
 

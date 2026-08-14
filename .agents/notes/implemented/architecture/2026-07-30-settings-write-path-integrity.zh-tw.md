@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-settings-write-path-integrity.md) | 繁體中文
+[English](2026-07-30-settings-write-path-integrity.md) | [简体中文](2026-07-30-settings-write-path-integrity.zh.md) | 繁體中文
 
 > 範圍：`dsh-settings-file` 的寫路徑資料完整性（操作鏈、讀-改-寫、跨行程寫鎖、diff 形態的 YAML 編輯）與 `dsh-settings` 的觀察者生命週期（watch 的 dispose（資源釋放）、非同步監聽器收容、JSON 形態寫入邊界）。本 note 推翻了[使用者設定 seam note](2026-07-28-user-settings-seam.md)所記錄的一項延後決定：跨行程鎖定檔現已交付。
 

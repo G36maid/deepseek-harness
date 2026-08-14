@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-30-config-plane-boundaries.zh.md)
+English | [简体中文](2026-07-30-config-plane-boundaries.zh.md) | [繁體中文](2026-07-30-config-plane-boundaries.zh-tw.md)
 
 > Scope: boundary hardening of the [web configuration plane](2026-07-30-web-config-plane.md) — which namespaces reach the wire, which callers reach them, and how an editor holding a partial, possibly stale view writes without destroying what it cannot see.
 

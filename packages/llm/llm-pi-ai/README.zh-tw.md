@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-llm-pi-ai
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 基於 [`@earendil-works/pi-ai`](https://www.npmjs.com/package/@earendil-works/pi-ai) 的 harness LLM（大型語言模型）seam 通用多提供方配接器。一個外掛程式實例擁有一份以路由為鍵的提供方 profile 字典；每個請求使用 `GenerateOptions.provider` 選擇 profile，並針對該路由已設定的 catalog 解析 `GenerateOptions.model`。點名了已安裝 pi-ai 提供方的路由會繼承其端點、協定格式（wire format）與模型 catalog 作為預設值，並逐欄位覆蓋；pi-ai 未提供的路由則整體聲明出來，因此接入 OpenAI 相容閘道、自建服務，或比已安裝 catalog 更新的提供方，都屬於設定而非改程式碼。
 

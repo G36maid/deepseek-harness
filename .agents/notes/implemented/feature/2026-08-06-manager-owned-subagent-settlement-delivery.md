@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-06-manager-owned-subagent-settlement-delivery.zh.md)
+English | [简体中文](2026-08-06-manager-owned-subagent-settlement-delivery.zh.md) | [繁體中文](2026-08-06-manager-owned-subagent-settlement-delivery.zh-tw.md)
 
 ## Problem
 

@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-adapter-owned-max-token-defaults.md
-2026-07-30-adapter-owned-max-token-defaults.md: ec6a68b74d0cdaefcd214be98efb32377721169a
-2026-07-30-adapter-owned-max-token-defaults.zh.md: 700d90125c125184625afc33ebf64add4ab9191c
-2026-07-30-adapter-owned-max-token-defaults.zh-tw.md: 613d8ce360856120a11ee040fbe546b59473632c
+2026-07-30-adapter-owned-max-token-defaults.md: eb2c3f69ea3e745cdf1957c2ad4c0902a3c865c7
+2026-07-30-adapter-owned-max-token-defaults.zh.md: 63cd0dd6457e274e510e5ae54ba6746403fb274f
+2026-07-30-adapter-owned-max-token-defaults.zh-tw.md: 4920804b7f4fab82a8f61cf18caca0341e0b18bb

@@ -1,6 +1,6 @@
 # settings/：使用者設定能力族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 該包族透過註冊的命名空間與可替換儲存提供方解析使用者可編輯設定。
 

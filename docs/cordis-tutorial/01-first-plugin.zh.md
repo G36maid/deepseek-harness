@@ -1,6 +1,6 @@
 # 1. 编写第一个插件
 
-[English](01-first-plugin.md) | 中文
+[English](01-first-plugin.md) | 简体中文
 
 在本教程使用的 loader 配置中，Cordis 插件模块通过命名导出提供 `apply` 函数。Cordis 加载模块时，会用一个 **上下文** 调用 `apply`；该上下文就是 `ctx` 对象，插件通过它注册自己贡献的所有内容。
 

@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-12-package-model-experience-contract.md
-2026-07-12-package-model-experience-contract.md: 8462cc20e8de43927cd04b73cfdb11a0c3d77336
-2026-07-12-package-model-experience-contract.zh.md: 09094dc4af28aff1c3cfc63a9619a4f61d34f591
-2026-07-12-package-model-experience-contract.zh-tw.md: f3817d9d3b3bedb9771d4e3726f5354587326fc7
+2026-07-12-package-model-experience-contract.md: f8942a6b0e3fad62ea8e2721da751ce86793817c
+2026-07-12-package-model-experience-contract.zh.md: 07eb446755d6ab794ad37cc014f4d0791fa1b535
+2026-07-12-package-model-experience-contract.zh-tw.md: 25bd47f75e317d8a688a26e48bc1e7717e2d22ef

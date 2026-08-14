@@ -3,7 +3,7 @@
 
 # 登錄檔
 
-[English](registry.md) | 繁體中文
+[English](registry.md) | [简体中文](registry.zh.md) | 繁體中文
 
 外掛程式載入與相依性注入。
 

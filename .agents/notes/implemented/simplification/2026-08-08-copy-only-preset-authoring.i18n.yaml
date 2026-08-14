@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/simplification/2026-08-08-copy-only-preset-authoring.md
-2026-08-08-copy-only-preset-authoring.md: c16518b087c7acedbee3d89ce5cc8dbcaa0a0cde
-2026-08-08-copy-only-preset-authoring.zh.md: 8ecd7500ebd4ebf55b611494009881b1e651a502
-2026-08-08-copy-only-preset-authoring.zh-tw.md: 2356bf307179db4769009c419c0033dde0197e39
+2026-08-08-copy-only-preset-authoring.md: 2753633eebc1fd80b63280aa58dc206e57fb5278
+2026-08-08-copy-only-preset-authoring.zh.md: 7f0e83bfb1926279e70506a5872c03c4dedc3ba3
+2026-08-08-copy-only-preset-authoring.zh-tw.md: 26ec9f17e0c94b4ccfd595788ec9c823ff76f205

@@ -3,7 +3,7 @@
 
 # 事件生产方与消费方矩阵
 
-[English](event-producer-consumer.md) | 中文
+[English](event-producer-consumer.md) | 简体中文
 
 本矩阵展示哪些包会派发各个 harness 自有事件，以及哪些包会监听这些事件。事件之间存在多对多关系，因此密集的关系数据以表格而非一张大型关系图呈现。接收方和事件名称类型还涵盖有意绕过 `ctx.emit` 的内含派发位置，例如 subagent 生命周期封装。
 

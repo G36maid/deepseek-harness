@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-08-10-unary-apiproxy-remote-migration.md) | 繁體中文
+[English](2026-08-10-unary-apiproxy-remote-migration.md) | [简体中文](2026-08-10-unary-apiproxy-remote-migration.zh.md) | 繁體中文
 
 ## 問題
 

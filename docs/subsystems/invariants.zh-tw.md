@@ -1,6 +1,6 @@
 # 執行時期不變式
 
-[English](invariants.md) | 繁體中文
+[English](invariants.md) | [简体中文](invariants.zh.md) | 繁體中文
 
 [dsh-invariants](../../packages/runtime-diagnostics/invariants) 是面向包自有執行時期不變式檢查的可設定登錄檔服務（`ctx.invariants`）。它是一個 support 組的包，不是三包能力 seam，也不屬於 agent loop（代理循環）主幹：登錄檔擁有選擇邏輯、名稱保留、子 fiber 生命週期和歸因到包的失敗，而每個工作區包發布一個 `./invariant` 配套外掛程式，以自己確切的 npm 包名註冊檢查。檢查可以斷言什麼（權威事件串流或可變資料，絕不是服務或方法是否存在）是 [AGENTS.md](../../AGENTS.md#conventions) 中的執行時期不變式約定；登錄檔設計由[不變式服務 Agent Note](../../.agents/notes/implemented/architecture/2026-07-19-package-owned-invariant-service.md)規定。
 

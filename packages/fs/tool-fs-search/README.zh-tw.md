@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-fs-search
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **面向模型的檔案系統發現工具**（`glob`、`grep`）由 **打包的 ripgrep 二進位**（`@vscode/ripgrep`）支持，而不是由 `ctx.fs` 提供方方法或系統 `rg` 安裝支持。註冊是無條件的：二進位隨 NPM 相依性一起交付，因此沒有載入期可用性探針。每次呼叫都透過 `ctx.subprocess` seam 以固定 argv 向量 spawn 該二進位（前綴 `--no-config`，使宿主的 `RIPGREP_CONFIG_PATH` 無法向不受約束的 spawn 注入 `--pre` 預處理器；模型控制的值是普通 argv 元素——不存在 shell 層，因此不涉及 shell 引號處理），解析原始 `rg` 輸出，並返回相對於工作目錄的規範值。本包注入 `tools`、`systemPrompt` 和 `subprocess`，有意**不**注入 `fs`；格式化結果 spill 為選填功能，因此機會性讀取 `ctx.spillStore`，呼叫方式為 `ctx.get()`。
 

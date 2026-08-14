@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-runtime
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用戶端 cordis 啟動與不相依性 React 的對象服務：SlotRegistry 包裝 SlotCore 並提供 renderer 資料源；SessionRuntime 擁有 Session 對象、清單與 scope 狀態，以及供已註冊 conversation view target 共用的事件視窗與歷史分頁。WorkspaceRuntime 相依性 SessionRuntime，擁有 Workspace 對象、清單／操作、默認目標派生，以及 New Session 空工作階段複用入口（`connectWorkspace`）。執行時期把共享 Host 流分發給 Session 與 Workspace 所有者，並把每個通用 `host/remote-event` 幀交給 `ctx.remote.$dispatch`；各領域包透過 `ctx.remote.$on` 訂閱自身 owner 事件，並自行決定使哪些快取或工作階段行失效。用戶端工作階段一律由 Host 建立（一次 `session.create` 同時產生 Session、agent（代理）和 cwd）；用戶端不持有任何實體化之前的工作階段狀態——agent scope（host dsh-scope 的用戶端映像檔，以 agent/session 共用 id 為鍵）在工作階段行進入清單映像檔時建立，並隨 prune 銷毀。約定：api-contracts v3 §4。每個 `Session` 持有一個通用的 `ProjectionValueStore`，由歷史記錄尾部的 `projections` 塊播種，並經 `session/projection` 幀按 seq 高者勝更新；領域鍵（含 `todos`）經 `projections.faceOf`／`useProjection` 讀取，不經 `ConversationSnapshot`。該 store 還會透過 `SessionSummary.projectionValues` 發布一份引用穩定的完整值對映，使全域性清單消費端無需為每個工作階段建立訂閱，即可複用同一組投影。
 

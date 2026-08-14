@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-commands
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 由外掛程式負責、供互動式 UI 配接器使用的面向使用者命令登錄檔。[外掛程式命令註冊 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-plugin-command-registration.md)定義了其邊界與分發約定。
 

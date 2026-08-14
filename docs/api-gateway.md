@@ -1,6 +1,6 @@
 # API Gateway
 
-English | [中文](api-gateway.zh.md)
+English | [简体中文](api-gateway.zh.md) | [繁體中文](api-gateway.zh-tw.md)
 
 This is the current-state reference for the Typert API Gateway. It describes how business services declare unary Remote methods, how the build generates Host and Client contracts, and how calls reuse the Connection RPC and `/api` route. Session events, incremental data, and other streaming protocols are outside this document's scope; they may use the same Connection but do not use Remote method descriptors.
 

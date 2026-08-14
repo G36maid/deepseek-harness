@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-code-dispatch-log-spill.md) | 繁體中文
+[English](2026-07-26-code-dispatch-log-spill.md) | [简体中文](2026-07-26-code-dispatch-log-spill.zh.md) | 繁體中文
 
 > 範圍：用既有的 spill 實作限制 `tool/code-dispatch` 事件的內容。[宿主側基礎 Agent Note](2026-07-26-code-dispatch-ui-foundation.md) 有意接受了不設上限的日誌，並把 spill 支持留到本次更改；[即時平行 Agent Note](2026-07-26-code-mode-live-parallel-dispatch.md) 定義了該監聽器處理的事件對。
 

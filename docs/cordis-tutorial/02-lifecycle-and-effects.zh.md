@@ -1,6 +1,6 @@
 # 2. 生命周期与 effect
 
-[English](02-lifecycle-and-effects.md) | 中文
+[English](02-lifecycle-and-effects.md) | 简体中文
 
 Cordis 插件可能因修改配置、热重载、显式资源释放或所需服务消失而卸载。通过 Cordis API 建立的注册属于 effect，会在所属插件卸载时撤销；在这些 API 之外管理的资源必须包装在 `ctx.effect()` 中。
 

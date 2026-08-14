@@ -1,6 +1,6 @@
 # Python 貢獻者工作流程
 
-[English](development.md) | 繁體中文
+[English](development.md) | [简体中文](development.zh.md) | 繁體中文
 
 根據所需的貢獻者成果選擇工作流程：建置執行時期產物、驗證 SDK、從原始碼執行或建置分發包。包行為分別見 [SDK 參考](sdk/README.md) 和[執行時期載體參考](sdk-runtime/README.md)。
 

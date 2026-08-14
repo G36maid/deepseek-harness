@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-12-unlink-stale-profile-fallback-links.md
-2026-08-12-unlink-stale-profile-fallback-links.md: 32959eb1b83bcc290d1daa4e4a020a2721be489b
-2026-08-12-unlink-stale-profile-fallback-links.zh.md: 1f4da12748c9b57c12bf41a740001d5df770beb6
-2026-08-12-unlink-stale-profile-fallback-links.zh-tw.md: 3e2df20534b91798263359b4a20c649f6221ddd0
+2026-08-12-unlink-stale-profile-fallback-links.md: 4c560d9999e0a4844820215f6fa48b3bb1676d6d
+2026-08-12-unlink-stale-profile-fallback-links.zh.md: 4bda620840d330441fc334db7b681ff1bb6eb623
+2026-08-12-unlink-stale-profile-fallback-links.zh-tw.md: 4d9abba644ebb6a354a0297d8fa482522aba3845

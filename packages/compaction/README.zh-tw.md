@@ -1,6 +1,6 @@
 # compaction/ — 壓縮能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個壓縮（compaction）能力家族（參見[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)）：Service Definition、摘要提供方、無模型工具結果修剪配套工具，以及使用者命令 Consumer。這些全是**產品**包。
 

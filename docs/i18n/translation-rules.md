@@ -1,6 +1,6 @@
 # Translation rules
 
-English | [中文](translation-rules.zh.md) | [繁體中文](translation-rules.zh-tw.md)
+English | [简体中文](translation-rules.zh.md) | [繁體中文](translation-rules.zh-tw.md)
 
 How to translate between the three language sides of a documentation pair in this repo. All languages carry equal authority ([README.md](README.md)): a change is authored in any language, and that side is the source for that update — these rules govern producing or updating the counterparts. They bind humans and agents equally. Routine agent work translates the changed content directly in one terminology-guided pass; the extended [.agents/skills/dsh-translate-docs](../../.agents/skills/dsh-translate-docs/SKILL.md) workflow runs only when the user explicitly invokes it. Rule levels follow RFC 2119 usage: **MUST** / **MUST NOT** are gate- or review-blocking; **SHOULD** needs a stated reason to deviate; **MAY** is discretionary.
 

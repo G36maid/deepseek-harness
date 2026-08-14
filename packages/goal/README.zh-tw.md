@@ -1,6 +1,6 @@
 # goal/：持久化的同工作階段目標
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 agent 工作階段的持久目標狀態，獨立於消費它的面向模型工具與續行策略。goal 狀態是所屬工作階段日誌的一部分；消費端相依性 `dsh-goal`，絕不相依性具體的 agent loop（代理循環）。
 

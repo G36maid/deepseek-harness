@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent-fork-in-process
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 fork 提供方會建立一個行程內子 agent（代理），並以父 agent 已完成的對話輪次作為初始內容。它與 spawn 共用全部執行機制；唯一的行為差異是工作階段初始內容。
 

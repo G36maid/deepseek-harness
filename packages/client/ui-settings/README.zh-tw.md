@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-settings
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 設定領域的底座，承擔兩項職責，本身不含任何呈現內容。它提供 `ctx.settingsScope`——每個偏好設定行綁定自己那份持久化命名空間分區所用的宿主傳輸層；並聲明由註冊方填充的設定 slot 類型：`settings.trigger`／`settings.header`／`settings.close`（介面框架內容）、`settings.action`（內容標題欄中的有序操作）、`settings.section`（每項功能一頁）、`settings.plugins.tab`（“外掛程式”分區內由各功能持有的頁面）和 `settings.onboarding`（由各功能持有的有序頁面）。它不相依性任何 `ui-*` 呈現包，因此任何持有偏好設定的功能都能夠到它；設定**外殼**——`sidebar.settings` 佔位方、它的導覽與介面框架——位於 ui-settings-general，因為外殼一旦相依性 ui-sidebar，就會經 ui-layout 與 ui-theme 閉合出一條引用圖環路。外殼自身的契約類型出於同一原因與外殼放在一起。
 

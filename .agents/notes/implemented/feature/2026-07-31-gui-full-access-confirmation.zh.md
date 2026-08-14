@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-gui-full-access-confirmation.md) | 中文
+[English](2026-07-31-gui-full-access-confirmation.md) | 简体中文
 
 ## 问题
 

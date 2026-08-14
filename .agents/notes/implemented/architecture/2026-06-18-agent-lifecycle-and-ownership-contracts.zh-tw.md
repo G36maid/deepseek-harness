@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-agent-lifecycle-and-ownership-contracts.md) | 繁體中文
+[English](2026-06-18-agent-lifecycle-and-ownership-contracts.md) | [简体中文](2026-06-18-agent-lifecycle-and-ownership-contracts.zh.md) | 繁體中文
 
 ## 問題
 

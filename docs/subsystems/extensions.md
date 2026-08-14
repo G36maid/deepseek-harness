@@ -1,6 +1,6 @@
 # Extensions
 
-English | [中文](extensions.zh.md)
+English | [简体中文](extensions.zh.md) | [繁體中文](extensions.zh-tw.md)
 
 The extensions subsystem lets an agent define versioned Cordis packages, run their host and browser halves, and query approved runtime metadata before writing code. Package lifecycle and sandbox behavior belong to the [`packages/extensions`](../../packages/extensions/README.md) package group.
 

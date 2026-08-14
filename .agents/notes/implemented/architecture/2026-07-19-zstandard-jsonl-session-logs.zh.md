@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-zstandard-jsonl-session-logs.md) | 中文
+[English](2026-07-19-zstandard-jsonl-session-logs.md) | 简体中文
 
 ## 问题
 

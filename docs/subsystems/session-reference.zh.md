@@ -1,6 +1,6 @@
 # 会话引用
 
-[English](session-reference.md) | 中文
+[English](session-reference.md) | 简体中文
 
 结构化的跨会话引用请求与准备后的消息上下文。[包约定](../../packages/context/session-reference) 定义规范 URI、当前表层投影、标签安全的 JSON 与字节保留、稳定错误和不可信的模型提示词。宿主适配器使用这些类型，而不会把各自 UI 的提及语法传入 agent（智能体）核心。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-job-registry-seam.md) | 中文
+[English](2026-07-26-job-registry-seam.md) | 简体中文
 
 ## 问题
 

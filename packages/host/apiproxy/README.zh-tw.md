@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-apiproxy
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 所有用戶端共用的 API 閘道由三部分組成：TypeScript API 約定（`src/api/`，不相依性 Node，可從瀏覽器匯入）、fetch 載體對（`src/fetch/`：宿主側的 `toFetchHandler`，以及用戶端側的 `AbstractApiClient` 與平臺子類）和宿主側實作（`src/api-proxy.ts`：`createApiProxy` 加上默認匯出的 `ApiProxyService` 閘道外掛程式，其設定為 `{nativeOpen?, sessionExportCompressionLevel?, coldBlankProbeMaxBytes?}`，提供 `ctx.apiProxy`）。該包不註冊任何路由；HTTP 等載體自行包裝 `ctx.apiProxy`。隨發行版交付的 Web 組合位於 [`packages/bundle/web-app/cordis.patch.yml`](../../bundle/web-app/cordis.patch.yml)，其默認 Agent（代理）模型選擇屬於 base 組合包中的 [`@deepseek-ai/dsh-agent-default-model`](../../core/agent-default-model/README.md)。
 

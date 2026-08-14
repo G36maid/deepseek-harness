@@ -1,6 +1,6 @@
 # native/
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 與 DeepSeek Harness 一同維護的原生原始碼和公開包。[`landlock-run/` workspace](landlock-run/README.md) 負責 harness 使用的 Landlock 自限後執行啟動器，包括其架構、由三個包組成的 npm 包家族、平臺支持、開發工作流程和[發布流程](landlock-run/docs/release.md)。
 

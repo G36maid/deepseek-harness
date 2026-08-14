@@ -1,6 +1,6 @@
 # 工作階段持久化
 
-[English](persistence.md) | 繁體中文
+[English](persistence.md) | [简体中文](persistence.zh.md) | 繁體中文
 
 事件日誌的**持久性 seam**。[session.md](session.md) 描述了記憶體中的 `Session`：僅附加的 `SessionEvent` 日誌即為真源。本頁描述如何使該日誌持久化：抽象的 `SessionPersistence` 服務、它的後端、flush 檢查點、當機復原，以及隨日誌一同儲存的元資料頭。日誌承載的事件詞彙在生成的[持久化日誌事件目錄](../persistence-catalog.md)中逐項列舉。
 

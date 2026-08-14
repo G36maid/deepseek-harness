@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-web
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **`WebRuntime`**（`ctx.web`）定義 harness 具備哪些 web 訪問能力（搜尋 web、抓取 URL），並透過多個提供方實作，不把模型約定綁定到某個廠商的 API 形狀。
 

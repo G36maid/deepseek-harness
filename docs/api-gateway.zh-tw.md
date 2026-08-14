@@ -1,6 +1,6 @@
 # API Gateway
 
-[English](api-gateway.md) | 繁體中文
+[English](api-gateway.md) | [简体中文](api-gateway.zh.md) | 繁體中文
 
 本文是 Typert API Gateway 的當前狀態參考。它描述業務服務如何聲明一元 Remote 方法、建置如何生成 Host 與 Client 約定，以及呼叫如何複用 Connection 的 RPC 與 `/api` 路由。工作階段事件、增量資料和其他流協議不屬於本文範圍；它們可以使用同一個 Connection，但不使用 Remote 方法描述符。
 

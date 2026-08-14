@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-client-plugin-loading-model.md) | 繁體中文
+[English](2026-07-23-client-plugin-loading-model.md) | [简体中文](2026-07-23-client-plugin-loading-model.zh.md) | 繁體中文
 
 > 範圍：瀏覽器側的外掛程式裝載機件——什麼是外掛程式、程式碼怎麼到達、熱重新載入如何搭在這套模型上。裝載鏈歸本篇所有；[Web 用戶端架構筆記](2026-07-19-gui-web-client-architecture.md) 在裝載問題上以本篇為準，繼續擁有 slot、資料對象層與 React 面。
 

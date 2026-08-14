@@ -1,6 +1,6 @@
 # interaction/：人机协作平面
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 人与运行中的 agent（智能体）协作所经由的服务与插件——提问、审批、权限预设、命令。这些是**产品**包：由用户直接操作的真实接口。
 

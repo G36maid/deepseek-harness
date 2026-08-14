@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-query-sqlite
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 具體 `ctx.sessionQuery` 提供方。`SqliteSessionQueryEngine` 從 Service Definition 包繼承精確讀取、跟蹤和提供方無關的過濾，並使用 SQLite FTS5 實作其兩個全文方法。搜尋使用即時優先的邏輯工作階段語料庫，並按每個工作階段中匹配度最高的事件對跨工作階段結果分組。
 

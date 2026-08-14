@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-14-acp-multi-session.md) | 繁體中文
+[English](2026-06-14-acp-multi-session.md) | [简体中文](2026-06-14-acp-multi-session.zh.md) | 繁體中文
 
 > 本 Agent Note 寫於 ACP 還是編輯器橋接層的時期，動機來自 Zed 的多工作階段用戶端模型。[ACP 作為僅面向自動化的協議](../simplification/2026-07-23-acp-automation-only-protocol.md)移除了編輯器介面；多路複用決策本身不變，本 Agent Note 現依照自動化約定陳述它。
 

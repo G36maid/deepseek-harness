@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-02-native-github-stacks-and-optional-rebases.md) | 繁體中文
+[English](2026-08-02-native-github-stacks-and-optional-rebases.md) | [简体中文](2026-08-02-native-github-stacks-and-optional-rebases.zh.md) | 繁體中文
 
 ## 問題
 

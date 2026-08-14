@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-23-client-plugin-loading-model.zh.md)
+English | [简体中文](2026-07-23-client-plugin-loading-model.zh.md) | [繁體中文](2026-07-23-client-plugin-loading-model.zh-tw.md)
 
 > Scope: the browser-side plugin loading machinery — what is a plugin, how code arrives, and how hot reload rides on that model. This note owns the loading chain; the [web client architecture note](2026-07-19-gui-web-client-architecture.md) defers to it for loading and keeps owning slots, the data object layer, and the React face.
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-19-require-agent-notes-for-non-trivial-changes.md) | 中文
+[English](2026-07-19-require-agent-notes-for-non-trivial-changes.md) | 简体中文
 
 ## 问题
 

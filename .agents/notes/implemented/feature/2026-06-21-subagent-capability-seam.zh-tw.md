@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-21-subagent-capability-seam.md) | 繁體中文
+[English](2026-06-21-subagent-capability-seam.md) | [简体中文](2026-06-21-subagent-capability-seam.zh.md) | 繁體中文
 
 > 完整 seam 已交付：`dsh-subagent` 介面與 `dsh-tool-subagent` 消費端；兩個行程內後端（`dsh-subagent-spawn-in-process`、`dsh-subagent-fork-in-process`）；巢狀 agent（代理）快照基礎設施（[逐工作階段快照重播](../testing/2026-06-22-subagent-snapshot-replay.md)）；以及行程外的 ACP（Agent Client Protocol）、Codex 與 Claude Code 後端（[ACP Agent Note](2026-06-22-acp-subagent-backend.md)、[產品提供方 Agent Note](2026-08-04-claude-code-and-codex-subagent-backends.md)）。
 

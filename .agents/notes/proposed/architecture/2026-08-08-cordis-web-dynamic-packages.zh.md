@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-08-08-cordis-web-dynamic-packages.md) | 中文
+[English](2026-08-08-cordis-web-dynamic-packages.md) | 简体中文
 
 ## Problem
 

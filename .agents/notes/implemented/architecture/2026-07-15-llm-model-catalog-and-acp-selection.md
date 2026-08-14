@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-15-llm-model-catalog-and-acp-selection.zh.md)
+English | [简体中文](2026-07-15-llm-model-catalog-and-acp-selection.zh.md) | [繁體中文](2026-07-15-llm-model-catalog-and-acp-selection.zh-tw.md)
 
 > The catalog decision remains current. Per-session ACP model selection is superseded by [ACP as an automation-only protocol](../simplification/2026-07-23-acp-automation-only-protocol.md).
 

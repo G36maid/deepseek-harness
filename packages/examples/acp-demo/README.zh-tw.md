@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-acp-demo
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 ACP（Agent Client Protocol）自動化伺服器應用：默認 agent（代理）主幹、用戶端透過 [`@deepseek-ai/dsh-acp`](../../acp/acp/README.md) 建立的 agent、JSONL 持久化，以及語義檢查點機制，並透過一個 JSON-RPC stdio bin 對外提供服務。程序化用戶端建立新工作階段；此包不掛載人工互動 UI。
 

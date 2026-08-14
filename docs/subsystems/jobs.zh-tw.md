@@ -1,6 +1,6 @@
 # 背景工作執行時期
 
-[English](jobs.md) | 繁體中文
+[English](jobs.md) | [简体中文](jobs.zh.md) | 繁體中文
 
 長時間執行的生產方、`ctx.jobs` 與任務控制命令共用的類型。[執行時期 Agent Note](../../.agents/notes/implemented/architecture/2026-06-20-generic-long-running-tool-runtime.md) 負責設計；本頁記錄 [`packages/jobs/jobs/src/types.ts`](../../packages/jobs/jobs/src/types.ts) 中的確切欄位和變體。
 

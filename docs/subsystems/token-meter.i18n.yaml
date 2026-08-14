@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write docs/subsystems/token-meter.md
-token-meter.md: a1a096b800d895cabe9e05b751e23f06cea67d67
-token-meter.zh.md: 16e13e3d168c3cd67bdf12903045dd9b4056402f
-token-meter.zh-tw.md: dfc44ac9196900cf68ddb5a6e6152a4e0756fa92
+token-meter.md: 68817877b9b7ed0221c938ddbaf0181f2985cee3
+token-meter.zh.md: 1e76ebc3304a23b2b28c7c710e525852da53fcca
+token-meter.zh-tw.md: 654bd4a9efec6f0c54dd2431a72ff72b5b94c3d6

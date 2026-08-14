@@ -1,6 +1,6 @@
 # identity/ — shared identity
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Identity values shared across product domains. These values do not represent an authenticated account.
 

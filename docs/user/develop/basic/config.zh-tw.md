@@ -1,6 +1,6 @@
 # 外掛程式設定
 
-[English](config.md) | 繁體中文
+[English](config.md) | [简体中文](config.zh.md) | 繁體中文
 
 讓你的外掛程式接受使用者在 `cordis.yml` 中傳入的設定。
 

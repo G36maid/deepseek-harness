@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-subprocess-seam.md) | 繁體中文
+[English](2026-07-26-subprocess-seam.md) | [简体中文](2026-07-26-subprocess-seam.zh.md) | 繁體中文
 
 ## 問題
 

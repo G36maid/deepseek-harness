@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-context-meter-blind-to-compaction.md) | 中文
+[English](2026-08-05-context-meter-blind-to-compaction.md) | 简体中文
 
 ## 问题
 

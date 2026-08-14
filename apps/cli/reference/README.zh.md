@@ -1,6 +1,6 @@
 # `dsh` CLI（命令行界面）行为参考
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 本参考定义 profile 启动、web 别名、插件管理和配置 dump 等命令模式。argv 由 [`src/args.ts`](../src/args.ts) 统一解析一次，[`src/bin.ts`](../src/bin.ts) 只会动态导入选中的运行器。
 

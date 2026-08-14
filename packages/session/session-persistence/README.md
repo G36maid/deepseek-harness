@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-persistence
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Session persistence is a capability seam. The abstract `SessionPersistence` service (`ctx.sessionPersistence`) is its Service Definition. It requires a persistence backend to store, reload, and list sessions durably without defining the storage implementation. The seam follows the `dsh-shell` roles ([capability seams](../../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)): this package owns the Service Definition, a sibling package owns the Service Provider, and Consumers inject the service.
 

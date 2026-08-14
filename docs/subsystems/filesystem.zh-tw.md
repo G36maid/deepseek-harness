@@ -1,6 +1,6 @@
 # 檔案系統
 
-[English](filesystem.md) | 繁體中文
+[English](filesystem.md) | [简体中文](filesystem.zh.md) | 繁體中文
 
 選填的檔案系統能力由四個部分組成：[dsh-fs](../../packages/fs/fs) 擁有 `ctx.fs` 以及帶選填守衛的原子文字操作；[dsh-fs-local](../../packages/fs/fs-local) 實作本機磁碟後端；[dsh-fs-observation-policy](../../packages/fs/fs-observation-policy) 記錄觀測到的存在或缺失狀態，並透過事件（而非服務）新增新鮮度規則；[dsh-tool-fs](../../packages/fs/tool-fs) 直接執行面向模型的 read/write/edit 呼叫並渲染視窗。它位於 agent loop（代理循環）主幹之外；替換後端不會改變策略或工具 schema。
 

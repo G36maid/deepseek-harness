@@ -1,6 +1,6 @@
 # 事後檢討（postmortem）
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 事後檢討記錄的是：一個 bug 出現在了不該出現的地方（真實使用者、已合併的 PR（Pull Request）、已發布的版本），值得關注的是*為什麼我們的流程放過了它*，而不僅僅是那一行修復。
 

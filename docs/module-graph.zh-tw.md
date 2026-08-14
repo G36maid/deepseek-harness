@@ -3,7 +3,7 @@
 
 # 模組相依性關係圖
 
-[English](module-graph.md) | 繁體中文
+[English](module-graph.md) | [简体中文](module-graph.zh.md) | 繁體中文
 
 `@deepseek-ai/dsh-*` harness 包之間的相依性關係。該關係圖根據各包的 `peerDependencies`（規範的執行時期相依性訊號）生成，並按 `packages/<group>/<pkg>` 層級分組。邊 `a --> b` 表示包 `a` 相依性包 `b`。名稱中的 `@deepseek-ai/dsh-` 前綴已移除。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-subagent
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Web subagent feature owner: contributes the lazily expandable catalog tree to `conversation.session.header.actions`, reason-specific read-only replacements to the conversation composer chain, and the existing `@` reference source to `ctx.inputTriggers`.
 

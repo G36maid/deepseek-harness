@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-11-structured-error-taxonomy.md) | 繁體中文
+[English](2026-06-11-structured-error-taxonomy.md) | [简体中文](2026-06-11-structured-error-taxonomy.zh.md) | 繁體中文
 
 ## 問題
 

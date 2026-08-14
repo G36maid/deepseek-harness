@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-bounded-background-job-admission.md) | 繁體中文
+[English](2026-08-11-bounded-background-job-admission.md) | [简体中文](2026-08-11-bounded-background-job-admission.zh.md) | 繁體中文
 
 ## 問題
 

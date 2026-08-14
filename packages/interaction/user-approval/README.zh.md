@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-user-approval
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 与通道无关的一次性审批 seam。`ctx.approval.request(req)` 返回 `allowed-once`、`rejected`、`cancelled` 或 `unavailable`；应答者缺失或失败时会以拒绝方式关闭，授权也只适用于所请求的操作。确切事件签名见 [approval.md](../../../docs/subsystems/approval.md#cordis-surface) 的生成区块。
 

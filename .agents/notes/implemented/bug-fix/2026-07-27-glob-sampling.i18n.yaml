@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-27-glob-sampling.md
-2026-07-27-glob-sampling.md: 67912cf290b127a96819d57f30387197af68323d
-2026-07-27-glob-sampling.zh.md: b8d7bbe1bc70e94cc4239867244be554eaf33e63
-2026-07-27-glob-sampling.zh-tw.md: 4c0f5738714b855eb17d29fc896bf31d083b49f7
+2026-07-27-glob-sampling.md: 75a9977c203f23a8c10de4eb48af8af511de751f
+2026-07-27-glob-sampling.zh.md: 1a330c367a3452828b6ba3af83b96ba8e5bfe4d5
+2026-07-27-glob-sampling.zh-tw.md: e878e6da1427466bd008869d6b29b6581470448a

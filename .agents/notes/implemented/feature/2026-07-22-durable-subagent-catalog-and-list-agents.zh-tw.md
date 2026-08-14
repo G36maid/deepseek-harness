@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-22-durable-subagent-catalog-and-list-agents.md) | 繁體中文
+[English](2026-07-22-durable-subagent-catalog-and-list-agents.md) | [简体中文](2026-07-22-durable-subagent-catalog-and-list-agents.zh.md) | 繁體中文
 
 ## 問題
 

@@ -1,6 +1,6 @@
 # Agent Notes
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這裡存放一類設計文件。**Agent Note** 記錄影響本程式碼庫的決策或提案：程式碼和文件無法承載的*為什麼*以及*放棄了什麼*。本文件規定 Agent Note 存放在哪裡、何時需要寫一份，以及[文件內格式](#the-file-format)。
 

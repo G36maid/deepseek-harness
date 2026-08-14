@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-pwsh-local
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `@deepseek-ai/dsh-shell` 執行器 seam 的本機 PowerShell Service Provider，基於 [`@deepseek-ai/dsh-subprocess`](../../subprocess/subprocess/README.md) 服務：`PwshLocalExecutor` 每次呼叫以受管行程的方式透過 `ctx.subprocess` spawn `pwsh -NoLogo -NoProfile -NonInteractive -Command <command>`，並負責所有 PowerShell 相關事項——可執行文件解析、命令默認化與上限、逾時/取消分類、面向模型的終端機環境，以及後臺讀取的 stdout/stderr 合併。行程組機制（有界 spill 輸出、憑據清理、終止升級、dispose（資源釋放））屬於 subprocess 服務。
 

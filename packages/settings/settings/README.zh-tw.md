@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-settings
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 使用者設定 Service Definition（`ctx.settings`）。一個提供方持有按 namespace 分節的原始文件；外掛程式註冊 namespace schema 並讀取分層解析值：schema 預設值，然後註冊方的組合 `base`（其 cordis.yml entry 設定子集），最後使用者文件分節。不掛載提供方時消費端行為不變：仍只按 entry 設定解析，因此任何組合有無 settings 都能工作。
 

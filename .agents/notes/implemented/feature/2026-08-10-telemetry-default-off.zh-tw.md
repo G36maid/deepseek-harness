@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-10-telemetry-default-off.md) | 繁體中文
+[English](2026-08-10-telemetry-default-off.md) | [简体中文](2026-08-10-telemetry-default-off.zh.md) | 繁體中文
 
 ## 問題
 

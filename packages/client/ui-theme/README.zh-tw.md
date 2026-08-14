@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-theme
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 主題外掛程式：基於 --dsw-* token 基礎樣式表（靜態尺度 + 別名語義層）的 ThemeRuntime。該服務擁有即時主題偏好（`light`／`dark`／`system`），將 `system` 透過 `prefers-color-scheme` 解析為實際主題，並行布不可變的 `ThemeSnapshot`，透過 `theme/change` 事件通知變化；它絕不接觸 DOM：ui-layout 的呈現器會應用解析後的快照（`html { color-scheme }`、`body[data-ds-dark-theme]`，以及主題的別名 token 內聯變數）。來自回環地址的瀏覽器會先以 `system` 立即提供該服務，隨後在後臺載入 `ui-theme.preference`，並將每次內建主題選擇透過 Host settings API 寫入；其本機提供方默認將設定存入 `$DSH_HOME/settings.yaml`。收到推送的 settings 變更時或重連後，瀏覽器都會重新拉取該設定；連續快速選擇會按操作順序攜帶 namespace revision 序列寫入，最新寫入被拒時則重新載入持久化值。遠端瀏覽器無法訪問特權 settings API，因此它的選擇僅保留在行程內。已註冊的第三方主題 id 仍是行程內擴充，不會跨越內建 settings schema；移除其中任意一個都絕不會覆蓋最後一個持久化的內建偏好。該持久化邊界由[Host settings 支撐的偏好決策](../../../.agents/notes/implemented/bug-fix/2026-08-06-host-backed-web-preferences.md)擁有。
 

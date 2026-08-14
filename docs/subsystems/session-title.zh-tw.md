@@ -1,6 +1,6 @@
 # 工作階段標題
 
-[English](session-title.md) | 繁體中文
+[English](session-title.md) | [简体中文](session-title.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-session-title`](../../packages/session/session-title) 所擁有的持久、後寫覆蓋的標題狀態與選填非同步提供方詞彙。共享 LLM（大型語言模型）輔助元件負責精確的輔助請求記錄。各包 README 負責時序、回退、失敗與 fork 行為；生成的[持久化日誌事件目錄](../persistence-catalog.md)負責完整的事件聲明。
 

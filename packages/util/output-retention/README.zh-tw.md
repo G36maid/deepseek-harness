@@ -1,6 +1,6 @@
 # dsh-output-retention
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個輕相依性的**保留**庫：為必須限制返回上下文量的工具提供有界的面向模型輸出。呼叫方將項或文字區塊送入有界對象，然後取回保留的內容和精確的省略元資料。
 

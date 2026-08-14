@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-telemetry-anonymous-user-id.md) | 繁體中文
+[English](2026-07-31-telemetry-anonymous-user-id.md) | [简体中文](2026-07-31-telemetry-anonymous-user-id.zh.md) | 繁體中文
 
 ## 問題
 

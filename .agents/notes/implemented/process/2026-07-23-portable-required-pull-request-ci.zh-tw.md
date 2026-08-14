@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-portable-required-pull-request-ci.md) | 繁體中文
+[English](2026-07-23-portable-required-pull-request-ci.md) | [简体中文](2026-07-23-portable-required-pull-request-ci.zh.md) | 繁體中文
 
 ## 問題
 

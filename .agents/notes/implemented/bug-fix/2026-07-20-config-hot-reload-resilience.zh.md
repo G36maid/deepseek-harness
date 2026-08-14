@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-config-hot-reload-resilience.md) | 中文
+[English](2026-07-20-config-hot-reload-resilience.md) | 简体中文
 
 ## Problem
 

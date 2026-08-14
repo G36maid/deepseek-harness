@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-agent-loop-testkit`
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Shared prerequisite mounting for tests that exercise the concrete `AgentLoop`. `mountAgentLoopTestDependencies(ctx, options?)` installs the LLM, session, system-prompt, tool, and agent services in dependency order, then returns before the loop is mounted.
 

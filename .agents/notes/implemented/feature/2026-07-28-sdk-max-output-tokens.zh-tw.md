@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-sdk-max-output-tokens.md) | 繁體中文
+[English](2026-07-28-sdk-max-output-tokens.md) | [简体中文](2026-07-28-sdk-max-output-tokens.zh.md) | 繁體中文
 
 ## 問題
 

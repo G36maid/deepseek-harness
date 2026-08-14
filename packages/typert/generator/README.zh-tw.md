@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-typert-generator
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 TypeScript 項目分析器和模型驅動程式的 Typert 生成器。在生成任何產物之前，它會先將開發者編寫的源類型樹轉換為獨立於編譯器的 `FaceModel` 和 `TypeGraph` 資料。靜態分析無需 Cordis 即可消費該模型；各產物生成元件均不會接收 TypeScript 抽象文法樹（AST）或型別檢查器對象。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-jobs
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Web 背景工作特性的歸屬方：向 `conversation.session.header.actions` 貢獻一個條目，列出當前工作階段可見的 `ctx.jobs` 記錄。資料完全來自 [`dsh-client-runtime`](../runtime/README.md) 從 `session/jobs` 幀摺疊出的 `jobsBySession` 清單映像檔，因此本包不發任何 RPC，除彈層開合外不持有任何狀態。
 

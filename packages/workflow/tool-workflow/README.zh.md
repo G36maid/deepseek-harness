@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-workflow
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向模型的 **`workflow` 工具**：运行一段扇出 subagent 的 JavaScript 编排脚本，并返回脚本的最终值。本包负责基于 [`ctx.workflowEngine`](../workflow/README.md) 定义面向模型的 schema 和运行生命周期；脚本解析、执行、上限与取消位于 seam 之后，消费方仍负责面向父级的 schema 和结果包络。
 

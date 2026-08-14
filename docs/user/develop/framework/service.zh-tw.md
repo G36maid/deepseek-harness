@@ -1,6 +1,6 @@
 # 服務與相依性
 
-[English](service.md) | 繁體中文
+[English](service.md) | [简体中文](service.zh.md) | 繁體中文
 
 服務是一個外掛程式向其他外掛程式公開的能力。inject 聲明外掛程式需要哪些服務。
 

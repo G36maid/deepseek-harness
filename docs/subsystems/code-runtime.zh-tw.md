@@ -1,6 +1,6 @@
 # 程式碼執行時期
 
-[English](code-runtime.md) | 繁體中文
+[English](code-runtime.md) | [简体中文](code-runtime.zh.md) | 繁體中文
 
 程式碼執行 seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-06-13-capability-seams.md)：其 Service Definition（[dsh-code-runtime](../../packages/code-runtime/code-runtime)，`ctx.codeRuntime`）使用宿主提供的非同步綁定執行一段模型編寫的程序，並報告其列印內容與回傳值。程式碼執行是**一項選填能力**，不屬於 agent loop（代理循環）主幹，因此其詞彙定義在此而非 [core.md](core.md) 中。各後端的執行基底與源語言不同，這兩項均為服務上的只讀描述符；worker-thread Service Provider 與工具登錄檔 Consumer 的約定見 [Code Mode 基礎設計](../../.agents/notes/implemented/feature/2026-06-15-code-mode.md) 和[類型化返回約定](../../.agents/notes/implemented/feature/2026-07-20-code-mode-typed-tool-returns.md)。
 

@@ -1,6 +1,6 @@
 # 7. Into the harness
 
-English | [中文](07-into-the-harness.zh.md)
+English | [简体中文](07-into-the-harness.zh.md) | [繁體中文](07-into-the-harness.zh-tw.md)
 
 This chapter registers a model-callable tool with the harness's `tools` service, executes it through the harness tool pipeline, and observes the result event. It remains keyless and does not call a model.
 

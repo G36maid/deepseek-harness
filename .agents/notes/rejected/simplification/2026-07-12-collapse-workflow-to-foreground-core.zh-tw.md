@@ -2,7 +2,7 @@
 
 Status: rejected — 工作流程進度是有意設計的觀測介面；應透過消費端使其發揮作用，而非刪除它。
 
-[English](2026-07-12-collapse-workflow-to-foreground-core.md) | 繁體中文
+[English](2026-07-12-collapse-workflow-to-foreground-core.md) | [简体中文](2026-07-12-collapse-workflow-to-foreground-core.zh.md) | 繁體中文
 
 ## 問題
 

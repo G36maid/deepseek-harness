@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-user-questions
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Web 提问功能插件：其浏览器侧把 `question` 条目注册到会话拥有的 `conversation.composer` 键控 slot 中。其主机侧刻意为空——在那里挂载 `dsh-tool-ask-user` 会把工具放进注册表的**全局层**，而全局层会并入每一个 agent（智能体），无论它由哪个 preset 组装，于是一个「两工具」的 benchmark preset 实际会呈现三个。渲染提问是宿主的 UI 能力，拥有该工具则是 agent 的能力，因此 `tool-ask-user` 行属于需要它的各个 preset（以及没有 preset 的 TUI 组装）。
 

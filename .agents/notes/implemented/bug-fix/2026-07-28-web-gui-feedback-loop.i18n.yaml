@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-07-28-web-gui-feedback-loop.md
-2026-07-28-web-gui-feedback-loop.md: dad85c37dac19c04c15ecb34c210c5376299d50f
-2026-07-28-web-gui-feedback-loop.zh.md: ea83441efa83ad0c93e8cb1f0daf71ecfeabb69e
-2026-07-28-web-gui-feedback-loop.zh-tw.md: 05f47b9b9e03a96698fbc7f18ddab2e411af3c56
+2026-07-28-web-gui-feedback-loop.md: 37de32dbfb60150fe72f6e4102fa143ac9c8db05
+2026-07-28-web-gui-feedback-loop.zh.md: d1bc937da1ba527f9f3ec1417465ac6adebd9fb7
+2026-07-28-web-gui-feedback-loop.zh-tw.md: 2f5fb253ea7a65e9534bcd2bd75f57a18a2b5911

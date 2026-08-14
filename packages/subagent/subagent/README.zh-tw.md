@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subagent
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 subagent seam 允許一個 agent（代理）透過具名提供方把工作委派給子 agent。呼叫方統一使用 `ctx.subagents` 服務 API；提供方決定子 agent 在當前行程、其他行程，還是透過未來的傳輸方式執行。
 

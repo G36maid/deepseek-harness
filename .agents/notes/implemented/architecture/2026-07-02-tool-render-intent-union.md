@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-02-tool-render-intent-union.zh.md)
+English | [简体中文](2026-07-02-tool-render-intent-union.zh.md) | [繁體中文](2026-07-02-tool-render-intent-union.zh-tw.md)
 
 > The render-intent union remains current for UI transports; its ACP mapping is superseded by [ACP as an automation-only protocol](../simplification/2026-07-23-acp-automation-only-protocol.md).
 

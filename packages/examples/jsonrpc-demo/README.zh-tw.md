@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sdk-jsonrpc-demo
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 只包含 bin 的應用，啟動外部 `cordis.yml`；其 [`jsonrpc`](../../sdk/server/README.md) 入口透過按換行分隔的 stdio 為 SDK 用戶端提供服務。設定負責組合主幹、後端和服務外掛程式。發布的 `dsh-jsonrpc-agent` bin 從設定項目解析裸外掛程式。Python SDK 的 `dsh-jsonrpc-agent-pkg` [單文件可執行執行時期](../../../.agents/notes/implemented/architecture/2026-07-10-single-file-executable-sdk-runtime-distribution.md)改用 `lib/packaged-bin.js`：已打包的裸外掛程式從封閉執行時期包樹解析，相對外掛程式仍以設定目錄為基準。
 

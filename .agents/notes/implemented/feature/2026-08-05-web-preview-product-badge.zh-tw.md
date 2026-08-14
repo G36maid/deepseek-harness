@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-web-preview-product-badge.md) | 繁體中文
+[English](2026-08-05-web-preview-product-badge.md) | [简体中文](2026-08-05-web-preview-product-badge.zh.md) | 繁體中文
 
 ## 問題
 

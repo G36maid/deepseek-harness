@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-08-per-preset-standing-mounts.md) | 中文
+[English](2026-08-08-per-preset-standing-mounts.md) | 简体中文
 
 ## 问题
 

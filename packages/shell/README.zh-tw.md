@@ -1,6 +1,6 @@
 # shell/ — bash 能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 該能力家族涵蓋規範執行器 seam、其實作、共享 shell 環境和麵向模型的工具。這些全是**產品**包。
 

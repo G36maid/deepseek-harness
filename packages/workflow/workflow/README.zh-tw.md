@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-workflow
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工作流程 seam（擴充點，`ctx.workflowEngine`）執行由模型編寫、可扇出 subagent 的編排指令碼。該 seam 定義指令碼、執行、結果、錯誤和事件契約；引擎負責決定如何隔離並執行指令碼。
 

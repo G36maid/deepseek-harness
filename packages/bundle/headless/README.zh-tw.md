@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-headless`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 dsh 一次性任務組合包。[`cordis.patch.yml`](cordis.patch.yml) 直接疊加在 [`dsh-base`](../base/README.md) 之上：提供編碼 persona 和工具模式、停用 HMR（熱模組替換）、將 Code Mode 的 worker 作為核心執行能力掛載，並插入本包的 `headless-runner` 外掛程式（設定為 `{task}`，從注入的 `headlessStartup` 提供方解析）。它不掛載任何 Host、HTTP server、Web runtime 或瀏覽器外掛程式。
 

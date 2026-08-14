@@ -2,7 +2,7 @@
 
 Status: rejected — 完整输出恢复是真实的 bash 行为。未来的产物／blob 服务或许能将其泛化，但在替代方案就位前删除 spill 文件会丢失有用的命令输出。
 
-[English](2026-06-20-drop-bash-output-spill-files.md) | 中文
+[English](2026-06-20-drop-bash-output-spill-files.md) | 简体中文
 
 ## 问题
 

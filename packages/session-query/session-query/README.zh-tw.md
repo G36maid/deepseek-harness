@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-query
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `SessionQueryEngine` 是組合式抽象 `ctx.sessionQuery` 約定。它對即時 `ctx.sessions` 和選填的動態掛載 `ctx.sessionPersistence` 實作精確工作階段歷史取回、關係跟蹤和與提供方無關的過濾；具體後端實作它的兩個全文方法。匹配 id 只產生一條記錄：即時事件優先，而 `live` 和 `persisted` 會報告兩種來源的可用性。如果不可變 header 存在衝突，則以 `SESSION_QUERY_SOURCE_CONFLICT` 失敗。
 

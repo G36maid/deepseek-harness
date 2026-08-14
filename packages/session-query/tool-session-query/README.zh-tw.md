@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-session-query
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 位於 `ctx.sessionQuery` 之上、經工作區授權的模型工具。該 opt-in 包只相依性統一介面，並註冊 `session_search`、`session_event_search`、`session_trace`、`session_event_trace` 和 `session_event_read`；已發布的宿主組合默認不掛載它。
 

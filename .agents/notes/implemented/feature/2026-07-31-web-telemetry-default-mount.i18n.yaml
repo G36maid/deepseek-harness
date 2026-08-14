@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-31-web-telemetry-default-mount.md
-2026-07-31-web-telemetry-default-mount.md: 9399cbced62e326a46058a5f0c21c949e8737eff
-2026-07-31-web-telemetry-default-mount.zh.md: e3f8b735977a87ad71ce600e24e10df41375d6ea
-2026-07-31-web-telemetry-default-mount.zh-tw.md: 99ae8bd98975fdb5642e962e307b4a6c9108ba6e
+2026-07-31-web-telemetry-default-mount.md: f7b96cb2e647ec1cfb99661344e507eb9d132568
+2026-07-31-web-telemetry-default-mount.zh.md: 0c0e6776711c95c8fc34abc3cd27529ec9efb0d7
+2026-07-31-web-telemetry-default-mount.zh-tw.md: 181928ef3b70055bf6316b880e261fadb7479e8f

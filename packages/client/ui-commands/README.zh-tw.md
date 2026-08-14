@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-commands
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用戶端命令 API（`ctx.commandUi`）：以工作階段為 key 的命令目錄快取、帶 `matchSpace`／`matchEnter` 決策掛鉤的 `/` 命令 source、三類派發（`execute`／`popupSelect`／`leadingInput`），以及面向業務包的 popupSelect 註冊。[Web 命令 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-25-web-command-surfaces-and-assembly.zh.md) 記錄了這項決策。
 

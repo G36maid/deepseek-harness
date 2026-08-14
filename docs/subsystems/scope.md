@@ -1,6 +1,6 @@
 # Scoped Registration
 
-English | [中文](scope.zh.md)
+English | [简体中文](scope.zh.md) | [繁體中文](scope.zh-tw.md)
 
 The [scope package](../../packages/core/scope) supplies the identity, carrier, and scoped-layer vocabulary that makes one registration context mean both per-agent visibility and shared lifetime ownership. It is a library primitive rather than a Cordis service; the [agent-scope runtime-design Agent Note](../../.agents/notes/implemented/architecture/2026-07-12-agent-scope-runtime-design.md#scope-routing-one-opaque-key-selects-one-layer) owns the lifecycle rationale, the [shared-storage Agent Note](../../.agents/notes/implemented/architecture/2026-07-12-scoped-layers-store.md) owns the registry-layer decision, and the package [README](../../packages/core/scope/README.md) owns the callable API and filtering semantics.
 

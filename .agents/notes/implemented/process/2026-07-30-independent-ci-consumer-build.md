@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-30-independent-ci-consumer-build.zh.md)
+English | [简体中文](2026-07-30-independent-ci-consumer-build.zh.md) | [繁體中文](2026-07-30-independent-ci-consumer-build.zh-tw.md)
 
 ## Problem
 

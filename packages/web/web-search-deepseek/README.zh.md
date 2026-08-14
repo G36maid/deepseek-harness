@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-web-search-deepseek
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 由 [DeepSeek](https://deepseek.com) 支持的 `WebSearchProvider`，用于 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它调用 DeepSeek 的 **Anthropic 兼容 Messages API**（`POST {baseURL}/messages`），启用原生 `web_search_20250305` 服务器工具，并把 DeepSeek 返回的结构化 `web_search_tool_result` 块映射为 seam 规范化的 `WebSearchResult`。
 

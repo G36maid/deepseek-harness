@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-06-onboarding-step-owned-takeover-chrome.md
-2026-08-06-onboarding-step-owned-takeover-chrome.md: 80d2dbbb94c3bf49dab58b394ecec0181fb7ccf2
-2026-08-06-onboarding-step-owned-takeover-chrome.zh.md: f67c3960185fe5d71e93f3bbf404fa5480cae11f
-2026-08-06-onboarding-step-owned-takeover-chrome.zh-tw.md: e214e30bc2de607f722de86d7b9b2092a4dc7acc
+2026-08-06-onboarding-step-owned-takeover-chrome.md: bf35f02fcd7f67d9a6322146b1fbd1a0eeef2459
+2026-08-06-onboarding-step-owned-takeover-chrome.zh.md: f9393a118150451aeabaf035533bc1261d154188
+2026-08-06-onboarding-step-owned-takeover-chrome.zh-tw.md: 3f36df2313b102508e5c0012412cc8b6acca6420

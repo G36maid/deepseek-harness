@@ -1,6 +1,6 @@
 # dsh-scope
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 带作用域的注册原语。`createScope(ctx, key)` 创建一个带标签的 Cordis 上下文，其底层 fiber 拥有通过该上下文进行的每项注册。`scopeOf(ctx)` 读取标签；`scopeTarget(base, key)` 将带作用域的事件路由到键相同的监听器，同时让无作用域监听器保持全局可见。键可以构成可选的父链（`bindScopeParent`）：注册视图沿链**向下**继承——子作用域看得见祖先各层，近者遮蔽远者——事件放行沿链**向上**扩展——标签为祖先的监听器能收到子孙键的事件，反向永不成立。agent loop（智能体循环）为每个存活的 agent 创建一个作用域，agent preset 的常驻挂载则是其 agent 们的父作用域，但该机制与键的具体含义无关，底层包无需依赖两者即可使用。
 

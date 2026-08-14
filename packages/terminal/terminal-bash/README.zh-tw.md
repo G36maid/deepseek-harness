@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-terminal-bash
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 這是一個基於 `ctx.subprocess.spawnTerminal`、為 `ctx.terminals` 提供的持久 shell 後端。它在共享 `ctx.sandboxPolicy` 下啟動互動式 shell，保留有界的逐行輸出並偵測就緒狀態；行程管理提供方則負責 PTY 分配、環境清理、前臺行程組、訊號傳送和完整終端機工作階段清理。因此，同一個 PTY 後端可以與本機或遠端執行世界提供方組合。
 

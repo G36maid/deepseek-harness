@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-session-reference`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `ctx.sessionReferenceResolver` 會把其他工作階段準備為有界、只讀快照，作為帶來源資訊、面向模型的上下文。它消費 `ctx.sessionQuery` 與後端無關的 compact 檢查點標記；不需要 SQLite FTS。支持跨工作階段 mention 的宿主可以主動啟用該服務。
 

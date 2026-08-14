@@ -1,6 +1,6 @@
 # DeepSeek Harness
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 DeepSeek Harness（`dsh`）是由 [DeepSeek AI](https://deepseek.com) 開發的開源 agent harness（代理框架）。
 

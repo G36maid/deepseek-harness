@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-cordis
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 自引用 Cordis 工具集：五个面向模型的工具，操作当前 DSH 进程中的实时运行时。注册表、vm 沙箱与浏览器广播属于 [`@deepseek-ai/dsh-cordis-host-runner`](../cordis-host-runner/README.md)（`ctx.dynamic`），本工具集注入它——只装这些工具而不装 runner 的组合永远不会激活它们。沙箱语义、动态包生命周期与组合及既定决策详见[工具集 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md)。
 

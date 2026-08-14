@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-workspace
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 DeepSeek Harness 的 Workspace 實體登錄檔（`ctx.workspaceRegistry`）：透過領域資料形式儲存持久 workspace 記錄、穩定 workspace 順序和按新到舊排列的候選工作階段索引。消費端看到 `Workspace` 介面；實體實作保持包私有。
 

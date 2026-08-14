@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-07-feedback-acknowledgement-sharing-disclosure.md) | 繁體中文
+[English](2026-08-07-feedback-acknowledgement-sharing-disclosure.md) | [简体中文](2026-08-07-feedback-acknowledgement-sharing-disclosure.zh.md) | 繁體中文
 
 ## 問題
 

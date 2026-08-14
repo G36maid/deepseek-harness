@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-title-first-prompt-llm
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 可选的 `ctx.sessionTitle` 提供方，通过 `ctx.llm` 总结第一条符合条件的用户消息。它注册 `first-prompt` 节奏，只在全新非 fork 会话首次创建回退时自动运行，并将结果归因于该消息的确切 seq。自动失败会保留回退，之后只能通过 `ctx.sessionTitle.refresh()` 重试。
 

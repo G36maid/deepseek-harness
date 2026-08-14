@@ -1,6 +1,6 @@
 # Token Meter
 
-English | [中文](token-meter.zh.md)
+English | [简体中文](token-meter.zh.md) | [繁體中文](token-meter.zh-tw.md)
 
 `@deepseek-ai/dsh-token-meter` exposes one detached replay snapshot for request pressure and positional surface pricing. `logRevision` is the number of durable events consumed for every field in the measurement.
 

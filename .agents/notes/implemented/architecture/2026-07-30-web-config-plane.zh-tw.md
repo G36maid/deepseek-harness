@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-30-web-config-plane.md) | 繁體中文
+[English](2026-07-30-web-config-plane.md) | [简体中文](2026-07-30-web-config-plane.zh.md) | 繁體中文
 
 > 範圍：[請求級 LLM（大型語言模型）設定 note](2026-07-29-request-level-llm-config-credentials.md) 中延後的 wire 面與 web UI——帶推送式失效的 `settings.*`/`credentials.*`/`llm.*` RPC 領域、分層且脫敏的 `describe()`、本機設定文件交接、llm 可設定提供方目錄與拓撲事件、獨立的 `dsh-client-schema-form` 模型層，以及帶手寫提供方編輯器的 Models 設定頁。`deepseek` → `deepseek-official` 提供方路由重新命名作為解除鎖定前提的破壞性變更一並搭車合入。
 

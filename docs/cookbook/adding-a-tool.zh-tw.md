@@ -1,6 +1,6 @@
 # 工具編寫參考
 
-[English](adding-a-tool.md) | 繁體中文
+[English](adding-a-tool.md) | [简体中文](adding-a-tool.zh.md) | 繁體中文
 
 面向模型的工具必須滿足哪些約定，均以本文為準。如需按步驟建置第一個工具，請閱讀[建置工具](../user/develop/basic/tool.md)。`packages/shell/tool-bash` 是生產級的三包示例。
 

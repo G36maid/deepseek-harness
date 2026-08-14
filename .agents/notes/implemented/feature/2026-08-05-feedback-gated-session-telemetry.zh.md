@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-05-feedback-gated-session-telemetry.md) | 中文
+[English](2026-08-05-feedback-gated-session-telemetry.md) | 简体中文
 
 ## 问题
 

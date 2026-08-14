@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-provider-credential-lifecycle.md) | 繁體中文
+[English](2026-08-06-provider-credential-lifecycle.md) | [简体中文](2026-08-06-provider-credential-lifecycle.zh.md) | 繁體中文
 
 ## 問題
 

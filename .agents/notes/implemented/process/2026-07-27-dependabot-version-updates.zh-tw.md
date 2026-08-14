@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-dependabot-version-updates.md) | 繁體中文
+[English](2026-07-27-dependabot-version-updates.md) | [简体中文](2026-07-27-dependabot-version-updates.zh.md) | 繁體中文
 
 ## 問題
 

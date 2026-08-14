@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-12-simplify-session-log-representation.md) | 繁體中文
+[English](2026-07-12-simplify-session-log-representation.md) | [简体中文](2026-07-12-simplify-session-log-representation.zh.md) | 繁體中文
 
 ## 問題
 

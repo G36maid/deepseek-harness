@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-08-06-web-markdown-incremental-ast-renderer.md
-2026-08-06-web-markdown-incremental-ast-renderer.md: 3599bfcc78dc4eefe5e82f461a469bdba15f3aae
-2026-08-06-web-markdown-incremental-ast-renderer.zh.md: c3a1134a478ee4c67a581fce63f20bc6ea1d6c33
-2026-08-06-web-markdown-incremental-ast-renderer.zh-tw.md: bcc59b7eee428474c7cfa2114147f85e9eacc00b
+2026-08-06-web-markdown-incremental-ast-renderer.md: 30155423b1d514110ed2d2da660ade7cbf8b5a8d
+2026-08-06-web-markdown-incremental-ast-renderer.zh.md: 9566fcff009d0c9fb91fd29981a88e594edb58a3
+2026-08-06-web-markdown-incremental-ast-renderer.zh-tw.md: 9f3a1911b9194f5e73d36ee0167fcec04071a0ef

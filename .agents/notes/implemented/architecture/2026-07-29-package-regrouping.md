@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-29-package-regrouping.zh.md)
+English | [简体中文](2026-07-29-package-regrouping.zh.md) | [繁體中文](2026-07-29-package-regrouping.zh-tw.md)
 
 ## Problem
 

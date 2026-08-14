@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-06-20-agent-note-classification.md
-2026-06-20-agent-note-classification.md: edb65a772c81b818bf3811c9f3f64ed1a6497647
-2026-06-20-agent-note-classification.zh.md: e2a21fc4ca6579720ed25aae09ef439f63a2de8c
-2026-06-20-agent-note-classification.zh-tw.md: 9faa19e48601ceb48eed21f09003de7d01878aa8
+2026-06-20-agent-note-classification.md: 602f7b41033ef1f8ff762f9f2a7298657bc84b16
+2026-06-20-agent-note-classification.zh.md: b47c4e19f6594d895d003e65d5902cb04338346a
+2026-06-20-agent-note-classification.zh-tw.md: 6c044f3ae3fab002e8ec20740e5b4b89245e1df7

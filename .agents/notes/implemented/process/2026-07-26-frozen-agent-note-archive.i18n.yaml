@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-26-frozen-agent-note-archive.md
-2026-07-26-frozen-agent-note-archive.md: 0c139c4a5d892de5bdace76b4935edf32586c4c1
-2026-07-26-frozen-agent-note-archive.zh.md: 2c2751c56a9b20423b00eac7a90c02286ce3e8b0
-2026-07-26-frozen-agent-note-archive.zh-tw.md: bb20af3b1d3d8d5252162c0a3baea39efbb1c073
+2026-07-26-frozen-agent-note-archive.md: dbb093063e05ae3a768de4e575467f0fdfb76265
+2026-07-26-frozen-agent-note-archive.zh.md: 296da3dac8a913e5262479286ead44863ee49553
+2026-07-26-frozen-agent-note-archive.zh-tw.md: 4bdbb9939837f7f98640f6b4e9659a3fc6be5f3d

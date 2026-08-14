@@ -1,6 +1,6 @@
 # 后台任务运行时
 
-[English](jobs.md) | 中文
+[English](jobs.md) | 简体中文
 
 长时间运行的生产方、`ctx.jobs` 与任务控制命令共用的类型。[运行时 Agent Note](../../.agents/notes/implemented/architecture/2026-06-20-generic-long-running-tool-runtime.md) 负责设计；本页记录 [`packages/jobs/jobs/src/types.ts`](../../packages/jobs/jobs/src/types.ts) 中的确切字段和变体。
 

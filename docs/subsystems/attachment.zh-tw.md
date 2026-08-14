@@ -1,6 +1,6 @@
 # 持久圖片附件
 
-[English](attachment.md) | 繁體中文
+[English](attachment.md) | [简体中文](attachment.zh.md) | 繁體中文
 
 附件 seam 將二進位圖片的所有權與工作階段日誌分離。生產方把經過校驗的編碼位元組交給 [`ctx.attachments`](#ctxattachments--attachmentstore-abstract-seam)；只有對象完成持久化後，該服務才會發布不可變的內容尋址引用。工作階段事件和模型可見的 `ImageBlock` 包含該引用及其元資料，絕不包含瀏覽器對象 URL、宿主臨時路徑、提供方 URL 或 base64 資料。
 

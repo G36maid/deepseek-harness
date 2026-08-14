@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-11-background-first-continuable-delegation.md) | 繁體中文
+[English](2026-08-11-background-first-continuable-delegation.md) | [简体中文](2026-08-11-background-first-continuable-delegation.zh.md) | 繁體中文
 
 ## 問題
 

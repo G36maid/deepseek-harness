@@ -2,7 +2,7 @@
 
 Status: rejected — 單個輪次可以包含大量真實工作，包括多個步驟和大量工具輸出。保留被中斷的輪次，優於在載入時靜默丟棄這段尾部。
 
-[English](2026-06-20-truncate-interrupted-turns.md) | 繁體中文
+[English](2026-06-20-truncate-interrupted-turns.md) | [简体中文](2026-06-20-truncate-interrupted-turns.zh.md) | 繁體中文
 
 ## 問題
 

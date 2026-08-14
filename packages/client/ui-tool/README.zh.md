@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-tool
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 Client 工具展示插件。`ui-conversation` 通过 `conversation.chat.node` 的匹配 key 分发每个已排序的 `tool-call` Conversation Node；本包渲染其中的 root 及其 Code Dispatch 子调用，并把每个原子调用通过 keyed slot `tool.call.toolview` 分发。没有注册的工具名称使用通用卡片。
 

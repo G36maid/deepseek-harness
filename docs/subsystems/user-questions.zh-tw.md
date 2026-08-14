@@ -1,6 +1,6 @@
 # 使用者互動
 
-[English](user-questions.md) | 繁體中文
+[English](user-questions.md) | [简体中文](user-questions.zh.md) | 繁體中文
 
 [dsh-user-questions](../../packages/interaction/user-questions) 的使用者互動 seam。它是工具或權限外掛程式需要人類回答後 agent（代理）才能繼續時所使用的、提供方無關的詞彙。UI 介面提供活躍的 `UserQuestionProvider`；host 執行時期把請求轉發給其連線的用戶端。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-web-shell-dist-chunk-layout.md) | 中文
+[English](2026-08-06-web-shell-dist-chunk-layout.md) | 简体中文
 
 ## Problem
 

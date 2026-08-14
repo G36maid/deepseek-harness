@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-lsp-stdio
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 `ctx.lsp` 的**通用 stdio 語言伺服器後端**。一個外掛程式實例接受一張命名伺服器表，並逐設定項註冊一個隔離的提供方。它透過 `ctx.fs` 讀取，並透過 `ctx.subprocess` 啟動，因此伺服器與原始檔始終位於已掛載的執行世界中。這是通用主機，而不是語言伺服器目錄或安裝器：部署需要顯式設定命令與對映，預設應放在 `cordis.yml` overlay 中。
 

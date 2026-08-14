@@ -1,6 +1,6 @@
 # dsh-client-ui-settings-plugins
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 **插件**设置分区及其**插件配置**标签页。该分区拥有标题与紧凑的标签栏；功能插件通过 `settings.plugins.tab` 贡献页面。本包自己的标签页为每个配置由用户拥有的 Host 插件展示一张可展开卡片。卡片展示插件名称及其管辖范围；就地展开后是绑定到该插件 settings 命名空间的手写控件，每个字段标注用户是否覆盖过它，并提供重置回部署组装值的入口。
 

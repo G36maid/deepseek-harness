@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-web-slash-command-fuzzy-discovery.md) | 中文
+[English](2026-08-04-web-slash-command-fuzzy-discovery.md) | 简体中文
 
 ## 问题
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-11-trajectory-conversation-context-assembly.zh.md)
+English | [简体中文](2026-08-11-trajectory-conversation-context-assembly.zh.md) | [繁體中文](2026-08-11-trajectory-conversation-context-assembly.zh-tw.md)
 
 ## Problem
 

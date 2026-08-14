@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-01-pwsh-tool-and-executor.md) | 繁體中文
+[English](2026-08-01-pwsh-tool-and-executor.md) | [简体中文](2026-08-01-pwsh-tool-and-executor.zh.md) | 繁體中文
 
 ## 問題
 

@@ -3,7 +3,7 @@
 
 # 外掛程式設定目錄
 
-[English](config-catalog.md) | 繁體中文
+[English](config-catalog.md) | [简体中文](config-catalog.zh.md) | 繁體中文
 
 每個 `config:` 塊均可由 `cordis.yml` 條目設定：針對每個可載入的 harness 包，原樣列出其 `apply` 函式或服務構造函式接收的設定聲明（包括 JSDoc），並附上所有引用類型——包內類型直接貼上，其他類型則提供連結。貼上的內容是外掛程式聲明的完整設定類型——執行時期 schema 有意排除的欄位是僅供執行時期使用的 seam（其自身的 JSDoc 會如此說明），不能透過 `cordis.yml` 設定。這是以**部署**為軸的參考文件——外掛程式作者所依據的連線方式請參閱各[子系統頁面](subsystems/core.md)中的生成 `cordis-surface` 區域，面向模型的工具 schema 請參閱[工具目錄](tool-catalog.md)，而 [subsystems/](subsystems/core.md) 則記錄了這些聲明所引用的類型。
 

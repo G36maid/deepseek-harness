@@ -1,6 +1,6 @@
 # Cookbook: adding an LLM adapter
 
-English | [中文](adding-an-llm-adapter.zh.md)
+English | [简体中文](adding-an-llm-adapter.zh.md) | [繁體中文](adding-an-llm-adapter.zh-tw.md)
 
 How to connect a new model provider. Reference implementations: `packages/llm/llm-deepseek` (direct HTTP, SSE framed by `eventsource-parser`) and `packages/llm/llm-pi-ai` (wrapping an LLM library). Read the `StreamChunk` doc in `packages/llm/llm/src/types.ts` first — it records the protocol conventions both adapters were verified against.
 

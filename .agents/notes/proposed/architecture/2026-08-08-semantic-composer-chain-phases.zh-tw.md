@@ -2,7 +2,7 @@
 
 Status: proposed
 
-[English](2026-08-08-semantic-composer-chain-phases.md) | 繁體中文
+[English](2026-08-08-semantic-composer-chain-phases.md) | [简体中文](2026-08-08-semantic-composer-chain-phases.zh.md) | 繁體中文
 
 ## 問題
 

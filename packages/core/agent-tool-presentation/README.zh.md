@@ -1,6 +1,6 @@
 # dsh-agent-tool-presentation
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 [agent preset](../../preset/agent-presets/README.md) 用来声明「模型看到的工具是哪一种形态」的那一行：`native`（全部 schema）、`code`（只有 `run_code` 加一份生成的 TypeScript SDK）或 `both`。
 

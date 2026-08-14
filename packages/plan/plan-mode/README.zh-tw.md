@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-plan-mode
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 按 agent（代理）分別記錄到日誌的 plan 協作狀態，提供由部署方設定的引導內容、用於直接進入的 `/plan [message]` 命令、用於直接退出的 `/plan off` 命令，以及經使用者評審的 `exit_plan_mode` 退出方式。Plan mode 是軟引導；沙盒模式和批准策略各自強制執行限制，且不讀寫 plan 狀態。
 

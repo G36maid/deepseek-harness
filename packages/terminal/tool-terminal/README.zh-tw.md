@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-terminal
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 基於 `ctx.terminals` 提供 6 個面向模型的工具：`terminal_open`、`terminal_send`、`terminal_read`、`terminal_signal`、`terminal_close` 和 `terminal_list`。每項操作都要求提供完全相同的發起 `Agent`，因此即使模型獲知另一個 agent（代理）的 id，也無法操作其終端機。
 

@@ -3,7 +3,7 @@
 
 # 文档图索引
 
-[English](graph-atlas.md) | 中文
+[English](graph-atlas.md) | 简体中文
 
 这些图展示生成目录未包含的关系。可以用它们查找包之间的关系、能力 seam、事件流、面向模型的工具、应用组合和运行时生命周期路径。精确签名和类型定义仍以[子系统页面](subsystems/core.md)（类型和生成的 `cordis-surface` 区域）及[工具目录](tool-catalog.md)为准。
 

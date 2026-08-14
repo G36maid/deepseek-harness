@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-sandbox-local
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`dsh-sandbox`](../sandbox/) seam 的本機實作。它選擇並快取一個平臺 runner：Linux 優先選擇可工作的 `bwrap`，否則選擇 Landlock；macOS 使用 Seatbelt；Windows 使用 ACL 受限權杖 runner。多個候選項會按順序探測，只有一個候選項時則直接選擇。
 

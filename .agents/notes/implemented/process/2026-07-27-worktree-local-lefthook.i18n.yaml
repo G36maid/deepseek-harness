@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-27-worktree-local-lefthook.md
-2026-07-27-worktree-local-lefthook.md: 5a10c5d3769bbe5ad1fd0407982bb34c8763e2ae
-2026-07-27-worktree-local-lefthook.zh.md: 0ebee7ce07a17ddab21ca999e85544b532a07c92
-2026-07-27-worktree-local-lefthook.zh-tw.md: 0174c8b1be458b516c5c1fd8d7eb4b3402a1bcbe
+2026-07-27-worktree-local-lefthook.md: 25394d90d6c0aa401b8fd6e6f41b906307e8357b
+2026-07-27-worktree-local-lefthook.zh.md: c30e6a1a953e3c3395a0e2a2149cbf788aced8dc
+2026-07-27-worktree-local-lefthook.zh-tw.md: a7dfa2f7cc45e72e60d1f97212e3642d7135ed9c

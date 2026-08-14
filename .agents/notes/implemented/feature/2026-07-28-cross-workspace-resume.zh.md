@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-cross-workspace-resume.md) | 中文
+[English](2026-07-28-cross-workspace-resume.md) | 简体中文
 
 ## Problem
 

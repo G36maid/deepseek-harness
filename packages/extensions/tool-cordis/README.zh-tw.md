@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-cordis
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 自引用 Cordis 工具集：五個面向模型的工具，操作當前 DSH 行程中的即時執行時期。登錄檔、vm 沙盒與瀏覽器廣播屬於 [`@deepseek-ai/dsh-cordis-host-runner`](../cordis-host-runner/README.md)（`ctx.dynamic`），本工具集註入它——只裝這些工具而不裝 runner 的組合永遠不會啟用它們。沙盒語義、動態包生命週期與組合及既定決策詳見[工具集 Agent Note](../../../.agents/notes/implemented/feature/2026-07-08-self-referential-cordis-toolset.md)。
 

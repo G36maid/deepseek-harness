@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-schedule
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 `dsh-schedule` 为未来创建的 live 根 agent（智能体）提供 3 个会话范围内的工具，用于管理持久提醒。版本 1 接受正的安全整数 `after_seconds` 延时、显式绝对时间 `at` 目标，以及至少 5 分钟的固定速率 `every_seconds` 间隔。会话事件日志拥有提醒状态；timer、工具值和模型 follow-up 都是该日志的可丢弃投影。
 

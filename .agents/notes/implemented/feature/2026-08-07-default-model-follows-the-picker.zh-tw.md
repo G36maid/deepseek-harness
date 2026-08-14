@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-07-default-model-follows-the-picker.md) | 繁體中文
+[English](2026-08-07-default-model-follows-the-picker.md) | [简体中文](2026-08-07-default-model-follows-the-picker.zh.md) | 繁體中文
 
 ## 問題
 

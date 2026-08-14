@@ -1,6 +1,6 @@
 # dsh-persona
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 把 agent（代理）人設做成一個可組裝的行：它既可以遮蔽部署級人設，也可以擁有完整系統提示詞。
 

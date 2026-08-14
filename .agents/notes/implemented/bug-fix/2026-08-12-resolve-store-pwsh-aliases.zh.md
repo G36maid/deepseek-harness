@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-resolve-store-pwsh-aliases.md) | 中文
+[English](2026-08-12-resolve-store-pwsh-aliases.md) | 简体中文
 
 ## 问题
 

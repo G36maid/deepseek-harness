@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-20-public-agent-stop-api.md) | 中文
+[English](2026-06-20-public-agent-stop-api.md) | 简体中文
 
 ## 问题
 

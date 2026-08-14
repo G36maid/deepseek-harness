@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-subprocess
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The subprocess seam (`ctx.subprocess`) is the process half of one execution world. The abstract `SubprocessRuntime` exposes executable lookup, ordinary managed `spawn`, and one terminal-process primitive; its vocabulary covers raw/collected stdio, process and terminal handles, exit facts, tree/session cleanup, and the managed `DSH_*` environment namespace. The local implementation lives in [`dsh-subprocess-local`](../subprocess-local/README.md).
 

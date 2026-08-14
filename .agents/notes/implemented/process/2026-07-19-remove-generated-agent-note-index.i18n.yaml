@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/process/2026-07-19-remove-generated-agent-note-index.md
-2026-07-19-remove-generated-agent-note-index.md: 60dba14064ffe294228968cdb111920696fe7d63
-2026-07-19-remove-generated-agent-note-index.zh.md: 6e1967fbde0c6ac59bbc3a184dad68c989efadbc
-2026-07-19-remove-generated-agent-note-index.zh-tw.md: 2e026b543bc70399c248fb7c70bc9cd6317bd374
+2026-07-19-remove-generated-agent-note-index.md: 40480aaeaf8b60bbf53abaaa92c6324fcbc245f8
+2026-07-19-remove-generated-agent-note-index.zh.md: 12e39bfaaae6698f7949209b8613c21dd3ec284e
+2026-07-19-remove-generated-agent-note-index.zh-tw.md: 06f6633eb35816fa25392d3b8fe09c9d151eef19

@@ -1,6 +1,6 @@
 # @deepseek-ai/node-addon-landlock-run
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 一個 [Landlock](https://landlock.io/)「先限制自身、再執行」啟動器，用於在 Linux 上限制子行程。它以按平臺預建置的 npm 包以及一個輕量 JS 入口包的形式發布；入口包負責解析二進位檔案並遵循其 CLI（命令列介面）約定。該啟動器面向需要讓不可信命令在檔案系統允許清單約束下執行、同時保持自身不受限制的 agent harness（代理框架）和其他宿主。
 

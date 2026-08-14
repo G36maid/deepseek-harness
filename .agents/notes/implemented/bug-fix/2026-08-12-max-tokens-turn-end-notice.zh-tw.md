@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-max-tokens-turn-end-notice.md) | 繁體中文
+[English](2026-08-12-max-tokens-turn-end-notice.md) | [简体中文](2026-08-12-max-tokens-turn-end-notice.zh.md) | 繁體中文
 
 ## Problem
 

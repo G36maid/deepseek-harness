@@ -1,6 +1,6 @@
 # Subagent
 
-English | [中文](subagent.zh.md)
+English | [简体中文](subagent.zh.md) | [繁體中文](subagent.zh-tw.md)
 
 The subagent seam lets an agent delegate work to a child agent. Like [bash](shell.md), it is **one optional capability**, not part of the agent loop, so its types live here rather than in [core.md](core.md). It differs from the other capability seams because **multiple provider implementations coexist** in one context, registered by name (`ctx.subagents`), while bash allows only one executor. Its registry follows the [LLM adapter registry](llm-streaming.md), not the single-service bash executor.
 

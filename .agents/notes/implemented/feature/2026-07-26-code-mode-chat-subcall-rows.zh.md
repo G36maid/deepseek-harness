@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-26-code-mode-chat-subcall-rows.md) | 中文
+[English](2026-07-26-code-mode-chat-subcall-rows.md) | 简体中文
 
 > 范围：Web chat 视图如何渲染一个 `run_code` 轮次，即 Code Mode UI 栈的客户端侧部分，构建在[宿主侧基础](2026-07-26-code-dispatch-ui-foundation.md)之上（携带完整内容的 `tool/code-dispatch`、必填的 `description` 参数）。本篇所依托的 slot 模型归 [toolview 溶解](../architecture/2026-07-23-toolview-dissolution.md)所有。
 

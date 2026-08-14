@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-skill
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向模型的 skill（技能）目录和 `skill` 工具。
 

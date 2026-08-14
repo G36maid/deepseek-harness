@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-20-canonical-tool-output-contract.md
-2026-07-20-canonical-tool-output-contract.md: 0b3bd788fd1ab63aa6929827ef82e5ba732e5324
-2026-07-20-canonical-tool-output-contract.zh.md: bbcd519de8d02df14be931b44f8dc44fc06b8f6a
-2026-07-20-canonical-tool-output-contract.zh-tw.md: 8972717b0c1c229c06e1c86a9a50ab5ef52247f1
+2026-07-20-canonical-tool-output-contract.md: 3cd7670e093ecef3be9a7a8a3fbcf8cea4d5cdab
+2026-07-20-canonical-tool-output-contract.zh.md: abaf3a556d8bbf4111dd136e5e6337bd39916f2a
+2026-07-20-canonical-tool-output-contract.zh-tw.md: 69d1616dea777099e2a637cd5137d7e328b6d393

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-directory-picker-native
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Native directory-picker surface: the browser half of the native picking interaction. It fills ui-workspace's two directory-flow holes (`conversation.hero.workspace.directoryFlow` and `sidebar.workspaces.directoryFlow`) with a renderless occupant that answers each `open` request by driving the local Host's OS chooser through `ctx.workspaces.pickDirectory()`, then reports exactly one outcome — a picked path, a cancellation, or a failure — back through the owner conversation. The OS dialog itself belongs to [`dsh-host-directory-picker-native`](../../host/directory-picker-native/README.md); mounting this package composes the surface with that backend from one cordis.yml row, so no client code branches on a capability kind.
 

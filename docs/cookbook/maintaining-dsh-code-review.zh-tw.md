@@ -1,6 +1,6 @@
 # 維護 dsh-code-review skill
 
-[English](maintaining-dsh-code-review.md) | 繁體中文
+[English](maintaining-dsh-code-review.md) | [简体中文](maintaining-dsh-code-review.zh.md) | 繁體中文
 
 [`dsh-code-review`](../../.agents/skills/dsh-code-review/SKILL.md) skill（技能）由一名指定操作員透過私有的週期維護工具持續更新。本實作手冊既是該操作員和接任者的入口，也幫助倉庫貢獻者理解為何 skill 更新會以小型週期 PR（Pull Request）的形式出現，而不是一次性審計。工作流程本身由[人工評審 skill 維護 Agent Note](../../.agents/notes/proposed/process/2026-07-13-human-review-skill-maintenance.md)規定。
 

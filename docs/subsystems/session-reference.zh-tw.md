@@ -1,6 +1,6 @@
 # 工作階段引用
 
-[English](session-reference.md) | 繁體中文
+[English](session-reference.md) | [简体中文](session-reference.zh.md) | 繁體中文
 
 結構化的跨工作階段引用請求與準備後的訊息上下文。[包約定](../../packages/context/session-reference) 定義規範 URI、當前表層投影、標籤安全的 JSON 與位元組保留、穩定錯誤和不可信的模型提示詞。宿主配接器使用這些類型，而不會把各自 UI 的提及文法傳入 agent（代理）核心。
 

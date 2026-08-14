@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-19-drop-mutable-session-summary.zh.md)
+English | [简体中文](2026-06-19-drop-mutable-session-summary.zh.md) | [繁體中文](2026-06-19-drop-mutable-session-summary.zh-tw.md)
 
 ## Problem
 

@@ -1,6 +1,6 @@
 # Web UI 樣式參考
 
-[English](web-styling.md) | 繁體中文
+[English](web-styling.md) | [简体中文](web-styling.zh.md) | 繁體中文
 
 本文規定瀏覽器用戶端包的樣式職責歸屬與元件規則。當前 token 值位於 [`packages/client/ui-theme/src/styles/`](../packages/client/ui-theme/src/styles/)；本文不重複這份由原始碼生成的清單。
 

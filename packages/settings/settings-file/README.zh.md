@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-settings-file
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 基于文件的设置提供方。一个 YAML 或 JSON 文档承载全部 namespace 分节；外部编辑经 `ctx.settings` 热发布，`update()` 在写锁下先重读文档再原子写回，保留用户的 YAML 注释、当前未加载插件所拥有的分节，以及任何本进程尚未观察到的磁盘变更。
 

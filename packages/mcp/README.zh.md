@@ -1,6 +1,6 @@
 # MCP — 模型上下文协议
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 将 harness 与 MCP 生态系统桥接的包。
 

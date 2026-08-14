@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh`
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 `dsh` 是 DeepSeek Harness 中用于启动 profile 的命令；profile 由多个插件组合包 patch 层按顺序叠加而成，其上再应用用户自己的覆盖配置。[`src/args.ts`](src/args.ts) 负责命令语法，[`src/bin.ts`](src/bin.ts) 只加载选中的运行器。无效命令、来自其他模式的选项、配置错误和启动失败都会以非零状态退出。
 

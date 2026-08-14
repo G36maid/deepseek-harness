@@ -3,7 +3,7 @@
 
 # 文件圖索引
 
-[English](graph-atlas.md) | 繁體中文
+[English](graph-atlas.md) | [简体中文](graph-atlas.zh.md) | 繁體中文
 
 這些圖展示生成目錄未包含的關係。可以用它們尋找包之間的關係、能力 seam、事件串流、面向模型的工具、應用組合和執行時期生命週期路徑。精確簽名和類型定義仍以[子系統頁面](subsystems/core.md)（類型和生成的 `cordis-surface` 區域）及[工具目錄](tool-catalog.md)為準。
 

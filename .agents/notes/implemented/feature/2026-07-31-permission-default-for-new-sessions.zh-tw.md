@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-permission-default-for-new-sessions.md) | 繁體中文
+[English](2026-07-31-permission-default-for-new-sessions.md) | [简体中文](2026-07-31-permission-default-for-new-sessions.zh.md) | 繁體中文
 
 ## 問題
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-23-collapse-persistence-flush-state.md) | 繁體中文
+[English](2026-07-23-collapse-persistence-flush-state.md) | [简体中文](2026-07-23-collapse-persistence-flush-state.zh.md) | 繁體中文
 
 [有界寫入批次處理決策](../architecture/2026-08-08-bounded-session-persistence-write-batching.md)取代了本 Agent Note 中的即時調度節奏。單控制器歸屬、失敗保留、按 id 序列化、退役和完全靜止的資源釋放決策仍然有效。
 

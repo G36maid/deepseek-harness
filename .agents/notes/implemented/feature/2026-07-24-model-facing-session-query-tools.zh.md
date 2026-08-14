@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-model-facing-session-query-tools.md) | 中文
+[English](2026-07-24-model-facing-session-query-tools.md) | 简体中文
 
 ## 问题
 

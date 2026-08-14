@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs-e2b
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`@deepseek-ai/dsh-fs`](../../fs/fs/README.md) 提供方約定的 E2B 實作。它沒有設定：先載入 [`@deepseek-ai/dsh-e2b`](../e2b/README.md)，再用本服務取代 `dsh-fs-local`。該提供方使用所有者的遠端 cwd 和 SDK 控制代碼，因此文件工具觀察到的環境與 E2B 後端 Bash 行程相同。
 

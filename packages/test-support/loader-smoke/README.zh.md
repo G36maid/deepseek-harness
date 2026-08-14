@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-loader-smoke`
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 用于测试通过 Cordis Loader 启动应用和 `cordis.yml` 的共享子进程 harness。`resolveExampleLaunch` 选择本地 `src` mode（tsx 和根 tsconfig 路径）或 CI `lib` mode（普通 Node 和包导出）；选择依据为显式 mode 或 `DSH_EXAMPLE_MODE`。
 

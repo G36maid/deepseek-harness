@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-projected-token-usage-and-request-context.md) | 中文
+[English](2026-07-29-projected-token-usage-and-request-context.md) | 简体中文
 
 ## 问题
 

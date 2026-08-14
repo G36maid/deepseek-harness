@@ -1,6 +1,6 @@
 # dsh-llm
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 提供方无关的 LLM（大语言模型）词汇与抽象服务。本包定义 agent loop（智能体循环）、会话日志和所有插件共同使用的规范词汇。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-web-agent-runtime-context.md) | 繁體中文
+[English](2026-07-28-web-agent-runtime-context.md) | [简体中文](2026-07-28-web-agent-runtime-context.zh.md) | 繁體中文
 
 ## 問題
 

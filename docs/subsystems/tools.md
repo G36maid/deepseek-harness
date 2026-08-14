@@ -1,6 +1,6 @@
 # Tools
 
-English | [中文](tools.zh.md)
+English | [简体中文](tools.zh.md) | [繁體中文](tools.zh-tw.md)
 
 The tool pipeline of [dsh-tools](../../packages/core/tools). [core.md](core.md) introduces `ToolDefinition` as the pipeline-authoring type shared by the core packages; the model-facing [`ToolSchema`](llm-streaming.md#the-model-request-and-result) wire type is declared with the model request. This page documents every `ToolDefinition` field, the typed schema DSL that builds it, the guarded execution types, and the UI-presentation types.
 

@@ -1,6 +1,6 @@
 # 開發指南
 
-[English](development.md) | 繁體中文
+[English](development.md) | [简体中文](development.zh.md) | 繁體中文
 
 搭建教程引導新貢獻者從準備前置條件開始，直到檢出目錄透過檢查。後面的貢獻者參考介紹倉庫版面配置、日常工作流程和 CI 組織方式。設計依據與實作細節屬於連結的 Agent Note 和指令碼。
 

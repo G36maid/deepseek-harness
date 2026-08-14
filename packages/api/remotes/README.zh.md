@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-api-remotes
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 为本应用选定的 Host Remote 能力提供双侧 BFF。Host 入口负责 Agent/Session 身份策略；Client 入口以运行时值形式导入生成的 `/remote` 产物，通过 `ctx.remote.$mount()` 挂载每项贡献，并重新导出对应的声明合并。Client 业务包依赖该外观，而不依赖 Gateway 实现或单独的 Remote 运行时入口。
 

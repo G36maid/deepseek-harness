@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-14-acp-multi-session.md) | 中文
+[English](2026-06-14-acp-multi-session.md) | 简体中文
 
 > 本 Agent Note 写于 ACP 还是编辑器桥接层的时期，动机来自 Zed 的多会话客户端模型。[ACP 作为仅面向自动化的协议](../simplification/2026-07-23-acp-automation-only-protocol.md)移除了编辑器接口；多路复用决策本身不变，本 Agent Note 现依照自动化约定陈述它。
 

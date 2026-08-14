@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/bug-fix/2026-08-12-resolve-store-pwsh-aliases.md
-2026-08-12-resolve-store-pwsh-aliases.md: 20fe58e15e75462dc0a9ba76c7a1a94939f8a004
-2026-08-12-resolve-store-pwsh-aliases.zh.md: bbfa4616127a9dbdb6609fe2973283663de55b31
-2026-08-12-resolve-store-pwsh-aliases.zh-tw.md: ea21c7717a77394f4f8dca09b15d07e255f3d341
+2026-08-12-resolve-store-pwsh-aliases.md: a1c73fcab636477bed5da28896a5f2d139ce0155
+2026-08-12-resolve-store-pwsh-aliases.zh.md: 515ade9e480108ac9c8c79009dd32d76ed23738d
+2026-08-12-resolve-store-pwsh-aliases.zh-tw.md: 31999055869ec473bf80a1e4df46f39994bf8202

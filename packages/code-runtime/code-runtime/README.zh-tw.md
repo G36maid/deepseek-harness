@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-code-runtime
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 **`CodeRuntime`**（`ctx.codeRuntime`）定義程式碼執行時期做什麼，即針對宿主提供的一組非同步綁定執行一段模型編寫的程序，並報告 `{ value, logs, error? }`，而不規定如何實作。
 

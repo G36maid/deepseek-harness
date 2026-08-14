@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-12-agent-scope-runtime-design.md) | 中文
+[English](2026-07-12-agent-scope-runtime-design.md) | 简体中文
 
 ## 问题
 

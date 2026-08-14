@@ -1,6 +1,6 @@
 # Subprocess
 
-English | [中文](subprocess.zh.md)
+English | [简体中文](subprocess.zh.md) | [繁體中文](subprocess.zh-tw.md)
 
 The subprocess seam is split across a Service Definition ([dsh-subprocess](../../packages/subprocess/subprocess), `ctx.subprocess`) and Service Provider ([dsh-subprocess-local](../../packages/subprocess/subprocess-local)); its Consumers are other capability seams and out-of-process backends: the [bash executor family](shell.md) uses collected batch output, LSP uses raw protocol pipes, the PTY backend uses the terminal primitive, and the ACP subagent backend uses piped ndjson plus inherited stderr. This seam owns the managed `DSH_*` environment namespace, the shared credential scrub (`scrubbedParentEnv`), and the `CollectedOutput` shape; [dsh-shell](../../packages/shell/shell) re-exports the vocabulary so bash consumers keep one import root.
 

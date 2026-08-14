@@ -1,6 +1,6 @@
 # core/ — 產品 API 主幹
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 構成 harness 默認控制主幹的工作階段日誌、系統提示詞組裝、工具登錄檔、agent（代理）詞彙、部署默認模型選擇和具體迴圈。這些是**產品**包，即外掛程式和消費端建置所相依性的穩定介面。
 

@@ -1,6 +1,6 @@
 # LSP 導覽
 
-[English](lsp.md) | 繁體中文
+[English](lsp.md) | [简体中文](lsp.zh.md) | 繁體中文
 
 LSP seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-07-15-lsp-capability-seam.md)：它在單一 `ctx.lsp` 服務上公開語義程式碼導覽，並拆分到多個包：Service Definition（[dsh-lsp](../../packages/lsp/lsp)，`ctx.lsp` + 提供方登錄檔）、通用 Service Provider（[dsh-lsp-stdio](../../packages/lsp/lsp-stdio)，經過設定的 stdio 語言伺服器宿主）和 Consumer（[dsh-tool-lsp](../../packages/lsp/tool-lsp)，即 `lsp` 工具 schema）。LSP 是**一項選填能力**，不屬於 agent loop（代理循環）主幹，因此其詞彙定義在此而非 [core.md](core.md) 中。更換提供方不會改變模型請求導覽的方式。
 

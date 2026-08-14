@@ -1,6 +1,6 @@
 # 5. 設定
 
-[English](05-config.md) | 繁體中文
+[English](05-config.md) | [简体中文](05-config.zh.md) | 繁體中文
 
 `cordis.yml` 中的每個 Cordis 設定項都可以攜帶 `config` 塊，外掛程式則聲明一個 schema，在執行 `apply` 前驗證該塊。錯誤設定會導致載入失敗，並給出準確的錯誤：外掛程式絕不會在設定不完整時啟動。
 

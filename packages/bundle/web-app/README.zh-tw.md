@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-web-app`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 dsh 瀏覽器表層組合包。[`cordis.patch.yml`](cordis.patch.yml) 疊加在 [`dsh-base`](../base/README.md) 之上：設定 coding persona，插入 Web 宿主行（webserver、API 閘道、workspace、投影快取、儲存）、瀏覽器外掛程式名錄與始終掛載的用戶端外掛程式重載鏈（[`dsh-client-hmr`](../../client/hmr/README.md)，在重建 watcher 改寫用戶端 bundle 之前保持空閒），並掛載本包的 `web-runtime` 粘合外掛程式（設定為 `{printUrl, surfaceContext, trustedHosts}`）。該外掛程式透過 `@deepseek-ai/dsh-web-frontend` 的 exports 解析已建置的前端 dist，只採樣一次相依性 bind 的 LAN 信任資訊並將其作為 `webRuntime` 提供給瀏覽器信任柵欄和用戶端名錄，掛載 [`frontend-static`](../../host/frontend-static/README.md) 回退席位所有者，在 `surfaceContext` 為 true 時註冊 Harness 原始碼與 Web 表層提示詞段落，以及 bash 可見的 `DSH_WEB_URL` 執行時期變數，並在 `printUrl` 為 true 時等自身的 Loader 設定樹結帳後再列印 `dsh web:` URL 行，避免兄弟行失敗時公告一個已失效的應用。本組合包還持有應用命令列：普通 `web-startup` 提供方（[`src/startup.ts`](src/startup.ts)）注入 `ctx.cmdlineArgs`（[`dsh-cmdline`](../../boot/cmdline/README.md)），解析 `--host`、`--port`、可重複的 `--trusted-host` 以及應用自己的 `--help`，再提供 `webStartup`。它會在發布該服務前拒絕 `--host 0.0.0.0`，因為 CLI 目前有意不支持綁定所有網路介面。由 flag 設定的行會注入該服務，並在惰性設定中直接讀取它，因此參數解析完成前不會有任何東西綁定埠，`dsh --profile web --help` 也不會啟動伺服器。[`dsh-headless`](../headless/README.md) 是同一 base 之上的同級表層，不掛載本組合包。
 

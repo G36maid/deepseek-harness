@@ -1,6 +1,6 @@
 # 事後檢討（postmortem）0001：ACP（Agent Client Protocol）伺服器在連線時崩潰——`export default` 丟棄了外掛程式的 `inject`
 
-[English](0001-acp-default-export-drops-inject.md) | 繁體中文
+[English](0001-acp-default-export-drops-inject.md) | [简体中文](0001-acp-default-export-drops-inject.zh.md) | 繁體中文
 
 狀態：已解決；修復見 PR（Pull Request）#41 `feat/acp-2-bridge`
 

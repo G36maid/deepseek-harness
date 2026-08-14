@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-tool-terminal
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Six model-facing tools over `ctx.terminals`: `terminal_open`, `terminal_send`, `terminal_read`, `terminal_signal`, `terminal_close`, and `terminal_list`. Every operation requires the exact initiating `Agent`, so a model cannot address another agent's terminal even if it learns the id.
 

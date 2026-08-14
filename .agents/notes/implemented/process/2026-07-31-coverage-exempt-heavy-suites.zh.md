@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-coverage-exempt-heavy-suites.md) | 中文
+[English](2026-07-31-coverage-exempt-heavy-suites.md) | 简体中文
 
 ## Problem
 

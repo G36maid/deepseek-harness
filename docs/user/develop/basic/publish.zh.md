@@ -1,6 +1,6 @@
 # 打包与安装插件
 
-[English](publish.md) | 中文
+[English](publish.md) | 简体中文
 
 前几篇教程通过 `--patch` overlay 加载本地插件。本教程把它打包成可安装的**组合包**（bundle），用 `dsh plugin add` 安装进一个 **profile**，并解释决定组合后配置的层顺序。本文假设 `dsh` CLI 已安装。请先完成[插件配置](./config.md)。
 

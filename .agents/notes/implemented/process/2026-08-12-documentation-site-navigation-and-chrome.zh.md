@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-documentation-site-navigation-and-chrome.md) | 中文
+[English](2026-08-12-documentation-site-navigation-and-chrome.md) | 简体中文
 
 ## 问题
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-web-search-exa
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 由 [Exa](https://exa.ai) 支持的 `WebSearchProvider`，用於 harness [web 能力 seam](../web/README.md)（`ctx.web`）。它呼叫 Exa 的 `POST /search` 端點並請求高亮摘要內容，把扁平 `results[]` 對映為 seam 規範化的 `WebSearchResult`。
 

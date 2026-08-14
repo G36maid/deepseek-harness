@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-host-backed-web-preferences.md) | 中文
+[English](2026-08-06-host-backed-web-preferences.md) | 简体中文
 
 ## 问题
 

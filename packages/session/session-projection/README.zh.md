@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-projection
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 会话投影 Service Definition 与驱动注册表。它拥有 `ctx.sessionProjections`：该注册表在已提交的会话事件上驱动每个已注册的投影单元，并向载体提供完整的最终值，目前包括 api-proxy 历史尾页和 `session/projection` 推送帧。领域注册的只是纯数学；驱动权归框架。[session-projection RFC](../../../.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md) 记录了设计理由。
 

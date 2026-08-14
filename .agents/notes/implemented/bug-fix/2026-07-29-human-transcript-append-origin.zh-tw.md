@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-29-human-transcript-append-origin.md) | 繁體中文
+[English](2026-07-29-human-transcript-append-origin.md) | [简体中文](2026-07-29-human-transcript-append-origin.zh.md) | 繁體中文
 
 ## 問題
 

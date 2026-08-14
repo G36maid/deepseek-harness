@@ -1,6 +1,6 @@
 # Bash 执行器
 
-[English](shell.md) | 中文
+[English](shell.md) | 简体中文
 
 bash 执行 seam 分为 Service Definition（[dsh-shell](../../packages/shell/shell)，`ctx.shell`）、Service Provider（[dsh-bash-local](../../packages/shell/bash-local) 与 [dsh-bash-sandbox](../../packages/shell/bash-sandbox)）和 Consumer（[dsh-tool-bash](../../packages/shell/tool-bash)，即 `bash` schema）。通用后台任务的 job id、所有权与控制位于 [jobs.md](jobs.md)；本 seam 返回一个不含任务概念的进程句柄。原始进程组机制封装在[子进程 seam](subprocess.md)之后。
 

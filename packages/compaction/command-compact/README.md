@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-command-compact
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 Human-facing `/compact` control over [`ctx.compaction`](../compaction/README.md). The plugin registers one global command through [`ctx.commands`](../../interaction/commands/README.md), so every composed command adapter discovers and executes it without a model turn. The [queued manual compaction Agent Note](../../../.agents/notes/implemented/feature/2026-07-30-queued-manual-compaction.md) owns the admission, lock, and durability decisions.
 

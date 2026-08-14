@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-24-separate-context-injection-from-turn-execution.md) | 繁體中文
+[English](2026-07-24-separate-context-injection-from-turn-execution.md) | [简体中文](2026-07-24-separate-context-injection-from-turn-execution.zh.md) | 繁體中文
 
 ## 問題
 

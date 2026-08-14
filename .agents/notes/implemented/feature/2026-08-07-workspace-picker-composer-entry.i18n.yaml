@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-07-workspace-picker-composer-entry.md
-2026-08-07-workspace-picker-composer-entry.md: dc9c26c291de6e7614ace3c787030c0032a9740d
-2026-08-07-workspace-picker-composer-entry.zh.md: 585c59b12392823a7388ab7a635a864bd4108929
-2026-08-07-workspace-picker-composer-entry.zh-tw.md: b3b5c8ef889ff7a8cd896905a53d2f252d7ad4b0
+2026-08-07-workspace-picker-composer-entry.md: 1e1ba401253fb60c53bae2b266926815f03ed6d6
+2026-08-07-workspace-picker-composer-entry.zh.md: 035b2cfb5a75ebd5199b3650fdbf658ca0e0a4d3
+2026-08-07-workspace-picker-composer-entry.zh-tw.md: a89acc14fea279ea56a2118956195372ac16539b

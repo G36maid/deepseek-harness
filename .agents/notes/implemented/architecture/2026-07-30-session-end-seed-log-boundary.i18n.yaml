@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/architecture/2026-07-30-session-end-seed-log-boundary.md
-2026-07-30-session-end-seed-log-boundary.md: 1c5a8097a6b901f133205dcd52d674a8e3594b28
-2026-07-30-session-end-seed-log-boundary.zh.md: 2b7d32f289cd53bcc717de0dd8ec169a466e9097
-2026-07-30-session-end-seed-log-boundary.zh-tw.md: 6c64916e47dd43b9142df2763d668bc57cac1f36
+2026-07-30-session-end-seed-log-boundary.md: b1f2156d7d508368389f20af145b4abf7a7bb7e0
+2026-07-30-session-end-seed-log-boundary.zh.md: 80de5c02ab66541f3b7c112bc8ff9d14cec1a55f
+2026-07-30-session-end-seed-log-boundary.zh-tw.md: f99471f2f869b927402c7a0e0f4df0c96718b2fd

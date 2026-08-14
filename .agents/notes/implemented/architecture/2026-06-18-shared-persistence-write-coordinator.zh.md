@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-18-shared-persistence-write-coordinator.md) | 中文
+[English](2026-06-18-shared-persistence-write-coordinator.md) | 简体中文
 
 ## 问题
 

@@ -1,6 +1,6 @@
 # dsh-tool-call-timeout-policy
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 工具呼叫逾時強制執行器：單個 `tools/execute` 環繞分發監聽器，會在 `exec.signal` 上設定單次呼叫的協作式截止時間；適用於聲明瞭 `timeoutMs` 且聲明位於其 `ToolDefinition` 上的工具。該截止時間先到時，它返回結構化 `TOOL_TIMEOUT` 結果。預算從工具自身的聲明中讀取（`ToolDefinition.timeoutMs`，由擁有該工具的外掛程式設定），因此此外掛程式是**零設定**的。它是 `tools/execute` 包裝層的參考實作，也是面向模型工具呼叫預算的強制執行歸屬地（[逾時庫 Agent Note](../../../.agents/notes/implemented/architecture/2026-07-06-timeout-deadline-library.md)）。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-20-jsonl-storage-identity.zh.md)
+English | [简体中文](2026-07-20-jsonl-storage-identity.zh.md) | [繁體中文](2026-07-20-jsonl-storage-identity.zh-tw.md)
 
 ## Problem
 

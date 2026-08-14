@@ -2,7 +2,7 @@
 
 狀態：已實作
 
-[English](2026-08-03-hmr-initial-scan-boot-deadlock.md) | 繁體中文
+[English](2026-08-03-hmr-initial-scan-boot-deadlock.md) | [简体中文](2026-08-03-hmr-initial-scan-boot-deadlock.zh.md) | 繁體中文
 
 ## 問題
 

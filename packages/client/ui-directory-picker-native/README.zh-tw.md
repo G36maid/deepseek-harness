@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-directory-picker-native
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 原生目錄選擇介面：原生選取互動的瀏覽器半邊。它透過 ui-workspace 的兩個 directory-flow 洞（`conversation.hero.workspace.directoryFlow` 與 `sidebar.workspaces.directoryFlow`）裝入一個無渲染佔位者，每次收到 `open` 請求就用 `ctx.workspaces.pickDirectory()` 驅動程式本機 Host 的作業系統選擇框，然後透過 owner 工作階段回報恰好一個結果——選中的路徑、取消、或失敗。系統對話框本身屬於 [`dsh-host-directory-picker-native`](../../host/directory-picker-native/README.md)；掛載本包即用一行 cordis.yml 把介面與該後端組合起來，因此沒有任何用戶端程式碼按能力種類分支。
 

@@ -1,6 +1,6 @@
 # Development guide
 
-English | [中文](development.zh.md)
+English | [简体中文](development.zh.md) | [繁體中文](development.zh-tw.md)
 
 The setup tutorial takes a new contributor from prerequisites to a checked checkout. The contributor reference that follows covers repository layout, daily workflow, and CI organization. Design rationale and implementation details belong to the linked Agent Notes and scripts.
 

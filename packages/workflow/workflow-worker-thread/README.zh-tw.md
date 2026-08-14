@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-workflow-worker-thread
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本包為 `WorkflowEngine` 提供實作，每次執行使用一個 Node worker thread。worker 執行編排指令碼；子 agent（代理）留在宿主上，指令碼透過帶類型的宿主／worker 協議經由 `ctx.subagents` 訪問它們。
 

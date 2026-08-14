@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-30-web-read-card-frontend.zh.md)
+English | [简体中文](2026-07-30-web-read-card-frontend.zh.md) | [繁體中文](2026-07-30-web-read-card-frontend.zh-tw.md)
 
 ## Problem
 

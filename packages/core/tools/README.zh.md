@@ -1,6 +1,6 @@
 # dsh-tools
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 工具注册表与执行流水线。工具插件注册各自的 schema 和执行器；agent loop（智能体循环）依次让每次调用经过 `tools/pre-execute`（可扩展的允许／拒绝门禁）→ 已注册的单调守卫 → `tools/execute`（供超时／重试／指标插件使用的环绕分发包装层）→ `tools/post-execute`（检查／替换结果、附加上下文）→ 由工具定义持有的 `finalizeContent` 边界 → 仅观测的 `tools/result` 通知。注册表还决定以何种方式向模型呈现工具：`mode` 配置可以选择原生 Function Calling（函数调用）、[Code Mode](#code-mode)，或同时选择两者；单个 agent 可用 `presentAs` 为自己遮蔽该默认值。
 

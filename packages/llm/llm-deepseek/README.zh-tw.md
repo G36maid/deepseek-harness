@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-llm-deepseek
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 harness LLM（大型語言模型）seam 的 DeepSeek chat-completions 配接器：直接 `fetch` + SSE（Server-Sent Events，由 `eventsource-parser` 分幀），將官方協定格式（wire format；真源：API 文件 guides/thinking_mode、guides/tool_calls、api/create-chat-completion）轉換為 `StreamChunk` 協議。
 

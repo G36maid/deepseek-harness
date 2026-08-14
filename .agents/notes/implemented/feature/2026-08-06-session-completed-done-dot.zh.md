@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-session-completed-done-dot.md) | 中文
+[English](2026-08-06-session-completed-done-dot.md) | 简体中文
 
 ## Problem
 

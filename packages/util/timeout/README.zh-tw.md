@@ -1,6 +1,6 @@
 # dsh-timeout
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 逾時的**時序與分類**部分：一個零相依性純函式庫（無執行時期 harness 相依性），由每個需要限制呼叫方逾時提示、啟動 deadline，並在之後區分「已逾時」與「已取消」的能力共享。
 

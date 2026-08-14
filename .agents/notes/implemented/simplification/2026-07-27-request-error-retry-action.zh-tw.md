@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-request-error-retry-action.md) | 繁體中文
+[English](2026-07-27-request-error-retry-action.md) | [简体中文](2026-07-27-request-error-retry-action.zh.md) | 繁體中文
 
 ## 問題
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-input-trigger
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 输入触发流水线插件：光标处的 `/` 与 `@` 检测（词边界 + guard tier 规则）、分组候选菜单，以及把 pick 路由到已注册 source。`ctx.inputTriggers` 拥有 source roster，并按会话 scope（`sessionOf`）各解析一个 `InputTriggerController`；对话接线层在 controller 上驱动 `track`／`arbitrate`／`onSpace`／`adjudicate`。同一个 controller 还暴露 `toggleSource`，供 chrome launcher 在一段合成 selection span 上只打开一个已注册 source；所得候选仍走通常的菜单、键盘仲裁、pick callback 与 scoped 输入改写。source 每次调用收到一个 `ClientSessionContext` 投影——会话始终由 agent（智能体）支撑，因此投影只含会话身份。source 在它能触达的每个会话 controller 中都会被预热：scope 创建时 roster 中已有的 source 会在 controller 构造期间预热，晚于此注册的 source 由注册动作本身预热进每个仍存续的 controller。`lexicon` 名录在预热后仍会变化的 source 实现 `subscribeLexicon(session, listener)`；controller 每收到通知就重拉，并把聚合结果经其 `lexicon` 快照 store 发布。流水线与命令无关：空格／回车裁决按注册序轮询可选的 `matchSpace`／`matchEnter` 钩子，第一个非 undefined 的应答胜出。
 

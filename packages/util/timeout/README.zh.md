@@ -1,6 +1,6 @@
 # dsh-timeout
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 超时的**时序与分类**部分：一个零依赖纯函数库（无运行时 harness 依赖），由每个需要限制调用方超时提示、启动 deadline，并在之后区分「已超时」与「已取消」的能力共享。
 

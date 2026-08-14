@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-11-property-based-testing.md) | 繁體中文
+[English](2026-06-11-property-based-testing.md) | [简体中文](2026-06-11-property-based-testing.zh.md) | 繁體中文
 
 > 屬性測試套件首次執行即發現了 BlockAssembler 重複 `block-end` 的真實 bug。
 

@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-skill-badge
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 選填的內建 skill（技能）提供方，向 `ctx.skills` 貢獻 `dsh-badge`。該 skill 提供官方「powered by dsh」Markdown 片段和隨包分發的 PNG，供無法可靠匯入遠端圖片的系統使用。
 

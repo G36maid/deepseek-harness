@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-29-pnpm-setup-runner-isolation.zh.md)
+English | [简体中文](2026-07-29-pnpm-setup-runner-isolation.zh.md) | [繁體中文](2026-07-29-pnpm-setup-runner-isolation.zh-tw.md)
 
 ## Problem
 

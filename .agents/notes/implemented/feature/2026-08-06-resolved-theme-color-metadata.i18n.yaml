@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-06-resolved-theme-color-metadata.md
-2026-08-06-resolved-theme-color-metadata.md: 2f7a6f0bde5e75aeb6769939cae54d5319aa5bae
-2026-08-06-resolved-theme-color-metadata.zh.md: 0312794c607b59f4772d498e1533e0af70b9fbbe
-2026-08-06-resolved-theme-color-metadata.zh-tw.md: 0bad75ced74b3a0db4a66e792b631637b2a9e990
+2026-08-06-resolved-theme-color-metadata.md: 67a02c5fcf5436575fe3e111e1473c6d85a825ee
+2026-08-06-resolved-theme-color-metadata.zh.md: 83809d91080372427a5cfcc9bcfadf8862673701
+2026-08-06-resolved-theme-color-metadata.zh-tw.md: ce7381f78e7662845a08253e0909732b7c5ef7a6

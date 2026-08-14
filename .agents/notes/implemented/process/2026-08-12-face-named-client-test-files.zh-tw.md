@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-face-named-client-test-files.md) | 繁體中文
+[English](2026-08-12-face-named-client-test-files.md) | [简体中文](2026-08-12-face-named-client-test-files.zh.md) | 繁體中文
 
 ## 問題
 

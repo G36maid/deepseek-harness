@@ -1,6 +1,6 @@
 # 事後檢討（postmortem） 0004：Landlock 部分強制執行通知導致子行程失敗被誤歸類
 
-[English](0004-landlock-partial-notice-misclassified-child-failures.md) | 繁體中文
+[English](0004-landlock-partial-notice-misclassified-child-failures.md) | [简体中文](0004-landlock-partial-notice-misclassified-child-failures.zh.md) | 繁體中文
 
 Status: resolved
 

@@ -1,6 +1,6 @@
 # 事件系统
 
-[English](events.md) | 中文
+[English](events.md) | 简体中文
 
 事件是 Cordis 插件间通信的核心机制。Harness 大量使用事件来实现松耦合的扩展点。
 

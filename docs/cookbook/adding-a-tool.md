@@ -1,6 +1,6 @@
 # Tool authoring reference
 
-English | [中文](adding-a-tool.zh.md)
+English | [简体中文](adding-a-tool.zh.md) | [繁體中文](adding-a-tool.zh-tw.md)
 
 Reference for the contracts a model-facing tool must satisfy. For an ordered first tool, follow [Build a tool](../user/develop/basic/tool.md). `packages/shell/tool-bash` is the production-grade three-package example.
 

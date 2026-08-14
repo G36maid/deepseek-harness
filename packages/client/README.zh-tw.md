@@ -1,6 +1,6 @@
 # client/ — web GUI 瀏覽器端
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 dsh web GUI 的瀏覽器側：shell 啟動、瀏覽器與宿主通訊、共享 UI 服務和功能外掛程式。編寫規則見 [AGENTS.md](AGENTS.md)；宿主半側是 [`host/`](../host/README.md)。除 `test-runtime` 外，均為名為 `@deepseek-ai/dsh-client-<name>` 的**產品**包。
 

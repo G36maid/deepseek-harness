@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-skill-filesystem
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 `ctx.skills` 注册表的本地文件系统提供方。
 

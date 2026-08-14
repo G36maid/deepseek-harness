@@ -2,7 +2,7 @@
 
 Status: rejected — 直接在執行時期註冊 skill 是為第三方外掛程式保留的有意擴充路徑。
 
-[English](2026-07-12-prune-unused-skill-registry-api.md) | 繁體中文
+[English](2026-07-12-prune-unused-skill-registry-api.md) | [简体中文](2026-07-12-prune-unused-skill-registry-api.zh.md) | 繁體中文
 
 ## 問題
 

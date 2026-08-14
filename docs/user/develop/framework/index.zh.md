@@ -1,6 +1,6 @@
 # 插件与生命周期
 
-[English](index.md) | 中文
+[English](index.md) | 简体中文
 
 本页介绍 Cordis 插件模型和生命周期状态机。
 

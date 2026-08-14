@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-11-plugin-settings-tabs.zh.md)
+English | [简体中文](2026-08-11-plugin-settings-tabs.zh.md) | [繁體中文](2026-08-11-plugin-settings-tabs.zh-tw.md)
 
 ## Problem
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-conversation-column-one-axis-scroll.md) | 中文
+[English](2026-08-04-conversation-column-one-axis-scroll.md) | 简体中文
 
 ## 问题
 

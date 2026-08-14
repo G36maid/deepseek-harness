@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-fs
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 The **`FileSystem`** (`ctx.fs`) defines the storage primitives in one execution world — resolve paths, expose canonical process paths and file URIs, test containment, read whole or streaming text, read bounded raw bytes, inspect/list metadata, write atomically, and apply a literal edit — without saying HOW. Both mutations take their version guard **optionally**, so `ctx.fs` on its own is a complete, unconstrained storage seam. This package also owns the `fs/*` policy event vocabulary the tool dispatches and the policy plugin listens for.
 

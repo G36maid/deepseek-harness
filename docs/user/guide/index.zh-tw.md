@@ -1,6 +1,6 @@
 # 使用 Web UI
 
-[English](index.md) | 繁體中文
+[English](index.md) | [简体中文](index.zh.md) | 繁體中文
 
 先按照[根 README](../../../README.md#run)啟動 Web UI；命令會列印其訪問地址。本指南從伺服器已經執行的狀態開始。`dsh` 行程會把呼叫目錄作為默認檔案系統位置，但新的 Web UI 在新增工作區前不會選中任何工作區。
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-08-11-quickstart-documentation-home.zh.md)
+English | [简体中文](2026-08-11-quickstart-documentation-home.zh.md) | [繁體中文](2026-08-11-quickstart-documentation-home.zh-tw.md)
 
 ## Problem
 

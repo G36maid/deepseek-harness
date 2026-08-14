@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-04-declaring-a-provider-from-the-models-page.md) | 中文
+[English](2026-08-04-declaring-a-provider-from-the-models-page.md) | 简体中文
 
 ## Problem
 

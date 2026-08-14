@@ -1,6 +1,6 @@
 # headless-agent
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本目錄負責 headless coding agent（代理）的重播和真實模型測試組裝：DeepSeek V4 + 本機 bash 與檔案系統工具 + subagent 委託 + 工作流程與全新 agent Ralph 迭代 + `todo_write` + JSONL 持久化。本目錄顯式掛載共享 agent 主幹、一個根 agent、持久化和檢查點策略；它不是第二個產品入口。
 

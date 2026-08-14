@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-06-14-session-persistence.zh.md)
+English | [简体中文](2026-06-14-session-persistence.zh.md) | [繁體中文](2026-06-14-session-persistence.zh-tw.md)
 
 ## Problem
 

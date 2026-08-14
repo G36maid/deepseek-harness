@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-31-web-telemetry-default-mount.md) | 中文
+[English](2026-07-31-web-telemetry-default-mount.md) | 简体中文
 
 ## 问题
 

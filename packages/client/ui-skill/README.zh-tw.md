@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-skill
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 skill（技能）呼叫 source 的瀏覽器端：把 `/` 觸發的 `skill` source 註冊進 `ctx.inputTriggers`。普通工作階段的候選來自 `skill.list` RPC，以每次呼叫的 `ClientSessionContext` 投影中的 `{sessionId}` 尋址，host 從工作階段 header 解析 `cwd`。宿主提供每一個使用者可呼叫的 skill；`modelInvocable: false` 的條目（即 `disable-model-invocation` skill，此路徑是其唯一入口）會以當前語言把僅限使用者標記作為描述前綴帶上。由目錄尋址的可繼續 subagent 在用戶端解析為沒有 skill 候選，因為現有 skill RPC 要求工作階段已掛載；查看其持久化歷史不得啟用它。目錄按普通工作階段快取，拉取走 single-flight；scope 建立時的 `warm` 掛鉤預熱該工作階段的快取項，轉發的 owner 事件 `agent-preset/selected` 丟棄該工作階段這一項（目錄屬於 preset，而空工作階段可能在預熱之後才切換），`connection/reset` 清空全部快取。結果按 `startsWith(query)` 過濾。
 

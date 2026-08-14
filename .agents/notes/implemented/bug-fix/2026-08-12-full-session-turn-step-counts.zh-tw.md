@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-12-full-session-turn-step-counts.md) | 繁體中文
+[English](2026-08-12-full-session-turn-step-counts.md) | [简体中文](2026-08-12-full-session-turn-step-counts.zh.md) | 繁體中文
 
 ## 問題
 

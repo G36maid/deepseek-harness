@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-28-tool-call-file-open-in-os.zh.md)
+English | [简体中文](2026-07-28-tool-call-file-open-in-os.zh.md) | [繁體中文](2026-07-28-tool-call-file-open-in-os.zh-tw.md)
 
 ## Problem
 

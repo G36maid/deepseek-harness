@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-session-projection-cache
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 持久投影快取（`ctx.sessionProjectionCache`）：把每個已註冊投影單元的狀態持久化為檢查點，基於域資料形態（domain data form）每工作階段一條記錄（`session_projcache` 域——出廠 JSON 後端將其落在設定的儲存根目錄下、`workspace.json` 旁邊）。設計權威：[session-projection RFC](../../../.agents/notes/proposed/architecture/2026-07-27-session-projection-and-command-log.md)（persisted projection cache 一節）。
 

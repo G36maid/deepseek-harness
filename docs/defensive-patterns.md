@@ -1,6 +1,6 @@
 # Defensive patterns
 
-English | [中文](defensive-patterns.zh.md)
+English | [简体中文](defensive-patterns.zh.md) | [繁體中文](defensive-patterns.zh-tw.md)
 
 Hard-won bug-class rules: each pattern below is a class of defect that actually shipped or nearly shipped here, stated as the rule that prevents its recurrence. Read this before writing lifecycle, concurrency, subprocess, or teardown code. Test-tier counterparts (real entry path, world-verification, resource ownership) are in [testing.md](testing.md).
 

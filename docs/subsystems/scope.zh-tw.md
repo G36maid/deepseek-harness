@@ -1,6 +1,6 @@
 # 作用域註冊
 
-[English](scope.md) | 繁體中文
+[English](scope.md) | [简体中文](scope.zh.md) | 繁體中文
 
 [scope 包](../../packages/core/scope)提供身份、載體與作用域層詞彙，使同一註冊上下文同時表達每個 agent（代理）的可見性和共享生命週期所有權。它是庫原語，而不是 Cordis 服務；生命週期設計理由由 [agent-scope 執行時期設計 Agent Note](../../.agents/notes/implemented/architecture/2026-07-12-agent-scope-runtime-design.md#scope-routing-one-opaque-key-selects-one-layer)規定，登錄檔層決策由[共享儲存 Agent Note](../../.agents/notes/implemented/architecture/2026-07-12-scoped-layers-store.md)規定，可呼叫 API 與過濾語義則由包 [README](../../packages/core/scope/README.md)規定。
 

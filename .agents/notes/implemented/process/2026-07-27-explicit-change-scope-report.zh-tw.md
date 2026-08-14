@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-27-explicit-change-scope-report.md) | 繁體中文
+[English](2026-07-27-explicit-change-scope-report.md) | [简体中文](2026-07-27-explicit-change-scope-report.zh.md) | 繁體中文
 
 ## 問題
 

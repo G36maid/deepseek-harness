@@ -2,7 +2,7 @@
 
 Status: rejected — 獨立的持久化 Service Definition 包是持久化能力 seam 預期的模組化角色拆分。將其摺疊進 `dsh-session` 雖能減少包數量，卻會犧牲更清晰的後端邊界。
 
-[English](2026-06-20-fold-session-persistence-interface.md) | 繁體中文
+[English](2026-06-20-fold-session-persistence-interface.md) | [简体中文](2026-06-20-fold-session-persistence-interface.zh.md) | 繁體中文
 
 ## 問題
 

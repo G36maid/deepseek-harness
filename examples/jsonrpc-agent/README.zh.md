@@ -1,6 +1,6 @@
 # jsonrpc-agent
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 面向 Python SDK 内置 JSON-RPC 运行时的无人值守编码 agent（智能体）组合。它有意不加载终端 UI、控制台日志记录器、批准界面或用户交互工具，因为 stdout 属于 SDK 协议，轮次由 SDK 驱动。
 

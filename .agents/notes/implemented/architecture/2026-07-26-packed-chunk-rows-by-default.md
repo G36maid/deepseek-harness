@@ -2,7 +2,7 @@
 
 Status: implemented
 
-English | [中文](2026-07-26-packed-chunk-rows-by-default.zh.md)
+English | [简体中文](2026-07-26-packed-chunk-rows-by-default.zh.md) | [繁體中文](2026-07-26-packed-chunk-rows-by-default.zh-tw.md)
 
 ## Problem
 

@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-20-code-mode-typed-tool-returns.md) | 中文
+[English](2026-07-20-code-mode-typed-tool-returns.md) | 简体中文
 
 ## 问题
 

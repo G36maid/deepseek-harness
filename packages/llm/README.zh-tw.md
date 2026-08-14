@@ -1,6 +1,6 @@
 # llm/ — LLM 能力家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 LLM（大型語言模型）seam 及其提供方配接器。`llm` 包同時承擔 Service Definition 和 Consumer 角色：抽象服務、內容區塊詞彙和流式區塊組裝器。提供方配接器註冊到 `ctx.llm`。這些全是**產品**包。
 

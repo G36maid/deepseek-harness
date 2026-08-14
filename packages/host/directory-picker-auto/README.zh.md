@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-host-directory-picker-auto
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 [目录选择 seam](../directory-picker/README.md) 的**自适应选择器**：一个只有 node 半侧的插件，在启动时一次性判定宿主处境，并把匹配的双面后端——[`-native`](../directory-picker-native/README.md) 或 [`-browse`](../directory-picker-browse/README.md)——作为真实的 Loader 条目挂进内存根树（绝不持久化到配置文件；根树的 `write()` 是 no-op）。由于后端以普通条目的形式到达，其 browser half 被 client 模块表发现的方式与配置行完全相同，因此对判定出的选择，seam 的“一行同时换两面”不变式依然成立。卸载该选择器会再次移除该条目，连同两面一起卸载。
 

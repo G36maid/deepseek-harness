@@ -1,6 +1,6 @@
 # workspace/：workspace 實體家族
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 本家族擁有持久 workspace：帶標題和有序工作階段成員關係的使用者目錄。
 

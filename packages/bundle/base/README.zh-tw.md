@@ -1,6 +1,6 @@
 # `@deepseek-ai/dsh-base`
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 以 profile 組合包形式交付的共享 dsh 核心：[`cordis.patch.yml`](cordis.patch.yml) 在空的 profile 根之上插入全部基礎外掛程式行——模型配接器、共享的 [`agent-default-model`](../../core/agent-default-model/README.md) 選擇、工具、持久化、策略、settings／credentials、遙測與宿主級 subagent provider——作為每個 profile 的 `dsh.profile.bundles` 清單中的第一層。Codex 與 Claude Code provider 以休眠狀態載入；Agent Preset 分別決定自己的 agent 是否貢獻任一面向模型的委派工具。後續的組合包層（例如 [`dsh-web-app`](../web-app/README.md)）和使用者 profile 的 `cordis.patch.yml` 按 id 覆蓋這些行；patch 會替換目標行的整個 `config`，因此模式專屬的值放在各模式組合包中，而不是這裡。該包沒有執行時期 API；profile 組合器透過 manifest（中繼資料清單）的 `dsh.bundle.patch` 欄位解析 patch，絕不透過程式碼。
 

@@ -1,6 +1,6 @@
 # bundle/ — profile 外掛程式組合包
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Profile 組合包：在 manifest（中繼資料清單）中聲明 `"dsh": { "bundle": { "patch": "./cordis.patch.yml" } }` 的 npm 包，因此可作為 patch 層安裝進 `dsh --profile` 組合（[profile 約定](../boot/app-boot/README.md#profiles)）。組合包的實體是它的 patch 清單；有些組合包還附帶由其 patch 掛載的執行時期粘合外掛程式。
 

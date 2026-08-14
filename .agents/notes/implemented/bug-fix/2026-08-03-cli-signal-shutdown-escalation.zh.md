@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-03-cli-signal-shutdown-escalation.md) | 中文
+[English](2026-08-03-cli-signal-shutdown-escalation.md) | 简体中文
 
 ## 问题
 

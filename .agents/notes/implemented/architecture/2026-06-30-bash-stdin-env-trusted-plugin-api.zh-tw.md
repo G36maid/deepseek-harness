@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-06-30-bash-stdin-env-trusted-plugin-api.md) | 繁體中文
+[English](2026-06-30-bash-stdin-env-trusted-plugin-api.md) | [简体中文](2026-06-30-bash-stdin-env-trusted-plugin-api.zh.md) | 繁體中文
 
 ## 問題
 

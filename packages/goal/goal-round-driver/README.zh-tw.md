@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-goal-round-driver
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 [`ctx.goals`](../goal/README.md) 的同工作階段續行驅動程式器。它透過公開 `Agent` 與工作階段服務，把 phase 為 active 且已啟用續行的目標轉換為連續的 [Goal Round](../../../docs/glossary.md#goal-round)；[同工作階段驅動程式器 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-same-session-goal-round-driver.md) 記載競態與生命週期方面的設計理由。
 

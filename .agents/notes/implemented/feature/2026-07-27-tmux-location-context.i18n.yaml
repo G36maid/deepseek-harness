@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-07-27-tmux-location-context.md
-2026-07-27-tmux-location-context.md: b8cffc7e3761dfe58b0d24a5489fc1e0d498c1c9
-2026-07-27-tmux-location-context.zh.md: 07d2c23a938402ab3bf736361bf8a3bf944a94fe
-2026-07-27-tmux-location-context.zh-tw.md: 6e63adbfea3d89d990ded527503817129d5e58d1
+2026-07-27-tmux-location-context.md: 12c3f43a38ffbd668ee2ac3a92a9f1e94f4b8357
+2026-07-27-tmux-location-context.zh.md: 00eb63faf761af2b2a6e61b2fe8019102f611c36
+2026-07-27-tmux-location-context.zh-tw.md: 41ef995756e89a86981d6350ddf05642f77c93e2

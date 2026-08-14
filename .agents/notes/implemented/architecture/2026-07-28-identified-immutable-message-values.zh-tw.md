@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-07-28-identified-immutable-message-values.md) | 繁體中文
+[English](2026-07-28-identified-immutable-message-values.md) | [简体中文](2026-07-28-identified-immutable-message-values.zh.md) | 繁體中文
 
 ## 問題
 

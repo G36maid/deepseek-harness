@@ -1,6 +1,6 @@
 # 工作階段查詢
 
-[English](session-query.md) | 繁體中文
+[English](session-query.md) | [简体中文](session-query.zh.md) | 繁體中文
 
 本文定義邏輯工作階段語料庫的查詢詞彙；當 live 資料存在時，該語料庫優先使用 live 資料。[Service Definition 包](../../packages/session-query/session-query)負責精確讀取、來源優先級、關係追蹤、語義提取，以及與提供方無關的過濾器；[SQLite 提供方](../../packages/session-query/session-query-sqlite)負責具體全文索引的生命週期。
 

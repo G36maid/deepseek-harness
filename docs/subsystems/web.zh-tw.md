@@ -1,6 +1,6 @@
 # Web 訪問
 
-[English](web.md) | 繁體中文
+[English](web.md) | [简体中文](web.zh.md) | 繁體中文
 
 Web 訪問 seam 是一個[能力 seam](../../.agents/notes/implemented/architecture/2026-06-24-web-capability-seam.md)，在同一個 `ctx.web` 服務上橫跨**兩項操作**（search 與 fetch），並拆分到多個包：Service Definition（[dsh-web](../../packages/web/web)，`ctx.web` + 提供方登錄檔）、Service Provider（[dsh-web-search-exa](../../packages/web/web-search-exa)、[dsh-web-search-perplexity](../../packages/web/web-search-perplexity)、[dsh-web-search-deepseek](../../packages/web/web-search-deepseek)、[dsh-web-fetch-http](../../packages/web/web-fetch-http)）與 Consumer（[dsh-tool-web](../../packages/web/tool-web)，即 `web_search`/`web_fetch` 工具 schema）。Web 是**一項選填能力**，不屬於 agent loop（代理循環）主幹，因此其詞彙定義在此而非 [core.md](core.md) 中。更換 search 提供方不會改變模型提交查詢的方式，更換 fetch 提供方也不會改變模型請求 URL 的方式。
 

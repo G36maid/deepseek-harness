@@ -1,6 +1,6 @@
 # DeepSeek Harness Python SDK
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 用於以子行程方式驅動程式 DeepSeek Harness 的 Python 包。用戶端 SDK 透過 stdio 使用按行分隔的 JSON-RPC 與內建執行時期通訊。
 

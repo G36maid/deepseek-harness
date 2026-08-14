@@ -1,6 +1,6 @@
 # examples/：開箱可執行的演示組合包
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 預先組合的外掛程式組合包，供輕量葉節點 `cordis.yml` 載入，無需手工組裝主幹和執行入口。這些是 **演示／參考** 包；npm 名稱的 `-demo` 後綴表明每個包都不屬於產品對外介面，直接查看包名即可辨認。倉庫根目錄 [`examples/`](../../examples/AGENTS.md) 下的可執行葉節點與 [Python SDK 執行時期](../../python/sdk-runtime/README.md) 是消費端；每個消費端都只包含可替換後端和一個組合包入口。
 

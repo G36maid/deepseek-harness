@@ -1,6 +1,6 @@
 # feedback/：记录的人类反馈
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 反馈家族公开两份刻意分离的契约：写入权威 Session 日志的不可变评价，以及挂在单条 assistant 消息上的可编辑本地伴随记录（sidecar）反馈。两者都不会进入模型对话。
 

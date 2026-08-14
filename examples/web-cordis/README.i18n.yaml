@@ -2,6 +2,6 @@
 # side as of the last confirmed-consistent state. All languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write examples/web-cordis/README.md
-README.md: 1c6bc3f2202a212225c60c9c2e849a039b9a5998
-README.zh.md: b9ab7afcce741c96f161270f6420105c95f2690c
-README.zh-tw.md: edffa89d94d0c8159c1f4149625e49fbd2a1d2c7
+README.md: afdb7f885a7c654fed0ddf060182feda8fce27fe
+README.zh.md: 5f0f28752550685226d8671349311757c5381a56
+README.zh-tw.md: 9a3cd6d61a03cf4981d80b3fe05e1e7626a24814

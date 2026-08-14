@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-conversation
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 会话领域：骨架（标题栏／标签页／编辑器／空状态）、聊天视图（分组步骤摘要流、流式尾部隔离与轮次状态）、编辑器 dock（与输入区一同 sticky 的会话统计行）、输入区 dock（队列行加 todo 计划条）、详情壳层，以及按 scope 寻址的 ConversationController。工具展示属于 [`ui-tool`](../ui-tool/README.md)。
 

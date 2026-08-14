@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-01-ask-user-delegated-caller-guard.md) | 中文
+[English](2026-08-01-ask-user-delegated-caller-guard.md) | 简体中文
 
 ## 问题
 

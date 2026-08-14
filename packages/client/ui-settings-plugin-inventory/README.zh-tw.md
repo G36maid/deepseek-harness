@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-settings-plugin-inventory
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 Web 設定中的只讀**外掛程式清單**分頁標籤。瀏覽器外掛程式註冊一個 id 為 `all` 的本機化 `settings.plugins.tab` 貢獻；“外掛程式”分區擁有導覽入口與標籤欄。外掛程式激活期間不會讀取 Remote；首次選擇該分頁標籤時才掛載元件，並透過 [`api-remotes`](../../api/remotes/README.md) 懶呼叫 `ctx.remote.pluginInventory.list()`。
 

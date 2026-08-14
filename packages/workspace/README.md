@@ -1,6 +1,6 @@
 # workspace/ — workspace entity family
 
-English | [中文](README.zh.md)
+English | [简体中文](README.zh.md) | [繁體中文](README.zh-tw.md)
 
 This family owns persistent workspaces: user directories with titles and ordered session membership.
 

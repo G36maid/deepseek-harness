@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-goal-round-driver
 
-[English](README.md) | 中文
+[English](README.md) | 简体中文
 
 [`ctx.goals`](../goal/README.md) 的同会话续行驱动器。它通过公开 `Agent` 与会话服务，把 phase 为 active 且已启用续行的目标转换为连续的 [Goal Round](../../../docs/glossary.md#goal-round)；[同会话驱动器 Agent Note](../../../.agents/notes/implemented/feature/2026-07-19-same-session-goal-round-driver.md) 记载竞态与生命周期方面的设计理由。
 

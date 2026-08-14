@@ -1,6 +1,6 @@
 # identity/ — 共享身份
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 跨產品領域共享的身份值。這些值不表示經過身分驗證的帳戶。
 

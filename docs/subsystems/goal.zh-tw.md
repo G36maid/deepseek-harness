@@ -1,6 +1,6 @@
 # 同工作階段目標
 
-[English](goal.md) | 繁體中文
+[English](goal.md) | [简体中文](goal.zh.md) | 繁體中文
 
 事件溯源目標服務及其策略消費端共享的類型。[目標領域 Agent Note](../../.agents/notes/implemented/feature/2026-07-19-persisted-same-session-goal-domain.md) 負責記錄持久化與啟用決策；本頁記錄 [`packages/goal/goal/src/types.ts`](../../packages/goal/goal/src/types.ts) 中的確切欄位和變體。
 

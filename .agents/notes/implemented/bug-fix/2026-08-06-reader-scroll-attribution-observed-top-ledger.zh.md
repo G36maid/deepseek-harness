@@ -2,7 +2,7 @@
 
 Status: implemented
 
-[English](2026-08-06-reader-scroll-attribution-observed-top-ledger.md) | 中文
+[English](2026-08-06-reader-scroll-attribution-observed-top-ledger.md) | 简体中文
 
 ## 问题
 

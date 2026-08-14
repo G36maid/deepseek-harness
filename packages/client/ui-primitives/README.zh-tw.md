@@ -1,6 +1,6 @@
 # @deepseek-ai/dsh-client-ui-primitives
 
-[English](README.md) | 繁體中文
+[English](README.md) | [简体中文](README.zh.md) | 繁體中文
 
 純 React 原子元件（零 cordis）：StateDot、DisclosureRow、ic_ds_* 圖示、Button/Pill/Menu/Modal/Input、Toast 短時橫幅、OnboardingSurface 首次使用接管層（portal 到 body 的遮罩加不透明展示層，在且僅在自身生命週期內保持 `#root` 為 `inert`）、markdown 家族（MessageText/MarkdownText/JsonBlock）、只讀 JsonTree 檢查器、`useAnchoredMaxHeight` 掛鉤（把底部錨定的浮層高度收斂到錨點上方的視口空間，並在 resize、scroll 與呼叫方提供的相依性變化時重新測量）、TerminalBlock、DiffBlock、ReadBlock、SearchBlock，以及 WebBlock。
 
