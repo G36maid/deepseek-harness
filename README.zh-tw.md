@@ -27,7 +27,7 @@ npx @deepseek-ai/dsh web
 如需從倉庫原始碼執行：
 
 ```sh
-git clone https://github.com/deepseek-ai/deepseek-harness.git
+git clone https://github.com/G36maid/deepseek-harness.git
 cd deepseek-harness
 pnpm install
 pnpm run build
@@ -36,7 +36,7 @@ pnpm dsh web
 
 ## 社區與支援
 
-- 歡迎透過 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交回饋或 bug 報告。
+- 歡迎透過 [GitHub Discussions](https://github.com/G36maid/deepseek-harness/discussions) 提交回饋或 bug 報告。
 - 為你的外掛程式倉庫新增 [`dsh-plugin`](https://github.com/topics/dsh-plugin) 話題，便於被發現。
 - 歡迎加入 DeepSeek Harness 企微羣：掃描 QR Code新增企微小助手並填寫入羣問卷，完成後小助手會邀請你入羣。
 
